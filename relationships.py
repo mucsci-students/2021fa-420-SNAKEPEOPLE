@@ -3,6 +3,8 @@ def add_relationship(class_dict, source, destination, rel_dict):
     found_source = False
     found_dest = False
 
+    #Ensure both destination and source exist.
+
     for key in class_dict:
         if key == source:
             found_source = True
@@ -21,18 +23,19 @@ def add_relationship(class_dict, source, destination, rel_dict):
         print("Invalid destination, destination must be an existing class.")
         return
 
-    #relationship checking for sprint 2
-    #if rel_type not in {"Aggregation", "Composition", "Inheritance", "Realization"}:
-    #    print("Invalid type")
-
+    #Add an element of the relationship dictionary that contains the key:value pair
+    # "source-destination" : (obj<sourceName>, obj<destinationName>)
     rel_dict[source + "-" + destination] = (class_dict[source], class_dict[destination])
 
+    #return the dictionary with the new relationship included
     return rel_dict
 
 def delete_relationship (class_dict, source, destination, rel_dict):
 
     found_source = False
     found_dest = False
+
+    #Ensure both destination and source exist.
 
     for key in class_dict:
         if key == source:
@@ -54,4 +57,5 @@ def delete_relationship (class_dict, source, destination, rel_dict):
 
     del rel_dict[source + "-" + destination]
 
+    #Return the dictionary minus the deleted relationship
     return rel_dict
