@@ -11,7 +11,59 @@ def main(args : list) -> None:
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
-    pass
+    while True:
+        comm = input("How can I help you? ")
+        comm = comm.split()
+
+        if comm[0] == 'add':
+            # TODO
+            pass
+
+        elif comm[0] == 'delete':
+            # TODO
+            pass
+        
+        elif comm[0] == 'rename':
+            # TODO
+            pass
+        
+        elif comm[0] == 'load':
+            # TODO
+            pass
+        
+        elif comm[0] == 'save':
+            # TODO
+            pass
+            
+        elif comm[0] == 'list':
+            # TODO
+            pass
+        
+        elif comm[0] == 'help':
+            help()
+        
+        elif comm[0] == 'exit':
+            break
+
+        elif comm[0] == '':
+            pass
+
+        else:
+            print('That command is not valid, please try again.')
+
+
+
+
+def help() -> None:
+    '''
+    The function 
+    '''
+    help_file = open('help_stuff.txt')
+    lines = help_file.readlines()
+    for line in lines:
+        print(line)
+    help_file.close()
+
 
 # Entry Point
 if __name__ == '__main__':
