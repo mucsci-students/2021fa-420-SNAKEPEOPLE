@@ -1,4 +1,5 @@
 import json
+# key = name_of_class, value representation is class instance
 dict_json = {
     "Name" : "Evan",
     "Role" : "Manager",
