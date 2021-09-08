@@ -1,16 +1,29 @@
 import json
 # key = name_of_class, value representation is class instance
+
+#json.load (open ('UMLJson.txt'))
+
+class JsonTest:
+    def __init__(self, name, num, id):
+        self.name = name
+        self.num = num
+        self.id = id
+    def toJson (self) :
+        return json.dumps (self, default=lambda o: o.__dict__,
+            sort_keys=True, indent = 4)
+
+test = JsonTest ("uml", 123, 456)
+
 dict_json = {
-    "Name" : "Evan",
-    "Role" : "Manager",
+    "UML Class" : "UML",
+    "" : "Manager",
     "Task" : "Manage",
     "ID" : 1922
 }
 
-prep_json = json.dumps (dict_json)
+with open ('UMLJson.txt', 'w') as jf:
+    prep_json_obj = json.dumps (test.toJson ())
+    prep_json_dict = json.dumps (dict_json)
 
-print (prep_json)
-
-unpack_json = json.loads (prep_json)
-
-#print (dict_json)
+    jf.write (prep_json_obj)
+    jf.write (prep_json_dict)
