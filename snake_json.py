@@ -9,4 +9,8 @@ dict_json = {
 
 prep_json = json.dumps (dict_json)
 
-print (dict_json)
+print (prep_json)
+
+unpack_json = json.loads (prep_json)
+
+#print (dict_json)
