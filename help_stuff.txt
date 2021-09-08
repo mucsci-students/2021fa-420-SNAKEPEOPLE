@@ -1,0 +1,67 @@
+List of Available Commands:
+    1.  Exit
+        Description: Exit the program.
+        Usage: 'exit'
+    2.  Help
+        Description: List all available commands.
+        Usage: 'help'
+    3.  Add a new class
+        Description: Add a new class to the system. The provided class name
+            must not already exist in the system.
+        Usage: 'add class <classname>'
+    4.  Delete an existing class
+        Description: Delete a class from the system forever. The provided class
+            name must exist in the system in order to be deleted. When a class
+            is deleted, all attributes attached to the class and all
+            relationships associated with the class are also deleted.
+        Usage: 'delete class <classname>'
+    5.  Rename an existing class
+        Description: Rename an existing class that is in the system. All 
+            attributes attached to the class and all relationships associated 
+            with the class are also updated upon the renaming of the class.
+        Usage: 'rename class <classname>'
+    6.  Add a relationship
+        Description: Add a new relationship between two classes. Both the
+            source class and the destination class specified by the user 
+            have to exist in the system.
+        Usage: 'add relationship <sourceclass> <destinationclass>'
+    7.  Delete a relationship
+        Description: Delete a relationship between two classes in the system.
+            Both user-specified class names must exist and must already have
+            an existing relationship.
+        Usage: 'delete relationship <sourceclass> <destinationclass>'
+    8.  Add an attribute to a class
+        Description: Add a new attribute to a given class in the system. The
+            class name must be one that exists in the system. The attribute
+            must also not share the same name as one the class already has.
+        Usage: 'add attribute <attributename> <classname>'
+    9.  Delete an attribute from a class
+        Description: Delete an attribute from a given class in the system. The
+            class name must exist, and the attribute name must also be an
+            attribute that the given class has.
+        Usage: 'delete attribute <attributename> <classname>'
+    10. Rename an attribute of a class
+        Description: Rename an attribute of a given class in the system. The
+            class name must exist, and the attribute name must also be an
+            attribute that the given class has. The new attribute name
+            must also not be the same name as one the class already has.
+        Usage: 'rename attribute <attributename> <classname> <newattname>'
+    11. List all classes
+        Description: List all the classes in the current system, as well as
+            their contents.
+        Usage: 'list classes'
+    12. List one class
+        Description: List the contents of one specific class in the current 
+            system.
+        Usage: 'list <classname>'
+    13. List relationships
+        Description: List all the relationships that exist between classes in
+            the current system.
+        Usage: 'list relations'
+    14. Save a file
+        Description: Saves the current work to a JSON file.
+        Usage:
+    15. Load a file
+        Description: Load a JSON file.
+        Usage:
+    
