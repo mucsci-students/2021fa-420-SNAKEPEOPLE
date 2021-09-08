@@ -21,9 +21,15 @@ dict_json = {
     "ID" : 1922
 }
 
-with open ('UMLJson.txt', 'w') as jf:
+with open ('UMLJson.json', 'w') as jf:
     prep_json_obj = json.dumps (test.toJson ())
     prep_json_dict = json.dumps (dict_json)
 
     jf.write (prep_json_obj)
+    jf.write ("\n")
     jf.write (prep_json_dict)
+    jf.close ()
+
+uml_data = [json.loads(line) for line in open('UMLJson.json', 'r')]
+
+print (uml_data)
