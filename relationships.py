@@ -23,6 +23,12 @@ def add_relationship(class_dict, source, destination, rel_dict):
         print("Invalid destination, destination must be an existing class.")
         return
 
+    #Ensure the relationship does not already exist
+    
+    if (source + "-" + destination) in rel_dict.keys():
+        print("Relationship already exists")
+        return
+
     #Add an element of the relationship dictionary that contains the key:value pair
     # "source-destination" : (obj<sourceName>, obj<destinationName>)
     rel_dict[source + "-" + destination] = (class_dict[source], class_dict[destination])
