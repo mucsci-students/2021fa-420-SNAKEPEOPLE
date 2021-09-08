@@ -61,6 +61,11 @@ def delete_relationship (class_dict, source, destination, rel_dict):
         print("Invalid destination, destination must be an existing class.")
         return
 
+    #Ensure relationship actually exists
+    if (source + "-" + destination) not in rel_dict.keys():
+        print("Relationship does not exist")
+        return
+
     del rel_dict[source + "-" + destination]
 
     #Return the dictionary minus the deleted relationship
