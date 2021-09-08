@@ -1,14 +1,15 @@
-from typing import get_type_hints
+import uml_class
 
+uml_class.class_dict
 
-def add_relationship(class_dict, source, destination, rel_dict):
+def add_relationship(source, destination, rel_dict):
     
     found_source = False
     found_dest = False
 
     #Ensure both destination and source exist.
 
-    for key in class_dict:
+    for key in uml_class.class_dict:
         if key == source:
             found_source = True
         if key == found_dest:
@@ -34,19 +35,19 @@ def add_relationship(class_dict, source, destination, rel_dict):
 
     #Add an element of the relationship dictionary that contains the key:value pair
     # "source-destination" : (obj<sourceName>, obj<destinationName>)
-    rel_dict[source + "-" + destination] = (class_dict[source], class_dict[destination])
+    rel_dict[source + "-" + destination] = (uml_class.class_dict[source], uml_class.class_dict[destination])
 
     #return the dictionary with the new relationship included
     return rel_dict
 
-def delete_relationship (class_dict, source, destination, rel_dict):
+def delete_relationship (source, destination, rel_dict):
 
     found_source = False
     found_dest = False
 
     #Ensure both destination and source exist.
 
-    for key in class_dict:
+    for key in uml_class.class_dict:
         if key == source:
             found_source = True
         if key == found_dest:
