@@ -57,6 +57,7 @@ def main(args : list) -> None:
 def help() -> None:
     '''
     The function 
+    Pulls all the help information from a text file locally
     '''
     help_file = open('help_stuff.txt')
     lines = help_file.readlines()
