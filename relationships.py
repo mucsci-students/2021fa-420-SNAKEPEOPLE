@@ -38,8 +38,6 @@ def add_relationship(source, destination):
     # "source-destination" : (obj<sourceName>, obj<destinationName>)
     relationship_dict[source + "-" + destination] = (uml_class.class_dict[source], uml_class.class_dict[destination])
 
-    #return the dictionary with the new relationship included
-    return
 
 def delete_relationship (source, destination):
 
