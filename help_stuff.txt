@@ -41,8 +41,7 @@ List of Available Commands:
 
     12. $ list <classname> - Description: List the contents of one specific class in the current system.
 
-    13. $ list relations - Description: List all the relationships that exist between classes in
-            the current system.
+    13. $ list relations -  Description: List all the relationships that exist between classes inthe current system.
 
     14. $ PUT A SOLUTION HERE FOR SAVING A FILE - Description: Saves the current work to a JSON file.
         
