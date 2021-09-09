@@ -50,6 +50,7 @@ def main(args : list) -> None:
 
         else:
             print('That command is not valid, please try again.')
+            print('Type "help" for more assistance.')
 
 
 
