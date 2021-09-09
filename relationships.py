@@ -73,5 +73,11 @@ def delete_relationship (source, destination):
 
     del relationship_dict[source + "-" + destination]
 
-    #Return the dictionary minus the deleted relationship
-    return
+
+def list_relationships():
+
+    if len(relationship_dict) == 0:
+        print("No relationships exist.")
+
+    for key in relationship_dict:
+        print(key)
