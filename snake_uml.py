@@ -3,6 +3,7 @@
 
 # Imports:
 import sys
+from uml_class import class_dict
 
 def main(args : list) -> None:
     '''
@@ -36,8 +37,18 @@ def main(args : list) -> None:
             pass
             
         elif comm[0] == 'list':
-            # TODO
-            pass
+            # Check whether the user wants to list a single class, all classes,
+            #     or all relationships
+            if comm[1] == 'classes':
+                list_all_classes()
+
+            elif comm[1] == 'relations':
+                # TODO
+                pass
+
+            else:
+                list_a_class(comm[1])
+            
         
         elif comm[0] == 'help':
             help()
@@ -65,6 +76,24 @@ def help() -> None:
     for line in lines:
         print(line)
     help_file.close()
+
+
+# Given a class name, if the class exists in the system, print the name
+#     of the class and all the attributes it has
+def list_a_class(input : str) -> None:
+    classes = class_dict
+    if input in classes:
+        print(input + "--" + classes[input])
+    else:
+        print("The requested class does not exist.")
+    
+# Lists all the classes currently in the system, and all of their attributes
+def list_all_classes() -> None:
+    classes = class_dict
+    for key, value in classes.items():
+        print(key + "--" + value)
+ 
+
 
 
 # Entry Point
