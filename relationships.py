@@ -1,14 +1,16 @@
-from typing import get_type_hints
+import uml_class
 
+uml_class.class_dict
+relationship_dict = dict()
 
-def add_relationship(class_dict, source, destination, rel_dict):
+def add_relationship(source, destination):
     
     found_source = False
     found_dest = False
 
     #Ensure both destination and source exist.
 
-    for key in class_dict:
+    for key in uml_class.class_dict:
         if key == source:
             found_source = True
         if key == found_dest:
@@ -28,25 +30,23 @@ def add_relationship(class_dict, source, destination, rel_dict):
 
     #Ensure the relationship does not already exist
     
-    if (source + "-" + destination) in rel_dict.keys():
+    if (source + "-" + destination) in relationship_dict.keys():
         print("Relationship already exists")
         return
 
     #Add an element of the relationship dictionary that contains the key:value pair
     # "source-destination" : (obj<sourceName>, obj<destinationName>)
-    rel_dict[source + "-" + destination] = (class_dict[source], class_dict[destination])
+    relationship_dict[source + "-" + destination] = (uml_class.class_dict[source], uml_class.class_dict[destination])
 
-    #return the dictionary with the new relationship included
-    return rel_dict
 
-def delete_relationship (class_dict, source, destination, rel_dict):
+def delete_relationship (source, destination):
 
     found_source = False
     found_dest = False
 
     #Ensure both destination and source exist.
 
-    for key in class_dict:
+    for key in uml_class.class_dict:
         if key == source:
             found_source = True
         if key == found_dest:
@@ -65,11 +65,17 @@ def delete_relationship (class_dict, source, destination, rel_dict):
         return
 
     #Ensure relationship actually exists
-    if (source + "-" + destination) not in rel_dict.keys():
+    if (source + "-" + destination) not in relationship_dict.keys():
         print("Relationship does not exist")
         return
 
-    del rel_dict[source + "-" + destination]
+    del relationship_dict[source + "-" + destination]
 
-    #Return the dictionary minus the deleted relationship
-    return rel_dict
+
+def list_relationships():
+
+    if len(relationship_dict) == 0:
+        print("No relationships exist.")
+
+    for key in relationship_dict:
+        print(key)
