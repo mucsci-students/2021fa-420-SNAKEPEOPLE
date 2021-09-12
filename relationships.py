@@ -47,10 +47,9 @@ def delete_relationship (source, destination):
     #Ensure both destination and source exist.
 
     for key in uml_class.class_dict:
-        print(key)
         if key == source:
             found_source = True
-        if key == found_dest:
+        if key == destination:
             found_dest = True
 
     if found_source == False and found_dest == False:

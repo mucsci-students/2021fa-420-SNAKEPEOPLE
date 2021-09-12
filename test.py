@@ -12,17 +12,19 @@ class test(unittest.TestCase):
         class1 = uml_class.UMLClass("class1")
         class2 = uml_class.UMLClass("class2")
 
-        #self.assertEqual(dict.cmp(uml_class.class_dict, testdict), 0)
-
-
+        self.assertEqual(len(uml_class.class_dict), 2)
 
         relationships.add_relationship("class1", "class2")
 
-        print(relationships.relationship_dict)
+        self.assertEqual(len(relationships.relationship_dict), 1)
 
-        self.assertEqual(relationships.relationship_dict["class1-class2"], (class1, class2))
+        self.assertEqual(relationships.relationship_dict["class1-class2"], 
+                                (uml_class.class_dict["class1"], uml_class.class_dict["class2"]))
+        
+        self.assertEqual(relationships.relationship_dict["class1-class2"][1], 
+                                uml_class.class_dict["class2"])
 
-
+        
 
 if __name__ == "__main__":
     unittest.main()
