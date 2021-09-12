@@ -66,7 +66,41 @@ class test(unittest.TestCase):
         uml_class.delete_class("class1")
 
         #Check that adding a relationship without a valid source and destination will result
-        #in an appropriate 
+        #in an appropriate error message
+        out = io.StringIO()
+        sys.stdout = out
+        relationships.add_relationship("class1", "class2")
+        sys.stdout = sys.__stdout__
+        self.assertEqual(out.getvalue(), "Invalid source and destination, both arguements must be existing classes.\n")
+
+        #Check that deleting a relationship without a valid source and destination will result
+        #in an appropriate error message
+        out = io.StringIO()
+        sys.stdout = out
+        relationships.delete_relationship("class1", "class2")
+        sys.stdout = sys.__stdout__
+        self.assertEqual(out.getvalue(), "Invalid source and destination, both arguements must be existing classes.\n")
+
+        uml_class.add_class("class1")
+
+        #Check that deleting a relationship without a valid destination will result
+        #in an appropriate error message
+        out = io.StringIO()
+        sys.stdout = out
+        relationships.delete_relationship("class1", "class2")
+        sys.stdout = sys.__stdout__
+        self.assertEqual(out.getvalue(), "Invalid destination, destination must be an existing class.\n")
+
+        uml_class.add_class("class2")
+
+        print(uml_class.class_dict)
+        #Check that deleting a relationship without a valid source and destination will result
+        #in an appropriate error message
+        out = io.StringIO()
+        sys.stdout = out
+        relationships.delete_relationship("class3", "class2")
+        sys.stdout = sys.__stdout__
+        self.assertEqual(out.getvalue(), "Invalid source, source must be an existing class.\n")
 
 
 if __name__ == "__main__":
