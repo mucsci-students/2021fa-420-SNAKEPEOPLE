@@ -69,7 +69,7 @@ def delete_relationship (source, destination):
         print("Relationship does not exist")
         return
 
-    del relationship_dict[source + "-" + destination]
+    relationship_dict.pop(source + "-" + destination)
 
 
 def list_relationships():
@@ -79,3 +79,15 @@ def list_relationships():
 
     for key in relationship_dict:
         print(key)
+
+def delete_relationship(source):
+
+    #Go through a list of the relationship dictionary's keys
+    #and remove any that are the source or destination of a 
+    #relationship
+    for key in list(relationship_dict.keys()):
+        if len(key) > len(source):
+            if key[0 : len(source)] == source:
+                del relationship_dict[key]
+            if key[len(key) - len(source): len(key)] == source:
+                del relationship_dict[key]
