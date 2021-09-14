@@ -113,21 +113,28 @@ def list_relationships():
     for key in relationship_dict:
         print(key)
 
-def rename_relationship(old_source, new_source):
+def rename_relationship(old_name, new_name):
 
-    if old_source in uml_class.class_dict.keys():
+    #Find all relationships with the old name, delete the old relationships
+    #then create a new relationship to replace the old one with the updated
+    #UMLClass object
+
+    if new_name in uml_class.class_dict.keys():
         for key in list(relationship_dict.keys()):
-            #Compare the source attribute of the UMLRelationship object with
-            #the UMLClass object associated with source
-            if relationship_dict[key].sourceName == old_source:
-                source = new_source
+            #Compare the source name of the UMLRelationship object with
+            #the old name to see if the current relationship should be updated
+            if relationship_dict[key].sourceName == old_name:
+                source = new_name
                 destination = relationship_dict[key].destName
                 del relationship_dict[key]
                 add_relationship(source, destination)                
-            #Compare the destination attribute of the UMLRelationship object with
-            #the UMLClass object associated with source
-            elif relationship_dict[key].destination == uml_class.class_dict[old_source]:
-                pass
+            #Compare the destination name of the UMLRelationship object with
+            #the old name to see if the current relationship should be updated
+            elif relationship_dict[key].destination == old_name:
+                source = relationship_dict[key].sourceName
+                destination = new_name
+                del relationship_dict[key]
+                add_relationship(source, destination)
 
 def check_params(source, destination):
     
@@ -162,15 +169,3 @@ def check_params(source, destination):
         return False
 
     return True
-
-uml_class.add_class("class1")
-uml_class.add_class("class2")
-uml_class.add_class("class3")
-
-add_relationship("class1", "class2")
-
-print(relationship_dict["class1-class2"].source.name)
-
-#rename_relationship("class1", "class3")
-
-#print(relationship_dict["class3-class2"])
