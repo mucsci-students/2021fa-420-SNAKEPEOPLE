@@ -1,5 +1,5 @@
 import sys
-from uml_class import class_dict
+from uml_class import UMLClass, class_dict
 
 def main(args : list) -> None:
     '''
@@ -8,6 +8,8 @@ def main(args : list) -> None:
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
+    uml_test = UMLClass ("UML1", ["Attr1", "Attr2", "Attr3"])
+
     while True:
         comm = input("How can I help you? ")
         comm = comm.split()
@@ -26,11 +28,13 @@ def main(args : list) -> None:
         
         elif comm[0] == 'load':
             # TODO
-            pass
-        
+            print ("ran successfully")
+            uml_test.load_file ()
+            
         elif comm[0] == 'save':
             # TODO
-            pass
+            uml_test.write_file (uml_test)
+            print ("ran successfully")
             
         elif comm[0] == 'list':
             # Check whether the user wants to list a single class, all classes,

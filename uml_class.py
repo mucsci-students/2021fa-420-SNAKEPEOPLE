@@ -1,6 +1,11 @@
 # Project Name: SNAKE PEOPLE UML Editor
 # File Name:    uml_class.py
 
+import json
+from types import new_class
+
+class_dict = dict()
+
 class UMLClass():
     
     def __init__(self, name : str, attr : list = []):
@@ -19,8 +24,36 @@ class UMLClass():
     def toJson (self) :
         return json.dumps (self, default=lambda o: o.__dict__,
             sort_keys=True, indent = 4)
-        
-class_dict = dict()
+
+    def write_file (self):
+        # writes/saves uml dict to a json file
+        # opens file and writes encoded json file to UMLJson.json
+            with open ('UMLJson.json', 'w') as jf:
+
+                # dumps function encodes class object/dictionary 
+                prep_json_obj = json.dumps (self.toJson ())
+
+                # writes takes encoded info from dumps to json file 
+                jf.write (prep_json_obj)
+
+                # \n is necessary to create a new line. write does not start a new line
+                jf.write ("\n")
+
+                jf.close ()
+
+    def load_file () :
+                # converts json file to array data and prints array
+
+                # creates an empty dict with json file decoded and assigned to it 
+                # through the load function
+
+                class_dict = {}
+
+                with open ('UMLJson.json', "r") as f :
+                    class_dict = json.load (f)
+
+                #test by printing data received from file
+                print (class_dict)
 
 def add_class(name : str) -> None:
     # Checks if 'name' is a key in the dict of existing classes.
@@ -45,4 +78,3 @@ def delete_class(name : str) -> None:
 
 def rename_class(uml_class : UMLClass, new_name : str) -> None:
     uml_class.rename(new_name)
-        
