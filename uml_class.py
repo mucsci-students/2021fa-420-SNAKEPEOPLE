@@ -116,7 +116,6 @@ def delete_class(name : str) -> None:
     else:
         # If 'name' is the name of an existing class, deconstructs the object,
         # and then removes the listing of the class from the class dict.
-        del class_dict[name]
         class_dict.pop(name)
 
 
