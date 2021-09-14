@@ -3,7 +3,7 @@
 
 # Imports:
 import sys
-from uml_class import class_dict
+import uml_class
 
 def main(args : list) -> None:
     '''
@@ -12,13 +12,14 @@ def main(args : list) -> None:
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
-    while True:
+    x = 1
+    while (x == 1):
+        x= x+1
         comm = input("How can I help you? ")
         comm = comm.split()
 
         if comm[0] == 'add':
-            # TODO
-            pass
+            uml_class.add_class(comm[1])
 
         elif comm[0] == 'delete':
             # TODO

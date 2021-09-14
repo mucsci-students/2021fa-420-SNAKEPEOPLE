@@ -1,27 +1,47 @@
 import unittest
 import io
 import sys
-import unittest.mock
+from unittest import mock
 import uml_class
 import relationships
-
+import snake_uml
 
 
 class test(unittest.TestCase):
 
-    def test_addClass(self):
-        uml_class.add_class("class1")
-        uml_class.add_class("class2")
-        uml_class.add_class("class3")
-        uml_class.add_class("class4")
+    # def setUp(self):
+    #     uml_class.add_class("class1")
+    #     uml_class.add_class("class2")
+    #     uml_class.add_class("class3")
+    #     uml_class.add_class("class4")
 
-    #Check that adding a duplicate class will print an error message.
+    def addclass():
+        name = input("class name: ")
+        uml_class.add_class("name")
+
+    def test_addClass(self):
+
+        with mock.patch('builtins.input', return_value="add class1"):
+            snake_uml.main
+            print(uml_class.class_dict)
+            self.assertTrue(len(uml_class.class_dict), 1)
+        
+        #Check that adding a duplicate class will print an error message.
         out = io.StringIO()
         sys.stdout = out
         uml_class.add_class("class2")
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "Error: class2 is already the name of an existing class.\n")
+        self.assertEqual(out.getvalue(), "\n<Class Add Error [Invalid Name:2]>\nClass named 'class2' already exists.\n")
 
+
+    # def test_deleteClass(self):
+    #     uml_class.delete_class("class1")
+    # #Check that deleting a non-existant class will result in a printed error.
+    #     out = io.StringIO()
+    #     sys.stdout = out
+    #     uml_class.delete_class("class1")
+    #     sys.stdout = sys.__stdout__
+    #     self.assertEqual(out.getvalue(), "Error: class1 does not exist as the name of a class.\n")
 
     # def test_addClass(self):
     #     uml_class.add_class("class1")
