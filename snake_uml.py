@@ -19,7 +19,7 @@ def main(args : list) -> None:
         comm = comm.split()
 
         if comm[0] == 'add':
-            uml_class.add_class(comm[1])
+            pass
 
         elif comm[0] == 'delete':
             # TODO

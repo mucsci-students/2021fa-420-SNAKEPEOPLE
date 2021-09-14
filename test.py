@@ -9,20 +9,10 @@ import snake_uml
 
 class test(unittest.TestCase):
 
-    # def setUp(self):
-    #     uml_class.add_class("class1")
-    #     uml_class.add_class("class2")
-    #     uml_class.add_class("class3")
-    #     uml_class.add_class("class4")
-
-    def addclass():
-        name = input("class name: ")
-        uml_class.add_class("name")
-
     def test_addClass(self):
 
         with mock.patch('builtins.input', return_value="add class1"):
-            snake_uml.main
+            snake_uml.main([])
             print(uml_class.class_dict)
             self.assertTrue(len(uml_class.class_dict), 1)
         
@@ -34,8 +24,11 @@ class test(unittest.TestCase):
         self.assertEqual(out.getvalue(), "\n<Class Add Error [Invalid Name:2]>\nClass named 'class2' already exists.\n")
 
 
-    # def test_deleteClass(self):
-    #     uml_class.delete_class("class1")
+    def test_deleteClass(self):
+        uml_class.add_class("class1")
+        print(uml_class.class_dict)
+        uml_class.delete_class("class1")
+        print(uml_class.class_dict)
     # #Check that deleting a non-existant class will result in a printed error.
     #     out = io.StringIO()
     #     sys.stdout = out
