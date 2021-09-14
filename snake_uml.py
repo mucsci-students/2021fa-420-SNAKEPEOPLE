@@ -2,7 +2,9 @@
 # File:     snake_uml.py
  
 # Imports:
+import json
 import sys
+
 import uml_class
 import relationships
  
@@ -68,8 +70,7 @@ def main(args : list) -> None:
             pass
         
         elif comm[0] == 'save':
-            # TODO
-            pass
+            save()
             
         elif comm[0] == 'list':
             # Check whether the user wants to list a single class, all classes,
@@ -128,7 +129,9 @@ def list_all_classes() -> None:
     for key, value in uml_class.class_dict.items():
         print(key + " -- " + value)
  
- 
+def save():
+    with open("classes.json", "w") as outfile:
+        json.dump(uml_class.class_dict, outfile)
  
  
 # Entry Point
