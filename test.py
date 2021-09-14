@@ -9,26 +9,34 @@ import snake_uml
 
 class test(unittest.TestCase):
 
-    def test_addClass(self):
+    #def test_addClass(self):
 
-        with mock.patch('builtins.input', return_value="add class1"):
-            snake_uml.main([])
-            print(uml_class.class_dict)
-            self.assertTrue(len(uml_class.class_dict), 1)
-        
-        #Check that adding a duplicate class will print an error message.
+    @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add class class1", "exit"])                                                                                                                          
+    def test_addClass(self, mock):   
+        snake_uml.main(sys.argv)
         out = io.StringIO()
         sys.stdout = out
-        uml_class.add_class("class2")
+        print(uml_class.class_dict)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "\n<Class Add Error [Invalid Name:2]>\nClass named 'class2' already exists.\n")
+        self.assertEqual(out.getvalue(), "{'class1': \n\tClass Name: class1\n\tAttributes:\n}\n")                                                                                                                                             
+        self.assertEqual(len(uml_class.class_dict), 1)
 
 
-    def test_deleteClass(self):
-        uml_class.add_class("class1")
-        print(uml_class.class_dict)
-        uml_class.delete_class("class1")
-        print(uml_class.class_dict)
+
+        # with mock.patch('builtins.input', side_affect=["add class class1", "exit"]):
+        #     snake_uml.main(sys.argv)
+        #     print(uml_class.class_dict)
+        #     self.assertTrue(len(uml_class.class_dict), 1)
+        
+        # #Check that adding a duplicate class will print an error message.
+        # out = io.StringIO()
+        # sys.stdout = out
+        # uml_class.add_class("class2")
+        # sys.stdout = sys.__stdout__
+        # self.assertEqual(out.getvalue(), "\n<Class Add Error [Invalid Name:2]>\nClass named 'class2' already exists.\n")
+
+
+
     # #Check that deleting a non-existant class will result in a printed error.
     #     out = io.StringIO()
     #     sys.stdout = out
