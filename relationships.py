@@ -3,76 +3,97 @@ import uml_class
 uml_class.class_dict
 relationship_dict = dict()
 
+class UMLRelationship():
+    
+    #UMLRelationship is an object that models a relationship between two UML classes.
+    #The class stores a name in the form "<source>-<destination>", a source object referencing
+    #a uml class object, and a destination object also referencing a uml class object.
+
+    def __init__(self, name : str, source, destination):
+        self.name = name
+        self.source = source
+        self.destination = destination
+
+    def __del__(self):
+        print(f"Deleting UMLRelationship:<{self.name}>...")
+    
+    def __repr__(self):
+        return self.name
+
+##########################################################################################
+
 def add_relationship(source, destination):
+
+    #Add a relationship by creating a new UMLRelationship object containing
+    #the name "<source>-<destination>", uml_class associated with the source 
+    #string, and the uml_class associated with the destination string
     
-    found_source = False
-    found_dest = False
-
-    #Ensure both destination and source exist.
-
-    for key in uml_class.class_dict:
-        if key == source:
-            found_source = True
-        if key == destination:
-            found_dest = True
-
-    if found_source == False and found_dest == False:
-        print("Invalid source and destination, both arguements must be existing classes.")
-        return
-
-    if found_source == False:
-        print("Invalid source, source must be an existing class.")
-        return
-
-    if found_dest == False:
-        print("Invalid destination, destination must be an existing class.")
-        return
-
-    #Ensure the relationship does not already exist
+    #parameters:
+    #source- String that is set as the name of a UMLClass object
+    #destination- String that is set as the name of a UMLClass object
     
-    if (source + "-" + destination) in relationship_dict.keys():
-        print("Relationship already exists")
+
+    if check_params(source, destination) == False:
         return
+    else:
+        name = source + "-" + destination
+        #Ensure the relationship does not already exist
+        if name in relationship_dict.keys():
+            print(f"Relationship {name} already exists")
+            return
+        #Create the UMLRelationship and add it to the dictionary
+        else:
+            new_rel = UMLRelationship(source + "-" + destination, 
+                uml_class.class_dict[source], uml_class.class_dict[destination])
+            relationship_dict.update({name: new_rel})
 
-    #Add an element of the relationship dictionary that contains the key:value pair
-    # "source-destination" : (obj<sourceName>, obj<destinationName>)
-    relationship_dict[source + "-" + destination] = (uml_class.class_dict[source], uml_class.class_dict[destination])
+##########################################################################################
 
+def delete_relationship(source, destination):
 
-def delete_relationship (source, destination):
+    #Delete a relationship between source and destination
+    
+    #parameters:
+    #source- String that is set as the name of a UMLClass object
+    #destination- String that is set as the name of a UMLClass object
 
-    found_source = False
-    found_dest = False
+    name = source + "-" + destination
 
-    #Ensure both destination and source exist.
-
-    for key in uml_class.class_dict:
-        if key == source:
-            found_source = True
-        if key == destination:
-            found_dest = True
-
-    if found_source == False and found_dest == False:
-        print("Invalid source and destination, both arguements must be existing classes.")
+    if check_params(source, destination) == False:
         return
+    else:
+        #Ensure that the relationship exists
+        if name not in relationship_dict.keys():
+            print(f"Relationship {name}, does not exist.")
+        else:
+            del relationship_dict[name]
 
-    if found_source == False:
-        print("Invalid source, source must be an existing class.")
-        return
+##########################################################################################
 
-    if found_dest == False:
-        print("Invalid destination, destination must be an existing class.")
-        return
+def rel_cleanup(source):
 
-    #Ensure relationship actually exists
-    if (source + "-" + destination) not in relationship_dict.keys():
-        print("Relationship does not exist")
-        return
+    #Delete all relationships involving the UMLClass object
+    #associated with source
 
-    relationship_dict.pop(source + "-" + destination)
+    #parameters:
+    #source- String that is set as the name of a UMLClass object
+    
+    if source in uml_class.class_dict.keys():
+        for key in list(relationship_dict.keys()):
+            #Compare the source attribute of the UMLRelationship object with
+            #the UMLClass object associated with source
+            if relationship_dict[key].source == uml_class.class_dict[source]:
+                del relationship_dict[key]
+            #Compare the destination attribute of the UMLRelationship object with
+            #the UMLClass object associated with source
+            elif relationship_dict[key].destination == uml_class.class_dict[source]:
+                del relationship_dict[key]
 
+##########################################################################################
 
 def list_relationships():
+
+    #List all relationships in the form "<source>-<destination>"
 
     if len(relationship_dict) == 0:
         print("No relationships exist.")
@@ -80,14 +101,38 @@ def list_relationships():
     for key in relationship_dict:
         print(key)
 
-def delete_relationship(source):
+##########################################################################################
 
-    #Go through a list of the relationship dictionary's keys
-    #and remove any that are the source or destination of a 
-    #relationship
-    for key in list(relationship_dict.keys()):
-        if len(key) > len(source):
-            if key[0 : len(source)] == source:
-                del relationship_dict[key]
-            if key[len(key) - len(source): len(key)] == source:
-                del relationship_dict[key]
+def check_params(source, destination):
+    
+    #Checks to see if source and destination are valid classes
+    #If either source or destination are invalid, print an error
+    #and return false
+
+    #parameters:
+    #source- String that is set as the name of a UMLClass object
+    #destination- String that is set as the name of a UMLClass object
+
+
+    found_source = False
+    found_dest = False
+
+    for key in uml_class.class_dict:
+        if key == source:
+            found_source = True
+        if key == destination:
+            found_dest = True
+
+    if found_source == False and found_dest == False:
+        print(f"{source} and {destination} are invalid, both arguements must be existing classes.")
+        return False
+
+    elif found_source == False:
+        print(f"{source} is invalid, source must be an existing class.")
+        return False
+
+    elif found_dest == False:
+        print(f"{destination} is invalid, destination must be an existing class.")
+        return False
+
+    return True
