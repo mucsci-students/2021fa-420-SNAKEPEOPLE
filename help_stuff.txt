@@ -12,9 +12,9 @@ List of Available Commands:
                                         is deleted, all attributes attached to the class and all
                                         relationships associated with the class are also deleted.
         
-    5.  $ rename class <classname> -    Rename an existing class that is in the system. All 
-                                        attributes attached to the class and all relationships associated 
-                                        with the class are also updated upon the renaming of the class.
+    5.  $ rename class <classname> <newclassname> -    Rename an existing class that is in the system. All 
+                                                       attributes attached to the class and all relationships associated 
+                                                       with the class are also updated upon the renaming of the class.
        
     6.  $ add relationship <sourceclass> <destinationclass> -   Add a new relationship between two classes. Both the
                                                                 source class and the destination class specified by the user 
@@ -47,4 +47,3 @@ List of Available Commands:
         
     15. $ PUT A SOLUTION HERE FOR LOADING A JSON FILE - Load a JSON file.
         
-    
