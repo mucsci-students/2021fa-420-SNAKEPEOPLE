@@ -15,6 +15,10 @@ class UMLClass():
     
     def rename(self, new_name : str):
         self.name = new_name
+
+    def toJson (self) :
+        return json.dumps (self, default=lambda o: o.__dict__,
+            sort_keys=True, indent = 4)
         
 class_dict = dict()
 

@@ -1,2 +1,2 @@
-"{\n    \"id\": 456,\n    \"name\": \"uml\",\n    \"num\": 123\n}"
-{"UML Class": "UML", "": "Manager", "Task": "Manage", "ID": 1922}
+"{\n    \"attr\": [\n        \"Attr1\",\n        \"Attr2\",\n        \"Attr3\"\n    ],\n    \"name\": \"UML Test 1\"\n}"
+{}

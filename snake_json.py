@@ -1,7 +1,9 @@
 import json
-# key = name_of_class, value representation is class instance
+import uml_class
 
 #json.load (open ('UMLJson.txt'))
+
+json_dict = uml_class.class_dict
 
 # Temporary class for experimentation with UML JSon interaction
 class UML_To_Json:
@@ -27,21 +29,32 @@ class_convert_1 = UML_To_Json ("UML Test 1", ["Attr1", "Attr2", "Attr3"])
 
 class_convert_2 = UML_To_Json ("UML Test 2", ["Attr4", "Attr5", "Attr6"])
 
-# dict_json = {
-#     "UML Class" : "UML",
-#     "Attribute" : "Attr1",
-#     "ID" : 1922
-# }
+class File_Convert:
+    def write_file (self):
+        # writes uml dict to a json file
+        # opens file and writes encoded json file to UMLJson.json
+            with open ('UMLJson.json', 'w') as jf:
 
-with open ('UMLJson.json', 'w') as jf:
-    prep_json_obj = json.dumps (class_convert_1.toJson ())
-    #prep_json_dict = json.dumps (dict_json)
+            # dumps function encodes class object/dictionary 
+                prep_json_obj = json.dumps (class_convert_1.toJson ())
 
-    jf.write (prep_json_obj)
-    jf.write ("\n")
-    #jf.write (prep_json_dict)
-    jf.close ()
+                prep_json_uml_dict = json.dumps (json_dict)
 
+            # writes takes encoded info from dumps to json file 
+                jf.write (prep_json_obj)
+
+            # \n is necessary to create a new line. write does not start a new line
+                jf.write ("\n")
+
+                jf.write (prep_json_uml_dict)
+
+                jf.close ()
+
+# TODO
+# create load json file function
+# make save/write a new function
+
+# converts json file to array data and prints array
 uml_data = [json.loads(line) for line in open('UMLJson.json', 'r')]
 
 print (uml_data)
