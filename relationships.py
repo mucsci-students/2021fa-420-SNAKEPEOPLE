@@ -39,7 +39,7 @@ def add_relationship(source, destination):
         name = source + "-" + destination
         #Ensure the relationship does not already exist
         if name in relationship_dict.keys():
-            print(f"Relationship {name} already exists")
+            print(f"ERROR: Relationship {name} already exists")
             return
         #Create the UMLRelationship and add it to the dictionary
         else:
@@ -64,7 +64,7 @@ def delete_relationship(source, destination):
     else:
         #Ensure that the relationship exists
         if name not in relationship_dict.keys():
-            print(f"Relationship {name}, does not exist.")
+            print(f"ERROR: Relationship {name}, does not exist.")
         else:
             del relationship_dict[name]
 
@@ -124,15 +124,15 @@ def check_params(source, destination):
             found_dest = True
 
     if found_source == False and found_dest == False:
-        print(f"{source} and {destination} are invalid, both arguements must be existing classes.")
+        print(f"ERROR: {source} and {destination} are invalid, both arguements must be existing classes.")
         return False
 
     elif found_source == False:
-        print(f"{source} is invalid, source must be an existing class.")
+        print(f"ERROR: {source} is invalid, source must be an existing class.")
         return False
 
     elif found_dest == False:
-        print(f"{destination} is invalid, destination must be an existing class.")
+        print(f"ERROR: {destination} is invalid, destination must be an existing class.")
         return False
 
     return True
