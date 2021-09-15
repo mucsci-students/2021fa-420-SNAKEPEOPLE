@@ -154,7 +154,7 @@ class test(unittest.TestCase):
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
 
-    
+    #Test to see if adding a duplicate attribute results in an error message
     @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add attribute class1 stuff", "add attribute class1 stuff", "exit"])
     def test_addDupAtr(self, mock):
         out = io.StringIO()
@@ -166,6 +166,81 @@ class test(unittest.TestCase):
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
+
+    #Test adding an attribute to a non-existant class
+    @unittest.mock.patch('builtins.input', side_effect=["add attribute class1 stuff", "exit"])
+    def test_addAtrToNothing(self, mock):
+        out = io.StringIO()
+        sys.stdout = out
+        snake_uml.main(sys.argv)
+        sys.stdout = sys.__stdout__
+        self.assertEqual("<Attribute Add Error [Invalid Class]>\nClass named class1 does not exist." in out.getvalue(), True)
+        self.assertEqual(len(relationships.relationship_dict), 0)
+        del out
+        uml_class.class_dict = {}
+        relationships.relationship_dict = {}
+
+    #Test deleting a legitamate attribute
+    @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add attribute class1 stuff", "delete attribute class1 stuff", "exit"])
+    def test_deleteAtr(self, mock):
+        out = io.StringIO()
+        sys.stdout = out
+        snake_uml.main(sys.argv)
+        sys.stdout = sys.__stdout__
+        self.assertEqual(len(uml_class.class_dict["class1"].attributes), 0)
+        del out
+        uml_class.class_dict = {}
+        relationships.relationship_dict = {}
+
+    #Test deleting an attribute that does not exist from a class
+    @unittest.mock.patch('builtins.input', side_effect=["add class class1", "delete attribute class1 stuff", "exit"])
+    def test_deleteFalseAtr(self, mock):
+        out = io.StringIO()
+        sys.stdout = out
+        snake_uml.main(sys.argv)
+        sys.stdout = sys.__stdout__
+        print(out.getvalue())
+        self.assertEqual("<Attribute Delete Error [Invalid Name]>\nstuff does not exist as the name of an attribute in class1." in out.getvalue(), True)
+        del out
+        uml_class.class_dict = {}
+        relationships.relationship_dict = {}
+
+    #Test deleting an attribute from a class that does not exist
+    @unittest.mock.patch('builtins.input', side_effect=["delete attribute class1 stuff", "exit"])
+    def test_deleteAtrFromNothing(self, mock):
+        out = io.StringIO()
+        sys.stdout = out
+        snake_uml.main(sys.argv)
+        sys.stdout = sys.__stdout__
+        print(out.getvalue())
+        self.assertEqual("<Attribute Delete Error [Invalid Class]>\nClass named class1 does not exist." in out.getvalue(), True)
+        del out
+        uml_class.class_dict = {}
+        relationships.relationship_dict = {}
+
+    # @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add attribute class1 stuff", "rename attribute class1 stuff new_stuff", "exit"])
+    # def test_renameAtr(self, mock):
+    #     out = io.StringIO()
+    #     sys.stdout = out
+    #     snake_uml.main(sys.argv)
+    #     sys.stdout = sys.__stdout__
+    #     print(out.getvalue())
+    #     self.assertEqual(uml_class.class_dict["class1"].attributes[0], "new_stuff")
+    #     del out
+    #     uml_class.class_dict = {}
+    #     relationships.relationship_dict = {}
+
+    # @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add attribute class1 stuff", "add attribute class1  ", "exit"])
+    # def test_addEmptyAtr(self, mock):
+    #     out = io.StringIO()
+    #     sys.stdout = out
+    #     snake_uml.main(sys.argv)
+    #     sys.stdout = sys.__stdout__
+    #     self.assertEqual("<Attribute Add Error [Invalid Name:1]>\nNew attribute name must not be empty." in out.getvalue(), True)
+    #     self.assertEqual(len(relationships.relationship_dict), 0)
+    #     del out
+    #     uml_class.class_dict = {}
+    #     relationships.relationship_dict = {}
 
 if __name__ == "__main__":
     unittest.main()
