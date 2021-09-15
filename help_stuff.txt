@@ -24,15 +24,15 @@ List of Available Commands:
                                                                     Both user-specified class names must exist and must already have
                                                                     an existing relationship.
         
-    8.  $ add attribute <attributename> <classname> -   Add a new attribute to a given class in the system. The
+    8.  $ add attribute <classname> <attributename> -   Add a new attribute to a given class in the system. The
                                                         class name must be one that exists in the system. The attribute
                                                         must also not share the same name as one the class already has.
 
-    9.  $ delete attribute <attributename> <classname> -    Delete an attribute from a given class in the system. The
+    9.  $ delete attribute <classname> <attributename> -    Delete an attribute from a given class in the system. The
                                                             class name must exist, and the attribute name must also be an
                                                             attribute that the given class has.
 
-    10. $ rename attribute <attributename> <classname> <newattname> -   Rename an attribute of a given class in the system. The
+    10. $ rename attribute <classname> <oldattrname> <newattrname> -   Rename an attribute of a given class in the system. The
                                                                         class name must exist, and the attribute name must also be an
                                                                         attribute that the given class has. The new attribute name
                                                                         must also not be the same name as one the class already has.

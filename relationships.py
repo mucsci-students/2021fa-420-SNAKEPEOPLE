@@ -103,6 +103,8 @@ def rel_cleanup(source):
             elif relationship_dict[key].destination == uml_class.class_dict[source]:
                 del relationship_dict[key]
 
+##########################################################################################
+
 def list_relationships():
 
     #List all relationships in the form "<source>-<destination>"
@@ -112,6 +114,8 @@ def list_relationships():
 
     for key in relationship_dict:
         print(key)
+
+##########################################################################################
 
 def rename_relationship(old_name, new_name):
 
@@ -136,6 +140,8 @@ def rename_relationship(old_name, new_name):
                 del relationship_dict[key]
                 add_relationship(source, destination)
 
+##########################################################################################
+
 def check_params(source, destination):
     
     #Checks to see if source and destination are valid classes
@@ -146,6 +152,9 @@ def check_params(source, destination):
     #source- String that is set as the name of a UMLClass object
     #destination- String that is set as the name of a UMLClass object
 
+    if source == "" or destination == "":
+        print("ERROR: class name cannot be empty")
+        return False
 
     found_source = False
     found_dest = False
