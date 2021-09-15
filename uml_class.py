@@ -252,7 +252,7 @@ def rename_attribute(class_name : str,
             # If 'old_attr_name' does not exist as the name of an attribute in
             # 'uml', prints an error.
             print("<Attribute Rename Error [Invalid Name:1]>\n" +
-                 f"{old_attr_name} does not exist as the name of an attribute" +
+                 f"{old_attr_name} does not exist as the name of an attribute " +
                  f"in {class_name}")
         
         # Checks if 'new_attr_name' is a valid attribute name.
