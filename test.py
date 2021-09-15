@@ -27,7 +27,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "\n<Class Add Error [Invalid Name:2]>\nClass named 'class1' already exists.\n")
+        self.assertEqual("\n<Class Add Error [Invalid Name:2]>\nClass named 'class1' already exists.\n" in out.getvalue(), True)
         self.assertEqual(len(uml_class.class_dict), 1)
         del out
         uml_class.class_dict = {}
@@ -50,7 +50,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "<Class Delete Error [Invalid Name]>\nClass named 'class1' does not exist.\n")
+        self.assertEqual("<Class Delete Error [Invalid Name]>\nClass named 'class1' does not exist.\n" in out.getvalue(), True)
         del out
         uml_class.class_dict = {}
 
@@ -71,7 +71,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "ERROR: class3 is invalid, source must be an existing class.\n")
+        self.assertEqual("ERROR: class3 is invalid, source must be an existing class.\n" in out.getvalue(), True)
         self.assertEqual(len(relationships.relationship_dict), 0)
         del out
         uml_class.class_dict = {}
@@ -84,7 +84,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "ERROR: class4 and class3 are invalid, both arguements must be existing classes.\n")
+        self.assertEqual("ERROR: class4 and class3 are invalid, both arguements must be existing classes.\n" in out.getvalue(), True)
         self.assertEqual(len(relationships.relationship_dict), 0)
         del out
         uml_class.class_dict = {}
@@ -97,7 +97,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "ERROR: class3 is invalid, destination must be an existing class.\n")
+        self.assertEqual("ERROR: class3 is invalid, destination must be an existing class.\n" in out.getvalue(), True)
         self.assertEqual(len(relationships.relationship_dict), 0)
         del out
         uml_class.class_dict = {}
@@ -110,7 +110,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "ERROR: Relationship class5-class6 already exists\n")
+        self.assertEqual("ERROR: Relationship class5-class6 already exists\n" in out.getvalue(), True)
         self.assertEqual(len(relationships.relationship_dict), 1)
         del out
         uml_class.class_dict = {}
@@ -123,7 +123,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual(out.getvalue(), "ERROR: Relationship class1-class2, does not exist.\n")
+        self.assertEqual("ERROR: Relationship class1-class2, does not exist.\n" in out.getvalue(), True)
         self.assertEqual(len(relationships.relationship_dict), 0)
         del out
         uml_class.class_dict = {}
@@ -142,7 +142,30 @@ class test(unittest.TestCase):
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
 
+    @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add attribute class1 stuff", "exit"])
+    def test_addAtr(self, mock):
+        snake_uml.main(sys.argv)
+        out = io.StringIO()
+        sys.stdout = out
+        sys.stdout = sys.__stdout__
+        self.assertEqual(uml_class.class_dict["class1"].attributes[0], "stuff")
+        self.assertEqual(len(relationships.relationship_dict), 0)
+        del out
+        uml_class.class_dict = {}
+        relationships.relationship_dict = {}
+
     
+    @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add attribute class1 stuff", "add attribute class1 stuff", "exit"])
+    def test_addDupAtr(self, mock):
+        out = io.StringIO()
+        sys.stdout = out
+        snake_uml.main(sys.argv)
+        sys.stdout = sys.__stdout__
+        self.assertEqual("<Attribute Add Error [Invalid Name:2]>\nstuff already exists as an attribute of class1." in out.getvalue(), True)
+        self.assertEqual(len(relationships.relationship_dict), 0)
+        del out
+        uml_class.class_dict = {}
+        relationships.relationship_dict = {}
 
 if __name__ == "__main__":
     unittest.main()
