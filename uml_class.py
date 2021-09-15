@@ -77,13 +77,13 @@ def add_class(name : str) -> None:
     # Checks if 'name' is a valid class name.
     if name == "" or name == None:
         # If 'name' is invalid, prints an error.
-        print("\n<Class Add Error [Invalid Name:1]>\n" + 
+        print("<Class Add Error [Invalid Name:1]>\n" + 
               "Class name must not be empty.")
         
     # Checks if 'name' already exists as a class name.
     elif name in class_dict:
         # If 'name' already exists as a class name, prints an error.
-        print("\n<Class Add Error [Invalid Name:2]>\n" + 
+        print("<Class Add Error [Invalid Name:2]>\n" + 
              f"Class named '{name}' already exists.")
     
     else:
@@ -91,6 +91,7 @@ def add_class(name : str) -> None:
         # name 'name' and adds it to the dict of existing classes.
         new_class = UMLClass(name)
         class_dict.update({name : new_class})
+        print(f"<Added Class>: {name}")
 
        
 def delete_class(name : str) -> None:
