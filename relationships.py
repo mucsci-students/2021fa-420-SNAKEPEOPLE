@@ -146,6 +146,9 @@ def check_params(source, destination):
     #source- String that is set as the name of a UMLClass object
     #destination- String that is set as the name of a UMLClass object
 
+    if source == "" or destination == "":
+        print("ERROR: class name cannot be empty")
+        return False
 
     found_source = False
     found_dest = False
