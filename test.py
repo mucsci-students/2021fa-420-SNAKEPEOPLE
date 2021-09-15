@@ -129,7 +129,7 @@ class test(unittest.TestCase):
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
 
-    #Test deleting a leitimate relationship
+    #Test deleting a legitimate relationship
     @unittest.mock.patch('builtins.input', side_effect=["add class class1", "add class class2", "add relationship class1 class2", "delete relationship class1 class2", "exit"])
     def test_deleteRel(self, mock):
         out = io.StringIO()
@@ -141,6 +141,8 @@ class test(unittest.TestCase):
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
+
+    
 
 if __name__ == "__main__":
     unittest.main()
