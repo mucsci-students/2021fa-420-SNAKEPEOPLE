@@ -22,7 +22,6 @@ def main(args : list) -> None:
             # Adding a class to the system
             if comm[1] == 'class':
                 uml_class.add_class(comm[2])
-                print("Class added.")
             # Adding a relationship to the system
             elif comm[1] == 'relationship':
                 relationships.add_relationship(comm[2], comm[3])

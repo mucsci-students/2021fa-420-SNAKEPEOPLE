@@ -26,7 +26,7 @@ class test(unittest.TestCase):
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         print(out.getvalue())
-        self.assertEqual(out.getvalue()[0:72], "\n<Class Add Error [Invalid Name:2]>\nClass named 'class1' already exists.")
+        self.assertEqual(out.getvalue(), "\n<Class Add Error [Invalid Name:2]>\nClass named 'class1' already exists.")
         self.assertEqual(len(uml_class.class_dict), 2)
         del out
 
