@@ -14,10 +14,9 @@ class UMLClass():
     """
     
     def __init__(self, 
-                 name : str, 
-                 attributes : list = []):
+                 name : str, ):
         self.name = name
-        self.attributes = attributes
+        self.attributes = list()
         
 
     def __del__(self):
@@ -25,15 +24,10 @@ class UMLClass():
     
 
     def __repr__(self):
-        name = f"\n\tClass Name: {self.name}\n"
-        
-        attrs = "\tAttributes:\n"
-        for x in self.attributes:
-            attrs += "\t"
-            attrs += x
-            attrs += "\n"
+        name = f"\nClass Name: {self.name}"
+        attr = f"\nAttributes: {self.attributes}"
             
-        return name + attrs
+        return name + attr
             
 
     def rename(self, 
@@ -162,15 +156,15 @@ def rename_class(old_name : str,
         else:
             # Temporarily stores the UMLClass object stored in the class dict
             # under 'old_name'.
-            uml_class : UMLClass = class_dict[old_name]
+            uml : UMLClass = class_dict[old_name]
             # Changes the name of the UMLClass object to 'new_name'.
-            uml_class.rename(new_name)
+            uml.rename(new_name)
             
             # Removes the listing for 'old_name' from the class dict.
             class_dict.pop(old_name)
-            # Creates a new listing for 'uml_class' in the class dict with the
+            # Creates a new listing for 'uml' in the class dict with the
             # key of 'new_name'.
-            class_dict.update({new_name : uml_class})
+            class_dict.update({new_name : uml})
 
 
 
@@ -203,7 +197,7 @@ def add_attribute(class_name : str,
     else:
         # Stores the value of the class dictionary listing for 'class_name' in 
         # a varible to be worked on.
-        uml_class : UMLClass = class_dict[class_name]
+        uml : UMLClass = class_dict[class_name]
         
         #Checks if 'attr_name' is a valid attribute name.
         if attr_name == "" or attr_name == None:
@@ -212,14 +206,14 @@ def add_attribute(class_name : str,
                   "New attribute name must not be empty.")
         
         # Checks if 'attr_name' is unique to 'class_name'.
-        elif attr_name in uml_class.attributes:
+        elif attr_name in uml.attributes:
             # If 'attr_name' is not unique, prints an error.
             print("<Attribute Add Error [Invalid Name:2]>\n" +
                  f"{attr_name} already exists as an attribute of {class_name}.")
         else:
             # If all checks for 'attr_name' are valid, adds 'attr_name' as an
             # attribute to the class with name 'class_name'.
-            uml_class.add_attribute(attr_name)
+            uml.add_attribute(attr_name)
 
         
 def rename_attribute(class_name : str, 
@@ -251,12 +245,12 @@ def rename_attribute(class_name : str,
     else:
         # Stores the value of the class dictionary listing for 'class_name' in 
         # a varible to be worked on.
-        uml_class : UMLClass = class_dict[class_name]
+        uml : UMLClass = class_dict[class_name]
         
-        # Checks if 'old_attr_name' exists in 'uml_class'.
-        if old_attr_name not in uml_class.attributes:
+        # Checks if 'old_attr_name' exists in 'uml'.
+        if old_attr_name not in uml.attributes:
             # If 'old_attr_name' does not exist as the name of an attribute in
-            # 'uml_class', prints an error.
+            # 'uml', prints an error.
             print("<Attribute Rename Error [Invalid Name:1]>\n" +
                  f"{old_attr_name} does not exist as the name of an attribute" +
                  f"in {class_name}")
@@ -267,8 +261,8 @@ def rename_attribute(class_name : str,
             print("<Attribute Rename Error [Invalid Name:2]>\n" +
                   "New attribute name must not be empty.")
         
-        # Checks if 'new_attr_name' is a unique attribute name in 'uml_class'.
-        elif new_attr_name in uml_class.attributes:
+        # Checks if 'new_attr_name' is a unique attribute name in 'uml'.
+        elif new_attr_name in uml.attributes:
             # If 'new_attr_name' already exists as an attribute name, prints an
             # error.
             print("<Attribute Rename Error [Invalid Name:3]>\n" +
@@ -277,8 +271,8 @@ def rename_attribute(class_name : str,
            
         else:
             # If all checks for 'old_attr_name' and 'new_attr_name' are valid, 
-            # renames 'old_attr_name' in 'uml_class' to 'new_attr_name'. 
-            uml_class.rename_attribute(old_attr_name, new_attr_name)
+            # renames 'old_attr_name' in 'uml' to 'new_attr_name'. 
+            uml.rename_attribute(old_attr_name, new_attr_name)
             
 
 def delete_attribute(class_name : str, attr_name : str) -> None:
@@ -304,18 +298,18 @@ def delete_attribute(class_name : str, attr_name : str) -> None:
     else:
         # Stores the value of the class dictionary listing for 'class_name' in 
         # a varible to be worked on.
-        uml_class : UMLClass = class_dict[class_name]
+        uml : UMLClass = class_dict[class_name]
         
-        # Checks if 'attr_name' exists as an attribute of 'uml_class'.
-        if attr_name not in uml_class.attributes:
+        # Checks if 'attr_name' exists as an attribute of 'uml'.
+        if attr_name not in uml.attributes:
             # If 'attr_name' does not exist as the name of an attribute in
-            # 'uml_class', prints an error.
+            # 'uml', prints an error.
             print("<Attribute Delete Error [Invalid Name]>\n" +
                   f"{attr_name} does not exist as the name of an attribute in" +
                   f"{class_name}.")
         else:
             # If 'attr_name' is valid, removes the attribute from the list of
-            # attributes in 'uml_class'.
-            uml_class.delete_attribute(attr_name)
+            # attributes in 'uml'.
+            uml.delete_attribute(attr_name)
         
 

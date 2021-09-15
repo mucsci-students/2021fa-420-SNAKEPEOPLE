@@ -1,1 +1,1 @@
-{"Test": "{\"py/object\": \"uml_class.UMLClass\", \"name\": \"Test\", \"attributes\": []}", "Object": "{\"py/object\": \"uml_class.UMLClass\", \"name\": \"Object\", \"attributes\": []}"}
+{"Class": "{\"py/object\": \"uml_class.UMLClass\", \"name\": \"Class\", \"attributes\": []}", "Apple": "{\"py/object\": \"uml_class.UMLClass\", \"name\": \"Apple\", \"attributes\": []}"}
