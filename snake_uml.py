@@ -11,135 +11,115 @@ import relationships
 
 def main(args : list) -> None:
     '''
-    The main function. Serves as a starting point for the program.
+    Processes an infinite loop waiting for a command from the user. Once input
+    is given, executes a command, if valid.
 
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
     
-    print("[ Snake People UML Editor ]")
+    print("=======================================\n" +
+          "|       Snake People UML Editor       |\n" +
+          "=======================================\n" +
+          "  Type 'help' for a list of commands.\n")
+    
     while True:
-        # The string of user input, then is separated into a list of strings
-        comm = input("SP-UML>> ")
-        comm = comm.split()
-
-        # If the user wants to add something, checks whether the user wants
-        #     to add a class, a relationship, or an attribute.
-        if comm[0] == 'add':
-
-            # Adding a class to the system.
-            if comm[1] == 'class':
-                uml_class.add_class(comm[2])
-                print("Class added.")
-
-            # Adding a relationship to the system.
-            elif comm[1] == 'relationship':
-                relationships.add_relationship(comm[2], comm[3])
-
-            # Adding an attribute to a class in the system.
-            elif comm[1] == 'attribute':
-                uml_class.add_attribute(comm[2], comm[3])
-
-            # If the user input after 'add' is not valid.
-            else:
-                print('That command is not valid, please try again.')
-                print('Type "help" for more assistance.')
-
-
-        # If the user wants to delete something, checks whether the user wants
-        #     to delete a class, a relationship, or an attribute.
-        elif comm[0] == 'delete':
-
-            # Deleting a class from the system.
-            if comm[1] == 'class':
-                uml_class.delete_class(comm[2])
-
-            # Deleting a relationship from the system.
-            elif comm[1] == 'relationship':
-                relationships.delete_relationship(comm[2], comm[3])
-
-            # Deleting an attribute from a class in the system.
-            elif comm[1] == 'attribute':
-                uml_class.delete_attribute(comm[2], comm[3])
-
-            # If the user input after 'delete' is not valid.
-            else:
-                print('That command is not valid, please try again.')
-                print('Type "help" for more assistance.')
-
-
-        # If the user wants to rename something, checks whether the user wants
-        #     to rename a class or an attribute.
-        elif comm[0] == 'rename':
-
-            # Renaming an existing class in the system.
-            if comm[1] == 'class':
-                uml_class.rename_class(comm[2], comm[3])
-            # Renaming an attribute of a class in the system
-            elif comm[1] == 'attribute':
-                uml_class.rename_attribute(comm[3], comm[2], comm[4])
-
-            # If the user input after 'rename' is not valid.
-            else:
-                print('That command is not valid, please try again.')
-                print('Type "help" for more assistance.')
-
-
-        # If the user wants to load a JSON file.
-        elif comm[0] == 'load':
-
+        
+        cmd = input(">> ").split()
+        
+        if len(cmd) == 0:
+            continue
+        
+        elif cmd[0] == 'exit' or cmd[0] == 'quit':
+            break
+        
+        elif cmd[0] == 'addclass':
+            if check_inputs(cmd, 2):
+                uml_class.add_class(cmd[1])
+            
+        elif cmd[0] == 'delclass':
+            if check_inputs(cmd, 2):
+                uml_class.delete_class(cmd[1])
+            
+        elif cmd[0] == 'renclass':
+            if check_inputs(cmd, 3):
+                uml_class.rename_class(cmd[1], cmd[2])
+                
+        elif cmd[0] == 'addrel':
+            if check_inputs(cmd, 3):
+                relationships.add_relationship(cmd[1], cmd[2])
+                
+        elif cmd[0] == 'delrel':
+            if check_inputs(cmd, 3):
+                relationships.delete_relationship(cmd[1], cmd[2])
+                
+        elif cmd[0] == 'addattr':
+            if check_inputs(cmd, 3):
+                uml_class.add_attribute(cmd[1], cmd[2])
+                
+        elif cmd[0] == 'delattr':
+            if check_inputs(cmd, 3):
+                uml_class.delete_attribute(cmd[1], cmd[2])
+                
+        elif cmd[0] == 'renattr':
+            if check_inputs(cmd, 4):
+                uml_class.rename_attribute(cmd[1], cmd[2], cmd[3])
+                
+        elif cmd[0] == 'listclass':
+            if check_inputs(cmd, 2):
+                if cmd[1] == 'all':
+                    list_all_classes()
+                else:
+                    list_a_class(cmd[1])
+                    
+        
+        elif cmd[0] == 'listrel':
+            relationships.list_relationships()
+        
+        elif cmd[0] == 'save':
+            save_classes()
+        
+        elif cmd[0] == 'load':
             load_classes()
         
-        elif comm[0] == 'save':
-            save_classes()
-           
-        elif comm[0] == 'list':
-            
-            # Lists all the classes in the system.
-            if comm[1] == 'classes':
-                list_all_classes()
-
-            # Lists all the relationships in the system.
-            elif comm[1] == 'relations':
-                relationships.list_relationships()
-
-            # Checks to see if the user typed anything after 'list', because
-            #     they should be thrown an error if they did not.
-            elif comm[1] == '' or comm[1] == None:
-                print('That command is not valid, please try again.')
-                print('Type "help" for more assistance.')
-
-            # Lists a single user-defined class.
-            else:
-                list_a_class(comm[1])
-
-
-        # If the user wants help, breaks off into the help function.
-        elif comm[0] == 'help':
+        elif cmd[0] == 'help':
             help()
-
-
-        # If the user wants to exit the program, exits the loop.
-        elif comm[0] == 'exit':
-            break
-
-        # If the user hit enter without typing anything, continues the loop
-        #     without doing anything.
-        elif comm[0] == '':
-            pass
-
-
-        # At this point, every valid type of input was checked for, so throws
-        #     an error to the user that whatever they typed is not valid.
+        
         else:
-            print('That command is not valid, please try again.')
-            print('Type "help" for more assistance.')
+            print("<Invalid Command Error>: " +
+                  f"'{cmd[0]}' is not a valid command.\n" +
+                  "Type 'help' for a list of valid commands.")
+    
+
+def check_inputs(cmd : list, num : int) -> bool:
+    """
+    Checks if the number of arguments given matches the number of expected
+    arguments for a given command.
+    
+    Parameters:\n
+    - cmd : list -> a list of commands/arguments parsed from user input.
+    - num : int -> the number of expected arguments
+    
+    return -> bool
+    """
+    
+    if len(cmd) != num:
+        # If the number of given arguments does not match the number of expected
+        # arguments, print an error and return False.
+        print("<Invalid Arguments Error>\n" +
+              f"{num - 1} arguments expected. {len(cmd) - 1} arguments " + 
+              "received.")
+        return False
+    else:
+        # Otherwise return True.
+        return True
 
 
-
-# Pulls all the help information from a private text file.
 def help() -> None:
-
+    """
+    Reads help information from a separate text file and prints it to the
+    terminal window.
+    """
     # Reading the information from the help file.
     help_file = open('help_stuff.txt')
     lines = help_file.readlines()
@@ -150,25 +130,35 @@ def help() -> None:
 
     help_file.close()
 
-# Given a class name, if the class exists in the system, print the name of the 
-# class and all the attributes it has
-def list_a_class(input : str) -> None:
 
+def list_a_class(input : str) -> None:
+    """
+    Given a class name, if the class exists in the system, printz the name of 
+    the class and all the attributes it has.
+    
+    Parameters:\n
+    - input : str -> the name of the class to be listed.
+    """
+    
     if input in uml_class.class_dict:
+        # Accesses a class from the class dictionary, and prints it to the 
+        # terminal.
         print(uml_class.class_dict[input])
     else:
-        print("The requested class does not exist.")
+        # If the class does not exist in the class dictionary, prints an error.
+        print(f"<Illegal Argument Error>: {input} does not exist as a class.")
 
-# Lists all the classes currently in the system, and all of their attributes.
 def list_all_classes() -> None:
+    """
+    Prints a list of all classes in the class dictionary and their attributes. 
+    """
 
-    # Checking if any classes are in the system, and printing an error to
-    #     the user if there are none.
     if len(uml_class.class_dict) == 0:
-        print("No classes exist.")
-
-    for key in uml_class.class_dict:
-        print(uml_class.class_dict[key])
+        print("(none)")
+    else:
+        # Iterates through the class dictionary and prints each entry.
+        for key in uml_class.class_dict:
+            print(uml_class.class_dict[key])
  
 def save_classes() -> None:
     """
