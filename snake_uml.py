@@ -127,7 +127,6 @@ def main(args : list) -> None:
         elif comm[0] == 'exit':
             break
 
-
         # If the user hit enter without typing anything, continues the loop
         #     without doing anything.
         elif comm[0] == '':
@@ -154,14 +153,14 @@ def help() -> None:
         print(line)
 
     help_file.close()
-
-
+ 
+ 
 # Given a class name, if the class exists in the system, print the name
 #     of the class and all the attributes it has.
 def list_a_class(input : str) -> None:
 
     if input in uml_class.class_dict:
-        print(uml_class.class_dict[input].attr)
+        print(uml_class.class_dict[input])
 
     else:
         print("The requested class does not exist.")
@@ -175,9 +174,8 @@ def list_all_classes() -> None:
         print("No classes exist.")
 
     # Printing all the classes in the system and their respective attributes.
-    for key in uml_class.class_dict.items():
+    for key in uml_class.class_dict:
         print(uml_class.class_dict[key])
-
 
 # Entry Point
 if __name__ == '__main__':
