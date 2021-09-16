@@ -68,6 +68,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         sys.stdout = sys.__stdout__
         self.assertEqual(uml_class.class_dict, {})
+        self.assertEqual(len(uml_class.class_dict), 0)
         del out
         uml_class.class_dict = {}
 
@@ -79,12 +80,13 @@ class test(unittest.TestCase):
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("<Class Delete Error [Invalid Name]>: Class named 'class1' does not exist." in out.getvalue(), True)
+        self.assertEqual(len(uml_class.class_dict), 0)
         del out
         uml_class.class_dict = {}
 
     #Test renaming a class
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "renclass class1 class2", "exit"])
-    def test_rename(self, mock): 
+    def test_renameClass(self, mock): 
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
@@ -96,23 +98,25 @@ class test(unittest.TestCase):
 
     #Test renaming a non-existant class
     @unittest.mock.patch('builtins.input', side_effect=["renclass class1 class2", "exit"])
-    def test_renameNothing(self, mock): 
+    def test_renameNothingClass(self, mock): 
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("<Class Rename Error [Invalid Name:1]>: class1 does not exist as the name of a class." in out.getvalue(), True)
+        self.assertEqual(len(uml_class.class_dict), 0)
         del out
         uml_class.class_dict = {}
 
     #Test renaming a class to an already existing class
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class2", "renclass class1 class2", "exit"])
-    def test_renameToExisting(self, mock): 
+    def test_renameClassToExisting(self, mock): 
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("<Class Rename Error [Invalid Name:3]>: Class name 'class2' alread exists." in out.getvalue(), True)
+        self.assertEqual(len(uml_class.class_dict), 2)
         del out
         uml_class.class_dict = {}
 
@@ -124,7 +128,8 @@ class test(unittest.TestCase):
         sys.stdout = out
         sys.stdout = sys.__stdout__
         self.assertEqual(uml_class.class_dict["class1"].attributes[0], "stuff")
-        self.assertEqual(len(relationships.relationship_dict), 0)
+        self.assertEqual(len(uml_class.class_dict), 1)
+        self.assertEqual(len(uml_class.class_dict["class1"].attributes), 1)
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
@@ -137,7 +142,8 @@ class test(unittest.TestCase):
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("<Attribute Add Error [Invalid Name:2]>: stuff already exists as an attribute of class1." in out.getvalue(), True)
-        self.assertEqual(len(relationships.relationship_dict), 0)
+        self.assertEqual(len(uml_class.class_dict), 1)
+        self.assertEqual(len(uml_class.class_dict["class1"].attributes), 1)
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
@@ -163,6 +169,7 @@ class test(unittest.TestCase):
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual(uml_class.class_dict["class1"].attributes[0], "stuff2")
+        self.assertEqual(len(uml_class.class_dict["class1"].attributes), 1)
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
@@ -175,18 +182,22 @@ class test(unittest.TestCase):
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("<Attribute Rename Error [Invalid Name:1]>: stuff does not exist as the name of an attribute in class1" in out.getvalue(), True)
+        self.assertEqual(len(uml_class.class_dict["class1"].attributes), 0)
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
 
     #Test renaming an attribute to the name of an already existing attribute
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addattr class1 stuff", "addattr class1 stuff2", "renattr class1 stuff stuff2", "exit"])
-    def test_renamedubAtr(self, mock):
+    def test_renameDupAtr(self, mock):
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("<Attribute Rename Error [Invalid Name:3]>: stuff2 already exists as an attribute in class1" in out.getvalue(), True)
+        self.assertEqual(uml_class.class_dict["class1"].attributes[0], "stuff")
+        self.assertEqual(uml_class.class_dict["class1"].attributes[1], "stuff2")
+        self.assertEqual(len(uml_class.class_dict["class1"].attributes), 2)
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
@@ -317,7 +328,7 @@ class test(unittest.TestCase):
 
     #Test deleting an invalid source
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "delrel class3 class1", "exit"])
-    def test_DelfalseSource(self, mock):   
+    def test_DelFalseSource(self, mock):   
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
@@ -343,7 +354,7 @@ class test(unittest.TestCase):
 
     #Test deleting a relationship with an invalid destination
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "delrel class1 class3", "exit"])
-    def test_DelfalseDest(self, mock):
+    def test_DelFalseDest(self, mock):
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
@@ -369,20 +380,20 @@ class test(unittest.TestCase):
         
     #Test listing all classes while no classes exist   
     @unittest.mock.patch('builtins.input', side_effect=["listclass all", "exit"])
-    def test_listNothingclasses(self, mock):
+    def test_listNothingClasses(self, mock):
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("(none)" in out.getvalue(), True)
-        self.assertEqual(len(relationships.relationship_dict), 0)
+        self.assertEqual(len(uml_class.class_dict), 0)
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
 
     #Test listing a class that does not exist
     @unittest.mock.patch('builtins.input', side_effect=["listclass class1", "exit"])
-    def test_listNothing(self, mock):
+    def test_listNothingClass(self, mock):
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
@@ -392,7 +403,7 @@ class test(unittest.TestCase):
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
 
-    #Test error handling when no classes are created
+    #Test save error handling when no classes are created
     @unittest.mock.patch('builtins.input', side_effect=["save", "exit"])
     def test_saveEmpty(self, mock):
         out = io.StringIO()
@@ -406,12 +417,14 @@ class test(unittest.TestCase):
 
     #Test load abort
     @unittest.mock.patch('builtins.input', side_effect=["load", "n", "exit"])
-    def test_load(self, mock):
+    def test_loadAbort(self, mock):
         out = io.StringIO()
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
         self.assertEqual("Load cancelled." in out.getvalue(), True)
+        self.assertEqual(len(relationships.relationship_dict), 0)
+        self.assertEqual(len(uml_class.class_dict), 0)
         del out
         uml_class.class_dict = {}
         relationships.relationship_dict = {}
