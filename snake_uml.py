@@ -78,10 +78,12 @@ def main(args : list) -> None:
             relationships.list_relationships()
         
         elif cmd[0] == 'save':
-            save_classes()
+            if check_inputs(cmd, 2):
+                save_classes(cmd[1])
         
         elif cmd[0] == 'load':
-            load_classes()
+            if check_inputs(cmd, 2):
+                load_classes(cmd[1])
         
         elif cmd[0] == 'help':
             help()
