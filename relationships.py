@@ -17,7 +17,7 @@ class UMLRelationship():
         self.destName = destination.name
 
     def __del__(self):
-        print(f"Deleting UMLRelationship:<{self.name}>...")
+        print(f"<Deleted Relationship>: {self.name}")
     
     def __repr__(self):
         return self.name
@@ -36,7 +36,7 @@ class UMLRelationship():
 
 ##########################################################################################
 
-def add_relationship(source, destination):
+def add_relationship(source : str, destination : str) -> None:
 
     #Add a relationship by creating a new UMLRelationship object containing
     #the name "<source>-<destination>", uml_class associated with the source 
@@ -53,17 +53,19 @@ def add_relationship(source, destination):
         name = source + "-" + destination
         #Ensure the relationship does not already exist
         if name in relationship_dict.keys():
-            print(f"ERROR: Relationship {name} already exists")
+            print("<Relationship Add Error>: "+
+                  f"Relationship {name} already exists.")
             return
         #Create the UMLRelationship and add it to the dictionary
         else:
             new_rel = UMLRelationship(source + "-" + destination, 
                 uml_class.class_dict[source], uml_class.class_dict[destination])
             relationship_dict.update({name: new_rel})
+            print(f"<Relationship Added>: {name}")
 
 ##########################################################################################
 
-def delete_relationship(source, destination):
+def delete_relationship(source : str, destination : str) -> None:
 
     #Delete a relationship between source and destination
     
@@ -84,7 +86,7 @@ def delete_relationship(source, destination):
 
 ##########################################################################################
 
-def rel_cleanup(source):
+def rel_cleanup(source : str) -> None:
 
     #Delete all relationships involving the UMLClass object
     #associated with source
@@ -105,19 +107,19 @@ def rel_cleanup(source):
 
 ##########################################################################################
 
-def list_relationships():
+def list_relationships() -> None:
 
     #List all relationships in the form "<source>-<destination>"
 
     if len(relationship_dict) == 0:
-        print("No relationships exist.")
+        print("(none)")
 
     for key in relationship_dict:
         print(key)
 
 ##########################################################################################
 
-def rename_relationship(old_name, new_name):
+def rename_relationship(old_name : str, new_name : str) -> None:
 
     #Find all relationships with the old name, delete the old relationships
     #then create a new relationship to replace the old one with the updated
@@ -142,7 +144,7 @@ def rename_relationship(old_name, new_name):
 
 ##########################################################################################
 
-def check_params(source, destination):
+def check_params(source : str, destination : str) -> bool:
     
     #Checks to see if source and destination are valid classes
     #If either source or destination are invalid, print an error

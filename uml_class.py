@@ -20,7 +20,7 @@ class UMLClass():
         
 
     def __del__(self):
-        print(f"Deleting UMLCLass: <{self.name}>...")
+        print(f"<Deleted Class>: {self.name}")
     
 
     def __repr__(self):
@@ -33,13 +33,16 @@ class UMLClass():
     def rename(self, 
                new_name : str):
         # Sets 'self.name' to be equal to 'new_name'.
+        print(f"<Renamed Class>: {self.name} -> {new_name}")
         self.name = new_name
+        
         
 
     def add_attribute(self, 
                       attribute : str):
         # Adds 'attribute' to the end of 'self.attributes'.
         self.attributes.append(attribute)
+        print(f"<Added Attribute>: {attribute} ({self.name})")
         
 
     def rename_attribute(self, 
@@ -51,6 +54,7 @@ class UMLClass():
         # Modifies the value at the index of the attribute to be renamed to the 
         # new name of the attribute.
         self.attributes[old_pos] = new_name
+        print(f"<Renamed Attribute>: {old_name} -> {new_name} ({self.name})")
         
 
     def delete_attribute(self, 
@@ -60,6 +64,7 @@ class UMLClass():
         
         # Pops the element at index 'attr_pos' from 'self.attributes'.
         self.attributes.pop(attr_pos)
+        print(f"<Deleted Attribute>: {attribute} ({self.name})")
 
 
 
@@ -77,13 +82,13 @@ def add_class(name : str) -> None:
     # Checks if 'name' is a valid class name.
     if name == "" or name == None:
         # If 'name' is invalid, prints an error.
-        print("\n<Class Add Error [Invalid Name:1]>\n" + 
+        print("<Class Add Error [Invalid Name:1]>: " + 
               "Class name must not be empty.")
         
     # Checks if 'name' already exists as a class name.
     elif name in class_dict:
         # If 'name' already exists as a class name, prints an error.
-        print("\n<Class Add Error [Invalid Name:2]>\n" + 
+        print("<Class Add Error [Invalid Name:2]>: " + 
              f"Class named '{name}' already exists.")
     
     else:
@@ -91,6 +96,7 @@ def add_class(name : str) -> None:
         # name 'name' and adds it to the dict of existing classes.
         new_class = UMLClass(name)
         class_dict.update({name : new_class})
+        print(f"<Added Class>: {name}")
 
        
 def delete_class(name : str) -> None:
@@ -105,7 +111,7 @@ def delete_class(name : str) -> None:
     # Checks if 'name' is already the name of an existing class.
     if name not in class_dict:
         # If 'name' is not the name of an existing class, prints an error.
-        print("<Class Delete Error [Invalid Name]>\n" +
+        print("<Class Delete Error [Invalid Name]>: " +
               f"Class named '{name}' does not exist.")
     else:
         # If 'name' is the name of an existing class, deconstructs the object,
@@ -134,7 +140,7 @@ def rename_class(old_name : str,
     # Checks if 'old_name' exists in the class dict.
     if old_name not in class_dict:
         # If 'old_name' doesn't exist, prints an error.
-        print("<Class Rename Error [Invalid Name:1]>\n" + 
+        print("<Class Rename Error [Invalid Name:1]>: " + 
              f"{old_name} does not exist as the name of a class.")
         
     # If 'old_name' exists, checks the validity of 'new_name'.
@@ -142,13 +148,13 @@ def rename_class(old_name : str,
         # Checks if 'new_name' is a valid class name.
         if new_name == "" or new_name == None:
             # If 'new_name' isn't valid, prints an error.
-            print("<Class Rename Error [Invalid Name:2]>\n" +
+            print("<Class Rename Error [Invalid Name:2]>: " +
                   "New class name must not be empty.")
         
         # Checks if 'new_name' is a unique name.
         elif new_name in class_dict:
             # If 'new_name' is not a unique class name, prints an error.
-            print("<Class Rename Error [Invalid Name:3]>\n" +
+            print("<Class Rename Error [Invalid Name:3]>: " +
                  f"Class name '{new_name}' alread exists.")
         
         # If 'new_name' is valid and unique, removes the listing for 'old_name'
@@ -189,7 +195,7 @@ def add_attribute(class_name : str,
     if class_name not in class_dict:
         # If 'class_name' does not exist in the class dictionary, prints an 
         # error.
-        print("<Attribute Add Error [Invalid Class]>\n" +
+        print("<Attribute Add Error [Invalid Class]>: " +
              f"Class named {class_name} does not exist.")
         
     # If 'class_name' does exist as a class name in the class dictionary, checks
@@ -202,13 +208,13 @@ def add_attribute(class_name : str,
         #Checks if 'attr_name' is a valid attribute name.
         if attr_name == "" or attr_name == None:
             # If 'attr_name' is invalid, prints an error.
-            print("<Attribute Add Error [Invalid Name:1]>\n" +
+            print("<Attribute Add Error [Invalid Name:1]>: " +
                   "New attribute name must not be empty.")
         
         # Checks if 'attr_name' is unique to 'class_name'.
         elif attr_name in uml.attributes:
             # If 'attr_name' is not unique, prints an error.
-            print("<Attribute Add Error [Invalid Name:2]>\n" +
+            print("<Attribute Add Error [Invalid Name:2]>: " +
                  f"{attr_name} already exists as an attribute of {class_name}.")
         else:
             # If all checks for 'attr_name' are valid, adds 'attr_name' as an
@@ -237,7 +243,7 @@ def rename_attribute(class_name : str,
     if class_name not in class_dict:
         # If 'class_name' is not the name of a class in the class dictionary,
         # prints an error.
-        print("<Attribute Rename Error [Invalid Class]>\n" +
+        print("<Attribute Rename Error [Invalid Class]>: " +
              f"Class named {class_name} does not exist.")
     
     # If 'class_name' exists in the class dictionary, checks the validity of 
@@ -251,21 +257,21 @@ def rename_attribute(class_name : str,
         if old_attr_name not in uml.attributes:
             # If 'old_attr_name' does not exist as the name of an attribute in
             # 'uml', prints an error.
-            print("<Attribute Rename Error [Invalid Name:1]>\n" +
+            print("<Attribute Rename Error [Invalid Name:1]>: " +
                  f"{old_attr_name} does not exist as the name of an attribute" +
-                 f"in {class_name}")
+                 f" in {class_name}")
         
         # Checks if 'new_attr_name' is a valid attribute name.
         elif new_attr_name == "" or new_attr_name == None:
             # If 'new_attr_name' is invalid, prints an error.
-            print("<Attribute Rename Error [Invalid Name:2]>\n" +
+            print("<Attribute Rename Error [Invalid Name:2]>: " +
                   "New attribute name must not be empty.")
         
         # Checks if 'new_attr_name' is a unique attribute name in 'uml'.
         elif new_attr_name in uml.attributes:
             # If 'new_attr_name' already exists as an attribute name, prints an
             # error.
-            print("<Attribute Rename Error [Invalid Name:3]>\n" +
+            print("<Attribute Rename Error [Invalid Name:3]>: " +
                  f"{new_attr_name} already exists as an attribute in " +
                  f"{class_name}")
            
@@ -290,7 +296,7 @@ def delete_attribute(class_name : str, attr_name : str) -> None:
     if class_name not in class_dict:
         # If 'class_name' is not the name of a class in the class dictionary,
         # prints an error.
-        print("<Attribute Delete Error [Invalid Class]>\n" +
+        print("<Attribute Delete Error [Invalid Class]>: " +
              f"Class named {class_name} does not exist.")
     
     # If 'class_name' exists in the class directory, checks the validity of
@@ -304,12 +310,11 @@ def delete_attribute(class_name : str, attr_name : str) -> None:
         if attr_name not in uml.attributes:
             # If 'attr_name' does not exist as the name of an attribute in
             # 'uml', prints an error.
-            print("<Attribute Delete Error [Invalid Name]>\n" +
+            print("<Attribute Delete Error [Invalid Name]>: " +
                   f"{attr_name} does not exist as the name of an attribute in" +
                   f"{class_name}.")
         else:
             # If 'attr_name' is valid, removes the attribute from the list of
             # attributes in 'uml'.
             uml.delete_attribute(attr_name)
-        
 
