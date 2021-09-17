@@ -82,21 +82,13 @@ def add_class(name : str) -> None:
     # Checks if 'name' is a valid class name.
     if name == "" or name == None:
         # If 'name' is invalid, prints an error.
-<<<<<<< HEAD
-        print("<Class Add Error [Invalid Name:1]>\n" + 
-=======
         print("<Class Add Error [Invalid Name:1]>: " + 
->>>>>>> 85a6591b49913afd6f27893b56283b25f991bcb9
               "Class name must not be empty.")
         
     # Checks if 'name' already exists as a class name.
     elif name in class_dict:
         # If 'name' already exists as a class name, prints an error.
-<<<<<<< HEAD
-        print("<Class Add Error [Invalid Name:2]>\n" + 
-=======
         print("<Class Add Error [Invalid Name:2]>: " + 
->>>>>>> 85a6591b49913afd6f27893b56283b25f991bcb9
              f"Class named '{name}' already exists.")
     
     else:
