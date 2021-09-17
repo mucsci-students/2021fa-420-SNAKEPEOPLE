@@ -294,7 +294,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual("ERROR: Relationship class5-class6 already exists\n" in out.getvalue(), True)
+        self.assertEqual("<Relationship Add Error>: Relationship class5-class6 already exists." in out.getvalue(), True)
         self.assertEqual(len(relationships.relationship_dict), 1)
         del out
         uml_class.class_dict = {}
@@ -372,7 +372,7 @@ class test(unittest.TestCase):
         sys.stdout = out
         snake_uml.main(sys.argv)
         sys.stdout = sys.__stdout__
-        self.assertEqual("No relationships exist.\n" in out.getvalue(), True)
+        self.assertEqual("(none)" in out.getvalue(), True)
         self.assertEqual(len(relationships.relationship_dict), 0)
         del out
         uml_class.class_dict = {}
