@@ -1,49 +1,63 @@
-List of Available Commands:
+===============================================================================
+ListofAvailableCommands:
+    exit
+        Exit the program.
+    help
+        List all available commands.
+    addclass <classname>
+        Add a new class to the system. The provided class name must not
+        already exist in the system.
+    delclass <classname>
+        Delete a class from the system forever. The provided class name must
+        exist in the system in order to be deleted. When a class is deleted,
+        all attributes attached to the class and all relationships associated
+        with the class are also deleted.
 
-    1.  $ exit - Exit the program.
+    renclass <classname> <newclassname>
+        Rename an existing class that is in the system. All attributes
+        attached to the class and all relationships associated with the class
+        are also updated upon the renaming of the class.
 
-    2.  $ help - List all available commands.
+    addrel <sourceclass> <destinationclass>
+        Add a new relationship between two classes. Both the source class
+        and the destination class specified by the user have to exist in
+        the system.
 
-    3.  $ add class <classname> -   Add a new class to the system. The provided class name
-                                    must not already exist in the system.
-        
-    4.  $ delete class <classname> -    Delete a class from the system forever. The provided class
-                                        name must exist in the system in order to be deleted. When a class
-                                        is deleted, all attributes attached to the class and all
-                                        relationships associated with the class are also deleted.
-        
-    5.  $ rename class <classname> <newclassname> -    Rename an existing class that is in the system. All 
-                                                       attributes attached to the class and all relationships associated 
-                                                       with the class are also updated upon the renaming of the class.
-       
-    6.  $ add relationship <sourceclass> <destinationclass> -   Add a new relationship between two classes. Both the
-                                                                source class and the destination class specified by the user 
-                                                                have to exist in the system.
-       
-    7.  $ delete relationship <sourceclass> <destinationclass> -    Delete a relationship between two classes in the system.
-                                                                    Both user-specified class names must exist and must already have
-                                                                    an existing relationship.
-        
-    8.  $ add attribute <classname> <attributename> -   Add a new attribute to a given class in the system. The
-                                                        class name must be one that exists in the system. The attribute
-                                                        must also not share the same name as one the class already has.
+    delrel <sourceclass> <destinationclass>
+        Delete a relationship between two classes in the system. Both
+        user-specified class names must exist and must already have an
+        existing relationship.
 
-    9.  $ delete attribute <classname> <attributename> -    Delete an attribute from a given class in the system. The
-                                                            class name must exist, and the attribute name must also be an
-                                                            attribute that the given class has.
+    addattr <classname> <attributename>
+        Add a new attribute to a given class in the system. The class name
+        must be one that exists in the system. The attribute must also not
+        share the same name as one the class already has.
 
-    10. $ rename attribute <classname> <oldattrname> <newattrname> -   Rename an attribute of a given class in the system. The
-                                                                        class name must exist, and the attribute name must also be an
-                                                                        attribute that the given class has. The new attribute name
-                                                                        must also not be the same name as one the class already has.
+    delattr <classname> <attributename>
+        Delete an attribute from a given class in the system. The class name
+        must exist, and the attribute name must also be an attribute that the
+        given class has.
 
-    11. $ list classes - List all the classes in the current system, as well as their contents.
+    renattr <classname> <oldattrname> <newattrname>
+        Rename an attribute of a given class in the system. The class name
+        must exist, and the attribute name must also be an attribute that the
+        given class has. The new attribute name must also not be the same
+        name as one the class already has.
 
-    12. $ list <classname> - List the contents of one specific class in the current system.
+    listclass all
+        List all the classes in the current system, as well as their contents.
 
-    13. $ list relations -  List all the relationships that exist between classes inthe current system.
+    listclass <classname>
+        List the contents of one specific class in the current system.
 
-    14. $ PUT A SOLUTION HERE FOR SAVING A FILE - Saves the current work to a JSON file.
-        
-    15. $ PUT A SOLUTION HERE FOR LOADING A JSON FILE - Load a JSON file.
-        
+    listrel
+        List all the relationships that exist between classes in the
+        current system.
+
+    save <filename>
+        Saves the current work to a JSONfile, with a user-specified name.
+
+    load <filename>
+        Load a JSONfile, providing a name of an existing file.
+
+===============================================================================
