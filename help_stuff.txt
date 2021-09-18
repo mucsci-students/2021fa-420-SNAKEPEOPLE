@@ -3,11 +3,14 @@ List of Available Commands:
     
     exit
         Exit the program.
+        
     help
         List all available commands.
+
     addclass <classname>
         Add a new class to the system. The provided class name must not
         already exist in the system.
+
     delclass <classname>
         Delete a class from the system forever. The provided class name must
         exist in the system in order to be deleted. When a class is deleted,
