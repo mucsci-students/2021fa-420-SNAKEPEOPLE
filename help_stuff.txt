@@ -1,5 +1,6 @@
 ===============================================================================
-ListofAvailableCommands:
+List of Available Commands:
+    
     exit
         Exit the program.
     help
