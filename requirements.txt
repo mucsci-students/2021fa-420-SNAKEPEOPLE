@@ -1,0 +1,5 @@
+certifi==2021.5.30
+importlib-metadata @ file:///C:/ci/importlib-metadata_1631053199842/work
+jsonpickle @ file:///tmp/build/80754af9/jsonpickle_1613502777040/work
+wincertstore==0.2
+zipp @ file:///tmp/build/80754af9/zipp_1625570634446/work
