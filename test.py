@@ -404,7 +404,7 @@ class test(unittest.TestCase):
         relationships.relationship_dict = {}
 
     #Test save error handling when no classes are created
-    @unittest.mock.patch('builtins.input', side_effect=["save", "exit"])
+    @unittest.mock.patch('builtins.input', side_effect=["save testfile", "exit"])
     def test_saveEmpty(self, mock):
         out = io.StringIO()
         sys.stdout = out
@@ -416,7 +416,7 @@ class test(unittest.TestCase):
         relationships.relationship_dict = {}
 
     #Test load abort
-    @unittest.mock.patch('builtins.input', side_effect=["load", "n", "exit"])
+    @unittest.mock.patch('builtins.input', side_effect=["load testfile", "n", "exit"])
     def test_loadAbort(self, mock):
         out = io.StringIO()
         sys.stdout = out
