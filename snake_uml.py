@@ -5,6 +5,7 @@
 import json
 import jsonpickle
 import sys
+import os.path
 
 import uml_class
 import relationships
@@ -77,10 +78,12 @@ def main(args : list) -> None:
             relationships.list_relationships()
         
         elif cmd[0] == 'save':
-            save_classes()
+            if check_inputs(cmd, 2):
+                save_classes(cmd[1])
         
         elif cmd[0] == 'load':
-            load_classes()
+            if check_inputs(cmd, 2):
+                load_classes(cmd[1])
         
         elif cmd[0] == 'help':
             help()
@@ -120,16 +123,17 @@ def help() -> None:
     Reads help information from a separate text file and prints it to the
     terminal window.
     """
+    
     # Reading the information from the help file.
     help_file = open('help_stuff.txt')
     lines = help_file.readlines()
+
 
     # Printing everything from the help file.
     for line in lines:
         print(line)
 
     help_file.close()
-
 
 def list_a_class(input : str) -> None:
     """
@@ -160,7 +164,7 @@ def list_all_classes() -> None:
         for key in uml_class.class_dict:
             print(uml_class.class_dict[key])
  
-def save_classes() -> None:
+def save_classes(filename : str) -> None:
     """
     Saves the dictionary of classes to a .json file.
     """
@@ -184,12 +188,12 @@ def save_classes() -> None:
         save_dict.update({key : cls})
         
     # Opens a file stored in 'save_files/' where the JSON will be saved to.
-    with open("save_files/classes.json", "w") as savefile:
+    with open(f"save_files/{filename}.json", "w") as savefile:
         # Writes the contents of 'save_dict' as JSON to the file pointed to by 
         # 'savefile'.
         json.dump(save_dict, savefile)
         
-def load_classes() -> None:
+def load_classes(filename : str) -> None:
     """
     Loads the content of a .json file to the class dictionary.
     """
@@ -204,20 +208,25 @@ def load_classes() -> None:
     if cont == "" or cont.lower() == "y":
         # If the user confirms the load, clears the class dictionary.
         uml_class.class_dict.clear()
-       
-        # Intializes a new dictionary to store the loaded JSON data.
-        load_dict = dict()
-        # Opens 'classes.json' for reading, pointed to as 'loadfile'.
-        with open("save_files/classes.json") as loadfile:
-            # Loads the raw JSON into 'load_dict'
-            load_dict = json.load(loadfile)
-        
-        # Iterates through the keys and values of 'load_dict'. 
-        for key, value in load_dict.items():
-            # Decodes the UMLClass objects and adds them as values to the class
-            # dictionary.
-            uml_class.class_dict.update({key : jsonpickle.decode(value)})
+
+        # Checking that the file the user is trying to load is one that exists.
+        if os.path.exists(f"save_files/{filename}.json"):
+            # Intializes a new dictionary to store the loaded JSON data.
+            load_dict = dict()
+            # Opens 'classes.json' for reading, pointed to as 'loadfile'.
+            with open(f"save_files/{filename}.json") as loadfile:
+                # Loads the raw JSON into 'load_dict'
+                load_dict = json.load(loadfile)
             
+            # Iterates through the keys and values of 'load_dict'. 
+            for key, value in load_dict.items():
+                # Decodes the UMLClass objects and adds them as values to the class
+                # dictionary.
+                uml_class.class_dict.update({key : jsonpickle.decode(value)})
+        # If the file name doesn't exist, stops and tells the user.
+        else:
+            print("Load cancelled, please input the name of an existing file.")
+
     else:
         # If load is not confirmed, print a cancellation message.
         print("Load cancelled.")
