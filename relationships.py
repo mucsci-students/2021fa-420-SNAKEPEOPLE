@@ -9,7 +9,8 @@ class UMLRelationship():
     #The class stores a name in the form "<source>-<destination>", a source object referencing
     #a uml class object, and a destination object also referencing a uml class object.
 
-    def __init__(self, name : str, source, destination):
+    def __init__(self, name : str, source, destination, **kwargs):
+        self.obj_type = "relationship"
         self.name = name
         self.source = source
         self.destination = destination

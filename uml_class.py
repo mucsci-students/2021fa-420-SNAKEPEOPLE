@@ -14,14 +14,19 @@ class UMLClass():
     """
     
     def __init__(self, 
-                 name : str):
+                 name : str,
+                 attributes = None,
+                 **kwargs):
+        self.obj_type = "class"
         self.name = name
-        self.attributes = list()
         
-
-    def __del__(self):
-        print(f"<Deleted Class>: {self.name}")
-    
+        if attributes:
+            self.attributes = attributes
+        else:
+            self.attributes = list()
+        
+        print(f"<Added Class>: {name}")
+        
 
     def __repr__(self):
         name = f"\nClass Name: {self.name}"
@@ -30,6 +35,10 @@ class UMLClass():
         return name + attr
             
 
+    def delete(self):
+        print(f"<Deleted Class>: {self.name}")
+        del self
+
     def rename(self, 
                new_name : str):
         # Sets 'self.name' to be equal to 'new_name'.
@@ -37,7 +46,6 @@ class UMLClass():
         self.name = new_name
         
         
-
     def add_attribute(self, 
                       attribute : str):
         # Adds 'attribute' to the end of 'self.attributes'.
@@ -96,7 +104,6 @@ def add_class(name : str) -> None:
         # name 'name' and adds it to the dict of existing classes.
         new_class = UMLClass(name)
         class_dict.update({name : new_class})
-        print(f"<Added Class>: {name}")
 
        
 def delete_class(name : str) -> None:
