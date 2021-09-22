@@ -319,7 +319,7 @@ def delete_attribute(class_name : str, attr_name : str) -> None:
             # 'uml', prints an error.
             print("<Attribute Delete Error [Invalid Name]>: " +
                   f"{attr_name} does not exist as the name of an attribute in" +
-                  f"{class_name}.")
+                  f" {class_name}.")
         else:
             # If 'attr_name' is valid, removes the attribute from the list of
             # attributes in 'uml'.
