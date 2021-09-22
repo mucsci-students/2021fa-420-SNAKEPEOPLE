@@ -9,12 +9,13 @@ class UMLRelationship():
     #The class stores a name in the form "<source>-<destination>", a source object referencing
     #a uml class object, and a destination object also referencing a uml class object.
 
-    def __init__(self, name : str, source, destination):
+    def __init__(self, name : str, source, destination, rel_type: str):
         self.name = name
         self.source = source
         self.destination = destination
         self.sourceName = source.name
         self.destName = destination.name
+        self.rel_type = rel_type
 
     def __del__(self):
         print(f"<Deleted Relationship>: {self.name}")
@@ -33,10 +34,13 @@ class UMLRelationship():
         self.destination = new_dest
         self.destName = new_dest.name
 
+    def changeType(self, new_type):
+        self.rel_type = new_type
+
 
 ##########################################################################################
 
-def add_relationship(source : str, destination : str) -> None:
+def add_relationship(source : str, destination : str, rel_type : str) -> None:
 
     #Add a relationship by creating a new UMLRelationship object containing
     #the name "<source>-<destination>", uml_class associated with the source 
@@ -49,19 +53,23 @@ def add_relationship(source : str, destination : str) -> None:
 
     if check_params(source, destination) == False:
         return
+    elif check_reltype(rel_type) == False:
+        print(f"<Relationship Add Error>: "+
+                f"Relationship type {rel_type} is an invalid type.")
     else:
-        name = source + "-" + destination
-        #Ensure the relationship does not already exist
-        if name in relationship_dict.keys():
-            print("<Relationship Add Error>: "+
-                  f"Relationship {name} already exists.")
-            return
-        #Create the UMLRelationship and add it to the dictionary
-        else:
-            new_rel = UMLRelationship(source + "-" + destination, 
-                uml_class.class_dict[source], uml_class.class_dict[destination])
-            relationship_dict.update({name: new_rel})
-            print(f"<Relationship Added>: {name}")
+        #if check_reltype(rel_type) == True:
+            name = source + "-" + destination
+            #Ensure the relationship does not already exist
+            if name in relationship_dict.keys():
+                print("<Relationship Add Error>: "+
+                    f"Relationship {name} already exists.")
+                return
+            #Create the UMLRelationship and add it to the dictionary
+            else:
+                new_rel = UMLRelationship(source + "-" + destination, 
+                    uml_class.class_dict[source], uml_class.class_dict[destination], rel_type)
+                relationship_dict.update({name: new_rel})
+                print(f"<Relationship Added>: {name}")
 
 ##########################################################################################
 
@@ -115,7 +123,7 @@ def list_relationships() -> None:
         print("(none)")
 
     for key in relationship_dict:
-        print(key)
+        print("Relationship: " + key +  "   Relationship type: " + relationship_dict[key].rel_type)
 
 ##########################################################################################
 
@@ -141,6 +149,21 @@ def rename_relationship(old_name : str, new_name : str) -> None:
                 destination = new_name
                 del relationship_dict[key]
                 add_relationship(source, destination)
+
+##########################################################################################
+
+def Change_reltype(relname : str, new_type : str):
+
+    #Checks to ensure that the new relationship type is one of Aggregation,
+    #Composition, Inheritance, or Realization and then replaces the old 
+    #relationship type of the named relationship with the new relationship type.
+
+    #Takes in a string that is the relationship's name, and the new type of relationship
+    if check_reltype(new_type) == False:
+        print(f"<Relationship Type Error>: "+
+                f"Relationship type {new_type} is an invalid type.")
+    else:
+        relationship_dict[relname].changeType(new_type)
 
 ##########################################################################################
 
@@ -180,3 +203,17 @@ def check_params(source : str, destination : str) -> bool:
         return False
 
     return True
+
+##########################################################################################
+
+def check_reltype(rel_type) -> bool:
+
+    #Checks to ensure that the new relationship type is one of Aggregation,
+    #Composition, Inheritance, or Realization.
+
+    if rel_type in {"Aggregation", "Composition", "Inheritance", "Realization"}:
+        return True
+    else:
+        return False
+
+##########################################################################################
