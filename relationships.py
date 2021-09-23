@@ -211,7 +211,7 @@ def check_reltype(rel_type) -> bool:
     #Checks to ensure that the new relationship type is one of Aggregation,
     #Composition, Inheritance, or Realization.
 
-    if rel_type in {"Aggregation", "Composition", "Inheritance", "Realization"}:
+    if rel_type in {"aggregation", "composition", "inheritance", "realization"}:
         return True
     else:
         return False
