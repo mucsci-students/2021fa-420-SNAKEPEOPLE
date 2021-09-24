@@ -6,8 +6,8 @@ relationship_list = []
 class UMLRelationship():
     
     #UMLRelationship is an object that models a relationship between two UML classes.
-    #The class stores a name in the form "<source>-<destination>", a source object referencing
-    #a uml class object, and a destination object also referencing a uml class object.
+    #The class stores a name in the form a source object referencing a uml class object,
+    #and a destination object also referencing a uml class object.
 
     def __init__(self, source, destination, rel_type: str):
         self.source = source
@@ -42,12 +42,14 @@ class UMLRelationship():
 def add_relationship(source : str, destination : str, rel_type : str) -> None:
 
     #Add a relationship by creating a new UMLRelationship object containing
-    #the name "<source>-<destination>", uml_class associated with the source 
-    #string, and the uml_class associated with the destination string
+    #the uml_class associated with the source string, the uml_class associated 
+    #with the destination string, and the type of relationship
     
     #parameters:
     #source- String that is set as the name of a UMLClass object
     #destination- String that is set as the name of a UMLClass object
+    #rel_type- String that defines the relationship type to be aggregation, composition,
+    #inheritance, or realization
     
 
     if check_params(source, destination) == False:
@@ -56,15 +58,14 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
         print(f"<Relationship Add Error>: "+
                 f"Relationship type {rel_type} is an invalid type.")
     else:
-        #if check_reltype(rel_type) == True:
+        #Ensure the relationship does not already exist
         for i in relationship_list:
-            #Ensure the relationship does not already exist
             if (i.sourceName == source) and (i.destName == destination):
                 print("<Relationship Add Error>: "+
                     f"Relationship {source}-{destination} already exists.")
                 return
-            #Create the UMLRelationship and add it to the dictionary
-
+        
+        #Create the UMLRelationship and add it to the list
         new_rel = UMLRelationship(uml_class.class_dict[source],
                                     uml_class.class_dict[destination], rel_type)
         relationship_list.append(new_rel)
@@ -131,6 +132,12 @@ def Change_reltype(source : str, dest : str, new_type : str):
     #Checks to ensure that the new relationship type is one of Aggregation,
     #Composition, Inheritance, or Realization and then replaces the old 
     #relationship type of the named relationship with the new relationship type.
+    
+    #parameters:
+    #source- String that is set as the name of a UMLClass object
+    #destination- String that is set as the name of a UMLClass object
+    #new_type- String of the new relationship type
+
     found = False
     rel_index = 0
     while rel_index < len(relationship_list):
@@ -139,14 +146,16 @@ def Change_reltype(source : str, dest : str, new_type : str):
             break
         ++rel_index
 
+    #Check to make sure the relationship exists
     if found == False:
         print(f"<Relationship Type Error>: "+
             f"Relationship {source}-{dest} is an invalid relationship.")
-    #Takes in a string that is the relationship's name, and the new type of relationship
+    #Check to make sure the new relationship type exists
     elif check_reltype(new_type) == False:
         print(f"<Relationship Type Error>: "+
                 f"Relationship type {new_type} is an invalid type.")
     else:
+        #Update the relationship type
         relationship_list[rel_index].changeType(new_type)
 
 ##########################################################################################
@@ -194,6 +203,8 @@ def check_reltype(rel_type) -> bool:
 
     #Checks to ensure that the new relationship type is one of Aggregation,
     #Composition, Inheritance, or Realization.
+
+    #new_type- String of the new relationship type
 
     if rel_type in {"aggregation", "composition", "inheritance", "realization"}:
         return True
