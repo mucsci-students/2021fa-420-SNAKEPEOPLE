@@ -1,47 +1,95 @@
-def add_attribute(class_name : str, 
-                  attr_name : str) -> None:
+from UMLClass import UMLClass, class_dict
+from UMLAttributes import *
+
+def add_field(class_name : str,
+              field_name : str,
+              field_type : str):
     """
-    Adds an attribute to the list of attributes for a given class.
+    Adds a field to the list of fields for a given class.
     
-    Parameters:/m
-    - class_name : str -> the name of the class which will have an attribute
-    added to it.
-    
-    - attr_name : str -> the name of the attribute to be added. Must be a unique
-    and valid attribute name. That is, it must not have the same name as an
-    attribute already in 'class_name', and it must not be None or the empty
-    string.
+    Parameters:
+    - class_name : str -> the name of the class which will have a field added to
+    it. If the name given isn't the name of an existing class, the function will
+    fail.
+    - field_name : str -> the name of the field to be added. Must be unique
+    among all fields in the class 'class_name'. Is not allowed to be None or the
+    empty string.
+    - field_type : str -> the data type of the field to be added. Cannot be None
+    or the empty string.
     """
     
-    # Checks if 'class_name' is an existing class in 'class_dict'.
+    # Checks if 'class_name' exists as a class.
     if class_name not in class_dict:
-        # If 'class_name' does not exist in the class dictionary, prints an 
-        # error.
-        print("<Attribute Add Error [Invalid Class]>: " +
+        print("<Field Add Error [Invalid Class]>: " +
              f"Class named {class_name} does not exist.")
-        
-    # If 'class_name' does exist as a class name in the class dictionary, checks
-    # the validity of 'attr_name' for 'class_name'.
     else:
-        # Stores the value of the class dictionary listing for 'class_name' in 
-        # a varible to be worked on.
+        # Checks if 'field_name' is empty or None.
+        if field_name == None or field_name == "":
+            print("<Field Add Error [Invalid Name : 1]>: " +
+            "Field name must not be empty.")
+        
+        # Grabs the class with the name 'class_name' that is stored in the class 
+        # dictionary.           
         uml : UMLClass = class_dict[class_name]
         
-        #Checks if 'attr_name' is a valid attribute name.
-        if attr_name == "" or attr_name == None:
-            # If 'attr_name' is invalid, prints an error.
-            print("<Attribute Add Error [Invalid Name:1]>: " +
-                  "New attribute name must not be empty.")
+        # Loops through the list of fields in the UMLClass representation 'uml'.
+        for field in uml.fields:
+            # If 'field_name' matches the name of a field in the list of fields,
+            # prints an error message and returns.
+            if field_name == field.name:
+                print("<Field Add Error [Invalid Name : 2]>: " +
+                     f"{field_name} already exists as a field of {class_name}.")
+                return
+        # Creates a new Field object and stores it in the list of fields for 
+        # 'uml'.    
+        uml.add_field(field_name, field_type)
+    
+
+def add_method(class_name : str,
+               method_name : str,
+               method_type : str):
+    """
+    Adds a method to the list of methods for a given class.
+    
+    Parameters:
+    - class_name : str -> the name of the class which will have a method added 
+    to it. If the name given isn't the name of an existing class, the function 
+    will fail.
+    - method_name : str -> the name of the method to be added. Must be unique
+    among all methods in the class 'class_name'. Is not allowed to be None or 
+    the empty string.
+    - method_type : str -> the return type of the method to be added. Cannot be 
+    None or the empty string.
+    """
+    
+    # Checks if 'class_name' exists as a class.
+    if class_name not in class_dict:
+        print("<Method Add Error [Invalid Class]>: " +
+             f"Class named {class_name} does not exist.")
+    else:
+        # Checks if 'method_name' is empty or None.
+        if method_name == None or method_name == "":
+            print("<Method Add Error [Invalid Name : 1]>: " +
+            "Method name must not be empty.")
         
-        # Checks if 'attr_name' is unique to 'class_name'.
-        elif attr_name in uml.attributes:
-            # If 'attr_name' is not unique, prints an error.
-            print("<Attribute Add Error [Invalid Name:2]>: " +
-                 f"{attr_name} already exists as an attribute of {class_name}.")
-        else:
-            # If all checks for 'attr_name' are valid, adds 'attr_name' as an
-            # attribute to the class with name 'class_name'.
-            uml.add_attribute(attr_name)
+        # Grabs the class with the name 'class_name' that is stored in the class 
+        # dictionary.           
+        uml : UMLClass = class_dict[class_name]
+        
+        # Loops through the list of methods in the UMLClass representation 
+        # 'uml'.
+        for method in uml.methods:
+            # If 'method_name' matches the name of a method in the list of 
+            # methods with the same return type, prints an error message and 
+            # returns.
+            if method_name == method.name and method_type == method.return_type:
+                print("<Method Add Error [Invalid Name : 2]>: " +
+                     f"{method_name} already exists as a method of " +
+                     f"{class_name} with return type {method_type}.")
+                return
+        # Creates a new Method object and stores it in the list of methods for 
+        # 'uml'.    
+        uml.add_method(method_name, method_type)
 
         
 def rename_attribute(class_name : str, 

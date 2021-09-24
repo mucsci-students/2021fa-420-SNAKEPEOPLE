@@ -17,8 +17,8 @@ class UMLClass():
     
     def __init__(self, 
                  name : str,
-                 fields = None,
-                 methods = None,
+                 fields : list = None,
+                 methods : list = None,
                  **kwargs):
         
         self.obj_type = "class"
@@ -33,14 +33,19 @@ class UMLClass():
     def __repr__(self):
         
         name = f"\nClass Name: {self.name}"
-        fields = "\n- Fields: (none)"
-        methods = "\n- Methods: (none)"
+        fields = "\n    Fields: (none)"
+        methods = "\n    Methods: (none)"
         
         if self.fields != []:
-            fields = f"\n  Fields: {self.fields}"
+            fields = f"\n    Fields:"
+            for field in self.fields:
+                fields += f"\n    - {field}"
         
         if self.methods != []:
-            methods = f"\n  Methods: {self.methods}"
+            methods = f"\n    Methods:"
+            for method in self.methods:
+                methods += f"\n    - {method}"
+            
             
         return name + fields + methods
     
@@ -89,30 +94,32 @@ class UMLClass():
               f"{param_type} {param_name}")
         
         
-    def rename_attribute(self, 
-                         attr : UMLAttributes.Attribute,
-                         new_name : str):
+    def rename_attr(self, 
+                    attr : UMLAttributes.UMLAttribute,
+                    new_name : str):
         attr_pos : int
         
         if isinstance(attr, UMLAttributes.Field):
             attr_pos = self.fields.index(attr)
-            field_n : str = self.fields[attr_pos].name
+            field_o : UMLAttributes.Field = self.fields[attr_pos]
+            old_name = field_o.name
             
-            self.fields.pop(attr_pos)
+            field_o.rename(new_name)
             
-            print(f"<Deleted Field>: {field_n} ({self.name})")
+            print(f"<Renamed Field>: {old_name} -> {new_name} ({self.name})")
         
         if isinstance(attr, UMLAttributes.Method):
             attr_pos = self.methods.index(attr)
-            method_n : str = self.fields[attr_pos].name
+            method_o : UMLAttributes.Method = self.methods[attr_pos]
+            old_name = method_o.name
             
-            self.methods.pop(attr_pos)
+            method_o.rename(new_name)
             
-            print(f"<Deleted Method>: {method_n} ({self.name})")
+            print(f"<Renamed Field>: {old_name} -> {new_name} ({self.name})")
         
 
     def delete_attr(self,
-                    attr : UMLAttributes.Attribute):
+                    attr : UMLAttributes.UMLAttribute):
         
         attr_pos : int
         
@@ -131,4 +138,3 @@ class UMLClass():
             self.methods.pop(attr_pos)
             
             print(f"<Deleted Method>: {method_n} ({self.name})")
-

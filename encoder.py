@@ -1,6 +1,7 @@
 from json import JSONEncoder
 from typing import Union
 from UMLClass import UMLClass
+from UMLAttributes import *
 from relationships import UMLRelationship
 
 class UMLEncoder(JSONEncoder):
@@ -57,4 +58,15 @@ def decode_relationships(json_dict : dict) -> dict:
             decode_dict.update({object['name'] : UMLRelationship(**object)})
             
     return decode_dict
+
+if __name__ == "__main__":
+    import json
     
+    method = Method("test", "null")
+    method.add_param(Parameter("index", "int"))
+    _class = UMLClass("name")
+    _class.add_method("g", "null")
+    a = json.dumps(_class, cls=UMLEncoder)
+    z = json.loads(a)
+    x = decode_classes(z) 
+    print(x)  

@@ -26,7 +26,36 @@ def main(args : list) -> None:
           "      Type 'help' for a list of commands.      \n" +
           "       Type 'exit' to close the program.       \n")
     
-    exit_commands = ["e", "exit", "q", "quit"]
+    aliases = {
+        'exit' : ['exit', 'e',
+                  'quit', 'q'],
+        
+        'addclass' : ['addclass'],
+        
+        'delclass' : ['delclass'],
+        
+        'renclass' : ['renclass'],
+        
+        'addrel' : ['addrel'],
+        
+        'delrel' : ['delrel'],
+        
+        'addattr' : ['addattr'],
+        
+        'delattr' : ['delattr'],
+        
+        'renattr' : ['renattr'],
+        
+        'listclass' : ['listclass'],
+        
+        'listrel' : ['listrel'],
+        
+        'save' : ['save'],
+        
+        'load' : ['load'],
+        
+        'help' : ['help']
+    }
     
     while True:
         
@@ -35,10 +64,10 @@ def main(args : list) -> None:
         if len(cmd) == 0:
             continue
         
-        elif cmd[0] in exit_commands:
+        elif cmd[0] in aliases['exit']:
             break
         
-        elif cmd[0] == 'addclass':
+        elif cmd[0] in aliases['addclass']:
             if check_inputs(cmd, 2):
                 class_interface.add_class(cmd[1])
             
@@ -58,9 +87,13 @@ def main(args : list) -> None:
             if check_inputs(cmd, 3):
                 relationships.delete_relationship(cmd[1], cmd[2])
                 
-        elif cmd[0] == 'addattr':
-            if check_inputs(cmd, 3):
-                attr_interface.add_attribute(cmd[1], cmd[2])
+        elif cmd[0] == 'addfield':
+            if check_inputs(cmd, 4):
+                attr_interface.add_field(cmd[1], cmd[2], cmd[3])
+                
+        elif cmd[0] == 'addmethod':
+            if check_inputs(cmd, 4):
+                attr_interface.add_method(cmd[1], cmd[2], cmd[3])
                 
         elif cmd[0] == 'delattr':
             if check_inputs(cmd, 3):
@@ -77,7 +110,6 @@ def main(args : list) -> None:
                 else:
                     list_a_class(cmd[1])
                     
-        
         elif cmd[0] == 'listrel':
             relationships.list_relationships()
         
@@ -167,6 +199,7 @@ def list_all_classes() -> None:
         # Iterates through the class dictionary and prints each entry.
         for key in UMLClass.class_dict:
             print(UMLClass.class_dict[key])
+        print()
  
 def save_classes(filename : str) -> None:
     """
