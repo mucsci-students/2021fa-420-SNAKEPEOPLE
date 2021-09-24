@@ -1,5 +1,5 @@
-from UMLClass import UMLClass, class_dict
-from UMLAttributes import *
+from uml_components.UMLClass import UMLClass, class_dict
+from uml_components.UMLAttributes import *
 
 def add_field(class_name : str,
               field_name : str,

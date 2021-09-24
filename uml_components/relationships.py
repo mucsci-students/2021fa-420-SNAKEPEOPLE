@@ -1,4 +1,4 @@
-import UMLClass
+from uml_components import UMLClass
 
 UMLClass.class_dict
 relationship_dict = dict()

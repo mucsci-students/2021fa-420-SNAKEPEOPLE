@@ -7,9 +7,8 @@ import jsonpickle
 import sys
 import os.path
 
-import UMLClass
-from interface import class_interface, attr_interface
-import relationships
+from uml_components import UMLClass, relationships
+from uml_components.interfaces import class_interface, attr_interface
 
 def main(args : list) -> None:
     '''

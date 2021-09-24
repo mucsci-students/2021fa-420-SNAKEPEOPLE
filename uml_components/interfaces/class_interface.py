@@ -1,4 +1,4 @@
-from UMLClass import UMLClass, class_dict
+from uml_components.UMLClass import UMLClass, class_dict
 
 def add_class(name : str) -> None:
     """

@@ -1,7 +1,7 @@
 # Project Name: SNAKE PEOPLE UML Editor
 # File Name:    uml_class.py
 
-import UMLAttributes
+from uml_components import UMLAttributes
 
 class_dict = dict()
 
