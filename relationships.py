@@ -1,6 +1,6 @@
-import uml_class
+import UMLClass
 
-uml_class.class_dict
+UMLClass.class_dict
 relationship_dict = dict()
 
 class UMLRelationship():
@@ -40,8 +40,8 @@ class UMLRelationship():
 def add_relationship(source : str, destination : str) -> None:
 
     #Add a relationship by creating a new UMLRelationship object containing
-    #the name "<source>-<destination>", uml_class associated with the source 
-    #string, and the uml_class associated with the destination string
+    #the name "<source>-<destination>", UMLClass associated with the source 
+    #string, and the UMLClass associated with the destination string
     
     #parameters:
     #source- String that is set as the name of a UMLClass object
@@ -60,7 +60,7 @@ def add_relationship(source : str, destination : str) -> None:
         #Create the UMLRelationship and add it to the dictionary
         else:
             new_rel = UMLRelationship(source + "-" + destination, 
-                uml_class.class_dict[source], uml_class.class_dict[destination])
+                UMLClass.class_dict[source], UMLClass.class_dict[destination])
             relationship_dict.update({name: new_rel})
             print(f"<Relationship Added>: {name}")
 
@@ -95,15 +95,15 @@ def rel_cleanup(source : str) -> None:
     #parameters:
     #source- String that is set as the name of a UMLClass object
     
-    if source in uml_class.class_dict.keys():
+    if source in UMLClass.class_dict.keys():
         for key in list(relationship_dict.keys()):
             #Compare the source attribute of the UMLRelationship object with
             #the UMLClass object associated with source
-            if relationship_dict[key].source == uml_class.class_dict[source]:
+            if relationship_dict[key].source == UMLClass.class_dict[source]:
                 del relationship_dict[key]
             #Compare the destination attribute of the UMLRelationship object with
             #the UMLClass object associated with source
-            elif relationship_dict[key].destination == uml_class.class_dict[source]:
+            elif relationship_dict[key].destination == UMLClass.class_dict[source]:
                 del relationship_dict[key]
 
 ##########################################################################################
@@ -126,7 +126,7 @@ def rename_relationship(old_name : str, new_name : str) -> None:
     #then create a new relationship to replace the old one with the updated
     #UMLClass object
 
-    if new_name in uml_class.class_dict.keys():
+    if new_name in UMLClass.class_dict.keys():
         for key in list(relationship_dict.keys()):
             #Compare the source name of the UMLRelationship object with
             #the old name to see if the current relationship should be updated
@@ -162,7 +162,7 @@ def check_params(source : str, destination : str) -> bool:
     found_source = False
     found_dest = False
 
-    for key in uml_class.class_dict:
+    for key in UMLClass.class_dict:
         if key == source:
             found_source = True
         if key == destination:
