@@ -1,23 +1,36 @@
 import tkinter as tk
-import tkinter.font as tk_font
 
 app = tk.Tk()
-app.title("UML Editor")
 
-ab = "#707070"
-af = "#f0f0f0"
+canvas = tk.Canvas(app, bg="white", height = "300", width = "300")
 
-canvas = tk.Canvas(app, bg="red", height = "200", width = "200")
+canvas.grid(row = 1, column = 2)
 
-canvas.grid(row=2, column=2)
+coord = 10, 10, 300, 300
 
-button_addclass = tk.Button(app,
-                            text="addclass",
-                            width="20",
-                            height="5",
-                            activebackground=ab,
-                            activeforeground=af,)
+arc = canvas.create_arc(coord, start = 45, extent = 300, fill = "yellow")
 
-button_addclass.grid(row = 3, column = 3)
+oval = canvas.create_oval(160, 30, 125, 150, fill="black")
+
+text = canvas.create_text(200, 270, text="pucman")
+
+draginfo = {"Widget":canvas, "xCoord":20, "yCoord":30}
+
+element = text
+
+def make_draggable(canvas):
+    canvas.bind("<Button-1>", element = on_drag_start())
+    canvas.bind("<B1-Motion>", on_drag_motion())
+
+def on_drag_start(event):
+    canvas = event.canvas
+    canvas._drag_start_x = event.x
+    canvas._drag_start_y = event.y
+    element = canvas.find_closest(event.x, event.y)
+
+def on_drag_motion(event, element):
+    x = canvas.winfo_x() - canvas._drag_start_x + event.x
+    y = canvas.winfo_y() - canvas._drag_start_y + event.y
+    canvas.move(element, x, y)
 
 app.mainloop()
