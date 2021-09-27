@@ -21,7 +21,6 @@ class UMLClass():
                  methods : list = None,
                  **kwargs):
         
-        self.obj_type = "class"
         self.name = name
             
         self.fields = fields if fields else list()
@@ -138,3 +137,7 @@ class UMLClass():
             self.methods.pop(attr_pos)
             
             print(f"<Deleted Method>: {method_n} ({self.name})")
+            
+    
+    def toJson(self) -> dict:
+        return self.__dict__

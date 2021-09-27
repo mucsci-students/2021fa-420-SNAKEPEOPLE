@@ -4,15 +4,18 @@ from dataclasses import dataclass, field
 class UMLAttribute:
     name : str
     
+    def toJson(self) -> dict:
+        return self.__dict__
+
+    
 @dataclass
-class Parameter:
-    name : str
+class Parameter (UMLAttribute):
     type : str
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         output = f"{self.type} {self.name}"
         return output
-    
+
 @dataclass
 class Field (UMLAttribute):
     type : str

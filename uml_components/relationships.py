@@ -33,6 +33,9 @@ class UMLRelationship():
     def changeDestination(self, new_dest):
         self.destination = new_dest
         self.destName = new_dest.name
+        
+    def toJson(self):
+        return self.__dict__
 
 
 ##########################################################################################
