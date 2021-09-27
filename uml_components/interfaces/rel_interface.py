@@ -48,7 +48,8 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
 def delete_relationship(source : str, dest : str) -> None:
 
     """
-    Delete an existing relationship of source - dest from the relationship list.
+    Deletes an existing relationship of source - dest from the relationship 
+    list.
 
     Parameters:
     - source : str -> the name of the primary class of the relationship.
@@ -62,7 +63,6 @@ def delete_relationship(source : str, dest : str) -> None:
     if not check_class(dest):
         print("<Relationship Delete Error>: " +
               f"{dest} does not exist as the name of a class.")
-        
         
     if check_class(source) and check_class(dest):
         index : int = 0
@@ -93,31 +93,40 @@ def delete_relationship(source : str, dest : str) -> None:
             # Otherwise, prints an error.
             print("<Relationship Delete Error>: " +
                   f"Relationship {source} - {dest} does not exist.")
-
-##########################################################################################
+            
 
 def rel_cleanup(cls : str) -> None:
-
+    """
+    Deletes all relationships that have a source or destination of 'cls'.
     
+    Parameter:
+    - cls : str -> the name of the class whose relationships will be deleted.
+    """
+    
+    # Checks if the class exists in the class dictionary.
     if cls in class_dict:
+        # If cls is the name of the class, iterates through the relationship
+        # list and deletes all relationships where cls is source or destination.
         relationship : UMLRelationship
         for relationship in relationship_list:
+            # Deletes if cls is source.
             if cls == relationship.source:
                 delete_relationship(cls, relationship.destination)
+            # Deletes if cls is destination.
             if cls == relationship.destination:
                 delete_relationship(relationship.source, cls)
-        
-    
 
-##########################################################################################
 
 def list_relationships() -> None:
+    """
+    Lists all relationships.
+    """
 
-    #List all relationships in the form "<source>-<destination>"
-
+    # Prints '(none)' if no relationships in list.
     if len(relationship_list) < 1:
         print("(none)")
     else:
+        # Loops through the relationship list and prints each entry.
         for relationship in relationship_list:
             print(relationship)
 
@@ -170,21 +179,25 @@ def check_class(cls : str) -> bool:
     
     found : bool = False
     
+    # Loops through the class dictionary and sets found to True if 'cls' is in
+    # the class dictionary.
     for key in class_dict:
         if cls == key:
             found = True
             
     return found
 
-##########################################################################################
 
 def check_type(rel_type : str) -> bool:
 
-    #Checks to ensure that the new relationship type is one of Aggregation,
-    #Composition, Inheritance, or Realization.
+    """
+    Checks to ensure that the relationship type is one of Aggregation, 
+    Composition, Inheritance, or Realization.
 
-    #new_type- String of the new relationship type
+    - rel_type : str -> the type to be checked.
+    """
 
+    # A set of valid relationship types.
     relationship_types = {"aggregation", 
                           "composition", 
                           "inheritance", 
@@ -195,4 +208,3 @@ def check_type(rel_type : str) -> bool:
     else:
         return False
 
-##########################################################################################
