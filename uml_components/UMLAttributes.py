@@ -31,12 +31,12 @@ class Field (UMLAttribute):
 @dataclass
 class Method (UMLAttribute):
     return_type : str
-    parameters : list[Parameter] = field(default_factory=list)
+    params : list[Parameter] = field(default_factory=list)
             
     def __repr__(self):
         output = f"{self.return_type} {self.name}("
-        for param in self.parameters:
-            if param == self.parameters[len(self.parameters) - 1]:
+        for param in self.params:
+            if param == self.params[len(self.params) - 1]:
                 output += f"{param}"
             else:
                 output += f"{param}, "
@@ -49,7 +49,7 @@ class Method (UMLAttribute):
         
     def add_param(self, 
                   param : Parameter) -> None:
-        self.parameters.append(param)
+        self.params.append(param)
 
 if __name__ == "__main__":       
     method = Method("get_attr", "UMLAttribute")

@@ -13,26 +13,32 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
     #rel_type- String that defines the relationship type to be aggregation, composition,
     #inheritance, or realization
     
-
-    if check_params(source, destination) == False:
-        return
-    elif check_reltype(rel_type) == False:
-        print(f"<Relationship Add Error>: "+
-                f"Relationship type {rel_type} is an invalid type.")
+    # Checks if the given relationship type is valid.
+    if not check_type(rel_type):
+        # If invalid, prints an error.
+        print("<Relationship Add Error>: " +
+              f"{rel_type} is not a valid relationship type.")
     else:
-        #Ensure the relationship does not already exist
-        for i in relationship_list:
-            if (i.sourceName == source) and (i.destName == destination):
-                print("<Relationship Add Error>: "+
-                    f"Relationship {source}-{destination} already exists.")
-                return
+        # If the type is valid, checks if both source and destination are valid
+        # classes.
+        if not check_class(source):
+            print("<Relationship Add Error>: " +
+                  f"{source} does not exist as the name of a class.")
+        if not check_class(destination):
+            print("<Relationship Add Error>: " +
+                  f"{destination} does not exist as the name of a class.")
         
-        #Create the UMLRelationship and add it to the list
-        new_rel = UMLRelationship(class_dict[source],
-                                  class_dict[destination], 
-                                  rel_type)
-        relationship_list.append(new_rel)
-        print(f"<Relationship Added>: {source}-{destination}")
+        # If both source and destination are valid, 
+        if check_class(source) and check_class(destination):
+            
+            for relationship in relationship_list:
+                if (source == relationship.source and 
+                    destination == relationship.destination):
+                    print("<Relationship Add Error>: " +
+                          f"Relationship {source} - {destination} already " +
+                          "exists")
+            
+            rel = UMLRelationship(source, destination, rel_type)
 
 ##########################################################################################
 
@@ -116,7 +122,7 @@ def Change_reltype(source : str, dest : str, new_type : str):
         print(f"<Relationship Type Error>: "+
             f"Relationship {source}-{dest} is an invalid relationship.")
     #Check to make sure the new relationship type exists
-    elif check_reltype(new_type) == False:
+    elif check_type(new_type) == False:
         print(f"<Relationship Type Error>: "+
                 f"Relationship type {new_type} is an invalid type.")
     else:
@@ -125,53 +131,29 @@ def Change_reltype(source : str, dest : str, new_type : str):
 
 ##########################################################################################
 
-def check_params(source : str, destination : str) -> bool:
+def check_class(cls : str) -> bool:
+    found = False
     
-    #Checks to see if source and destination are valid classes
-    #If either source or destination are invalid, print an error
-    #and return false
-
-    #parameters:
-    #source- String that is set as the name of a UMLClass object
-    #destination- String that is set as the name of a UMLClass object
-
-    if source == "" or destination == "":
-        print("ERROR: class name cannot be empty")
-        return False
-
-    found_source = False
-    found_dest = False
-
     for key in class_dict:
-        if key == source:
-            found_source = True
-        if key == destination:
-            found_dest = True
-
-    if found_source == False and found_dest == False:
-        print(f"ERROR: {source} and {destination} are invalid, both arguements must be existing classes.")
-        return False
-
-    elif found_source == False:
-        print(f"ERROR: {source} is invalid, source must be an existing class.")
-        return False
-
-    elif found_dest == False:
-        print(f"ERROR: {destination} is invalid, destination must be an existing class.")
-        return False
-
-    return True
+        if cls == key:
+            found = True
+            
+    return found
 
 ##########################################################################################
 
-def check_reltype(rel_type) -> bool:
+def check_type(rel_type : str) -> bool:
 
     #Checks to ensure that the new relationship type is one of Aggregation,
     #Composition, Inheritance, or Realization.
 
     #new_type- String of the new relationship type
 
-    relationship_types = {"aggregation", "composition", "inheritance", "realization"}
+    relationship_types = {"aggregation", 
+                          "composition", 
+                          "inheritance", 
+                          "realization"}
+    
     if rel_type.lower() in relationship_types:
         return True
     else:

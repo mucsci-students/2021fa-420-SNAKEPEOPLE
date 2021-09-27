@@ -9,7 +9,7 @@ class UMLClass():
     """
         A representation of a class for a UML class diagram.
         
-        Instance Variables:\n
+        Fields:
         - name : str -> the name of the class. Given during object construction.
         attributes : list -> a list of attributes of the class. Is intialized
         as an empty list.

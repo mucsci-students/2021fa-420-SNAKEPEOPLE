@@ -2,35 +2,38 @@ relationship_list = []
 
 class UMLRelationship():
     
-    #UMLRelationship is an object that models a relationship between two UML classes.
-    #The class stores a name in the form a source object referencing a uml class object,
-    #and a destination object also referencing a uml class object.
+    """
+    A representation of a relationship for a UML class diagram.
+    
+    Fields:
+    - source : str -> the name of primary object of the relationship.
+    - destination : str -> the name of the secondary object of the relationship.
+    - type : str -> the type of relationship. Can be one of ['Aggregation', 
+    'Composition', 'Inheritance', 'Realization'].
+    """
 
-    def __init__(self, source, destination, rel_type: str):
+    def __init__(self, 
+                 source : str, 
+                 destination : str, 
+                 type : str,
+                 **kwargs):
+        
         self.source = source
         self.destination = destination
-        self.sourceName = source.name
-        self.destName = destination.name
-        self.rel_type = rel_type
-
-    def __del__(self):
-        print(f"<Deleted Relationship>: {self.sourceName}-{self.destName}")
+        self.type = type
     
     def __repr__(self):
-        return self.sourceName + "-" + self.destName
-        
-    def rename(self, new_name : str):
-        self.name = new_name
+        return f"{self.source} - {self.destination} ({self.type})"
 
-    def changeSource(self, new_source):
+    def change_source(self, 
+                      new_source : str):
         self.source = new_source
-        self.sourceName = new_source.name
 
-    def changeDestination(self, new_dest):
-        self.destination = new_dest
-        self.destName = new_dest.name
+    def change_destination(self, 
+                           new_destination : str):
+        self.destination = new_destination
 
-    def changeType(self, new_type):
+    def change_type(self, new_type : str):
         self.rel_type = new_type
         
     def toJson(self):
