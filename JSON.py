@@ -1,8 +1,6 @@
-from io import StringIO
 import json
-from uml_components import relationships
 from uml_components.UMLAttributes import Field, Method
-from uml_components.relationships import UMLRelationship
+from uml_components.UMLRelationship import UMLRelationship
 from uml_components.UMLClass import UMLClass
 from typing import Union
 
@@ -63,9 +61,10 @@ def decode(json_str : str) -> tuple[dict,list]:
 if __name__ == "__main__":
     
     from uml_components.interfaces import (class_interface as cif, 
-                                           attr_interface as aif)
+                                           attr_interface as aif,
+                                           rel_interface as rif)
     from uml_components.UMLClass import class_dict
-    from uml_components.relationships import relationship_dict
+    from uml_components.UMLRelationship import relationship_list
         
     cif.add_class("Apple")
     clsa : UMLClass = class_dict["Apple"]
@@ -79,8 +78,8 @@ if __name__ == "__main__":
     aif.add_field("Banana", "weight", "int")
     aif.add_method("Banana", "getObj", "Object")
     
-    relationships.add_relationship(clsa.name, clsb.name)
-    rela : UMLRelationship = relationship_dict["Apple-Banana"]
+    rif.add_relationship(clsa.name, clsb.name, "inheritance")
+    rela : UMLRelationship = relationship_list[0]
     
     
     cls_list = [clsa.toJson(), clsb.toJson()]
