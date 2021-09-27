@@ -1,4 +1,5 @@
 from uml_components.UMLClass import UMLClass, class_dict
+from uml_components.interfaces import rel_interface
 
 def add_class(name : str) -> None:
     """
@@ -45,6 +46,7 @@ def delete_class(name : str) -> None:
     else:
         # If 'name' is the name of an existing class, deconstructs the object,
         # and then removes the listing of the class from the class dict.
+        rel_interface.rel_cleanup(name)
         class_dict.pop(name)
         print(f"<Deleted Class>: {name}")
 

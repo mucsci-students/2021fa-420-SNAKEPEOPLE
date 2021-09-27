@@ -20,7 +20,9 @@ class UMLRelationship():
         
         self.source = source
         self.destination = destination
-        self.type = type
+        self.type = type.title()
+        
+        print(f"<Relationship Added> {self}")
     
     def __repr__(self):
         return f"{self.source} - {self.destination} ({self.type})"

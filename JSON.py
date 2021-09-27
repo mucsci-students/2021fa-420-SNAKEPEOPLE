@@ -1,5 +1,5 @@
 import json
-from uml_components.UMLAttributes import Field, Method
+from uml_components.UMLAttributes import Field, Method, Parameter
 from uml_components.UMLRelationship import UMLRelationship
 from uml_components.UMLClass import UMLClass
 from typing import Union
@@ -21,6 +21,7 @@ def encode(classes : list, relationships : list) -> str:
     
     return json.dumps(objects, indent= 4, cls= ComplexEncoder)
 
+
 def decode_classes(classes : dict) -> dict:
     cls_dict = {}
     
@@ -30,8 +31,17 @@ def decode_classes(classes : dict) -> dict:
     
         for field in cls['fields']:
             fields.append(Field(**field))
+        
         for method in cls['methods']:
-            methods.append(Method(**method))
+            params = []
+            m_obj = Method(**method)
+            
+            for param in method['params']:
+                p_obj = Parameter(**param)
+                params.append(p_obj)
+            
+            m_obj.params = params    
+            methods.append(m_obj)
             
         obj : UMLClass = UMLClass(**cls)
         obj.fields = fields
@@ -41,6 +51,7 @@ def decode_classes(classes : dict) -> dict:
         
     return cls_dict
 
+
 def decode_relationships(relationships : dict) -> list:
     rel_list = []
     
@@ -49,6 +60,7 @@ def decode_relationships(relationships : dict) -> list:
         rel_list.append(obj)
     
     return rel_list
+
 
 def decode(json_str : str) -> tuple[dict,list]:
     json_dict = json.loads(json_str)

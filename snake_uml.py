@@ -1,14 +1,18 @@
 # Project Name:  SNAKE PEOPLE UML Editor
 # File Name:     snake_uml.py
 
-# Imports:
+# External Imports
 import json
 import jsonpickle
 import sys
 import os.path
 
-from uml_components import UMLClass, relationships
-from uml_components.interfaces import class_interface, attr_interface
+# Internal Imports
+from uml_components import (UMLClass, 
+                            UMLRelationship)
+from uml_components.interfaces import (attr_interface,
+                                       class_interface,
+                                       rel_interface)
 
 def main(args : list) -> None:
     '''
@@ -53,8 +57,7 @@ def main(args : list) -> None:
         
         'load' : ['load'],
         
-        'help' : ['help']
-    }
+        'help' : ['help']}
     
     while True:
         
@@ -79,12 +82,12 @@ def main(args : list) -> None:
                 class_interface.rename_class(cmd[1], cmd[2])
                 
         elif cmd[0] == 'addrel':
-            if check_inputs(cmd, 3):
-                relationships.add_relationship(cmd[1], cmd[2])
+            if check_inputs(cmd, 4):
+                rel_interface.add_relationship(cmd[1], cmd[2], cmd[3])
                 
         elif cmd[0] == 'delrel':
             if check_inputs(cmd, 3):
-                relationships.delete_relationship(cmd[1], cmd[2])
+                rel_interface.delete_relationship(cmd[1], cmd[2])
                 
         elif cmd[0] == 'addfield':
             if check_inputs(cmd, 4):
@@ -110,7 +113,7 @@ def main(args : list) -> None:
                     list_a_class(cmd[1])
                     
         elif cmd[0] == 'listrel':
-            relationships.list_relationships()
+            rel_interface.list_relationships()
         
         elif cmd[0] == 'save':
             if check_inputs(cmd, 2):

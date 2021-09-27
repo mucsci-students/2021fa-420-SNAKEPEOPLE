@@ -3,15 +3,15 @@ from uml_components.UMLRelationship import UMLRelationship, relationship_list
 
 def add_relationship(source : str, destination : str, rel_type : str) -> None:
 
-    #Add a relationship by creating a new UMLRelationship object containing
-    #the uml_class associated with the source string, the uml_class associated 
-    #with the destination string, and the type of relationship
+    """
+    Adds a new relationship to the relationship list.
     
-    #parameters:
-    #source- String that is set as the name of a UMLClass object
-    #destination- String that is set as the name of a UMLClass object
-    #rel_type- String that defines the relationship type to be aggregation, composition,
-    #inheritance, or realization
+    Parameters:
+    - source : str -> the name of the primary class in the relationship.
+    - destination : str -> the name of the secondary class in the relationship.
+    - rel_type : str -> the type of relationship to be created. Must be one of 
+    ['Aggregation', 'Composition', 'Inheritance', 'Realization'].
+    """
     
     # Checks if the given relationship type is valid.
     if not check_type(rel_type):
@@ -28,9 +28,10 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
             print("<Relationship Add Error>: " +
                   f"{destination} does not exist as the name of a class.")
         
-        # If both source and destination are valid, 
+        
         if check_class(source) and check_class(destination):
-            
+            # If both source and destination are valid, checks if the 
+            # relationship already exists.
             for relationship in relationship_list:
                 if (source == relationship.source and 
                     destination == relationship.destination):
@@ -38,50 +39,75 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
                           f"Relationship {source} - {destination} already " +
                           "exists")
             
+            # If the relationship does not already exist, creates a new 
+            # UMLRelationship object and adds it to the relationship list.
             rel = UMLRelationship(source, destination, rel_type)
+            relationship_list.append(rel)
 
-##########################################################################################
 
-def delete_relationship(source : str, destination : str) -> None:
+def delete_relationship(source : str, dest : str) -> None:
 
-    #Delete a relationship between source and destination
+    """
+    Delete an existing relationship of source - dest from the relationship list.
+
+    Parameters:
+    - source : str -> the name of the primary class of the relationship.
+    - dest : str -> the name of the secondary class of the relationship.
+    """
     
-    #parameters:
-    #source- String that is set as the name of a UMLClass object
-    #destination- String that is set as the name of a UMLClass object
-
-    if check_params(source, destination) == False:
-        return
-    else:
-        #Ensure that the relationship exists
-        i = 0;
-        while i < len(relationship_list):
-            if((relationship_list[i].sourceName == source) and
-                 (relationship_list[i].destName == destination)):
-                del_rel = relationship_list.pop(i)
-                del del_rel
-                return
-            ++i
+    # Checks if the given source and destination are valid classes.
+    if not check_class(source):
+        print("<Relationship Delete Error>: " +
+              f"{source} does not exist as the name of a class.")
+    if not check_class(dest):
+        print("<Relationship Delete Error>: " +
+              f"{dest} does not exist as the name of a class.")
+        
+        
+    if check_class(source) and check_class(dest):
+        index : int = 0
+        found : bool = False
+        
+        relationship : UMLRelationship
+        for relationship in relationship_list:
+            # If source and destination are both valid, iterates through the
+            # relationship list until it finds a matching relationship.
+            if (source == relationship.source and 
+                dest == relationship.destination):
+                # If the source and destination match the source and destination
+                # of the current iteration, set found to True and break the 
+                # loop.    
+                found = True
+                break
+            else:
+                # Increments the index by 1 and checks again.
+                index += 1
+        
+        # Checks whether a valid relationship was found.
+        if found:
+            # If matching relationship found, deletes the relationship from the
+            # list.
+            rel = relationship_list.pop(index)
+            print(f"<Deleted Relationship>: {source} - {dest} ({rel.type})")
         else:
-            print(f"ERROR: Relationship {source}-{destination}, does not exist.")
+            # Otherwise, prints an error.
+            print("<Relationship Delete Error>: " +
+                  f"Relationship {source} - {dest} does not exist.")
 
 ##########################################################################################
 
-def rel_cleanup(source : str) -> None:
+def rel_cleanup(cls : str) -> None:
 
-    #Delete all relationships involving the UMLClass object
-    #associated with source
-
-    #parameters:
-    #source- String that is set as the name of a UMLClass object
-    i = 0
-    while i < len(relationship_list):
-        if ((relationship_list[i].sourceName == source) or
-             (relationship_list[i].destName == source)):            
-            del_rel = relationship_list.pop(i)
-            del del_rel
-            --i
-        ++i
+    
+    if cls in class_dict:
+        relationship : UMLRelationship
+        for relationship in relationship_list:
+            if cls == relationship.source:
+                delete_relationship(cls, relationship.destination)
+            if cls == relationship.destination:
+                delete_relationship(relationship.source, cls)
+        
+    
 
 ##########################################################################################
 
@@ -89,11 +115,11 @@ def list_relationships() -> None:
 
     #List all relationships in the form "<source>-<destination>"
 
-    if len(relationship_list) == 0:
+    if len(relationship_list) < 1:
         print("(none)")
-
-    for i in relationship_list:
-        print("Relationship: " + i.sourceName + "-" + i.destName +  "   Relationship type: " + i.rel_type)
+    else:
+        for relationship in relationship_list:
+            print(relationship)
 
 ##########################################################################################
 
@@ -132,7 +158,17 @@ def Change_reltype(source : str, dest : str, new_type : str):
 ##########################################################################################
 
 def check_class(cls : str) -> bool:
-    found = False
+    """
+    Checks if the given class exists in the class dictionary.
+    
+    Parameters:
+    - cls : str -> the name of the class to be checked for.
+    
+    Returns:
+    - found : bool -> True if cls exists, False otherwise.
+    """
+    
+    found : bool = False
     
     for key in class_dict:
         if cls == key:
