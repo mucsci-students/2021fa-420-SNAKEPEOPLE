@@ -12,13 +12,32 @@ import relationships
 
 def main(args : list) -> None:
     '''
-    Processes an infinite loop waiting for a command from the user. Once input
-    is given, executes a command, if valid.
+    Main function for the program.
 
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
     
+    # Enters CLI mode if the user selects CLI.
+    if args[1] == "--cli":
+        cli_loop()
+    
+    # Enters GUI mode if the user selects GUI.
+    elif args[1] == "--gui":
+        # call whatever function takes the program into the GUI stuff
+        print("need to integrate gui stuff first")
+        pass
+
+    # If the user does not pick either GUI or CLI, default to CLI.
+    else:
+        cli_loop()
+
+def cli_loop() -> None:
+    '''
+    Processes an infinite loop waiting for a command from the user. Once input
+    is given, executes a command, if valid.
+    '''
+
     print("=======================================\n" +
           "|       Snake People UML Editor       |\n" +
           "=======================================\n" +
@@ -95,7 +114,7 @@ def main(args : list) -> None:
     
 
 def check_inputs(cmd : list, num : int) -> bool:
-    """
+    '''
     Checks if the number of arguments given matches the number of expected
     arguments for a given command.
     
@@ -104,7 +123,7 @@ def check_inputs(cmd : list, num : int) -> bool:
     - num : int -> the number of expected arguments
     
     return -> bool
-    """
+    '''
     
     if len(cmd) != num:
         # If the number of given arguments does not match the number of expected
@@ -119,10 +138,10 @@ def check_inputs(cmd : list, num : int) -> bool:
 
 
 def help() -> None:
-    """
+    '''
     Reads help information from a separate text file and prints it to the
     terminal window.
-    """
+    '''
     
     # Reading the information from the help file.
     help_file = open('help_stuff.txt')
@@ -136,13 +155,13 @@ def help() -> None:
     help_file.close()
 
 def list_a_class(input : str) -> None:
-    """
+    '''
     Given a class name, if the class exists in the system, printz the name of 
     the class and all the attributes it has.
     
     Parameters:\n
     - input : str -> the name of the class to be listed.
-    """
+    '''
     
     if input in uml_class.class_dict:
         # Accesses a class from the class dictionary, and prints it to the 
@@ -153,9 +172,9 @@ def list_a_class(input : str) -> None:
         print(f"<Illegal Argument Error>: {input} does not exist as a class.")
 
 def list_all_classes() -> None:
-    """
+    '''
     Prints a list of all classes in the class dictionary and their attributes. 
-    """
+    '''
 
     if len(uml_class.class_dict) == 0:
         print("(none)")
@@ -165,9 +184,9 @@ def list_all_classes() -> None:
             print(uml_class.class_dict[key])
  
 def save_classes(filename : str) -> None:
-    """
+    '''
     Saves the dictionary of classes to a .json file.
-    """
+    '''
     
     # Checks if the class dictionary is empty and prints an error if so.
     if len(uml_class.class_dict) == 0:
@@ -194,9 +213,9 @@ def save_classes(filename : str) -> None:
         json.dump(save_dict, savefile)
         
 def load_classes(filename : str) -> None:
-    """
+    '''
     Loads the content of a .json file to the class dictionary.
-    """
+    '''
     
     # Prints a warning that the current class dictionary will be overwritten 
     # upon load.
