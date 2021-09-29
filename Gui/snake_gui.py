@@ -1,20 +1,23 @@
 import tkinter as tk
-import UMLwidget
+import UMLsquare
+import UMLline
 
 #Create Window
 snake_app = tk.Tk()
 
-#Create frame within window to hold all labels
-frame = tk.LabelFrame(snake_app, text="Frame", padx=200, pady=200, cursor="plus")
+snake_app.geometry("400x400")
 
-#Put frame in window
-frame.pack()
+canvas = tk.Canvas(snake_app, bg="grey")
 
-#Evan's face
+canvas.pack()
 
-#test class to show adding works, in the future we will probably
-#remove evan's face or move the text 
-UMLwidget.add_widget("class1", frame)
-UMLwidget.add_widget("class2", frame)
+UMLsquare.setCanvas(canvas)
+
+UMLsquare.create_class(canvas, "class1")
+UMLsquare.create_class(canvas, "class2")
+UMLsquare.create_class(canvas, "class3")
+
+
+#UMLline.add_line(canvas, UMLsquare.square_list[0], UMLsquare.square_list[2])
 
 snake_app.mainloop()
