@@ -2,14 +2,9 @@
 # File Name:     gui_application.py
 
 # Imports:
-import json
-import jsonpickle
 import sys
 import os.path
 
-import uml_class
-import relationships
-import snake_uml
 import tkinter as tk
 
 def main(args : list) -> None:
