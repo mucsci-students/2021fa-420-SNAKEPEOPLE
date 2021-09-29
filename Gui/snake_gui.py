@@ -21,8 +21,11 @@ UMLcircle.setCanvas(canvas)
 UMLcircle.create_class(canvas, "class1")
 UMLcircle.create_class(canvas, "class2")
 UMLcircle.create_class(canvas, "class3")
+UMLcircle.create_class(canvas, "class4")
 
-#ignore for now
-#UMLline.add_line(canvas, UMLcircle.square_list[0][1], UMLcircle.square_list[1][1])
+#some example relationship lines
+UMLline.add_line(canvas, UMLcircle.circle_list[0][1], UMLcircle.circle_list[1][1])
+UMLline.add_line(canvas, UMLcircle.circle_list[2][1], UMLcircle.circle_list[3][1])
+UMLline.add_line(canvas, UMLcircle.circle_list[0][1], UMLcircle.circle_list[3][1])
 
 snake_app.mainloop()
