@@ -1,23 +1,28 @@
 import tkinter as tk
-import UMLsquare
+import UMLcircle
 import UMLline
 
 #Create Window
 snake_app = tk.Tk()
 
+
 snake_app.geometry("400x400")
 
+#create the canvas
 canvas = tk.Canvas(snake_app, bg="grey")
 
+#put the canvas in the window
 canvas.pack()
 
-UMLsquare.setCanvas(canvas)
+#tell the class creator what canvas to use in UMLcircle
+UMLcircle.setCanvas(canvas)
 
-UMLsquare.create_class(canvas, "class1")
-UMLsquare.create_class(canvas, "class2")
-UMLsquare.create_class(canvas, "class3")
+#Some test classes to add to the screen
+UMLcircle.create_class(canvas, "class1")
+UMLcircle.create_class(canvas, "class2")
+UMLcircle.create_class(canvas, "class3")
 
-
-#UMLline.add_line(canvas, UMLsquare.square_list[0], UMLsquare.square_list[2])
+#ignore for now
+#UMLline.add_line(canvas, UMLcircle.square_list[0][1], UMLcircle.square_list[1][1])
 
 snake_app.mainloop()
