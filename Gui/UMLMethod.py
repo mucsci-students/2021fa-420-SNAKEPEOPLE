@@ -1,0 +1,1 @@
+    UMLbox.DndCanvas.coords(UMLbox.class_list[pos][9], x, y - 15)

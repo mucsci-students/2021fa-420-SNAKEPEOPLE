@@ -26,11 +26,12 @@ def can_dragMotion(event):
     ViewChange.bring_front(label)
     ViewChange.bring_front(UMLbox.class_list[pos][5])
     ViewChange.bring_front(UMLbox.class_list[pos][8])
+    ViewChange.bring_front(UMLbox.class_list[pos][9])
     x1, y1, x2, y2 = UMLbox.DndCanvas.coords(UMLbox.class_list[pos][1])
     new_x1 = event.x - 20 - UMLbox.class_list[pos][3]
     new_y1 = event.y - 15 
     new_x2 = event.x + 60 + UMLbox.class_list[pos][3]
-    new_y2 = event.y + 10 + UMLbox.class_list[pos][7]
+    new_y2 = event.y + 20 + UMLbox.class_list[pos][7]
 
     #Bind the new coordinates so that the circle cannot go outside
     #of the canvas
@@ -53,6 +54,7 @@ def can_dragMotion(event):
     ViewChange.set_text(label, new_x1 + 40 + UMLbox.class_list[pos][3], new_y1 + 12.5)
     ViewChange.set_text(UMLbox.class_list[pos][8], new_x1 + UMLbox.class_list[pos][3] + 10, new_y1 + 30)
     ViewChange.set_text(UMLbox.class_list[pos][5], new_x1 + UMLbox.class_list[pos][3] + 30, new_y1 + 25)
+    ViewChange.set_text(UMLbox.class_list[pos][9], new_x1 + UMLbox.class_list[pos][3] + 18, new_y2 - 15)
     if(len(UMLbox.class_list[pos][4]) > 0):
         for i in UMLbox.class_list[pos][4]:
             if i[0] == "source":

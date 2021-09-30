@@ -8,27 +8,28 @@ class UMLline():
     #the level of the circles, saves the source and destination
     #values within a list of tuples, within the UMLbox tuple
     def __init__(self, canvas, x1, y1, x2, y2, source, dest):
-        self.x1 = x1
-        self.y1 = y1
-        self.x2 = x2
-        self.y2 = y2
         sourcepos = findpos(source)
         destpos = findpos(dest)
         line = canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST)
         canvas.tag_lower(line)
         UMLbox.class_list[sourcepos][4].append(("source", line, dest))
         UMLbox.class_list[destpos][4].append(("dest", line, source))
-        
+
+def add_line(canvas, source : str, dest : str):
+    sourcepos = UMLbox.find_pos_from_name(source)
+    destpos = UMLbox.find_pos_from_name(dest)
+    addline(canvas, UMLbox.class_list[sourcepos][1], UMLbox.class_list[destpos][1])
+
 #Add the new line with the correct positioning at the 
 #center of the circle
-def add_line(canvas, source : str, dest : str):
+def addline(canvas, source, dest):
     sourceItem = UMLbox.class_list[findpos(source)][1]
     destItem = UMLbox.class_list[findpos(dest)][1]
     midsourcex = canvas.coords(sourceItem)[0]
     midsourcey = canvas.coords(sourceItem)[1] + 15
     middestx = canvas.coords(destItem)[0]
     middesty = canvas.coords(destItem)[1] + 15
-    UMLline(canvas, midsourcex, midsourcey, middestx, middesty, source, dest)
+    UMLline(canvas, midsourcex, midsourcey, middestx, middesty, sourceItem, destItem)
 
 #Find the position of the class_list of the source
 def findpos(source):
@@ -39,7 +40,12 @@ def findpos(source):
         else:
             pos += 1
 
-def delete_line(canvas, source, dest):
+def delete_line(canvas, source : str, dest : str):
+    sourcepos = UMLbox.find_pos_from_name(source)
+    destpos = UMLbox.find_pos_from_name(dest)
+    deleteline(canvas, UMLbox.class_list[sourcepos][1], UMLbox.class_list[destpos][1])
+
+def deleteline(canvas, source, dest):
     sourcepos = findpos(source)
     destpos = findpos(dest)
     subpos = 0

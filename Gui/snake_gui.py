@@ -26,21 +26,26 @@ UMLbox.create_class(canvas, "class1")
 UMLbox.create_class(canvas, "class2")
 UMLbox.create_class(canvas, "class3")
 UMLbox.create_class(canvas, "class4")
+UMLbox.create_class(canvas, "class5")
 
 #some example relationship lines
-UMLline.add_line(canvas, UMLbox.class_list[0][1], UMLbox.class_list[1][1])
-UMLline.add_line(canvas, UMLbox.class_list[2][1], UMLbox.class_list[3][1])
-UMLline.add_line(canvas, UMLbox.class_list[0][1], UMLbox.class_list[3][1])
+UMLline.add_line(canvas, "class1", "class2")
+UMLline.add_line(canvas, "class1", "class3")
+#UMLline.add_line(canvas, "class1", "class4")
 
-#UMLbox.rename_circle("class1", "fuckery")
+# UMLfield.add_field("class1", "box")
+# UMLfield.add_field("class1", "tomfoolery")
+# UMLfield.add_field("class1", "twas")
+# UMLfield.add_field("class1", "boo")
+UMLfield.add_field("class2", "sadasdasdsadsaasdasdsa")
+UMLfield.add_field("class2", "asf")
+UMLfield.add_field("class2", "twas")
+UMLfield.add_field("class2", "boo")
 
-UMLfield.add_field("class1", "fuckery")
-UMLfield.add_field("class1", "tomfoolery")
-UMLfield.add_field("class1", "twas")
+#UMLfield.del_field("class1", "malarcky")
 
-UMLfield.rename_field("class1", "fuckery", "fookary")
-
+UMLfield.del_field("class2", "sadasdasdsadsaasdasdsa")
 #UMLbox.delete_circle("class1")
-UMLline.delete_line(canvas, UMLbox.class_list[0][1], UMLbox.class_list[3][1])
+#UMLline.delete_line(canvas, "class1", "class2")
 
 snake_app.mainloop()
