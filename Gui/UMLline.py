@@ -14,21 +14,23 @@ class UMLline():
         self.y2 = y2
         sourcepos = findpos(source)
         destpos = findpos(dest)
-        line = canvas.create_line(x1, y1, x2, y2)
+        line = canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST)
         canvas.tag_lower(line)
         UMLcircle.circle_list[sourcepos][4].append(("source", line, dest))
         UMLcircle.circle_list[destpos][4].append(("dest", line, source))
         
 #Add the new line with the correct positioning at the 
 #center of the circle
-def add_line(canvas, source, dest):
-    midsourcex = canvas.coords(source)[0] + 40
-    midsourcey = canvas.coords(source)[1] + 15
-    middestx = canvas.coords(dest)[0] + 40
-    middesty = canvas.coords(dest)[1] + 15
+def add_line(canvas, source : str, dest : str):
+    sourceItem = UMLcircle.circle_list[findpos(source)][1]
+    destItem = UMLcircle.circle_list[findpos(dest)][1]
+    midsourcex = canvas.coords(sourceItem)[0]
+    midsourcey = canvas.coords(sourceItem)[1] + 15
+    middestx = canvas.coords(destItem)[0]
+    middesty = canvas.coords(destItem)[1] + 15
     UMLline(canvas, midsourcex, midsourcey, middestx, middesty, source, dest)
 
-#Find the position in the circle_list of the source
+#Find the position of the circle_list of the source
 def findpos(source):
     pos = 0
     while(pos < len(UMLcircle.circle_list)):

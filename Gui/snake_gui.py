@@ -19,17 +19,24 @@ UMLcircle.setCanvas(canvas)
 
 #Some test classes to add to the screen
 UMLcircle.create_class(canvas, "class1")
-UMLcircle.create_class(canvas, "stupidstuff.extralosadasdasdasddasdsadngnasdasdasdamebecauseiamanidiot")
-UMLcircle.create_class(canvas, "mmmmmmmmmm")
+UMLcircle.create_class(canvas, "class2")
+UMLcircle.create_class(canvas, "class3")
 UMLcircle.create_class(canvas, "class4")
-
-UMLcircle.rename_circle("class1", "monkeyvibesbemonky")
 
 #some example relationship lines
 UMLline.add_line(canvas, UMLcircle.circle_list[0][1], UMLcircle.circle_list[1][1])
 UMLline.add_line(canvas, UMLcircle.circle_list[2][1], UMLcircle.circle_list[3][1])
 UMLline.add_line(canvas, UMLcircle.circle_list[0][1], UMLcircle.circle_list[3][1])
 
-UMLline.delete_line(canvas, UMLcircle.circle_list[0][1], UMLcircle.circle_list[3][1])
+#UMLcircle.rename_circle("class1", "fuckery")
+
+UMLcircle.add_field("class1", "fuckery")
+UMLcircle.add_field("class1", "tomfoolery")
+UMLcircle.add_field("class1", "twas")
+
+UMLcircle.rename_field("class1", "fuckery", "fookary")
+
+#UMLcircle.delete_circle("class1")
+#UMLline.delete_line(canvas, UMLcircle.circle_list[0][1], UMLcircle.circle_list[3][1])
 
 snake_app.mainloop()
