@@ -1,7 +1,9 @@
 import tkinter as tk
+from typing import ValuesView
 import UMLbox
 import UMLline
 import UMLfield
+import ViewChange
 
 #Create Window
 snake_app = tk.Tk()
@@ -17,6 +19,7 @@ canvas.pack()
 
 #tell the class creator what canvas to use in UMLbox
 UMLbox.setCanvas(canvas)
+ViewChange.set_canvas(canvas)
 
 #Some test classes to add to the screen
 UMLbox.create_class(canvas, "class1")

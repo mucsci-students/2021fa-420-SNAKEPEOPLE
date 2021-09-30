@@ -3,10 +3,6 @@ import UMLbox
 
 def add_field(name : str, field : str):
     pos = UMLbox.find_pos_from_name(name)
-    while pos < len(UMLbox.circle_list):
-        if UMLbox.circle_list[pos][0] == name:
-            break
-        pos += 1
     UMLbox.circle_list[pos][6].append(field)
     newtext = ""
     x1, y1, x2, y2 = UMLbox.DndCanvas.coords(UMLbox.circle_list[pos][1])

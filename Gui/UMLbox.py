@@ -1,5 +1,7 @@
 import tkinter as tk
 from UMLline import delete_line
+import EventHandler
+import ViewChange
 
 circle_list = []
 
@@ -35,7 +37,7 @@ class UMLsquare():
         yincrement = 15
         DndCanvas.tag_lower(rec)
         circle_list.append([name, rec, label, textspace, [], fieldtext, [], yincrement, fieldlabel])
-        can_drag(rec)
+        EventHandler.can_drag(rec)
     
         
 def create_class(canvas, name : str):
@@ -50,68 +52,6 @@ def create_class(canvas, name : str):
         UMLsquare.y2 += 300
     UMLsquare.tracker += 1
 
-#bind clicking and dragging to functions
-def can_drag(rec):
-    DndCanvas.tag_bind(rec, "<Button-1>", on_click)
-    DndCanvas.tag_bind(rec, "<B1-Motion>", can_dragMotion)
-
-#find the closest element to the click
-def on_click(event):
-    global crec
-    crec = DndCanvas.find_closest(event.x, event.y)
-
-#line up variables so that circle equals the circle element
-#and label refers to the text element within the circle
-#Bring current circle to front
-def can_dragMotion(event):
-    pos = 0
-    while pos < len(circle_list):
-        if crec[0] in circle_list[pos]:
-            label = circle_list[pos][2]
-            circle = circle_list[pos][1]
-            break
-        pos += 1
-
-    DndCanvas.tag_raise(circle)
-    DndCanvas.tag_raise(label)
-    DndCanvas.tag_raise(circle_list[pos][5])
-    DndCanvas.tag_raise(circle_list[pos][8])
-    x1, y1, x2, y2 = DndCanvas.coords(circle_list[pos][1])
-    new_x1 = event.x - 20 - circle_list[pos][3]
-    new_y1 = event.y - 15 
-    new_x2 = event.x + 60 + circle_list[pos][3]
-    new_y2 = event.y + 10 + circle_list[pos][7]
-
-    #Bind the new coordinates so that the circle cannot go outside
-    #of the canvas
-    if(new_x2 > DndCanvas.winfo_width()):
-        new_x1 = DndCanvas.winfo_width() - 80 - 2.5 * circle_list[pos][3]
-        new_x2 = DndCanvas.winfo_width()
-    if(new_y2 > DndCanvas.winfo_height()):
-        new_y1 = DndCanvas.winfo_height() - 25
-        new_y2 = DndCanvas.winfo_height()
-    if(new_x1 < 0):
-        new_x1 = 0
-        new_x2 = 80 + 2 * circle_list[pos][3]
-    if(new_y1 < 0):
-        new_y1 = 0
-        new_y2 = 25
-
-
-    #move the elements
-    DndCanvas.coords(circle, new_x1, new_y1, new_x2, new_y2)
-    DndCanvas.coords(label, new_x1 + 40 + circle_list[pos][3], new_y1 + 12.5)
-    DndCanvas.coords(circle_list[pos][8], new_x1 + circle_list[pos][3] + 10, new_y1 + 30)
-    DndCanvas.coords(circle_list[pos][5], new_x1 + circle_list[pos][3] + 30, new_y1 + 25)
-    if(len(circle_list[pos][4]) > 0):
-        for i in circle_list[pos][4]:
-            if i[0] == "source":
-                x1, y1, x2, y2 = DndCanvas.coords(i[1])
-                DndCanvas.coords(i[1], new_x1 + 40 + circle_list[pos][3], new_y1 + 12.5, x2, y2)
-            if i[0] == "dest":
-                x1, y1, x2, y2 = DndCanvas.coords(i[1])
-                DndCanvas.coords(i[1], x1, y1, new_x2 - 95 - circle_list[pos][3], new_y2 - 25)
-
 #Remove the circle with the text = name
 def delete_circle(name : str):
     pos = find_pos_from_name(name)
@@ -124,10 +64,10 @@ def delete_circle(name : str):
             delete_line(DndCanvas, circle_list[pos][4][subpos][2], circle_list[pos][1])
             subpos -= 1
         subpos += 1
-    DndCanvas.delete(circle_list[pos][5])
-    DndCanvas.delete(circle_list[pos][8])
+    ViewChange.del_item(circle_list[pos][5])
+    ViewChange.del_item(circle_list[pos][8])
     circle_list.pop(pos)
-    DndCanvas.delete(name)
+    ViewChange.del_item(name)
     print(circle_list)
 
 def rename_circle(oldname : str, newname : str):
@@ -144,4 +84,4 @@ def rename_circle(oldname : str, newname : str):
         else:
             pos += 1
     #Change the text of the circle to the updated name
-    DndCanvas.itemconfigure(circle_list[pos][2], text = newname)
+    ViewChange.item_config(circle_list[pos][2], newname, None, None)

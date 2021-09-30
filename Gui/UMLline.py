@@ -1,5 +1,6 @@
 import tkinter as tk
 import UMLbox
+import ViewChange
 
 class UMLline():
 
@@ -55,4 +56,4 @@ def delete_line(canvas, source, dest):
             and UMLbox.circle_list[destpos][4][subpos][2] == source):
             UMLbox.circle_list[destpos][4].pop(subpos)
         subpos += 1
-    canvas.delete(line)
+    ViewChange.del_item(line)
