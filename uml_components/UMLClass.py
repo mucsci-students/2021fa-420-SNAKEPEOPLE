@@ -92,30 +92,6 @@ class UMLClass():
         print(f"<Added Method Parameter ({self.name}.{method.name}())>: " +
               f"{param_type} {param_name}")
         
-        
-    def rename_attr(self, 
-                    attr : UMLAttributes.UMLAttribute,
-                    new_name : str):
-        attr_pos : int
-        
-        if isinstance(attr, UMLAttributes.Field):
-            attr_pos = self.fields.index(attr)
-            field_o : UMLAttributes.Field = self.fields[attr_pos]
-            old_name = field_o.name
-            
-            field_o.rename(new_name)
-            
-            print(f"<Renamed Field>: {old_name} -> {new_name} ({self.name})")
-        
-        if isinstance(attr, UMLAttributes.Method):
-            attr_pos = self.methods.index(attr)
-            method_o : UMLAttributes.Method = self.methods[attr_pos]
-            old_name = method_o.name
-            
-            method_o.rename(new_name)
-            
-            print(f"<Renamed Field>: {old_name} -> {new_name} ({self.name})")
-        
 
     def delete_attr(self,
                     attr : UMLAttributes.UMLAttribute):

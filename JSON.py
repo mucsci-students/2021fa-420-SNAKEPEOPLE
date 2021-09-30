@@ -9,6 +9,7 @@ class ComplexEncoder(json.JSONEncoder):
     A complex json encoder for encoding nested objects.
     """
     
+    # Overwrites json.JSONEncoder.default() to account for custom python
     def default(self, 
                 obj: Union[UMLClass or UMLRelationship]) -> dict:
         if hasattr(obj, 'toJson'):
