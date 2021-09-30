@@ -28,9 +28,9 @@ UMLbox.create_class(canvas, "class3")
 UMLbox.create_class(canvas, "class4")
 
 #some example relationship lines
-UMLline.add_line(canvas, UMLbox.circle_list[0][1], UMLbox.circle_list[1][1])
-UMLline.add_line(canvas, UMLbox.circle_list[2][1], UMLbox.circle_list[3][1])
-UMLline.add_line(canvas, UMLbox.circle_list[0][1], UMLbox.circle_list[3][1])
+UMLline.add_line(canvas, "class1", "class2")
+UMLline.add_line(canvas, "class1", "class3")
+UMLline.add_line(canvas, "class2", "class3")
 
 #UMLbox.rename_circle("class1", "fuckery")
 
@@ -41,6 +41,6 @@ UMLfield.add_field("class1", "twas")
 UMLfield.rename_field("class1", "fuckery", "fookary")
 
 #UMLbox.delete_circle("class1")
-#UMLline.delete_line(canvas, UMLbox.circle_list[0][1], UMLbox.circle_list[3][1])
+UMLline.delete_line(canvas, "class1", "class2")
 
 snake_app.mainloop()

@@ -3,7 +3,7 @@ from UMLline import delete_line
 import EventHandler
 import ViewChange
 
-circle_list = []
+class_list = []
 
 def setCanvas(canvas):
     global DndCanvas
@@ -11,8 +11,8 @@ def setCanvas(canvas):
 
 def find_pos_from_name(name):
     pos = 0
-    while pos < len(circle_list):
-        if circle_list[pos][0] == name:
+    while pos < len(class_list):
+        if class_list[pos][0] == name:
             return pos
         pos += 1
 
@@ -36,7 +36,7 @@ class UMLsquare():
         fieldtext = canvas.create_text(x1 + 30, y1 + 25, text = "", state=tk.HIDDEN, anchor=tk.N)
         yincrement = 15
         DndCanvas.tag_lower(rec)
-        circle_list.append([name, rec, label, textspace, [], fieldtext, [], yincrement, fieldlabel])
+        class_list.append([name, rec, label, textspace, [], fieldtext, [], yincrement, fieldlabel])
         EventHandler.can_drag(rec)
     
         
@@ -56,32 +56,32 @@ def create_class(canvas, name : str):
 def delete_circle(name : str):
     pos = find_pos_from_name(name)
     subpos = 0
-    while subpos < len(circle_list[pos][4]):
-        if(circle_list[pos][4][subpos][0] == "source"):
-            delete_line(DndCanvas, circle_list[pos][1], circle_list[pos][4][subpos][2])
+    while subpos < len(class_list[pos][4]):
+        if(class_list[pos][4][subpos][0] == "source"):
+            delete_line(DndCanvas, class_list[pos][1], class_list[pos][4][subpos][2])
             subpos -= 1
         else:
-            delete_line(DndCanvas, circle_list[pos][4][subpos][2], circle_list[pos][1])
+            delete_line(DndCanvas, class_list[pos][4][subpos][2], class_list[pos][1])
             subpos -= 1
         subpos += 1
-    ViewChange.del_item(circle_list[pos][5])
-    ViewChange.del_item(circle_list[pos][8])
-    circle_list.pop(pos)
+    ViewChange.del_item(class_list[pos][5])
+    ViewChange.del_item(class_list[pos][8])
+    class_list.pop(pos)
     ViewChange.del_item(name)
-    print(circle_list)
+    print(class_list)
 
 def rename_circle(oldname : str, newname : str):
     pos = 0
     #Find the position of the circle with the old name
-    while pos < len(circle_list):
-        if oldname == circle_list[pos][0]:
+    while pos < len(class_list):
+        if oldname == class_list[pos][0]:
             #save the circle and text values
-            x1,y1,x2,y2 = DndCanvas.coords(circle_list[pos][1])
-            circle_list[pos][0] = newname
-            circle_list[pos][3] = len(newname) * 2.5
-            DndCanvas.coords(circle_list[pos][1], x1 - len(newname) * 2.5, y1, x2 + len(newname) * 2.5, y2)
+            x1,y1,x2,y2 = DndCanvas.coords(class_list[pos][1])
+            class_list[pos][0] = newname
+            class_list[pos][3] = len(newname) * 2.5
+            DndCanvas.coords(class_list[pos][1], x1 - len(newname) * 2.5, y1, x2 + len(newname) * 2.5, y2)
             break
         else:
             pos += 1
     #Change the text of the circle to the updated name
-    ViewChange.item_config(circle_list[pos][2], newname, None, None)
+    ViewChange.item_config(class_list[pos][2], newname, None, None)

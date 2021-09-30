@@ -17,43 +17,52 @@ class UMLline():
         destpos = findpos(dest)
         line = canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST)
         canvas.tag_lower(line)
-        UMLbox.circle_list[sourcepos][4].append(("source", line, dest))
-        UMLbox.circle_list[destpos][4].append(("dest", line, source))
+        UMLbox.class_list[sourcepos][4].append(("source", line, dest))
+        UMLbox.class_list[destpos][4].append(("dest", line, source))
         
 #Add the new line with the correct positioning at the 
 #center of the circle
 def add_line(canvas, source : str, dest : str):
-    sourceItem = UMLbox.circle_list[findpos(source)][1]
-    destItem = UMLbox.circle_list[findpos(dest)][1]
+    sourceItem = UMLbox.class_list[find_class(source)][1]
+    destItem = UMLbox.class_list[find_class(dest)][1]
     midsourcex = canvas.coords(sourceItem)[0]
     midsourcey = canvas.coords(sourceItem)[1] + 15
     middestx = canvas.coords(destItem)[0]
     middesty = canvas.coords(destItem)[1] + 15
-    UMLline(canvas, midsourcex, midsourcey, middestx, middesty, source, dest)
+    UMLline(canvas, midsourcex, midsourcey, middestx, middesty, sourceItem, destItem)
 
-#Find the position of the circle_list of the source
+def find_class(name):
+    pos = 0
+    while pos < len(UMLbox.class_list):
+        if UMLbox.class_list[pos][0] == name:
+            return pos
+        pos += 1
+
+#Find the position of the class_list of the source
 def findpos(source):
     pos = 0
-    while(pos < len(UMLbox.circle_list)):
-        if source == UMLbox.circle_list[pos][1]:
+    while(pos < len(UMLbox.class_list)):
+        if source == UMLbox.class_list[pos][1]:
             return pos
         else:
             pos += 1
 
-def delete_line(canvas, source, dest):
-    sourcepos = findpos(source)
-    destpos = findpos(dest)
+def delete_line(canvas, sourcename : str, destname : str):
+    sourcepos = find_class(sourcename)
+    source = UMLbox.class_list[sourcepos][1]
+    destpos = find_class(destname)
+    dest = UMLbox.class_list[destpos][1]
     subpos = 0
-    while subpos < len(UMLbox.circle_list[sourcepos][4]):
-        if (UMLbox.circle_list[sourcepos][4][subpos][0] == "source" 
-            and UMLbox.circle_list[sourcepos][4][subpos][2] == dest):
-            line = UMLbox.circle_list[sourcepos][4][subpos][1]
-            UMLbox.circle_list[sourcepos][4].pop(subpos)
+    while subpos < len(UMLbox.class_list[sourcepos][4]):
+        if (UMLbox.class_list[sourcepos][4][subpos][0] == "source" 
+            and UMLbox.class_list[sourcepos][4][subpos][2] == dest):
+            line = UMLbox.class_list[sourcepos][4][subpos][1]
+            UMLbox.class_list[sourcepos][4].pop(subpos)
         subpos += 1
     subpos = 0
-    while subpos < len(UMLbox.circle_list[destpos][4]):
-        if (UMLbox.circle_list[destpos][4][subpos][0] == "dest" 
-            and UMLbox.circle_list[destpos][4][subpos][2] == source):
-            UMLbox.circle_list[destpos][4].pop(subpos)
+    while subpos < len(UMLbox.class_list[destpos][4]):
+        if (UMLbox.class_list[destpos][4][subpos][0] == "dest" 
+            and UMLbox.class_list[destpos][4][subpos][2] == source):
+            UMLbox.class_list[destpos][4].pop(subpos)
         subpos += 1
     ViewChange.del_item(line)
