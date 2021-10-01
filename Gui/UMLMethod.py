@@ -10,9 +10,14 @@ def find_longest(paramlist):
     return i
 
 def add_method(classname : str, methodname : str, parameters : list):
+    i = 0
+    while i < len(parameters):
+        parameters[i] = "    -" + parameters[i]
+        i += 1
     parameters.insert(0, methodname)
     pos = UMLbox.find_pos_from_name(classname)
     class_list[pos][11].append(parameters)
+    print(class_list[pos][11])
     UMLbox.class_list[pos][12] += 10 + len(parameters) * 20
     x1, y1, x2, y2 = UMLbox.canvas.coords(UMLbox.class_list[pos][1])
     UMLbox.canvas.coords(UMLbox.class_list[pos][1], x1, y1, x2, y2 + 10 + len(parameters)*20)
@@ -23,17 +28,17 @@ def add_method(classname : str, methodname : str, parameters : list):
         subindex = 0
         while subindex < len(UMLbox.class_list[pos][11][index]):
             if subindex == 0:
-                newtext = newtext + "-" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
+                newtext = newtext + "" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
             else:
-                newtext = newtext + "\t-" + UMLbox.class_list[pos][11][index][subindex] + "\n"
+                newtext = newtext + "" + UMLbox.class_list[pos][11][index][subindex] + "\n"
             subindex += 1
             if(subindex == len(UMLbox.class_list[pos][11][index])):
                 newtext = newtext + "\n"
         index += 1
-    UMLbox.canvas.itemconfigure(UMLbox.class_list[pos][10], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
+    UMLbox.canvas.itemconfigure(UMLbox.class_list[pos][10], text = newtext, justify = tk.LEFT, state=tk.DISABLED)
+    newspot = UMLbox.update_size(pos)
     x,y = UMLbox.canvas.coords(UMLbox.class_list[pos][9])
-    UMLbox.canvas.coords(UMLbox.class_list[pos][10], x, y + 10)
-    UMLbox.update_size(pos)
+    UMLbox.canvas.coords(UMLbox.class_list[pos][10], newspot, y + 10)
 
 def del_method(classname : str, methodname : str):
     pos = UMLbox.find_pos_from_name(classname)
@@ -54,17 +59,19 @@ def del_method(classname : str, methodname : str):
         subindex = 0
         while subindex < len(UMLbox.class_list[pos][11][index]):
             if subindex == 0:
-                newtext = newtext + "-" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
+                newtext = newtext + "" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
             else:
-                newtext = newtext + "\t-" + UMLbox.class_list[pos][11][index][subindex] + "\n"
+                newtext = newtext + "" + UMLbox.class_list[pos][11][index][subindex] + "\n"
             subindex += 1
             if(subindex == len(UMLbox.class_list[pos][11][index])):
                 newtext = newtext + "\n"
         index += 1
-    UMLbox.canvas.itemconfigure(UMLbox.class_list[pos][10], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
+    UMLbox.canvas.itemconfigure(UMLbox.class_list[pos][10], text = newtext, justify = tk.LEFT, state=tk.DISABLED)
     x,y = UMLbox.canvas.coords(UMLbox.class_list[pos][9])
     UMLbox.canvas.coords(UMLbox.class_list[pos][10], x, y + 10)
-    UMLbox.update_size(pos)
+    newspot = UMLbox.update_size(pos)
+    x,y = UMLbox.canvas.coords(UMLbox.class_list[pos][9])
+    UMLbox.canvas.coords(UMLbox.class_list[pos][10], newspot, y + 10)
 
 def change_params(classname : str, methodname : str, new_params : list):
     pos = UMLbox.find_pos_from_name(classname)
@@ -89,14 +96,16 @@ def change_params(classname : str, methodname : str, new_params : list):
         subindex = 0
         while subindex < len(UMLbox.class_list[pos][11][index]):
             if subindex == 0:
-                newtext = newtext + "-" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
+                newtext = newtext + "" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
             else:
-                newtext = newtext + "\t-" + UMLbox.class_list[pos][11][index][subindex] + "\n"
+                newtext = newtext + "" + UMLbox.class_list[pos][11][index][subindex] + "\n"
             subindex += 1
             if(subindex == len(UMLbox.class_list[pos][11][index])):
                 newtext = newtext + "\n"
         index += 1
-    UMLbox.canvas.itemconfigure(UMLbox.class_list[pos][10], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
+    UMLbox.canvas.itemconfigure(UMLbox.class_list[pos][10], text = newtext, justify = tk.LEFT, state=tk.DISABLED)
     x,y = UMLbox.canvas.coords(UMLbox.class_list[pos][9])
     UMLbox.canvas.coords(UMLbox.class_list[pos][10], x, y + 10)
-    UMLbox.update_size(pos)
+    newspot = UMLbox.update_size(pos)
+    x,y = UMLbox.canvas.coords(UMLbox.class_list[pos][9])
+    UMLbox.canvas.coords(UMLbox.class_list[pos][10], newspot, y + 10)

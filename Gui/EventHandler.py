@@ -39,23 +39,24 @@ def can_dragMotion(event):
         new_x1 = UMLbox.canvas.winfo_width() - 75 - 2.5 * UMLbox.class_list[pos][3]
         new_x2 = UMLbox.canvas.winfo_width()
     if(new_y2 > UMLbox.canvas.winfo_height()):
-        new_y1 = UMLbox.canvas.winfo_height() - 25 - UMLbox.class_list[pos][7]
+        new_y1 = UMLbox.canvas.winfo_height() - 25 - UMLbox.class_list[pos][7] - UMLbox.class_list[pos][12]
         new_y2 = UMLbox.canvas.winfo_height()
     if(new_x1 < 0):
         new_x1 = 0
         new_x2 = 80 + 2 * UMLbox.class_list[pos][3]
     if(new_y1 < 0):
         new_y1 = 0
-        new_y2 = 25 + UMLbox.class_list[pos][7]
+        new_y2 = 25 + UMLbox.class_list[pos][7] + UMLbox.class_list[pos][12]
 
-
+    p1,l1,p2,l2 = UMLbox.canvas.coords(UMLbox.class_list[pos][1])
+    center = ((x2 - x1) / 2) + x1
     #move the elements
     ViewChange.set_rec(circle, new_x1, new_y1, new_x2, new_y2)
     ViewChange.set_text(label, new_x1 + 40 + UMLbox.class_list[pos][3], new_y1 + 12.5)
     ViewChange.set_text(UMLbox.class_list[pos][8], new_x1 + 25, new_y1 + 30)
     ViewChange.set_text(UMLbox.class_list[pos][5], new_x1 + UMLbox.class_list[pos][3] + 40, new_y1 + 25)
     ViewChange.set_text(UMLbox.class_list[pos][9], new_x1 + 35, new_y2 - 15 - UMLbox.class_list[pos][12])
-    ViewChange.set_text(UMLbox.class_list[pos][10], new_x1 + UMLbox.class_list[pos][3] + 17, new_y2 - 5 - UMLbox.class_list[pos][12])
+    ViewChange.set_text(UMLbox.class_list[pos][10], center, new_y2 - 5 - UMLbox.class_list[pos][12])
     if(len(UMLbox.class_list[pos][4]) > 0):
         for i in UMLbox.class_list[pos][4]:
             if i[0] == "source":

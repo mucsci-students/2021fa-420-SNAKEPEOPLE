@@ -30,7 +30,7 @@ class UMLsquare():
     y2 = 65
     def __init__(self, canvas, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
         label = canvas.create_text(x1 + 40, y1 + 12, text = name, state=tk.DISABLED, tags=name)
-        textspace = 2.5 * len(name)
+        textspace = 3 * len(name)
         rec = canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="red", tags=name)
         fieldlabel = canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
         fieldtext = canvas.create_text(x1 + 40, y1 + 25, text = "", state=tk.HIDDEN, anchor=tk.N)
@@ -89,6 +89,7 @@ def rename_box(oldname : str, newname : str):
     ViewChange.item_config(class_list[pos][2], newname, None, None)
 
 def update_size(pos : int):
+    old_longest = 2.5 * len(class_list[pos][0])
     longest_name = 2.5 * len(class_list[pos][0])
     i = 0
     for i in class_list[pos][6]:
@@ -108,3 +109,4 @@ def update_size(pos : int):
     canvas.coords(class_list[pos][8], x1 + 25, y)
     x,y = canvas.coords(class_list[pos][9])
     canvas.coords(class_list[pos][9], x1 + 35, y)
+    return center

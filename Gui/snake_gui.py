@@ -23,62 +23,28 @@ UMLbox.setCanvas(canvas)
 ViewChange.set_canvas(canvas)
 
 #Some test classes to add to the screen
-UMLbox.create_box(canvas, "class1")
-
-
-UMLMethod.add_method("class1", "poggers int2", ["int somethin1", "int Somethin2"])
-
-UMLfield.add_field("class1", "boo")
-
-UMLfield.rename_field("class1", "boo", "ssadasasdaaaaaaaaaasdasdadassd")
 UMLbox.create_box(canvas, "class2")
 
 
-UMLMethod.add_method("class2", "poggers int2", ["int somethin1", "int Somethin2"])
-
+UMLMethod.add_method("class2", "poggers int3", ["int somethin1", "int asd"])
+UMLMethod.add_method("class2", "poggers int4", ["int somethin1", "int Somethin2"])
 UMLfield.add_field("class2", "boo")
 
-UMLfield.rename_field("class2", "boo", "asdasdasdadasasdasdsadasdasd")
 
-#UMLMethod.add_method("class1", "poggers int", ["int somethin1", "int Somethin2"])
-#UMLMethod.add_method("class1", "poggers int3", ["int somethin1", "int Somethin2"])
+UMLfield.rename_field("class2", "boo", "a")
 
-#UMLMethod.del_method("class1", "poggers int")
-#UMLMethod.del_method("class1", "poggers int2")
-
-#UMLMethod.change_params("class1", "poggers int3", ["int asdasd", "kjasdj"])
-
-#UMLbox.create_box(canvas, "class2")
-
-# UMLMethod.add_method("class2", "poggers int2", ["int somethin1", "int Somethin2"])
-# UMLMethod.add_method("class2", "poggers int", ["int somethin1", "int Somethin2"])
-
-# UMLMethod.add_method("class2", "poggers int", ["int somethin1", "int Somethin2"])
-# #UMLMethod.add_method("class2", "poggers int", ["int somethin1", "int Somethin2"])
-
-# # UMLMethod.add_method("class2", "poggers int", ["int somethin1", "int Somethin2"])
-
-# UMLfield.add_field("class2", "box")
-# UMLfield.add_field("class2", "tomfasasdasdadasdasdoolery")
-# UMLfield.add_field("class2", "twas")
-# UMLfield.add_field("class2", "boo")
+UMLbox.create_box(canvas, "class1")
 
 
-#some example relationship lines
-#UMLline.add_line(canvas, "class1", "class2")
-# UMLline.add_line(canvas, "class1", "class3")
-#UMLline.add_line(canvas, "class1", "class4")
+UMLMethod.add_method("class1", "poggers int2", ["int somethin1", "int ssadahaasdasdadsdjadjahjsahaa"])
+UMLMethod.add_method("class1", "poggers int3", ["int somethin1", "int asd"])
+UMLMethod.add_method("class1", "poggers int4", ["int somethin1", "int Somethin2"])
+UMLfield.add_field("class1", "boo")
 
+UMLMethod.del_method("class2", "poggers int2")
 
-#UMLfield.add_field("class2", "sadasdasdsadsaasdasdsa")
-# UMLfield.add_field("class2", "asf")
-# UMLfield.add_field("class2", "twas")
-# UMLfield.add_field("class2", "boo")
+UMLMethod.change_params("class2", "poggers int3", ["int asdsadasddsaasdasdsa", "in tasda"])
 
-#UMLfield.del_field("class1", "malarcky")
-
-#UMLfield.del_field("class2", "sadasdasdsadsaasdasdsa")
-#UMLbox.delete_box("class1")
-#UMLline.delete_line(canvas, "class1", "class2")
+#UMLfield.rename_field("class1", "boo", "a")
 
 snake_app.mainloop()
