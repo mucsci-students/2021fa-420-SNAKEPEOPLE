@@ -100,11 +100,11 @@ def update_size(pos : int):
                 longest_name = len(k) * 2.5
     class_list[pos][3] = longest_name
     x1,y1,x2,y2 = canvas.coords(class_list[pos][1])
-    print( x1)
-    print( y1)
-    print( x2)
-    print( y2)
     center = ((x2 - x1) / 2) + x1
     x1 = center - 40 - longest_name
     x2 = center + 40 + longest_name
     canvas.coords(class_list[pos][1], x1, y1, x2, y2)
+    x,y = canvas.coords(class_list[pos][8])
+    canvas.coords(class_list[pos][8], x1 + 25, y)
+    x,y = canvas.coords(class_list[pos][9])
+    canvas.coords(class_list[pos][9], x1 + 35, y)

@@ -30,7 +30,7 @@ UMLMethod.add_method("class1", "poggers int2", ["int somethin1", "int Somethin2"
 
 UMLfield.add_field("class1", "boo")
 
-UMLfield.rename_field("class1", "boo", "asdasdasdadasasdasdsadasdasd")
+UMLfield.rename_field("class1", "boo", "ssadasasdaaaaaaaaaasdasdadassd")
 UMLbox.create_box(canvas, "class2")
 
 

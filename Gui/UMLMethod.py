@@ -25,7 +25,7 @@ def add_method(classname : str, methodname : str, parameters : list):
             if subindex == 0:
                 newtext = newtext + "-" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
             else:
-                newtext = newtext + "    -" + UMLbox.class_list[pos][11][index][subindex] + "\n"
+                newtext = newtext + "\t-" + UMLbox.class_list[pos][11][index][subindex] + "\n"
             subindex += 1
             if(subindex == len(UMLbox.class_list[pos][11][index])):
                 newtext = newtext + "\n"
@@ -56,7 +56,7 @@ def del_method(classname : str, methodname : str):
             if subindex == 0:
                 newtext = newtext + "-" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
             else:
-                newtext = newtext + "    -" + UMLbox.class_list[pos][11][index][subindex] + "\n"
+                newtext = newtext + "\t-" + UMLbox.class_list[pos][11][index][subindex] + "\n"
             subindex += 1
             if(subindex == len(UMLbox.class_list[pos][11][index])):
                 newtext = newtext + "\n"
@@ -91,7 +91,7 @@ def change_params(classname : str, methodname : str, new_params : list):
             if subindex == 0:
                 newtext = newtext + "-" + UMLbox.class_list[pos][11][index][subindex] + ":\n"
             else:
-                newtext = newtext + "    -" + UMLbox.class_list[pos][11][index][subindex] + "\n"
+                newtext = newtext + "\t-" + UMLbox.class_list[pos][11][index][subindex] + "\n"
             subindex += 1
             if(subindex == len(UMLbox.class_list[pos][11][index])):
                 newtext = newtext + "\n"

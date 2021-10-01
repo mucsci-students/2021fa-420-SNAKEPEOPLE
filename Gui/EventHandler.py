@@ -52,9 +52,9 @@ def can_dragMotion(event):
     #move the elements
     ViewChange.set_rec(circle, new_x1, new_y1, new_x2, new_y2)
     ViewChange.set_text(label, new_x1 + 40 + UMLbox.class_list[pos][3], new_y1 + 12.5)
-    ViewChange.set_text(UMLbox.class_list[pos][8], new_x1 + UMLbox.class_list[pos][3] + 10, new_y1 + 30)
+    ViewChange.set_text(UMLbox.class_list[pos][8], new_x1 + 25, new_y1 + 30)
     ViewChange.set_text(UMLbox.class_list[pos][5], new_x1 + UMLbox.class_list[pos][3] + 40, new_y1 + 25)
-    ViewChange.set_text(UMLbox.class_list[pos][9], new_x1 + UMLbox.class_list[pos][3] + 18, new_y2 - 15 - UMLbox.class_list[pos][12])
+    ViewChange.set_text(UMLbox.class_list[pos][9], new_x1 + 35, new_y2 - 15 - UMLbox.class_list[pos][12])
     ViewChange.set_text(UMLbox.class_list[pos][10], new_x1 + UMLbox.class_list[pos][3] + 17, new_y2 - 5 - UMLbox.class_list[pos][12])
     if(len(UMLbox.class_list[pos][4]) > 0):
         for i in UMLbox.class_list[pos][4]:
