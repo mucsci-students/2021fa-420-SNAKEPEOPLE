@@ -9,15 +9,19 @@ class UMLAttribute:
 
     
 @dataclass
-class Parameter (UMLAttribute):
+class UMLParameter (UMLAttribute):
     type : str
     
     def __repr__(self) -> str:
         output = f"{self.type} {self.name}"
         return output
+    
+    def rename(self, 
+               new_name : str) -> None:
+        self.name = new_name
 
 @dataclass
-class Field (UMLAttribute):
+class UMLField (UMLAttribute):
     type : str
     
     def __repr__(self):
@@ -25,13 +29,13 @@ class Field (UMLAttribute):
         return output
         
     def rename(self, 
-               new_name : str):
+               new_name : str) -> None:
         self.name = new_name
     
 @dataclass
-class Method (UMLAttribute):
+class UMLMethod (UMLAttribute):
     return_type : str
-    params : list[Parameter] = field(default_factory=list)
+    params : list[UMLParameter] = field(default_factory=list)
             
     def __repr__(self):
         output = f"{self.return_type} {self.name}("
@@ -48,11 +52,17 @@ class Method (UMLAttribute):
         self.name = new_name
         
     def add_param(self, 
-                  param : Parameter) -> None:
+                  param_name : str,
+                  param_type : str) -> None:
+        
+        param = UMLParameter(param_name, param_type)
         self.params.append(param)
+        
+    def clear(self) -> None:
+        self.params = []
 
 if __name__ == "__main__":       
-    method = Method("get_attr", "UMLAttribute")
-    method.add_param(Parameter("index", "int"))
-    method.add_param(Parameter("count", "int"))
+    method = UMLMethod("get_attr", "UMLAttribute")
+    method.add_param("index", "int")
+    method.add_param("count", "int")
     print(method)

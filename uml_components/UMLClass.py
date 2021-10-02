@@ -1,7 +1,12 @@
 # Project Name: SNAKE PEOPLE UML Editor
 # File Name:    uml_class.py
 
-from . import UMLAttributes
+from uml_components.UMLAttributes import (UMLField,
+                                          UMLMethod,
+                                          UMLParameter)
+from typing import Union
+
+from uml_components.interfaces.attr_interface import delete_field
 
 class_dict = dict()
 
@@ -62,7 +67,7 @@ class UMLClass():
                   type : str):
         
         # Adds a new field object to the built-in list of fields.
-        new_field = UMLAttributes.Field(name, type)
+        new_field = UMLField(name, type)
 
         self.fields.append(new_field)
         print(f"<Added Field ({self.name})>: {type} {name}")
@@ -71,10 +76,10 @@ class UMLClass():
     def add_method(self,
                    name : str,
                    return_type : str,
-                   parameters = None):
+                   parameters : Union[list[UMLParameter], None] = None) -> None:
         
         param_list = parameters if parameters else list()
-        new_method = UMLAttributes.Method(name, return_type, param_list)
+        new_method = UMLMethod(name, return_type, param_list)
         
         self.methods.append(new_method)
         print(f"<Added Method ({self.name})>: {return_type} " +
@@ -82,37 +87,31 @@ class UMLClass():
     
     
     def add_method_param(self,
-                         method : UMLAttributes.Method,
+                         method : UMLMethod,
                          param_name : str,
-                         param_type : str):
+                         param_type : str) -> None:
         
-        new_param = UMLAttributes.Parameter(param_name, param_type)
-        method.add_param(new_param)
+        method.add_param(param_name, param_type)
         
         print(f"<Added Method Parameter ({self.name}.{method.name}())>: " +
               f"{param_type} {param_name}")
         
-
-    def delete_attr(self,
-                    attr : UMLAttributes.UMLAttribute):
+    def delete_field(self,
+                     field : UMLField) -> None:
+        idx = self.fields.index(field)
+        self.fields.pop(idx)
         
-        attr_pos : int
+    def delete_method(self,
+                      method : UMLMethod) -> None:
+        method.clear()
+        idx = self.methods.index(method)
+        self.methods.pop(idx)
         
-        if isinstance(attr, UMLAttributes.Field):
-            attr_pos = self.fields.index(attr)
-            field_n : str = self.fields[attr_pos].name
-            
-            self.fields.pop(attr_pos)
-            
-            print(f"<Deleted Field>: {field_n} ({self.name})")
-        
-        if isinstance(attr, UMLAttributes.Method):
-            attr_pos = self.methods.index(attr)
-            method_n : str = self.fields[attr_pos].name
-            
-            self.methods.pop(attr_pos)
-            
-            print(f"<Deleted Method>: {method_n} ({self.name})")
+    def delete_param(self,
+                     method : UMLMethod,
+                     param : UMLParameter) -> None:
+        idx = method.params.index(param)
+        method.params.pop(idx)
             
     
     def toJson(self) -> dict:
