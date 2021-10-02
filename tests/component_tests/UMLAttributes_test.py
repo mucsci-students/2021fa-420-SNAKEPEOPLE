@@ -1,0 +1,2 @@
+from uml_components import UMLAttributes
+from uml_components.interfaces import attr_interface
