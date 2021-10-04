@@ -20,9 +20,8 @@ canvas.pack()
 UMLbox.setCanvas(canvas)
 ViewChange.set_canvas(canvas)
 
-UMLbox.create_box(canvas, "class1asdasdadasdasdasdasda")
-UMLbox.create_box(canvas, "class2asdasdadasdasdasdasda")
-UMLline.add_line(canvas, "class1asdasdadasdasdasdasda", "class2asdasdadasdasdasdasda", "composition")
+UMLbox.create_box(canvas, "class1")
+UMLbox.create_box(canvas, "class2")
 
 '''methods include:
         add_field(classname:str field:str)

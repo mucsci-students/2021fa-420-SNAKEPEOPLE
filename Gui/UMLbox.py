@@ -49,12 +49,12 @@ class UMLsquare():
 def create_box(canvas, name : str):
     xinc = UMLsquare(canvas, UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
     if(UMLsquare.tracker % 2 == 0):
-        UMLsquare.x1 += (4 * xinc.info[3])
+        UMLsquare.x1 += 80 + (4 * xinc.info[3])
         print(UMLsquare.x1)
-        UMLsquare.x2 += (4 * xinc.info[3])
+        UMLsquare.x2 += 80 + (4 * xinc.info[3])
     else:
-        UMLsquare.x1 -= 200
-        UMLsquare.x2 -= 200
+        UMLsquare.x1 -= 100
+        UMLsquare.x2 -= 180
         UMLsquare.y1 += 200
         UMLsquare.y2 += 200
         UMLsquare.xspace = 0
