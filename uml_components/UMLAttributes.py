@@ -35,7 +35,7 @@ class UMLField (UMLAttribute):
 @dataclass
 class UMLMethod (UMLAttribute):
     return_type : str
-    params : list[UMLParameter] = field(default_factory=list)
+    params : list = field(default_factory=list)
             
     def __repr__(self):
         output = f"{self.return_type} {self.name}("
