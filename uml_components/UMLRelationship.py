@@ -20,7 +20,7 @@ class UMLRelationship():
         
         self.source = source
         self.destination = destination
-        self.type = type.title()
+        self.type = type
         
         print(f"<Relationship Added> {self}")
     

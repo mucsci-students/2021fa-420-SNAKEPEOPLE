@@ -43,7 +43,7 @@ def check_type(rel_type : str) -> bool:
     else:
         return False
 
-def find_rel(source : str, dest : str) -> tuple[bool, int]:
+def find_rel(source : str, dest : str) -> tuple:
     index : int = 0
     
     if check_class(source) and check_class(dest): 

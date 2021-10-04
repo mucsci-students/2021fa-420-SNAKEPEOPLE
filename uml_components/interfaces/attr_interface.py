@@ -6,7 +6,7 @@ from typing import Union
 
 # Helper Methods =============================================================
 
-def find_class(class_name : str) -> tuple[bool, Union[UMLClass, None]]:
+def find_class(class_name : str) -> tuple:
     """
     Checks whether a given class name is the name of a class in the class
     dictionary.
@@ -20,7 +20,7 @@ def find_class(class_name : str) -> tuple[bool, Union[UMLClass, None]]:
     return False, None
     
 def find_method(uml : UMLClass,
-                method_name : str) -> tuple[bool, Union[UMLMethod, None]]:
+                method_name : str) -> tuple:
     """
     Checks if a given method name exists as a method in a given UMLClass.
     
@@ -41,7 +41,7 @@ def find_method(uml : UMLClass,
     return False, None
 
 def find_field(uml : UMLClass, 
-               field_name : str) -> tuple[bool, Union[UMLField, None]]:
+               field_name : str) -> tuple:
     """
     Checks if a given field name exists as a field in a given UMLClass.
     
@@ -62,7 +62,7 @@ def find_field(uml : UMLClass,
     return False, None
 
 def find_param(method : UMLMethod,
-               param_name : str) -> tuple[bool, Union[UMLParameter, None]]:
+               param_name : str) -> tuple:
     """
     Checks if a given parameter name exists as a parameter in a given UMLMethod
     object.

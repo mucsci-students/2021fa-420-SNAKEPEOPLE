@@ -6,8 +6,6 @@ from uml_components.UMLAttributes import (UMLField,
                                           UMLParameter)
 from typing import Union
 
-from uml_components.interfaces.attr_interface import delete_field
-
 class_dict = dict()
 
 class UMLClass():
@@ -76,7 +74,7 @@ class UMLClass():
     def add_method(self,
                    name : str,
                    return_type : str,
-                   parameters : Union[list[UMLParameter], None] = None) -> None:
+                   parameters : Union[list, None] = None) -> None:
         
         param_list = parameters if parameters else list()
         new_method = UMLMethod(name, return_type, param_list)

@@ -1,5 +1,5 @@
 import json
-from uml_components.UMLAttributes import Field, Method, Parameter
+from uml_components.UMLAttributes import UMLField, UMLMethod, UMLParameter
 from uml_components.UMLRelationship import UMLRelationship
 from uml_components.UMLClass import UMLClass
 from typing import Union
@@ -17,8 +17,8 @@ class ComplexEncoder(json.JSONEncoder):
         else:
             return json.JSONEncoder.default(self, obj)
         
-def encode(classes : list[dict], 
-           relationships : list[dict]) -> str:
+def encode(classes : list, 
+           relationships : list) -> str:
     """
     Encodes lists of classes and relationships into JSON.
     
@@ -66,7 +66,7 @@ def decode_classes(classes : list) -> dict:
         # Loops through the list of JSON representaions of fields and creating
         # UMLAttribute Field objects.
         for field in cls['fields']:
-            fields.append(Field(**field))
+            fields.append(UMLField(**field))
         
         # Loops through the list of JSON representations of methods and creating
         # UMLAttribute Method objects and their parameters (if they exist). Then
@@ -75,13 +75,13 @@ def decode_classes(classes : list) -> dict:
             
             # List of UMLAttribute Parameter objects
             params = []
-            m_obj = Method(**method)
+            m_obj = UMLMethod(**method)
             
             # Loops through the list of JSON representations of parameters
             # creating UMLAttribute Parameter objects and appending them to
             # 'params'.
             for param in method['params']:
-                p_obj = Parameter(**param)
+                p_obj = UMLParameter(**param)
                 params.append(p_obj)
             
             m_obj.params = params    
@@ -125,7 +125,7 @@ def decode_relationships(relationships : list) -> list:
     return rel_list
 
 
-def decode(json_str : str) -> tuple[dict,list]:
+def decode(json_str : str) -> tuple:
     """
     Decodes JSON into the respective UML components objects.
     
