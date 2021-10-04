@@ -18,20 +18,22 @@ def find_pos_from_name(name):
 
 class UMLsquare():
 
-    #tracker keeps the circles from being created on top of each other
-    #create a new oval on the graph and enable movement
-    #add each new circle to the list in a tuple consisting of
-    #(name, creat_oval return, create_text return)
-
+    """the list tracks the name, the square element, the class name label,
+    how much padding to account for lengthy text, lines, fields, yincrement due to fields,
+    field header, method header, methods text element, fields and methods, and vertical increment
+    due to methods and parametes"""
     tracker = 0
     x1 = 100
     x2 = 180
     y1 = 40
     y2 = 65
+    xspace = 0
     def __init__(self, canvas, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
+        x1 = x1 + UMLsquare.xspace
+        x2 = x2 + UMLsquare.xspace
         label = canvas.create_text(x1 + 40, y1 + 12, text = name, state=tk.DISABLED, tags=name)
-        textspace = 3 * len(name)
-        rec = canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="red", tags=name)
+        textspace =3.5 * len(name)
+        rec = canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="#D1FF65", tags=name)
         fieldlabel = canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
         fieldtext = canvas.create_text(x1 + 40, y1 + 25, text = "", state=tk.HIDDEN, anchor=tk.N)
         yincrement = 30
@@ -39,23 +41,26 @@ class UMLsquare():
         methodText = canvas.create_text(x1 + 40, y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
         canvas.tag_lower(rec)
         method_increment = 0
-        class_list.append([name, rec, label, textspace, [], fieldtext, [], yincrement, fieldlabel, methodlabel, methodText, [], method_increment])
+        self.info = [name, rec, label, textspace, [], fieldtext, [], yincrement, fieldlabel, methodlabel, methodText, [], method_increment]
+        class_list.append(self.info)
         EventHandler.can_drag(rec)
     
-        
+"""add a box to the canvas"""        
 def create_box(canvas, name : str):
-    UMLsquare(canvas, UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
+    xinc = UMLsquare(canvas, UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
     if(UMLsquare.tracker % 2 == 0):
-        UMLsquare.x1 += 200
-        UMLsquare.x2 += 200
+        UMLsquare.x1 += (4 * xinc.info[3])
+        print(UMLsquare.x1)
+        UMLsquare.x2 += (4 * xinc.info[3])
     else:
         UMLsquare.x1 -= 200
         UMLsquare.x2 -= 200
         UMLsquare.y1 += 200
         UMLsquare.y2 += 200
+        UMLsquare.xspace = 0
     UMLsquare.tracker += 1
 
-#Remove the circle with the text = name
+"""Remove the box with the text = name"""
 def delete_box(name : str):
     pos = find_pos_from_name(name)
     subpos = 0
@@ -72,6 +77,7 @@ def delete_box(name : str):
     class_list.pop(pos)
     ViewChange.del_item(name)
 
+"""rename a box with the name = oldname"""
 def rename_box(oldname : str, newname : str):
     pos = 0
     #Find the position of the circle with the old name
@@ -80,25 +86,27 @@ def rename_box(oldname : str, newname : str):
             #save the circle and text values
             x1,y1,x2,y2 = canvas.coords(class_list[pos][1])
             class_list[pos][0] = newname
-            class_list[pos][3] = len(newname) * 2.5
-            canvas.coords(class_list[pos][1], x1 - len(newname) * 2.5, y1, x2 + len(newname) * 2.5, y2)
+            class_list[pos][3] = len(newname) *3.5
+            canvas.coords(class_list[pos][1], x1 - len(newname) *3.5, y1, x2 + len(newname) *3.5, y2)
             break
         else:
             pos += 1
     #Change the text of the circle to the updated name
     ViewChange.item_config(class_list[pos][2], newname, None, None)
 
+
+"""update the width of the box according to the length of the contained text"""
 def update_size(pos : int):
-    old_longest = 2.5 * len(class_list[pos][0])
-    longest_name = 2.5 * len(class_list[pos][0])
+    old_longest =3.5 * len(class_list[pos][0])
+    longest_name =3.5 * len(class_list[pos][0])
     i = 0
     for i in class_list[pos][6]:
-        if len(i) * 2.5 > longest_name:
-            longest_name = len(i) * 2.5
+        if len(i) *3.5 > longest_name:
+            longest_name = len(i) *3.5
     for i in class_list[pos][11]:
         for k in i:
-            if len(k) * 2.5 > longest_name:
-                longest_name = len(k) * 2.5
+            if len(k) *3.5 > longest_name:
+                longest_name = len(k) *3.5
     class_list[pos][3] = longest_name
     x1,y1,x2,y2 = canvas.coords(class_list[pos][1])
     center = ((x2 - x1) / 2) + x1

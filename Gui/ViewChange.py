@@ -1,3 +1,5 @@
+"""THIS FILE ACTS AS THE VIEW CHANGER ALL OTHER METHODS USE THIS FILE TO UPDATE THE CANVAS"""
+
 def set_canvas(can):
     global canvas
     canvas = can

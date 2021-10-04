@@ -1,6 +1,7 @@
 import tkinter as tk
 import UMLbox
 
+"""add a field and update the vertical length of the box"""
 def add_field(name : str, field : str):
     pos = UMLbox.find_pos_from_name(name)
     UMLbox.class_list[pos][6].append(field)
@@ -17,7 +18,7 @@ def add_field(name : str, field : str):
     UMLbox.canvas.coords(UMLbox.class_list[pos][10], x, y + 15)
     UMLbox.update_size(pos)
 
-
+"""delete a field and update the vertical length of the box"""
 def del_field(name : str, field : str):
     pos = UMLbox.find_pos_from_name(name)
     fieldpos = 0
@@ -38,7 +39,7 @@ def del_field(name : str, field : str):
     UMLbox.canvas.coords(UMLbox.class_list[pos][9], x, y - 15)
     UMLbox.update_size(pos)
 
-
+"""rename a field and update the vertical length of the box"""
 def rename_field(name : str, oldname : str, newname : str):
     pos = UMLbox.find_pos_from_name(name)
     fieldpos = 0

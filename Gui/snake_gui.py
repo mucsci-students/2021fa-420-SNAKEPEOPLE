@@ -1,11 +1,9 @@
 import tkinter as tk
-from typing import ValuesView
 import UMLbox
 import UMLline
 import UMLfield
 import ViewChange
 import UMLMethod
-
 #Create Window
 snake_app = tk.Tk()
 
@@ -22,29 +20,29 @@ canvas.pack()
 UMLbox.setCanvas(canvas)
 ViewChange.set_canvas(canvas)
 
-#Some test classes to add to the screen
-UMLbox.create_box(canvas, "class2")
+UMLbox.create_box(canvas, "class1asdasdadasdasdasdasda")
+UMLbox.create_box(canvas, "class2asdasdadasdasdasdasda")
+UMLline.add_line(canvas, "class1asdasdadasdasdasdasda", "class2asdasdadasdasdasdasda", "composition")
 
+'''methods include:
+        add_field(classname:str field:str)
+        del_field(classname:str field:str)
+        rename_field(classname:str oldname:str, newname:str)
+        add_method(classname : str, methodname : str, parameters : list)
+        del_method(classname : str, methodname : str)
+        rename_params(classname : str, methodname : str, new_parameters : list)
+        create_box(canvas, name:str)
+        delete_box(name : str)
+        rename_box(oldname : str, newname : str)
+        add_line(canvas, source : str, dest : str)
+        delete_line(canvas, source : str, dest : str)
+        
+        **FOR LINES**
+        aggregation = blue
+        composition = green
+        inheritance = red
+        realization = black
+        '''
 
-UMLMethod.add_method("class2", "poggers int3", ["int somethin1", "int asd"])
-UMLMethod.add_method("class2", "poggers int4", ["int somethin1", "int Somethin2"])
-UMLfield.add_field("class2", "boo")
-
-
-UMLfield.rename_field("class2", "boo", "a")
-
-UMLbox.create_box(canvas, "class1")
-
-
-UMLMethod.add_method("class1", "poggers int2", ["int somethin1", "int ssadahaasdasdadsdjadjahjsahaa"])
-UMLMethod.add_method("class1", "poggers int3", ["int somethin1", "int asd"])
-UMLMethod.add_method("class1", "poggers int4", ["int somethin1", "int Somethin2"])
-UMLfield.add_field("class1", "boo")
-
-UMLMethod.del_method("class2", "poggers int2")
-
-UMLMethod.change_params("class2", "poggers int3", ["int asdsadasddsaasdasdsa", "in tasda"])
-
-#UMLfield.rename_field("class1", "boo", "a")
 
 snake_app.mainloop()
