@@ -13,16 +13,33 @@ from uml_components import (UMLClass,
 from uml_components.interfaces import (attr_interface,
                                        class_interface,
                                        rel_interface)
+import gui_application
 
 def main(args : list) -> None:
     '''
-    Processes an infinite loop waiting for a command from the user. Once input
-    is given, executes a command, if valid.
+    Main function for the program.
 
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
-    
+
+    if len(args) == 2:
+        # Enters CLI mode if the user selects CLI.
+        if args[1] == "--cli":
+            cli_loop()
+        # Stops the program if the user selection is invalid.
+        else:
+            print("Invalid input.")
+    # If the user does not pick either GUI or CLI, default to GUI.
+    else:
+        gui_application.main(args)
+
+def cli_loop() -> None:
+    '''
+    Processes an infinite loop waiting for a command from the user. Once input
+    is given, executes a command, if valid.
+    '''
+
     print("===============================================\n" +
           "|           Snake People UML Editor           |\n" +
           "===============================================\n" +
@@ -57,7 +74,8 @@ def main(args : list) -> None:
         
         'load' : ['load'],
         
-        'help' : ['help']}
+        'help' : ['help'],
+    }
     
     while True:
         
@@ -69,7 +87,7 @@ def main(args : list) -> None:
         elif cmd[0] in aliases['exit']:
             break
         
-        elif cmd[0] in aliases['addclass']:
+        elif cmd[0] == 'addclass':
             if check_inputs(cmd, 2):
                 class_interface.add_class(cmd[1])
             
@@ -111,7 +129,7 @@ def main(args : list) -> None:
                     list_all_classes()
                 else:
                     list_a_class(cmd[1])
-                    
+
         elif cmd[0] == 'listrel':
             rel_interface.list_relationships()
         
@@ -133,7 +151,7 @@ def main(args : list) -> None:
     
 
 def check_inputs(cmd : list, num : int) -> bool:
-    """
+    '''
     Checks if the number of arguments given matches the number of expected
     arguments for a given command.
     
@@ -142,7 +160,7 @@ def check_inputs(cmd : list, num : int) -> bool:
     - num : int -> the number of expected arguments
     
     return -> bool
-    """
+    '''
     
     if len(cmd) != num:
         # If the number of given arguments does not match the number of expected
@@ -157,10 +175,10 @@ def check_inputs(cmd : list, num : int) -> bool:
 
 
 def help() -> None:
-    """
+    '''
     Reads help information from a separate text file and prints it to the
     terminal window.
-    """
+    '''
     
     # Reading the information from the help file.
     help_file = open('help_stuff.txt')
@@ -174,13 +192,13 @@ def help() -> None:
     help_file.close()
 
 def list_a_class(input : str) -> None:
-    """
+    '''
     Given a class name, if the class exists in the system, printz the name of 
     the class and all the attributes it has.
     
     Parameters:\n
     - input : str -> the name of the class to be listed.
-    """
+    '''
     
     if input in UMLClass.class_dict:
         # Accesses a class from the class dictionary, and prints it to the 
@@ -191,9 +209,9 @@ def list_a_class(input : str) -> None:
         print(f"<Illegal Argument Error>: {input} does not exist as a class.")
 
 def list_all_classes() -> None:
-    """
+    '''
     Prints a list of all classes in the class dictionary and their attributes. 
-    """
+    '''
 
     if len(UMLClass.class_dict) == 0:
         print("(none)")
@@ -204,9 +222,9 @@ def list_all_classes() -> None:
         print()
  
 def save_classes(filename : str) -> None:
-    """
+    '''
     Saves the dictionary of classes to a .json file.
-    """
+    '''
     
     # Checks if the class dictionary is empty and prints an error if so.
     if len(UMLClass.class_dict) == 0:
@@ -233,9 +251,9 @@ def save_classes(filename : str) -> None:
         json.dump(save_dict, savefile)
         
 def load_classes(filename : str) -> None:
-    """
+    '''
     Loads the content of a .json file to the class dictionary.
-    """
+    '''
     
     # Prints a warning that the current class dictionary will be overwritten 
     # upon load.
