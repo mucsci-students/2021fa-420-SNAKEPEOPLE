@@ -9,6 +9,7 @@ import os.path
 
 import uml_class
 import relationships
+import gui_application
 
 def main(args : list) -> None:
     '''
@@ -17,20 +18,17 @@ def main(args : list) -> None:
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
-    
-    # Enters CLI mode if the user selects CLI.
-    if args[1] == "--cli":
-        cli_loop()
-    
-    # Enters GUI mode if the user selects GUI.
-    elif args[1] == "--gui":
-        # call whatever function takes the program into the GUI stuff
-        print("need to integrate gui stuff first")
-        pass
 
-    # If the user does not pick either GUI or CLI, default to CLI.
+    if len(args) == 2:
+        # Enters CLI mode if the user selects CLI.
+        if args[1] == "--cli":
+            cli_loop()
+        # Stops the program if the user selection is invalid.
+        else:
+            print("Invalid input.")
+    # If the user does not pick either GUI or CLI, default to GUI.
     else:
-        cli_loop()
+        gui_application.main(args)
 
 def cli_loop() -> None:
     '''
@@ -91,7 +89,6 @@ def cli_loop() -> None:
                     list_all_classes()
                 else:
                     list_a_class(cmd[1])
-                    
         
         elif cmd[0] == 'listrel':
             relationships.list_relationships()
