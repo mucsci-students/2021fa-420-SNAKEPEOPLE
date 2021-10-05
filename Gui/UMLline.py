@@ -1,4 +1,5 @@
 import tkinter as tk
+import ViewChange
 import UMLbox
 
 class UMLline():
@@ -9,6 +10,8 @@ class UMLline():
         destpos = findpos(dest)
         line = canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill=line_type, width=3)
         canvas.tag_lower(line)
+        """store entries for source and dest boxes that tell whether the box is the source
+            or destination of a relationship"""
         UMLbox.class_list[sourcepos][4].append(("source", line, dest))
         UMLbox.class_list[destpos][4].append(("dest", line, source))
 
@@ -55,6 +58,7 @@ def deleteline(canvas, source, dest):
     sourcepos = findpos(source)
     destpos = findpos(dest)
     subpos = 0
+    """delete all line entries for a box that involve source"""
     while subpos < len(UMLbox.class_list[sourcepos][4]):
         if (UMLbox.class_list[sourcepos][4][subpos][0] == "source" 
             and UMLbox.class_list[sourcepos][4][subpos][2] == dest):
@@ -62,9 +66,10 @@ def deleteline(canvas, source, dest):
             UMLbox.class_list[sourcepos][4].pop(subpos)
         subpos += 1
     subpos = 0
+    """delete all line entries for a box that involve dest"""
     while subpos < len(UMLbox.class_list[destpos][4]):
         if (UMLbox.class_list[destpos][4][subpos][0] == "dest" 
             and UMLbox.class_list[destpos][4][subpos][2] == source):
             UMLbox.class_list[destpos][4].pop(subpos)
         subpos += 1
-    canvas.delete(line)
+    ViewChange.del_item(line)

@@ -23,8 +23,8 @@ class UMLsquare():
     field header, method header, methods text element, fields and methods, and vertical increment
     due to methods and parametes"""
     tracker = 0
-    x1 = 100
-    x2 = 180
+    x1 = 120
+    x2 = 200
     y1 = 40
     y2 = 65
     xspace = 0
@@ -48,13 +48,14 @@ class UMLsquare():
 """add a box to the canvas"""        
 def create_box(canvas, name : str):
     xinc = UMLsquare(canvas, UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
+    """shift everything right after the first box in a row and then shift down after the second"""
     if(UMLsquare.tracker % 2 == 0):
-        UMLsquare.x1 += 80 + (4 * xinc.info[3])
+        UMLsquare.x1 += 500
         print(UMLsquare.x1)
-        UMLsquare.x2 += 80 + (4 * xinc.info[3])
+        UMLsquare.x2 += 500
     else:
-        UMLsquare.x1 -= 100
-        UMLsquare.x2 -= 180
+        UMLsquare.x1 -= 500
+        UMLsquare.x2 -= 500
         UMLsquare.y1 += 200
         UMLsquare.y2 += 200
         UMLsquare.xspace = 0
@@ -64,6 +65,7 @@ def create_box(canvas, name : str):
 def delete_box(name : str):
     pos = find_pos_from_name(name)
     subpos = 0
+    """remove any lines connecting the box to any other boxes"""
     while subpos < len(class_list[pos][4]):
         if(class_list[pos][4][subpos][0] == "source"):
             deleteline(canvas, class_list[pos][1], class_list[pos][4][subpos][2])
@@ -72,18 +74,21 @@ def delete_box(name : str):
             deleteline(canvas, class_list[pos][4][subpos][2], class_list[pos][1])
             subpos -= 1
         subpos += 1
+    """delete everything associated with the box"""
     ViewChange.del_item(class_list[pos][5])
     ViewChange.del_item(class_list[pos][8])
+    ViewChange.del_item(class_list[pos][9])
+    ViewChange.del_item(class_list[pos][10])
     class_list.pop(pos)
     ViewChange.del_item(name)
 
 """rename a box with the name = oldname"""
 def rename_box(oldname : str, newname : str):
     pos = 0
-    #Find the position of the circle with the old name
+    """Find the position of the box with the old name"""
     while pos < len(class_list):
         if oldname == class_list[pos][0]:
-            #save the circle and text values
+            """save the box and text values"""
             x1,y1,x2,y2 = canvas.coords(class_list[pos][1])
             class_list[pos][0] = newname
             class_list[pos][3] = len(newname) *3.5
@@ -91,7 +96,7 @@ def rename_box(oldname : str, newname : str):
             break
         else:
             pos += 1
-    #Change the text of the circle to the updated name
+    """Change the text of the circle to the updated name"""
     ViewChange.item_config(class_list[pos][2], newname, None, None)
 
 
@@ -100,6 +105,7 @@ def update_size(pos : int):
     old_longest =3.5 * len(class_list[pos][0])
     longest_name =3.5 * len(class_list[pos][0])
     i = 0
+    """find the longest text entry in the box"""
     for i in class_list[pos][6]:
         if len(i) *3.5 > longest_name:
             longest_name = len(i) *3.5
@@ -108,13 +114,16 @@ def update_size(pos : int):
             if len(k) *3.5 > longest_name:
                 longest_name = len(k) *3.5
     class_list[pos][3] = longest_name
+    """find the center and build off of it left and right using the 
+    length of the longest text entry"""
     x1,y1,x2,y2 = canvas.coords(class_list[pos][1])
     center = ((x2 - x1) / 2) + x1
     x1 = center - 40 - longest_name
     x2 = center + 40 + longest_name
-    canvas.coords(class_list[pos][1], x1, y1, x2, y2)
+    """update the box size, and shift header text elements"""
+    ViewChange.set_rec(class_list[pos][1], x1, y1, x2, y2)
     x,y = canvas.coords(class_list[pos][8])
-    canvas.coords(class_list[pos][8], x1 + 25, y)
+    ViewChange.set_text(class_list[pos][8], x1 + 25, y)
     x,y = canvas.coords(class_list[pos][9])
-    canvas.coords(class_list[pos][9], x1 + 35, y)
+    ViewChange.set_text(class_list[pos][9], x1 + 35, y)
     return center
