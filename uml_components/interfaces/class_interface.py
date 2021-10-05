@@ -1,7 +1,7 @@
 from uml_components.UMLClass import UMLClass, class_dict
 from uml_components.interfaces import rel_interface
 
-def add_class(name : str) -> None:
+def add_class(name : str) -> str:
     """
     Adds a new, empty class to the class dictionary.
     
@@ -10,15 +10,19 @@ def add_class(name : str) -> None:
     vaild; that is, it should not be None or the empty string.
     """
     
+    err = f"<Added Class>: {name}"
+
     # Checks if 'name' is a valid class name.
     if name == "" or name == None:
         # If 'name' is invalid, prints an error.
+        err = "Class name must not be empty."
         print("<Class Add Error [Invalid Name:1]>: " + 
               "Class name must not be empty.")
         
     # Checks if 'name' already exists as a class name.
     elif name in class_dict:
         # If 'name' already exists as a class name, prints an error.
+        err = f"Class named '{name}' already exists."
         print("<Class Add Error [Invalid Name:2]>: " + 
              f"Class named '{name}' already exists.")
     
@@ -28,7 +32,9 @@ def add_class(name : str) -> None:
         new_class = UMLClass(name)
         class_dict.update({name : new_class})
 
-       
+    return err
+
+
 def delete_class(name : str) -> None:
     """
     Deletes an existing class in the class dictionary.

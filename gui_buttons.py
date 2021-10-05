@@ -19,6 +19,12 @@ from uml_components import (UMLClass,
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
+from Gui import (EventHandler,
+                 UMLbox,
+                 UMLfield,
+                 UMLline,
+                 UMLMethod,
+                 ViewChange)
 import gui_application as ga
 
 ###################################################################################################

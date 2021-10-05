@@ -14,6 +14,12 @@ from uml_components import (UMLClass,
 from uml_components.interfaces import (class_interface,
                                        rel_interface,
                                        attr_interface)
+from Gui import (EventHandler,
+                 UMLbox,
+                 UMLfield,
+                 UMLline,
+                 UMLMethod,
+                 ViewChange)
 import gui_buttons as gb
 
 
