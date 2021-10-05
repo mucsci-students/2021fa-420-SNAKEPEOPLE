@@ -8,11 +8,13 @@ import sys
 import os.path
 
 # Internal Imports
+# Internal Imports
 from uml_components import (UMLClass, 
-                            UMLRelationship)
-from uml_components.interfaces import (attr_interface,
-                                       class_interface,
-                                       rel_interface)
+                            UMLRelationship,
+                            UMLAttributes)
+from uml_components.interfaces import (class_interface,
+                                       rel_interface,
+                                       attr_interface)
 import gui_application
 
 def main(args : list) -> None:
