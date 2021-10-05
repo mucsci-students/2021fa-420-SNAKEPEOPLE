@@ -9,7 +9,7 @@ def setCanvas(can):
     global canvas
     canvas = can
 
-def find_pos_from_name(name):
+def find_pos_from_name(name : str):
     pos = 0
     while pos < len(class_list):
         if class_list[pos][0] == name:
@@ -47,17 +47,16 @@ class UMLsquare():
     
 """add a box to the canvas"""        
 def create_box(canvas, name : str):
-    xinc = UMLsquare(canvas, UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
+    obj = UMLsquare(canvas, UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
     """shift everything right after the first box in a row and then shift down after the second"""
     if(UMLsquare.tracker % 2 == 0):
-        UMLsquare.x1 += 500
-        print(UMLsquare.x1)
-        UMLsquare.x2 += 500
+        UMLsquare.x1 += 400
+        UMLsquare.x2 += 400
     else:
-        UMLsquare.x1 -= 500
-        UMLsquare.x2 -= 500
-        UMLsquare.y1 += 200
-        UMLsquare.y2 += 200
+        UMLsquare.x1 -= 400
+        UMLsquare.x2 -= 400
+        UMLsquare.y1 += 300
+        UMLsquare.y2 += 300
         UMLsquare.xspace = 0
     UMLsquare.tracker += 1
 
