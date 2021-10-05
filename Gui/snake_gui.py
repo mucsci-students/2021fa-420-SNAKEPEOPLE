@@ -1,7 +1,7 @@
 import tkinter as tk
-import UMLbox
-import UMLline
-import UMLfield
+import UMLBox
+import UMLLine
+import UMLField
 import ViewChange
 import UMLMethod
 #Create Window
@@ -16,39 +16,10 @@ canvas = tk.Canvas(snake_app, bg="grey", width="1000", height="1000")
 #put the canvas in the window
 canvas.pack()
 
-#tell the class creator what canvas to use in UMLbox
-UMLbox.setCanvas(canvas)
+#tell the class creator what canvas to use in UMLBox
+UMLBox.setCanvas(canvas)
 ViewChange.set_canvas(canvas)
 
-UMLbox.create_box(canvas, "class1")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-
-UMLbox.create_box(canvas, "class2")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-
-UMLbox.create_box(canvas, "class3")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
-UMLfield.add_field("class1", "asdasdsad")
 
 
 '''methods include:

@@ -1,5 +1,5 @@
 import tkinter as tk
-from UMLline import deleteline
+from UMLLine import deleteline
 import EventHandler
 import ViewChange
 
