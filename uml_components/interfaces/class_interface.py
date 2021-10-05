@@ -35,7 +35,7 @@ def add_class(name : str) -> str:
     return err
 
 
-def delete_class(name : str) -> None:
+def delete_class(name : str) -> str:
     """
     Deletes an existing class in the class dictionary.
     
@@ -44,9 +44,12 @@ def delete_class(name : str) -> None:
     name of an existing class, an error is printed. 
     """
     
+    err = f"<Deleted Class>: {name}"
+
     # Checks if 'name' is already the name of an existing class.
     if name not in class_dict:
         # If 'name' is not the name of an existing class, prints an error.
+        err = f"Class named '{name}' does not exist."
         print("<Class Delete Error [Invalid Name]>: " +
               f"Class named '{name}' does not exist.")
     else:
@@ -56,9 +59,11 @@ def delete_class(name : str) -> None:
         class_dict.pop(name)
         print(f"<Deleted Class>: {name}")
 
+    return err
+
 
 def rename_class(old_name : str, 
-                 new_name : str) -> None:
+                 new_name : str) -> str:
     """
     Renames a class. 
     
@@ -75,6 +80,8 @@ def rename_class(old_name : str,
     that already exists in the class dict.
     """
     
+    err = ""
+
     # Checks if 'old_name' exists in the class dict.
     if old_name not in class_dict:
         # If 'old_name' doesn't exist, prints an error.
@@ -109,3 +116,5 @@ def rename_class(old_name : str,
             # Creates a new listing for 'uml' in the class dict with the
             # key of 'new_name'.
             class_dict.update({new_name : uml})
+
+    return err
