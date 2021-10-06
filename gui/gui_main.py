@@ -3,6 +3,7 @@ from tkinter import font
 
 from gui import gui_buttons
 from uml_components import UMLClass, UMLRelationship
+from gui.UMLBox import class_list
 
 def run():
     
@@ -52,15 +53,16 @@ def run():
             class_box.delete(0, tk.END)
             for key in UMLClass.class_dict:
                 class_box.insert(tk.END, UMLClass.class_dict[key].name)
-        window.after(100, update_classes)
+        window.after(10, update_classes)
         
     def update_rels():
         if rel_box.get(0, tk.END) != tuple(UMLRelationship.relationship_list):
             rel_box.delete(0, tk.END)
             for rel in UMLRelationship.relationship_list:
                 rel_box.insert(tk.END, rel)
-        window.after(100, update_rels)
+        window.after(10, update_rels)
         
+    test_canvas.update_idletasks()        
     update_classes()
     update_rels()
     
@@ -84,7 +86,7 @@ def run():
     
     class_box.grid(row=0, column=0, sticky="nsw")
     rel_box.grid(row=1, column=0, sticky="nsw")
-    # test_canvas.grid(row=0, column=1, sticky="nsew", rowspan=2)
+    test_canvas.grid(row=0, column=1, sticky="nsew", rowspan=2)
     
     btn_list = gui_buttons.make_buttons(control_frame)
     buttons(btn_list)

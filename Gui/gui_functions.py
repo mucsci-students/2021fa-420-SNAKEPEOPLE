@@ -13,6 +13,11 @@ from uml_components.interfaces import (attr_interface as ai,
                                        rel_interface as ri)
 from . import gui_windows as gw
 from . import gui_buttons as gb
+from . import UMLBox
+from . import UMLField
+from . import UMLLine
+from . import UMLMethod
+
 import snake_uml
 
 ###################################################################################################
@@ -23,10 +28,16 @@ Functions that are assigned to each button's respective popup window.
 Each function executes the back-end commands to fulfill the user's requested action,
 and give them feedback on whether it was successful or not.
 '''
+global canvas
 
-def b_add_class(name: str, label : tk.Label) -> None:
+def setCanvas(can : tk.Canvas):
+    global canvas
+    canvas = can
+
+def b_add_class(name: str, label : tk.Label) -> None: 
     output = ci.add_class(name)
     label.configure(text = output)
+    UMLBox.create_box(canvas, name)
 
 
 def b_delete_class(name: str, label : tk.Label) -> None:

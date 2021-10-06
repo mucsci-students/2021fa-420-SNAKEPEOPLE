@@ -1,6 +1,6 @@
 import tkinter as tk
-import ViewChange
-import UMLBox
+from gui import ViewChange
+from gui import UMLBox
 
 class UMLLine():
 

@@ -1,9 +1,10 @@
 import tkinter as tk
-from UMLLine import deleteline
-import EventHandler
-import ViewChange
+from gui.UMLLine import deleteline
+from gui import EventHandler
+from gui import ViewChange
 
 class_list = []
+global canvas
 
 def setCanvas(can):
     global canvas

@@ -1,7 +1,7 @@
 import tkinter as tk
-from UMLBox import class_list
-import UMLBox
-import ViewChange
+from gui.UMLBox import class_list
+from gui import UMLBox
+from gui import ViewChange
 
 """add a method and paramters and increment the vertical length of the box"""
 def add_method(classname : str, methodname : str, parameters : list):

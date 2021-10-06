@@ -1,5 +1,5 @@
-import UMLBox
-import ViewChange
+from gui import UMLBox
+from gui import ViewChange
 
 #bind clicking and dragging to functions
 def can_drag(rec):

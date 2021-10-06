@@ -1,6 +1,6 @@
 import tkinter as tk
-import UMLBox
-import ViewChange
+from gui import UMLBox
+from gui import ViewChange
 
 """add a field and update the vertical length of the box"""
 def add_field(name : str, field : str):
