@@ -62,7 +62,7 @@ def find_rel(source : str, dest : str) -> tuple:
                 
     return (False, index)
 
-def add_relationship(source : str, destination : str, rel_type : str) -> None:
+def add_relationship(source : str, destination : str, rel_type : str) -> str:
 
     """
     Adds a new relationship to the relationship list.
@@ -74,18 +74,23 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
     ['Aggregation', 'Composition', 'Inheritance', 'Realization'].
     """
     
+    err = f"<Deleted Relationship>: {source} - {destination} ({rel_type})"
+
     # Checks if the given relationship type is valid.
     if not check_type(rel_type):
         # If invalid, prints an error.
+        err = f"{rel_type} is not a valid relationship type."
         print("<Relationship Add Error>: " +
               f"{rel_type} is not a valid relationship type.")
     else:
         # If the type is valid, checks if both source and destination are valid
         # classes.
         if not check_class(source):
+            err = f"{source} does not exist as the name of a class."
             print("<Relationship Add Error>: " +
                   f"{source} does not exist as the name of a class.")
         if not check_class(destination):
+            err = f"{destination} does not exist as the name of a class."
             print("<Relationship Add Error>: " +
                   f"{destination} does not exist as the name of a class.")
         
@@ -96,6 +101,7 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
             for relationship in relationship_list:
                 if (source == relationship.source and 
                     destination == relationship.destination):
+                    err = f"Relationship {source} - {destination} already " + "exists"
                     print("<Relationship Add Error>: " +
                           f"Relationship {source} - {destination} already " +
                           "exists")
@@ -105,8 +111,9 @@ def add_relationship(source : str, destination : str, rel_type : str) -> None:
             rel = UMLRelationship(source, destination, rel_type)
             relationship_list.append(rel)
 
+    return err
 
-def delete_relationship(source : str, dest : str) -> None:
+def delete_relationship(source : str, dest : str) -> str:
 
     """
     Deletes an existing relationship of source - dest from the relationship 
@@ -117,11 +124,15 @@ def delete_relationship(source : str, dest : str) -> None:
     - dest : str -> the name of the secondary class of the relationship.
     """
     
+    err = ""
+
     # Checks if the given source and destination are valid classes.
     if not check_class(source):
+        err = f"{source} does not exist as the name of a class."
         print("<Relationship Delete Error>: " +
               f"{source} does not exist as the name of a class.")
     if not check_class(dest):
+        err = f"{dest} does not exist as the name of a class."
         print("<Relationship Delete Error>: " +
               f"{dest} does not exist as the name of a class.")
             
@@ -132,12 +143,16 @@ def delete_relationship(source : str, dest : str) -> None:
         # If matching relationship found, deletes the relationship from the
         # list.
         rel = relationship_list.pop(index)
+        err = f"<Deleted Relationship>: {source} - {dest} ({rel.type})"
         print(f"<Deleted Relationship>: {source} - {dest} ({rel.type})")
     else:
         # Otherwise, prints an error.
+        err = f"Relationship {source} - {dest} does not exist."
         print("<Relationship Delete Error>: " +
                 f"Relationship {source} - {dest} does not exist.")
-            
+
+    return err
+
 
 def rel_cleanup(cls : str) -> None:
     """
