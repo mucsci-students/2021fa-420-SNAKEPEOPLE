@@ -1,26 +1,45 @@
 import tkinter as tk
 from tkinter import font
 
-def run(class_dict : dict):
+from gui import gui_buttons
+from uml_components import UMLClass, UMLRelationship
+
+def run():
     
     window = tk.Tk()
     window.title("Snake People UML Editor")
-    window.grid_rowconfigure(0,weight=1)
+    window.grid_rowconfigure(0, weight=1)
+    window.grid_rowconfigure(1,weight=1)
     window.grid_columnconfigure(1,weight=1)
     
     menubar = build_menu(window)
     
-    my_font = font.Font(size=12)
+    title_font = font.Font(size=12)
+    list_font = font.Font(size=11)
     
     # Element Construction
-    selector_frame = tk.Frame(window, bg="#700")
-    display_frame = tk.Frame(window, bg="#070")
+    classes_frame = tk.LabelFrame(window, 
+                                   labelanchor='nw', 
+                                   text="Classes", 
+                                   font=title_font)
+    
+    relationship_frame = tk.LabelFrame(window, 
+                                   labelanchor='nw', 
+                                   text="Relationships", 
+                                   font=title_font)
+    
+    display_frame = tk.Frame(window)
     control_frame = tk.Frame(window)
     
-    class_box = tk.Listbox(selector_frame, 
-                        #    width=20, 
-                           font=my_font,
+    class_box = tk.Listbox(classes_frame, 
+                           font=list_font,
+                           width=30,
                            bd=3)
+    
+    rel_box = tk.Listbox(relationship_frame,
+                         font=list_font,
+                         width=30,
+                         bd=3)
     
     test_canvas = tk.Canvas(display_frame, 
                             width=600, 
@@ -28,51 +47,71 @@ def run(class_dict : dict):
                             bg="#888",
                             bd=3)
     
-    populate_listbox(class_box, ["str(x) for x in range(8000000000000000)"])
+    def update_classes():
+        if class_box.get(0, tk.END) != tuple(UMLClass.class_dict.keys()):
+            class_box.delete(0, tk.END)
+            for key in UMLClass.class_dict:
+                class_box.insert(tk.END, UMLClass.class_dict[key].name)
+        window.after(100, update_classes)
+        
+    def update_rels():
+        if rel_box.get(0, tk.END) != tuple(UMLRelationship.relationship_list):
+            rel_box.delete(0, tk.END)
+            for rel in UMLRelationship.relationship_list:
+                rel_box.insert(tk.END, rel)
+        window.after(100, update_rels)
+        
+    update_classes()
+    update_rels()
+    
     
     # Element placement in window.
-    selector_frame.grid(row=0, column=0, sticky="nsw")
-    selector_frame.columnconfigure(0, weight=1)
-    selector_frame.rowconfigure(0, weight=1)
+    classes_frame.grid(row=0, column=0, sticky="nsw")
+    classes_frame.columnconfigure(0, weight=1)
+    classes_frame.rowconfigure(0, weight=1)
     
-    display_frame.grid(row=0, column=1, sticky="nsew")
+    relationship_frame.grid(row=1, column=0, sticky="nsw")
+    relationship_frame.columnconfigure(0, weight=1)
+    relationship_frame.rowconfigure(1, weight=1)
+    
+    display_frame.grid(row=0, column=1, sticky="nsew", rowspan=2)
     display_frame.columnconfigure(1, weight=1)
     display_frame.rowconfigure(0,weight=1)
     
-    control_frame.grid(row=0, column=2, sticky="nse")
+    control_frame.grid(row=0, column=2, sticky="nse", rowspan=2)
     control_frame.columnconfigure(2, weight=1)
     control_frame.rowconfigure(0, weight=1)
     
     class_box.grid(row=0, column=0, sticky="nsw")
-    test_canvas.grid(row=0, column=1, sticky="nsew")
+    rel_box.grid(row=1, column=0, sticky="nsw")
+    # test_canvas.grid(row=0, column=1, sticky="nsew", rowspan=2)
     
-    buttons(control_frame, [])
+    btn_list = gui_buttons.make_buttons(control_frame)
+    buttons(btn_list)
+    
     window.config(menu=menubar)
+    
     window.mainloop()
     
-def populate_listbox(box : tk.Listbox, values : list):
-    """
-    Fills a Tk Listbox with values.
-    """
-    idx = 0
-    for x in values:
-        box.insert(idx, x)
         
-def buttons(cf : tk.Frame, btn_list : list):
-    for x in range(6):
-        btn = tk.Button(cf, text=str(x), width=22, bd=3)
+def buttons(btn_list : list):
+    for btn in btn_list:
         btn.pack()
+     
+def clear_dict():
+    UMLClass.class_dict = dict()
         
 def build_menu(window : tk.Tk) -> tk.Menu:
     menubar = tk.Menu(window)
     menu_file = tk.Menu(menubar, tearoff=0)
+    menu_file.add_command(label="New", command=clear_dict)
     menu_file.add_command(label="Save")
     menu_file.add_command(label="Load")
     menu_file.add_separator()
-    menu_file.add_command(label="Exit")
+    menu_file.add_command(label="Exit", command=exit)
     menubar.add_cascade(label="File", menu=menu_file)
     
     return menubar
 
 if __name__ == "__main__":
-    run({})
+    run()

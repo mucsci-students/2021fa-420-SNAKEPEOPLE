@@ -8,8 +8,8 @@ import tkinter as tk
 from tkinter import *
 
 # Internal Imports
-import gui_buttons as gb
-import gui_functions as gf
+from . import gui_buttons as gb
+from . import gui_functions as gf
 
 ###################################################################################################
 

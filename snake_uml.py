@@ -7,14 +7,12 @@ import sys
 import os.path
 
 # Internal Imports
-# Internal Imports
 from uml_components import (UMLClass, 
                             UMLRelationship,
                             UMLAttributes)
 from uml_components.interfaces import (class_interface,
                                        rel_interface,
                                        attr_interface)
-import gui_application
 from gui import gui_main
 
 def main(args : list) -> None:
@@ -34,8 +32,7 @@ def main(args : list) -> None:
             print("Invalid input.")
     # If the user does not pick either GUI or CLI, default to GUI.
     else:
-        gui_main.run(UMLClass.class_dict)
-        # gui_application.main(args)
+        gui_main.run()
 
 def cli_loop() -> None:
     '''

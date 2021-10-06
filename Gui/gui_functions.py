@@ -11,8 +11,8 @@ from tkinter import *
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-import gui_windows as gw
-import gui_buttons as gb
+from . import gui_windows as gw
+from . import gui_buttons as gb
 import snake_uml
 
 ###################################################################################################

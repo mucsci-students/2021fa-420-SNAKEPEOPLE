@@ -1,4 +1,5 @@
 from uml_components.UMLClass import UMLClass, class_dict
+from uml_components.UMLRelationship import UMLRelationship, relationship_list
 from uml_components.interfaces import rel_interface
 
 def add_class(name : str) -> str:
@@ -111,6 +112,15 @@ def rename_class(old_name : str,
             # Temporarily stores the UMLClass object stored in the class dict
             # under 'old_name'.
             uml : UMLClass = class_dict[old_name]
+            
+            
+            rel : UMLRelationship
+            for rel in relationship_list:
+                if rel.source == old_name:
+                    rel.source = new_name
+                if rel.destination == old_name:
+                    rel.destination = new_name
+                    
             # Changes the name of the UMLClass object to 'new_name'.
             uml.rename(new_name)
             
