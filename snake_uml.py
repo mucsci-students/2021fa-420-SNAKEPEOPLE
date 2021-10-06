@@ -1,28 +1,84 @@
 # Project Name:  SNAKE PEOPLE UML Editor
 # File Name:     snake_uml.py
 
-# Imports:
+# External Imports
 import json
-import jsonpickle
 import sys
 import os.path
 
-import uml_class
-import relationships
+# Internal Imports
+# Internal Imports
+from uml_components import (UMLClass, 
+                            UMLRelationship,
+                            UMLAttributes)
+from uml_components.interfaces import (class_interface,
+                                       rel_interface,
+                                       attr_interface)
+import gui_application
+from gui import gui_main
 
 def main(args : list) -> None:
     '''
-    Processes an infinite loop waiting for a command from the user. Once input
-    is given, executes a command, if valid.
+    Main function for the program.
 
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
+
+    if len(args) == 2:
+        # Enters CLI mode if the user selects CLI.
+        if args[1] == "--cli":
+            cli_loop()
+        # Stops the program if the user selection is invalid.
+        else:
+            print("Invalid input.")
+    # If the user does not pick either GUI or CLI, default to GUI.
+    else:
+        gui_main.run(UMLClass.class_dict)
+        # gui_application.main(args)
+
+def cli_loop() -> None:
+    '''
+    Processes an infinite loop waiting for a command from the user. Once input
+    is given, executes a command, if valid.
+    '''
+
+    print("===============================================\n" +
+          "|           Snake People UML Editor           |\n" +
+          "===============================================\n" +
+          "      Type 'help' for a list of commands.      \n" +
+          "       Type 'exit' to close the program.       \n")
     
-    print("=======================================\n" +
-          "|       Snake People UML Editor       |\n" +
-          "=======================================\n" +
-          "  Type 'help' for a list of commands.\n")
+    aliases = {
+        'exit' : ['exit', 'e',
+                  'quit', 'q'],
+        
+        'addclass' : ['addclass'],
+        
+        'delclass' : ['delclass'],
+        
+        'renclass' : ['renclass'],
+        
+        'addrel' : ['addrel'],
+        
+        'delrel' : ['delrel'],
+        
+        'addattr' : ['addattr'],
+        
+        'delattr' : ['delattr'],
+        
+        'renattr' : ['renattr'],
+        
+        'listclass' : ['listclass'],
+        
+        'listrel' : ['listrel'],
+        
+        'save' : ['save'],
+        
+        'load' : ['load'],
+        
+        'help' : ['help'],
+    }
     
     while True:
         
@@ -31,40 +87,44 @@ def main(args : list) -> None:
         if len(cmd) == 0:
             continue
         
-        elif cmd[0] == 'exit' or cmd[0] == 'quit':
+        elif cmd[0] in aliases['exit']:
             break
         
         elif cmd[0] == 'addclass':
             if check_inputs(cmd, 2):
-                uml_class.add_class(cmd[1])
+                class_interface.add_class(cmd[1])
             
         elif cmd[0] == 'delclass':
             if check_inputs(cmd, 2):
-                uml_class.delete_class(cmd[1])
+                class_interface.delete_class(cmd[1])
             
         elif cmd[0] == 'renclass':
             if check_inputs(cmd, 3):
-                uml_class.rename_class(cmd[1], cmd[2])
+                class_interface.rename_class(cmd[1], cmd[2])
                 
         elif cmd[0] == 'addrel':
-            if check_inputs(cmd, 3):
-                relationships.add_relationship(cmd[1], cmd[2])
+            if check_inputs(cmd, 4):
+                rel_interface.add_relationship(cmd[1], cmd[2], cmd[3])
                 
         elif cmd[0] == 'delrel':
             if check_inputs(cmd, 3):
-                relationships.delete_relationship(cmd[1], cmd[2])
+                rel_interface.delete_relationship(cmd[1], cmd[2])
                 
-        elif cmd[0] == 'addattr':
-            if check_inputs(cmd, 3):
-                uml_class.add_attribute(cmd[1], cmd[2])
+        elif cmd[0] == 'addfield':
+            if check_inputs(cmd, 4):
+                attr_interface.add_field(cmd[1], cmd[2], cmd[3])
+                
+        elif cmd[0] == 'addmethod':
+            if check_inputs(cmd, 4):
+                attr_interface.add_method(cmd[1], cmd[2], cmd[3])
                 
         elif cmd[0] == 'delattr':
             if check_inputs(cmd, 3):
-                uml_class.delete_attribute(cmd[1], cmd[2])
+                attr_interface.delete_attribute(cmd[1], cmd[2])
                 
         elif cmd[0] == 'renattr':
             if check_inputs(cmd, 4):
-                uml_class.rename_attribute(cmd[1], cmd[2], cmd[3])
+                attr_interface.rename_attribute(cmd[1], cmd[2], cmd[3])
                 
         elif cmd[0] == 'listclass':
             if check_inputs(cmd, 2):
@@ -72,10 +132,9 @@ def main(args : list) -> None:
                     list_all_classes()
                 else:
                     list_a_class(cmd[1])
-                    
-        
+
         elif cmd[0] == 'listrel':
-            relationships.list_relationships()
+            rel_interface.list_relationships()
         
         elif cmd[0] == 'save':
             if check_inputs(cmd, 2):
@@ -95,7 +154,7 @@ def main(args : list) -> None:
     
 
 def check_inputs(cmd : list, num : int) -> bool:
-    """
+    '''
     Checks if the number of arguments given matches the number of expected
     arguments for a given command.
     
@@ -104,7 +163,7 @@ def check_inputs(cmd : list, num : int) -> bool:
     - num : int -> the number of expected arguments
     
     return -> bool
-    """
+    '''
     
     if len(cmd) != num:
         # If the number of given arguments does not match the number of expected
@@ -119,10 +178,10 @@ def check_inputs(cmd : list, num : int) -> bool:
 
 
 def help() -> None:
-    """
+    '''
     Reads help information from a separate text file and prints it to the
     terminal window.
-    """
+    '''
     
     # Reading the information from the help file.
     help_file = open('help_stuff.txt')
@@ -136,53 +195,56 @@ def help() -> None:
     help_file.close()
 
 def list_a_class(input : str) -> None:
-    """
+    '''
     Given a class name, if the class exists in the system, printz the name of 
     the class and all the attributes it has.
     
     Parameters:\n
     - input : str -> the name of the class to be listed.
-    """
+    '''
     
-    if input in uml_class.class_dict:
+    if input in UMLClass.class_dict:
         # Accesses a class from the class dictionary, and prints it to the 
         # terminal.
-        print(uml_class.class_dict[input])
+        print(UMLClass.class_dict[input])
     else:
         # If the class does not exist in the class dictionary, prints an error.
         print(f"<Illegal Argument Error>: {input} does not exist as a class.")
 
 def list_all_classes() -> None:
-    """
+    '''
     Prints a list of all classes in the class dictionary and their attributes. 
-    """
+    '''
 
-    if len(uml_class.class_dict) == 0:
+    if len(UMLClass.class_dict) == 0:
         print("(none)")
     else:
         # Iterates through the class dictionary and prints each entry.
-        for key in uml_class.class_dict:
-            print(uml_class.class_dict[key])
+        for key in UMLClass.class_dict:
+            print(UMLClass.class_dict[key])
+        print()
  
-def save_classes(filename : str) -> None:
-    """
+def save_classes(filename : str) -> str:
+    '''
     Saves the dictionary of classes to a .json file.
-    """
+    '''
     
+    err = f"Saved {filename}."
+
     # Checks if the class dictionary is empty and prints an error if so.
-    if len(uml_class.class_dict) == 0:
+    if len(UMLClass.class_dict) == 0:
+        err = "Error: There are no classes in the class dictionary.\n" + "Save failed."
         print("Error: There are no classes in the class dictionary.\n" +
               "Save failed.")
-        return
     
     # Initializes a dictionary to store the information that will be converted
     # to JSON format.
     save_dict = dict()
     # Iterates through the dictionary of classes, encoding each entry into JSON
-    for key in uml_class.class_dict:
+    for key in UMLClass.class_dict:
         # Encodes the UMLClass object stored as a value in the class dictionary
         # into an easily decodable JSON format.
-        cls = jsonpickle.encode(uml_class.class_dict[key])
+        cls = jsonpickle.encode(UMLClass.class_dict[key])
         # Adds the JSON encoded object to 'save_dict' with the same key as in
         # 'class_dict'.
         save_dict.update({key : cls})
@@ -192,12 +254,16 @@ def save_classes(filename : str) -> None:
         # Writes the contents of 'save_dict' as JSON to the file pointed to by 
         # 'savefile'.
         json.dump(save_dict, savefile)
+
+    return err
         
-def load_classes(filename : str) -> None:
-    """
+def load_classes(filename : str) -> str:
+    '''
     Loads the content of a .json file to the class dictionary.
-    """
+    '''
     
+    etr = f"Loaded {filename}."
+
     # Prints a warning that the current class dictionary will be overwritten 
     # upon load.
     print("Warning: Loading will overwrite any unsaved changes.")
@@ -207,7 +273,7 @@ def load_classes(filename : str) -> None:
     # Checks if the user confirmed the load or not.
     if cont == "" or cont.lower() == "y":
         # If the user confirms the load, clears the class dictionary.
-        uml_class.class_dict.clear()
+        UMLClass.class_dict.clear()
 
         # Checking that the file the user is trying to load is one that exists.
         if os.path.exists(f"save_files/{filename}.json"):
@@ -222,14 +288,17 @@ def load_classes(filename : str) -> None:
             for key, value in load_dict.items():
                 # Decodes the UMLClass objects and adds them as values to the class
                 # dictionary.
-                uml_class.class_dict.update({key : jsonpickle.decode(value)})
+                UMLClass.class_dict.update({key : jsonpickle.decode(value)})
         # If the file name doesn't exist, stops and tells the user.
         else:
+            etr = "Load cancelled, please input the name of an existing file."
             print("Load cancelled, please input the name of an existing file.")
 
     else:
         # If load is not confirmed, print a cancellation message.
         print("Load cancelled.")
+
+    return etr
  
 # Entry Point
 if __name__ == '__main__':
