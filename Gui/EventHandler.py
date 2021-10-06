@@ -72,4 +72,4 @@ def can_dragMotion(event):
                 ViewChange.set_line(i[1], new_x1 + 40 + UMLBox.class_list[pos][3], new_y1 + 12.5, x2, y2)
             if i[0] == "dest":
                 x1, y1, x2, y2 = UMLBox.canvas.coords(i[1])
-                ViewChange.set_line(i[1], x1, y1, new_x2 + 15 - 3 * UMLBox.class_list[pos][3], new_y2 - 20 - UMLBox.class_list[pos][7] - UMLBox.class_list[pos][12])
+                ViewChange.set_line(i[1], x1, y1, new_x2, new_y2 - 20 - UMLBox.class_list[pos][7] - UMLBox.class_list[pos][12])

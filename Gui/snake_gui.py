@@ -26,6 +26,8 @@ UMLBox.create_box(canvas, "class1asdadsasdasdasdasd")
 UMLBox.create_box(canvas, "class2")
 UMLBox.create_box(canvas, "class3")
 UMLBox.create_box(canvas, "class4")
+
+UMLLine.add_line(canvas, "class1asdadsasdasdasdasd", "class2", "composition")
 # UMLMethod.add_method("class1","int method1",["stuff1"])
 # UMLMethod.add_method("class2","int method1",["stuff1", "asdasdasdadasdsadasdadasdsad"])
 
