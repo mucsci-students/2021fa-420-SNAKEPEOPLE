@@ -223,16 +223,18 @@ def list_all_classes() -> None:
             print(UMLClass.class_dict[key])
         print()
  
-def save_classes(filename : str) -> None:
+def save_classes(filename : str) -> str:
     '''
     Saves the dictionary of classes to a .json file.
     '''
     
+    err = f"Saved {filename}."
+
     # Checks if the class dictionary is empty and prints an error if so.
     if len(UMLClass.class_dict) == 0:
+        err = "Error: There are no classes in the class dictionary.\n" + "Save failed."
         print("Error: There are no classes in the class dictionary.\n" +
               "Save failed.")
-        return
     
     # Initializes a dictionary to store the information that will be converted
     # to JSON format.
@@ -251,12 +253,16 @@ def save_classes(filename : str) -> None:
         # Writes the contents of 'save_dict' as JSON to the file pointed to by 
         # 'savefile'.
         json.dump(save_dict, savefile)
+
+    return err
         
-def load_classes(filename : str) -> None:
+def load_classes(filename : str) -> str:
     '''
     Loads the content of a .json file to the class dictionary.
     '''
     
+    etr = f"Loaded {filename}."
+
     # Prints a warning that the current class dictionary will be overwritten 
     # upon load.
     print("Warning: Loading will overwrite any unsaved changes.")
@@ -284,11 +290,14 @@ def load_classes(filename : str) -> None:
                 UMLClass.class_dict.update({key : jsonpickle.decode(value)})
         # If the file name doesn't exist, stops and tells the user.
         else:
+            etr = "Load cancelled, please input the name of an existing file."
             print("Load cancelled, please input the name of an existing file.")
 
     else:
         # If load is not confirmed, print a cancellation message.
         print("Load cancelled.")
+
+    return etr
  
 # Entry Point
 if __name__ == '__main__':
