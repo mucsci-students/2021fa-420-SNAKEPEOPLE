@@ -1,9 +1,11 @@
 import tkinter as tk
-import UMLBox
-import UMLLine
-import UMLField
-import ViewChange
+import EventHandler
 import UMLMethod
+import UMLBox
+import UMLField
+import UMLLine
+import ViewChange
+
 #Create Window
 snake_app = tk.Tk()
 
@@ -20,7 +22,15 @@ canvas.pack()
 UMLBox.setCanvas(canvas)
 ViewChange.set_canvas(canvas)
 
-UMLBox.create_box(canvas, "class1")
+UMLBox.create_box(canvas, "class1asdadsasdasdasdasd")
+UMLBox.create_box(canvas, "class2")
+UMLBox.create_box(canvas, "class3")
+UMLBox.create_box(canvas, "class4")
+# UMLMethod.add_method("class1","int method1",["stuff1"])
+# UMLMethod.add_method("class2","int method1",["stuff1", "asdasdasdadasdsadasdadasdsad"])
+
+#UMLMethod.del_params("class2", "int method1", ["asdasdasdadasdsadasdadasdsad"])
+
 
 '''methods include:
         add_field(classname:str field:str)

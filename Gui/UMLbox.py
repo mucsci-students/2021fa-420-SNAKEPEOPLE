@@ -27,13 +27,10 @@ class UMLsquare():
     x2 = 200
     y1 = 40
     y2 = 65
-    xspace = 0
     def __init__(self, canvas, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
-        x1 = x1 + UMLsquare.xspace
-        x2 = x2 + UMLsquare.xspace
         label = canvas.create_text(x1 + 40, y1 + 12, text = name, state=tk.DISABLED, tags=name)
-        textspace =3.5 * len(name)
-        rec = canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="#D1FF65", tags=name)
+        textspace = 3.5 * len(name)
+        rec = canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill='white', tags=name)
         fieldlabel = canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
         fieldtext = canvas.create_text(x1 + 40, y1 + 25, text = "", state=tk.HIDDEN, anchor=tk.N)
         yincrement = 30
@@ -50,14 +47,13 @@ def create_box(canvas, name : str):
     obj = UMLsquare(canvas, UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
     """shift everything right after the first box in a row and then shift down after the second"""
     if(UMLsquare.tracker % 2 == 0):
-        UMLsquare.x1 += 400
-        UMLsquare.x2 += 400
+        UMLsquare.x1 += UMLsquare.x2 + obj.info[3]
+        UMLsquare.x2 += UMLsquare.x2 + obj.info[3]
     else:
-        UMLsquare.x1 -= 400
-        UMLsquare.x2 -= 400
-        UMLsquare.y1 += 300
-        UMLsquare.y2 += 300
-        UMLsquare.xspace = 0
+        UMLsquare.x1 = 120
+        UMLsquare.x2 = 200
+        UMLsquare.y1 += UMLsquare.y2 + obj.info[7]
+        UMLsquare.y2 += UMLsquare.y2 + obj.info[7]
     UMLsquare.tracker += 1
 
 """Remove the box with the text = name"""

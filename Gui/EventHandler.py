@@ -44,14 +44,14 @@ def can_dragMotion(event):
         new_x1 = UMLBox.canvas.winfo_width() - 80 - 2 * UMLBox.class_list[pos][3]
         new_x2 = UMLBox.canvas.winfo_width()
     if(new_y2 > UMLBox.canvas.winfo_height()):
-        new_y1 = UMLBox.canvas.winfo_height() - 25 - UMLBox.class_list[pos][7] - UMLBox.class_list[pos][12]
+        new_y1 = UMLBox.canvas.winfo_height() - 35 - UMLBox.class_list[pos][7] - UMLBox.class_list[pos][12]
         new_y2 = UMLBox.canvas.winfo_height()
     if(new_x1 < 0):
         new_x1 = 0
         new_x2 = 80 + 2 * UMLBox.class_list[pos][3] 
     if(new_y1 < 0):
         new_y1 = 0
-        new_y2 = 25 + UMLBox.class_list[pos][7] + UMLBox.class_list[pos][12]
+        new_y2 = 35 + UMLBox.class_list[pos][7] + UMLBox.class_list[pos][12]
 
     """find the center of the box"""
     center = ((x2 - x1) / 2) + x1

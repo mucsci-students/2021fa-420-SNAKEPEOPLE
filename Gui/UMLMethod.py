@@ -86,3 +86,32 @@ def block_text(pos):
                 newtext = newtext + "\n"
         index += 1
     return newtext
+
+def del_params(classname: str, methodname : str, del_params: list):
+    pos = UMLBox.find_pos_from_name(classname)
+    ind = 0
+    param_i = 0
+    """format del_params to the same as the parameters in parameter list of the box"""
+    while param_i < len(del_params):
+        del_params[param_i] = "    -" + del_params[param_i]
+        param_i += 1
+    """Find the method/parameter location within the method/param list of the box"""
+    while ind < len(UMLBox.class_list[pos][11][ind]):
+        if methodname == UMLBox.class_list[pos][11][ind][0]:
+            break
+        ind += 1
+    """remove elements from del_param from the method/parameter list of the box"""
+    for i in del_params:
+        UMLBox.class_list[pos][11][ind].remove(i)
+    param_i = 1
+    """normalize parameters in the method/parameter list of the box"""
+    while param_i < len(UMLBox.class_list[pos][11][ind]):
+        UMLBox.class_list[pos][11][ind][param_i] = UMLBox.class_list[pos][11][ind][param_i][5:]
+        param_i += 1
+    """update the parameter list and view using already created methods"""
+    change_params(classname, methodname, UMLBox.class_list[pos][11][ind][1:])
+    """decrement size of the box"""
+    UMLBox.class_list[pos][12] -= (len(del_params) * 20)
+    x1, y1, x2, y2 = UMLBox.canvas.coords(UMLBox.class_list[pos][1])
+    """update the size of the box"""
+    ViewChange.set_rec(UMLBox.class_list[pos][1], x1, y1, x2, y2 - len(del_params)*20)
