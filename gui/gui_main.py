@@ -53,16 +53,16 @@ def run():
             class_box.delete(0, tk.END)
             for key in UMLClass.class_dict:
                 class_box.insert(tk.END, UMLClass.class_dict[key].name)
-        window.after(10, update_classes)
+        window.after(100, update_classes)
         
     def update_rels():
-        if rel_box.get(0, tk.END) != tuple(UMLRelationship.relationship_list):
+        if list(rel_box.get(0, tk.END)) != UMLRelationship.relationship_list:
             rel_box.delete(0, tk.END)
             for rel in UMLRelationship.relationship_list:
                 rel_box.insert(tk.END, rel)
-        window.after(10, update_rels)
+        window.after(100, update_rels)
         
-    test_canvas.update_idletasks()        
+    # test_canvas.update_idletasks()        
     update_classes()
     update_rels()
     
