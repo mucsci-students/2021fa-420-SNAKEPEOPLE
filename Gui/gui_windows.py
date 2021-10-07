@@ -746,6 +746,7 @@ def rename_field_window() -> None:
     #     and executing the appropriate function.
     btn = tk.Button(
         command = lambda: gf.b_rename_field(etr1.get(), etr2.get(), etr3.get(), lbl4),
+        master = frame,
         text = "Confirm", 
         font = ('bold'))
     btn.grid(
