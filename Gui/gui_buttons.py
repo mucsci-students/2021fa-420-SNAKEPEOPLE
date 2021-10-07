@@ -9,13 +9,13 @@ from tkinter import *
 #import UMLbox
 
 # Internal Imports
-import gui_windows as gw
-import gui_functions as gf
+from . import gui_windows as gw
+from . import gui_functions as gf
 
 ###################################################################################################
 
 # Function to make the frame with all the right-side buttons for the GUI.
-def make_buttons() -> list:
+def make_buttons(frame : tk.Frame) -> list:
     '''
     Function to make the buttons on the right side of the GUI:
         [Add       Class]  [Delete    Class]  [Rename    Class]
@@ -31,7 +31,7 @@ def make_buttons() -> list:
     buttons = []
 
     # Add Class Button
-    add_class_button = tk.Button(
+    add_class_button = tk.Button(frame,
         command = gw.add_class_window,
         text = "Add Class", 
         width = 20)
@@ -39,7 +39,7 @@ def make_buttons() -> list:
 
 
     # Delete Class Button
-    delete_class_button = tk.Button(
+    delete_class_button = tk.Button(frame,
         command = gw.delete_class_window,
         text = "Delete Class", 
         width = 20)
@@ -47,7 +47,7 @@ def make_buttons() -> list:
     
 
     # Rename Class Button
-    rename_class_button = tk.Button(
+    rename_class_button = tk.Button(frame,
         command = gw.rename_class_window,
         text = "Rename Class", 
         width = 20)
@@ -55,7 +55,7 @@ def make_buttons() -> list:
 
 
     # Add Method Button
-    add_method_button = tk.Button(
+    add_method_button = tk.Button(frame,
         command = gw.add_method_window,
         text = "Add Method", 
         width = 20)
@@ -63,7 +63,7 @@ def make_buttons() -> list:
 
 
     # Delete Method Button
-    delete_method_button = tk.Button(
+    delete_method_button = tk.Button(frame,
         command = gw.delete_method_window,
         text = "Delete Method", 
         width = 20)
@@ -71,7 +71,7 @@ def make_buttons() -> list:
     
 
     # Rename Method Button
-    rename_method_button = tk.Button(
+    rename_method_button = tk.Button(frame,
         command = gw.rename_method_window,
         text = "Rename Method", 
         width = 20)
@@ -79,7 +79,7 @@ def make_buttons() -> list:
 
 
     # Add Field Button
-    add_field_button = tk.Button(
+    add_field_button = tk.Button(frame,
         command = gw.add_field_window,
         text = "Add Field", 
         width = 20)
@@ -87,7 +87,7 @@ def make_buttons() -> list:
 
 
     # Delete Field Button
-    delete_field_button = tk.Button(
+    delete_field_button = tk.Button(frame,
         command = gw.delete_field_window,
         text = "Delete Field", 
         width = 20)
@@ -95,7 +95,7 @@ def make_buttons() -> list:
     
 
     # Rename Field Button
-    rename_field_button = tk.Button(
+    rename_field_button = tk.Button(frame,
         command = gw.rename_field_window,
         text = "Rename Field", 
         width = 20)
@@ -103,7 +103,7 @@ def make_buttons() -> list:
 
 
     # Delete Parameter Button
-    delete_param_button = tk.Button(
+    delete_param_button = tk.Button(frame,
         command = gw.delete_param_window,
         text = "Delete Param",
         width = 20)
@@ -111,7 +111,7 @@ def make_buttons() -> list:
     
 
     # Rename Parameter Button
-    rename_param_button = tk.Button(
+    rename_param_button = tk.Button(frame,
         command = gw.rename_param_window,
         text = "Rename Param",
         width = 20)
@@ -119,7 +119,7 @@ def make_buttons() -> list:
 
 
     # Add Relationship Button
-    add_rel_button = tk.Button(
+    add_rel_button = tk.Button(frame,
         command = gw.add_relation_window,
         text = "Add Relation", 
         width = 20)
@@ -127,7 +127,7 @@ def make_buttons() -> list:
 
 
     # Delete Relationship Button
-    delete_rel_button = tk.Button(
+    delete_rel_button = tk.Button(frame,
         command = gw.delete_relation_window,
         text = "Delete Relation", 
         width = 20)
@@ -135,19 +135,19 @@ def make_buttons() -> list:
     
 
     # Save Button
-    save_button = tk.Button(
-        command = gw.save_window,
-        text = "Save File", 
-        width = 20)
-    buttons.append(save_button)
+    # save_button = tk.Button(
+    #     command = gw.save_window,
+    #     text = "Save File", 
+    #     width = 20)
+    # buttons.append(save_button)
 
 
     # Load Button
-    load_button = tk.Button(
-        command = gw.load_window,
-        text = "Load File", 
-        width = 20)
-    buttons.append(load_button)
+    # load_button = tk.Button(
+    #     command = gw.load_window,
+    #     text = "Load File", 
+    #     width = 20)
+    # buttons.append(load_button)
 
 
     return buttons

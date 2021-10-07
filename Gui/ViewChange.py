@@ -1,26 +1,23 @@
 """THIS FILE ACTS AS THE VIEW CHANGER ALL OTHER METHODS USE THIS FILE TO UPDATE THE CANVAS"""
-
-def set_canvas(can):
-    global canvas
-    canvas = can
+from gui import UMLBox
 
 def del_item(name):
-    canvas.delete(name)
+    UMLBox.test_canvas.delete(name)
 
 def bring_front(item):
-    canvas.tag_raise(item)
+    UMLBox.test_canvas.tag_raise(item)
 
 def set_rec(item, x1, y1, x2, y2):
-    canvas.coords(item, x1, y1, x2, y2)
+    UMLBox.test_canvas.coords(item, x1, y1, x2, y2)
 
 def set_text(item, x, y):
-    canvas.coords(item, x, y)
+    UMLBox.test_canvas.coords(item, x, y)
 
 def set_line(item, x1, y1, x2, y2):
-    canvas.coords(item, x1, y1, x2, y2)
+    UMLBox.test_canvas.coords(item, x1, y1, x2, y2)
 
 def item_config(item, text, justify, state):
     if(justify == None and state == None):
-        canvas.itemconfigure(item, text = text)
+        UMLBox.test_canvas.itemconfigure(item, text = text)
     else:
-        canvas.itemconfigure(item, text = text, justify = justify, state = state)
+        UMLBox.test_canvas.itemconfigure(item, text = text, justify = justify, state = state)
