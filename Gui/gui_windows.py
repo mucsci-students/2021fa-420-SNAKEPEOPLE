@@ -8,8 +8,8 @@ import tkinter as tk
 from tkinter import *
 
 # Internal Imports
-import gui_buttons as gb
-import gui_functions as gf
+from . import gui_buttons as gb
+from . import gui_functions as gf
 
 ###################################################################################################
 
@@ -813,7 +813,7 @@ def add_relation_window() -> None:
 
     # Creating the togglable buttons for the 4 types of Relationships
     type = tk.IntVar()
-    types = ["Aggregation", "Composition", "Inheritence", "Realization"]
+    types = ["aggregation", "composition", "inheritance", "realization"]
     for index in range(len(types)):
         rdo = Radiobutton(
             master = frame, 

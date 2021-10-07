@@ -1,6 +1,6 @@
 import tkinter as tk
-import UMLBox
-import ViewChange
+from gui import UMLBox
+from gui import ViewChange
 
 """add a field and update the vertical length of the box"""
 def add_field(name : str, field : str):
@@ -8,7 +8,7 @@ def add_field(name : str, field : str):
     """add field to list of fields"""
     UMLBox.class_list[pos][6].append(field)
     """update the height of the box"""
-    x1, y1, x2, y2 = UMLBox.canvas.coords(UMLBox.class_list[pos][1])
+    x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
     ViewChange.set_rec(UMLBox.class_list[pos][1], x1, y1, x2, y2 + 15)
     """increase the running count of the height of the box"""
     UMLBox.class_list[pos][7] += 15
@@ -16,9 +16,9 @@ def add_field(name : str, field : str):
     """update the text of the field text element"""
     ViewChange.item_config(UMLBox.class_list[pos][5], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
     """move everything below the field downward"""
-    x,y = UMLBox.canvas.coords(UMLBox.class_list[pos][9])
+    x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][9])
     ViewChange.set_text(UMLBox.class_list[pos][9], x, y + 15)
-    x,y = UMLBox.canvas.coords(UMLBox.class_list[pos][10])
+    x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][10])
     ViewChange.set_text(UMLBox.class_list[pos][10], x, y + 15)
     """adjust width of the box"""
     UMLBox.update_size(pos)
@@ -29,20 +29,20 @@ def del_field(name : str, field : str):
     fieldpos = 0
     """find the fields position in the field list"""
     while fieldpos < len(UMLBox.class_list[pos][6]):
-        if UMLBox.class_list[pos][6][fieldpos] == field:
+        if UMLBox.class_list[pos][6][fieldpos].split(' ', 1)[0] == field:
             UMLBox.class_list[pos][6].pop(fieldpos)
             break
         fieldpos += 1
     """update the running count of the height of the box"""
     UMLBox.class_list[pos][7] -= 15
     """update the shape of the box"""
-    x1, y1, x2, y2 = UMLBox.canvas.coords(UMLBox.class_list[pos][1])
+    x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
     ViewChange.set_rec(UMLBox.class_list[pos][1], x1, y1, x2, y2 - 15)
     newtext = new_fieldText(pos)
     """update the text of the field text element"""
     ViewChange.item_config(UMLBox.class_list[pos][5], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
     """shift everything below the field section upward"""
-    x,y = UMLBox.canvas.coords(UMLBox.class_list[pos][9])
+    x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][9])
     ViewChange.set_text(UMLBox.class_list[pos][9], x, y - 15)
     """adjust the width of the box"""
     UMLBox.update_size(pos)
@@ -53,8 +53,9 @@ def rename_field(name : str, oldname : str, newname : str):
     fieldpos = 0
     """find the field's location in the list"""
     while fieldpos < len(UMLBox.class_list[pos][6]):
-        if UMLBox.class_list[pos][6][fieldpos] == oldname:
-            UMLBox.class_list[pos][6][fieldpos] = newname
+        var_type = UMLBox.class_list[pos][6][fieldpos].split(' ', 1)[1][0:len(UMLBox.class_list[pos][6][fieldpos].split(' ', 1)[1]) - 2]
+        if UMLBox.class_list[pos][6][fieldpos].split(' ', 1)[0] == oldname:
+            UMLBox.class_list[pos][6][fieldpos] = newname + " " + var_type
             break
         fieldpos += 1
     newtext = new_fieldText(pos)
