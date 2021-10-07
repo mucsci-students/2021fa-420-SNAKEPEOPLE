@@ -81,7 +81,7 @@ def b_add_field(class_name : str,
                 label : tk.Label) -> None:
     output = ai.add_field(class_name, field_name, field_type)
     label.configure(text = output)
-    UMLField.add_field(class_name, field_name + " " + field_type)
+    UMLField.add_field(class_name, field_type + " " + field_name)
 
 
 def b_delete_field(class_name : str,

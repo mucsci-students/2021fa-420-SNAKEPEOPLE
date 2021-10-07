@@ -12,13 +12,21 @@ class UMLLine():
         UMLBox.test_canvas.tag_lower(line)
         """store entries for source and dest boxes that tell whether the box is the source
             or destination of a relationship"""
-        UMLBox.class_list[sourcepos][4].append(("source", line, dest))
-        UMLBox.class_list[destpos][4].append(("dest", line, source))
+        UMLBox.class_list[sourcepos][4].append(("source", line, dest, source))
+        UMLBox.class_list[destpos][4].append(("dest", line, source, dest))
 
 def add_line(source : str, dest : str, line_type : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    addline(UMLBox.class_list[sourcepos][1], UMLBox.class_list[destpos][1], line_type)
+    add = True
+    for i in UMLBox.class_list:
+        for k in i[4]:
+            print(len(i[4]))
+            if(k[0] == "source"):
+                if(k[2] == UMLBox.class_list[destpos][1] and k[3] == UMLBox.class_list[source][1]):
+                    add = False
+    if(add):
+        addline(UMLBox.class_list[sourcepos][1], UMLBox.class_list[destpos][1], line_type)
 
 """add a line cooresponding to the names of the two boxes, source and dest"""
 def addline(source, dest, line_type : str):
