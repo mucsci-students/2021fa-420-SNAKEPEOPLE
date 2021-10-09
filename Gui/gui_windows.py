@@ -8,11 +8,10 @@ import tkinter as tk
 from tkinter import *
 
 # Internal Imports
-from . import gui_buttons as gb
-from . import gui_functions as gf
+from gui import gui_buttons as gb
+from gui import gui_functions as gf
 
 ###################################################################################################
-
 '''
 Functions that are used to bring up new windows when each respective button is pressed.
 
@@ -251,7 +250,7 @@ def add_method_window() -> None:
     # Label: "Method Type"
     lbl3 = tk.Label(
         master = frame,  
-        text = "Method Name:", 
+        text = "Method Type:", 
         font = ('bold'))
     lbl3.grid(
         row = 2, 
@@ -937,6 +936,122 @@ def delete_relation_window() -> None:
         padx = 5, 
         pady = 5)
 
+    # Generate the window.
+    root.mainloop()
+
+
+def add_param_window() -> None:
+   # Window for Adding a Parameter to a Method in a Class.
+    root = tk.Toplevel(name = 'dn')
+    root.title("Add Parameter")
+
+    # Frame containing the elements.
+    frame = tk.Frame(
+        master = root,  
+        relief = tk.SUNKEN,  
+        borderwidth = 3)
+    frame.pack(ipadx = 10)
+
+    # Label: "Class Name"
+    lbl1 = tk.Label(
+        master = frame,  
+        text = "Class Name:", 
+        font = ('bold'))
+    lbl1.grid(
+        row = 0, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: "Method Name"
+    lbl2 = tk.Label(
+        master = frame,  
+        text = "Method Name:", 
+        font = ('bold'))
+    lbl2.grid(
+        row = 1, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: "Param Name"
+    lbl3 = tk.Label(
+        master = frame,  
+        text = "Param Name:", 
+        font = ('bold'))
+    lbl3.grid(
+        row = 2, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: "Param Type"
+    lbl4 = tk.Label(
+        master = frame,  
+        text = "Param Type:", 
+        font = ('bold'))
+    lbl4.grid(
+        row = 3, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: Output Message
+    lbl5 = tk.Label(
+        master = frame,  
+        text = "", 
+        font = ('bold'))
+    lbl5.grid(
+        row = 4, 
+        column = 0, 
+        sticky = "w")
+
+    # Entry where the user can enter their class name.
+    etr1 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr1.grid(
+        row = 0, 
+        column = 1, 
+        sticky = "w")
+
+    # Entry where the user can enter their method name.
+    etr2 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr2.grid(
+        row = 1, 
+        column = 1, 
+        sticky = "w")
+
+    # Entry where the user can enter their param name.
+    etr3 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr3.grid(
+        row = 2, 
+        column = 1, 
+        sticky = "w")
+    
+    # Entry where the user can enter their param type.
+    etr4 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr4.grid(
+        row = 3, 
+        column = 1, 
+        sticky = "w")
+
+    # Confirm Button, command is the helper checking the user input
+    #     and executing the appropriate function.
+    btn = tk.Button(
+        command = lambda: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5),
+        master = frame, 
+        text = "Confirm", 
+        font = ('bold'))
+    btn.grid(
+        row = 4, 
+        column = 1, 
+        sticky = "e", 
+        padx = 5, 
+        pady = 5)
+    
     # Generate the window.
     root.mainloop()
 

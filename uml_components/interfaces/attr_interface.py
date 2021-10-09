@@ -106,7 +106,7 @@ def add_field(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = f"Successfully added {field_name} to {class_name}."
+    err : str = f"Successfully added '{field_name}' to '{class_name}'."
     
     # Checks if 'class_name' exists as a class.
     if not find_class(class_name):
@@ -154,7 +154,7 @@ def add_method(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = f"Successfully added {method_name} to {class_name}."
+    err : str = f"Successfully added '{method_name}' to '{class_name}'."
     
     # Checks if 'class_name' exists as a class.
     if not find_class(class_name):
@@ -203,7 +203,7 @@ def add_param(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = f"Parameter added successfully to {class_name}.{method_name}."
+    err : str = f"Successfuly added parameter '{param_name}' to method '{method_name}' in class '{class_name}'."
     
     # Checks if 'class_name' exists as the name of a class in the class
     # dictionary. If it does not, prints an error.
@@ -264,8 +264,8 @@ def rename_field(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = (f"Successfully renamed field {field_name} in {class_name} to" +
-                 f" {new_name}")
+    err : str = (f"Successfully renamed field '{field_name}' in '{class_name}' to" +
+                 f" '{new_name}'")
     
     # Checks for whether class_name exists as the name of a class.
     if not find_class(class_name):
@@ -309,11 +309,11 @@ def rename_method(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = (f"Successfully renamed method {method_name} in {class_name} " +
-                 f"to {new_name}.")
+    err : str = (f"Successfully renamed method '{method_name}' in '{class_name}' " +
+                 f"to '{new_name}'.")
     
     if not find_class(class_name):
-        err = f"{class_name} does not exist as the name of a class."
+        err = f"'{class_name}' does not exist as the name of a class."
         print(f"<Method Rename Error>: {err}")
     
     elif new_name == "" or new_name == None:
@@ -350,11 +350,11 @@ def rename_param(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = (f"Successfully renamed parameter {param_name} to {new_name} " + 
-                 f"in {class_name}.{method_name}.")
+    err : str = (f"Successfully renamed parameter '{param_name}' to '{new_name}' " + 
+                 f"in '{class_name}.{method_name}'.")
     
     if class_name not in class_dict:
-        err = f"{class_name} does not exist as the name of a class."
+        err = f"'{class_name}' does not exist as the name of a class."
         print(f"<Parameter Rename Error>: {err}")
         
     elif new_name == "" or new_name == None:
@@ -368,12 +368,12 @@ def rename_param(class_name : str,
         found_param, param = find_param(method, param_name)
         
         if not found_method:
-            err = (f"{method_name} does not exist as the name of a method in " +
-                   f"{class_name}.")
+            err = (f"'{method_name}' does not exist as the name of a method in " +
+                   f"'{class_name}'.")
             print(f"<Parameter Rename Error>: {err}")
         elif not found_param:
-            err = (f"{param_name} does not exist as the name of a parameter " +
-                   f"in {class_name}.{method_name}.")
+            err = (f"'{param_name}' does not exist as the name of a parameter " +
+                   f"in '{class_name}.{method_name}'.")
             print(f"<Parameter Rename Error>: {err}")
         else:
             param.rename(new_name)
@@ -396,10 +396,10 @@ def delete_field(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = f"Successfully deleted field {field_name} from {class_name}."
+    err : str = f"Successfully deleted field '{field_name}' from '{class_name}'."
     
     if not find_class(class_name):
-        err = f"{class_name} does not exist as the name of a class."
+        err = f"'{class_name}' does not exist as the name of a class."
         print(f"<Field Delete Error>: {err}")
     
     else:
@@ -407,8 +407,8 @@ def delete_field(class_name : str,
         found, field = find_field(uml, field_name)
         
         if not found:
-            err = (f"{field_name} does not exist as the name of a field in " +
-                   f"{class_name}.")
+            err = (f"'{field_name}' does not exist as the name of a field in " +
+                   f"'{class_name}'.")
             print(f"<Field Delete Error>: {err}")
         else:
             uml.delete_field(field)
@@ -427,7 +427,7 @@ def delete_method(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = f"Successfully deleted method {method_name} from {class_name}."
+    err : str = f"Successfully deleted method '{method_name}' from '{class_name}'."
     
     if not find_class(class_name):
         err = f"{class_name} does not exist as the name of a class."
@@ -437,8 +437,8 @@ def delete_method(class_name : str,
         found, method = find_method(uml, method_name)
         
         if not found:
-            err = (f"{method_name} does not exist as the name of a method in " +
-                   f"{class_name}.")
+            err = (f"'{method_name}' does not exist as the name of a method in " +
+                   f"'{class_name}'.")
             print(f"<Method Delete Error>: {err}")
         else:
             uml.delete_method(method)
@@ -458,8 +458,8 @@ def delete_param(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    err : str = (f"Successfully deleted parameter {param_name} from " + 
-                 f"{class_name}.{method_name}.")
+    err : str = (f"Successfully deleted parameter '{param_name}' from " + 
+                 f"'{class_name}.{method_name}'.")
     
     if not find_class(class_name):
         err = f"{class_name} does not exist as the name of a class."
@@ -470,12 +470,12 @@ def delete_param(class_name : str,
         found_param, param = find_param(method, param_name)
         
         if not found_method:
-            err = (f"{method_name} does not exist as the name of a method in " +
-                   f"{class_name}.")
+            err = (f"'{method_name}' does not exist as the name of a method in " +
+                   f"'{class_name}'.")
             print(f"<Parameter Delete Error>: {err}")
         elif not found_param:
-            err = (f"{param_name} does not exist as the name of a parameter " +
-                   f"in {class_name}.{method_name}.")
+            err = (f"'{param_name}' does not exist as the name of a parameter " +
+                   f"in '{class_name}.{method_name}'.")
             print(f"<Parameter Delete Error>: {err}")
         else:
             uml.delete_param(method, param)
