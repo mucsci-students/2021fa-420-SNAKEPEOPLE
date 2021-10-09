@@ -102,6 +102,14 @@ def make_buttons(frame : tk.Frame) -> list:
     buttons.append(rename_field_button)
 
 
+    # Add Parameter Button
+    add_param_button = tk.Button(frame,
+        command = gw.add_param_window,
+        text = "Add Param",
+        width = 20)
+    buttons.append(add_param_button)
+
+
     # Delete Parameter Button
     delete_param_button = tk.Button(frame,
         command = gw.delete_param_window,

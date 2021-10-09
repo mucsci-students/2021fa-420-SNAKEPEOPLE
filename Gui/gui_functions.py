@@ -35,7 +35,6 @@ def b_add_class(name: str, label : tk.Label) -> None:
     UMLBox.create_box(name)
 
 
-
 def b_delete_class(name: str, label : tk.Label) -> None:
     output = ci.delete_class(name)
     label.configure(text = output)
@@ -75,6 +74,7 @@ def b_rename_method(class_name : str,
     label.configure(text = output)
     UMLMethod.rename_method(class_name, old_name, new_name)
 
+
 def b_add_field(class_name : str,
                 field_name : str,
                 field_type : str,
@@ -90,6 +90,7 @@ def b_delete_field(class_name : str,
     output = ai.delete_field(class_name, field_name)
     label.configure(text = output)
     UMLField.del_field(class_name, field_name)
+
 
 def b_rename_field(class_name : str,
                    old_name : str,
@@ -115,6 +116,15 @@ def b_delete_relation(class1 : str,
     output = ri.delete_relationship(class1, class2)
     label.configure(text = output)
     UMLLine.delete_line(class1, class2)
+
+
+def b_add_param(class_name : str,
+                method_name : str,
+                param_name : str,
+                param_type : str,
+                label : tk.Label) -> None:
+    output = ai.add_param(class_name, method_name, param_name, param_type)
+    label.configure(text = output)
 
 
 def b_delete_param(class_name : str, 
