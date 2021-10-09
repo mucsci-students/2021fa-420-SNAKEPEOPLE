@@ -21,7 +21,7 @@ def make_buttons(frame : tk.Frame) -> list:
         [Add       Class]  [Delete    Class]  [Rename    Class]
         [Add      Method]  [Delete   Method]  [Rename   Method]
         [Add       Field]  [Delete    Field]  [Rename    Field]
-        [Delete    Param]  [Rename    Param]
+        [Add       Param]  [Delete    Param]  [Rename    Param]
         [Add    Relation]  [Delete Relation]
         [Save       File]  [Load       File]
 
@@ -100,6 +100,14 @@ def make_buttons(frame : tk.Frame) -> list:
         text = "Rename Field", 
         width = 20)
     buttons.append(rename_field_button)
+
+
+    # Add Parameter Button
+    add_param_button = tk.Button(frame,
+        command = gw.add_param_window,
+        text = "Add Param",
+        width = 20)
+    buttons.append(add_param_button)
 
 
     # Delete Parameter Button
