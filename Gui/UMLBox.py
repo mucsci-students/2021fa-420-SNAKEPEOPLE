@@ -33,11 +33,15 @@ class UMLsquare():
     y1 = 40
     y2 = 65
     xspace = 0
+    yinc = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
         x1 = x1 + UMLsquare.xspace
         x2 = x2 + UMLsquare.xspace
         label = test_canvas.create_text(x1 + 40, y1 + 12, text = name, state=tk.DISABLED, tags=name)
         textspace =3.5 * len(name)
+        if UMLsquare.tracker % 2 == 1:
+            x1 += textspace
+            x2 += textspace
         rec = test_canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="#D1FF65", tags=name)
         fieldlabel = test_canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
         fieldtext = test_canvas.create_text(x1 + 40, y1 + 25, text = "", state=tk.HIDDEN, anchor=tk.N)
@@ -60,13 +64,13 @@ def create_box(name : str):
         obj = UMLsquare(UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
         """shift everything right after the first box in a row and then shift down after the second"""
         if(UMLsquare.tracker % 2 == 0):
-            UMLsquare.x1 += 400
-            UMLsquare.x2 += 400
+            UMLsquare.x1 += obj.info[3] + 200
+            UMLsquare.x2 += obj.info[3] + 200
         else:
-            UMLsquare.x1 -= 400
-            UMLsquare.x2 -= 400
-            UMLsquare.y1 += 300
-            UMLsquare.y2 += 300
+            UMLsquare.x1 = 120
+            UMLsquare.x2 = 200
+            UMLsquare.y1 += 200
+            UMLsquare.y2 += 200
             UMLsquare.xspace = 0
         UMLsquare.tracker += 1
         update_size(len(class_list) - 1)
@@ -98,8 +102,8 @@ def rename_box(oldname : str, newname : str):
     renamebox = True
     for i in class_list:
         if i[0] == newname:
-            rename_box = False
-    if(rename_box):
+            renamebox = False
+    if(renamebox):
         pos = 0
         """Find the position of the box with the old name"""
         while pos < len(class_list):
