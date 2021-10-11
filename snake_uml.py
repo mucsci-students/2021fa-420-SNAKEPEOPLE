@@ -180,16 +180,9 @@ def help() -> None:
     terminal window.
     '''
     
-    # Reading the information from the help file.
-    help_file = open('help_stuff.txt')
-    lines = help_file.readlines()
-
-
-    # Printing everything from the help file.
-    for line in lines:
-        print(line)
-
-    help_file.close()
+    with open("help.txt") as help:
+        content = help.read()
+        print(content)
 
 def list_a_class(input : str) -> None:
     '''
