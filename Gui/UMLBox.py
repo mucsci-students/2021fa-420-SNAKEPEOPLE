@@ -33,7 +33,6 @@ class UMLsquare():
     y1 = 40
     y2 = 65
     xspace = 0
-    yinc = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
         x1 = x1 + UMLsquare.xspace
         x2 = x2 + UMLsquare.xspace
@@ -57,6 +56,14 @@ class UMLsquare():
 """add a box to the canvas"""        
 def create_box(name : str):
     addbox = True
+    yinc = 0
+    if len(class_list ) > 1:
+        box1y = class_list[len(class_list) - 2][7] + class_list[len(class_list) - 2][12]
+        box2y = class_list[len(class_list) - 1][7] + class_list[len(class_list) - 1][12]
+        if box1y > box2y:
+            yinc = box1y
+        else:
+            yinc = box2y
     for i in class_list:
         if i[0] == name:
             addbox = False
@@ -69,8 +76,8 @@ def create_box(name : str):
         else:
             UMLsquare.x1 = 120
             UMLsquare.x2 = 200
-            UMLsquare.y1 += 200
-            UMLsquare.y2 += 200
+            UMLsquare.y1 += 100 + yinc
+            UMLsquare.y2 += 100 + yinc
             UMLsquare.xspace = 0
         UMLsquare.tracker += 1
         update_size(len(class_list) - 1)
@@ -82,10 +89,10 @@ def delete_box(name : str):
     """remove any lines connecting the box to any other boxes"""
     while subpos < len(class_list[pos][4]):
         if(class_list[pos][4][subpos][0] == "source"):
-            deleteline(test_canvas, class_list[pos][1], class_list[pos][4][subpos][2])
+            deleteline(class_list[pos][1], class_list[pos][4][subpos][2])
             subpos -= 1
         else:
-            deleteline(test_canvas, class_list[pos][4][subpos][2], class_list[pos][1])
+            deleteline(class_list[pos][4][subpos][2], class_list[pos][1])
             subpos -= 1
         subpos += 1
     """delete everything associated with the box"""

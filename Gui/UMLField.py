@@ -66,7 +66,7 @@ def rename_field(name : str, oldname : str, newname : str):
                 if i == newname:
                     addfield = False
             if(addfield):
-                UMLBox.class_list[pos][6][fieldpos] = var_type + " " + newname
+                UMLBox.class_list[pos][6][fieldpos] = newname
             break
         fieldpos += 1
     if(addfield):
