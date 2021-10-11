@@ -53,10 +53,11 @@ class UMLsquare():
         class_list.append(self.info)
         EventHandler.can_drag(rec)
     
-"""add a box to the canvas"""        
+#add a box to the canvas#      
 def create_box(name : str):
     addbox = True
     yinc = 0
+    #Get previous row's tallest box height#
     if len(class_list ) > 1:
         box1y = class_list[len(class_list) - 2][7] + class_list[len(class_list) - 2][12]
         box2y = class_list[len(class_list) - 1][7] + class_list[len(class_list) - 1][12]
@@ -64,12 +65,13 @@ def create_box(name : str):
             yinc = box1y
         else:
             yinc = box2y
+    #Check for duplicate box names#
     for i in class_list:
         if i[0] == name:
             addbox = False
     if(addbox):
         obj = UMLsquare(UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
-        """shift everything right after the first box in a row and then shift down after the second"""
+        #shift everything right after the first box in a row and then shift down after the second#
         if(UMLsquare.tracker % 2 == 0):
             UMLsquare.x1 += obj.info[3] + 200
             UMLsquare.x2 += obj.info[3] + 200
@@ -80,13 +82,14 @@ def create_box(name : str):
             UMLsquare.y2 += 100 + yinc
             UMLsquare.xspace = 0
         UMLsquare.tracker += 1
+        #Update width of box#
         update_size(len(class_list) - 1)
 
-"""Remove the box with the text = name"""
+#Remove the box with the text = name#
 def delete_box(name : str):
     pos = find_pos_from_name(name)
     subpos = 0
-    """remove any lines connecting the box to any other boxes"""
+    #remove any lines connecting the box to any other boxes#
     while subpos < len(class_list[pos][4]):
         if(class_list[pos][4][subpos][0] == "source"):
             deleteline(class_list[pos][1], class_list[pos][4][subpos][2])
@@ -95,7 +98,7 @@ def delete_box(name : str):
             deleteline(class_list[pos][4][subpos][2], class_list[pos][1])
             subpos -= 1
         subpos += 1
-    """delete everything associated with the box"""
+    #delete everything associated with the box#
     ViewChange.del_item(class_list[pos][1])
     ViewChange.del_item(class_list[pos][2])
     ViewChange.del_item(class_list[pos][5])
@@ -104,31 +107,30 @@ def delete_box(name : str):
     ViewChange.del_item(class_list[pos][10])
     class_list.pop(pos)
 
-"""rename a box with the name = oldname"""
+#rename a box with the name = oldname#
 def rename_box(oldname : str, newname : str):
     renamebox = True
+    #Check for duplicate box names#
     for i in class_list:
         if i[0] == newname:
             renamebox = False
     if(renamebox):
         pos = 0
-        """Find the position of the box with the old name"""
+        #Find the position of the box with the old name#
         while pos < len(class_list):
             if oldname == class_list[pos][0]:
-                """save the box and text values"""
-                x1,y1,x2,y2 = test_canvas.coords(class_list[pos][1])
+                #save the box and text values#
                 class_list[pos][0] = newname
-                class_list[pos][3] = len(newname) *3.5
-                test_canvas.coords(class_list[pos][1], x1 - len(newname) *3.5, y1, x2 + len(newname) *3.5, y2)
                 break
             else:
                 pos += 1
-        """Change the text of the circle to the updated name"""
+        #Change the text of the box to the updated name#
         ViewChange.item_config(class_list[pos][2], newname, None, None)
+        #update the width of the box#
         update_size(pos)
 
 
-"""update the width of the box according to the length of the contained text"""
+#update the width of the box according to the length of the contained text#
 def update_size(pos : int):
     longest_name = 3.5 * len(class_list[pos][0])
     i = 0
@@ -136,7 +138,7 @@ def update_size(pos : int):
         longest_name = len("fields:") * 3.5
     if(len("Methods:") * 3.5 > longest_name):
         longest_name = len("methods:") * 3.5
-    """find the longest text entry in the box"""
+    #find the longest text entry in the box#
     for i in class_list[pos][6]:
         if len(i) *3.5 > longest_name:
             longest_name = len(i) *3.5
@@ -145,13 +147,13 @@ def update_size(pos : int):
             if len(k) *3.5 > longest_name:
                 longest_name = len(k) *3.5
     class_list[pos][3] = longest_name
-    """find the center and build off of it left and right using the 
-    length of the longest text entry"""
+    #find the center and build off of it left and right using the#
+    #length of the longest text entry#
     x1,y1,x2,y2 = test_canvas.coords(class_list[pos][1])
     center = ((x2 - x1) / 2) + x1
     x1 = center - 40 - longest_name
     x2 = center + 40 + longest_name
-    """update the box size, and shift header text elements"""
+    #update the box size, and shift header text elements#
     ViewChange.set_rec(class_list[pos][1], x1, y1, x2, y2)
     x,y = test_canvas.coords(class_list[pos][8])
     ViewChange.set_text(class_list[pos][8], x1 + 25, y)
