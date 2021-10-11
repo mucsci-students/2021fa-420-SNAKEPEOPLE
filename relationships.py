@@ -1,26 +1,26 @@
 import uml_class
 
 uml_class.class_dict
-relationship_dict = dict()
+relationship_list = []
 
 class UMLRelationship():
     
     #UMLRelationship is an object that models a relationship between two UML classes.
-    #The class stores a name in the form "<source>-<destination>", a source object referencing
-    #a uml class object, and a destination object also referencing a uml class object.
+    #The class stores a name in the form a source object referencing a uml class object,
+    #and a destination object also referencing a uml class object.
 
-    def __init__(self, name : str, source, destination):
-        self.name = name
+    def __init__(self, source, destination, rel_type: str):
         self.source = source
         self.destination = destination
         self.sourceName = source.name
         self.destName = destination.name
+        self.rel_type = rel_type
 
     def __del__(self):
-        print(f"<Deleted Relationship>: {self.name}")
+        print(f"<Deleted Relationship>: {self.sourceName}-{self.destName}")
     
     def __repr__(self):
-        return self.name
+        return self.sourceName + "-" + self.destName
         
     def rename(self, new_name : str):
         self.name = new_name
@@ -33,35 +33,43 @@ class UMLRelationship():
         self.destination = new_dest
         self.destName = new_dest.name
 
+    def changeType(self, new_type):
+        self.rel_type = new_type
+
 
 ##########################################################################################
 
-def add_relationship(source : str, destination : str) -> None:
+def add_relationship(source : str, destination : str, rel_type : str) -> None:
 
     #Add a relationship by creating a new UMLRelationship object containing
-    #the name "<source>-<destination>", uml_class associated with the source 
-    #string, and the uml_class associated with the destination string
+    #the uml_class associated with the source string, the uml_class associated 
+    #with the destination string, and the type of relationship
     
     #parameters:
     #source- String that is set as the name of a UMLClass object
     #destination- String that is set as the name of a UMLClass object
+    #rel_type- String that defines the relationship type to be aggregation, composition,
+    #inheritance, or realization
     
 
     if check_params(source, destination) == False:
         return
+    elif check_reltype(rel_type) == False:
+        print(f"<Relationship Add Error>: "+
+                f"Relationship type {rel_type} is an invalid type.")
     else:
-        name = source + "-" + destination
         #Ensure the relationship does not already exist
-        if name in relationship_dict.keys():
-            print("<Relationship Add Error>: "+
-                  f"Relationship {name} already exists.")
-            return
-        #Create the UMLRelationship and add it to the dictionary
-        else:
-            new_rel = UMLRelationship(source + "-" + destination, 
-                uml_class.class_dict[source], uml_class.class_dict[destination])
-            relationship_dict.update({name: new_rel})
-            print(f"<Relationship Added>: {name}")
+        for i in relationship_list:
+            if (i.sourceName == source) and (i.destName == destination):
+                print("<Relationship Add Error>: "+
+                    f"Relationship {source}-{destination} already exists.")
+                return
+        
+        #Create the UMLRelationship and add it to the list
+        new_rel = UMLRelationship(uml_class.class_dict[source],
+                                    uml_class.class_dict[destination], rel_type)
+        relationship_list.append(new_rel)
+        print(f"<Relationship Added>: {source}-{destination}")
 
 ##########################################################################################
 
@@ -73,16 +81,20 @@ def delete_relationship(source : str, destination : str) -> None:
     #source- String that is set as the name of a UMLClass object
     #destination- String that is set as the name of a UMLClass object
 
-    name = source + "-" + destination
-
     if check_params(source, destination) == False:
         return
     else:
         #Ensure that the relationship exists
-        if name not in relationship_dict.keys():
-            print(f"ERROR: Relationship {name}, does not exist.")
+        i = 0;
+        while i < len(relationship_list):
+            if(relationship_list[i].sourceName == source) and (relationship_list[i].destName == destination):
+                
+                del_rel = relationship_list.pop(i)
+                del del_rel
+                return
+            ++i
         else:
-            del relationship_dict[name]
+            print(f"ERROR: Relationship {source}-{destination}, does not exist.")
 
 ##########################################################################################
 
@@ -93,17 +105,13 @@ def rel_cleanup(source : str) -> None:
 
     #parameters:
     #source- String that is set as the name of a UMLClass object
-    
-    if source in uml_class.class_dict.keys():
-        for key in list(relationship_dict.keys()):
-            #Compare the source attribute of the UMLRelationship object with
-            #the UMLClass object associated with source
-            if relationship_dict[key].source == uml_class.class_dict[source]:
-                del relationship_dict[key]
-            #Compare the destination attribute of the UMLRelationship object with
-            #the UMLClass object associated with source
-            elif relationship_dict[key].destination == uml_class.class_dict[source]:
-                del relationship_dict[key]
+    i = 0
+    while i < len(relationship_list):
+        if (relationship_list[i].sourceName == source) or (relationship_list[i].destName == source):            
+            del_rel = relationship_list.pop(i)
+            del del_rel
+            --i
+        ++i
 
 ##########################################################################################
 
@@ -111,36 +119,44 @@ def list_relationships() -> None:
 
     #List all relationships in the form "<source>-<destination>"
 
-    if len(relationship_dict) == 0:
+    if len(relationship_list) == 0:
         print("(none)")
 
-    for key in relationship_dict:
-        print(key)
+    for i in relationship_list:
+        print("Relationship: " + i.sourceName + "-" + i.destName +  "   Relationship type: " + i.rel_type)
 
 ##########################################################################################
 
-def rename_relationship(old_name : str, new_name : str) -> None:
+def Change_reltype(source : str, dest : str, new_type : str):
 
-    #Find all relationships with the old name, delete the old relationships
-    #then create a new relationship to replace the old one with the updated
-    #UMLClass object
+    #Checks to ensure that the new relationship type is one of Aggregation,
+    #Composition, Inheritance, or Realization and then replaces the old 
+    #relationship type of the named relationship with the new relationship type.
+    
+    #parameters:
+    #source- String that is set as the name of a UMLClass object
+    #destination- String that is set as the name of a UMLClass object
+    #new_type- String of the new relationship type
 
-    if new_name in uml_class.class_dict.keys():
-        for key in list(relationship_dict.keys()):
-            #Compare the source name of the UMLRelationship object with
-            #the old name to see if the current relationship should be updated
-            if relationship_dict[key].sourceName == old_name:
-                source = new_name
-                destination = relationship_dict[key].destName
-                del relationship_dict[key]
-                add_relationship(source, destination)                
-            #Compare the destination name of the UMLRelationship object with
-            #the old name to see if the current relationship should be updated
-            elif relationship_dict[key].destination == old_name:
-                source = relationship_dict[key].sourceName
-                destination = new_name
-                del relationship_dict[key]
-                add_relationship(source, destination)
+    found = False
+    rel_index = 0
+    while rel_index < len(relationship_list):
+        if (relationship_list[rel_index].sourceName == source) and (relationship_list[rel_index].destName == dest):
+            found = True
+            break
+        ++rel_index
+
+    #Check to make sure the relationship exists
+    if found == False:
+        print(f"<Relationship Type Error>: "+
+            f"Relationship {source}-{dest} is an invalid relationship.")
+    #Check to make sure the new relationship type exists
+    elif check_reltype(new_type) == False:
+        print(f"<Relationship Type Error>: "+
+                f"Relationship type {new_type} is an invalid type.")
+    else:
+        #Update the relationship type
+        relationship_list[rel_index].changeType(new_type)
 
 ##########################################################################################
 
@@ -180,3 +196,19 @@ def check_params(source : str, destination : str) -> bool:
         return False
 
     return True
+
+##########################################################################################
+
+def check_reltype(rel_type) -> bool:
+
+    #Checks to ensure that the new relationship type is one of Aggregation,
+    #Composition, Inheritance, or Realization.
+
+    #new_type- String of the new relationship type
+
+    if rel_type in {"aggregation", "composition", "inheritance", "realization"}:
+        return True
+    else:
+        return False
+
+##########################################################################################
