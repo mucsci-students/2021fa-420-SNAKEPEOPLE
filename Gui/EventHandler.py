@@ -11,10 +11,10 @@ def on_click(event):
     global crec
     crec = UMLBox.test_canvas.find_closest(event.x, event.y)
 
-"""line up vriables so that whatever you click on within
-    a box results in the dragging of the box"""
+#line up vriables so that whatever you click on within
+#a box results in the dragging of the box
 def can_dragMotion(event):
-    """get the index in the class_list of the current rectangle being clicked"""
+    #get the index in the class_list of the current rectangle being clicked#
     pos = 0
     while pos < len(UMLBox.class_list):
         if crec[0] in UMLBox.class_list[pos]:
@@ -23,7 +23,7 @@ def can_dragMotion(event):
             break
         pos += 1
 
-    """Bring all currently selected items from the clicked box to front of view"""
+    #Bring all currently selected items from the clicked box to front of view#
     ViewChange.bring_front(circle)
     ViewChange.bring_front(label)
     ViewChange.bring_front(UMLBox.class_list[pos][5])
@@ -31,15 +31,15 @@ def can_dragMotion(event):
     ViewChange.bring_front(UMLBox.class_list[pos][9])
     ViewChange.bring_front(UMLBox.class_list[pos][10])
 
-    """get coordinates and modify them to maintain the shape of the box as you move it around"""
+    #get coordinates and modify them to maintain the shape of the box as you move it around#
     x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
     new_x1 = event.x - 20 - UMLBox.class_list[pos][3]
     new_y1 = event.y - 15 
     new_x2 = event.x + 60 + UMLBox.class_list[pos][3]
     new_y2 = event.y + 20 + UMLBox.class_list[pos][7] + UMLBox.class_list[pos][12]
 
-    """Bind the new coordinates so that the square cannot go outside
-    of the canvas"""
+    #Bind the new coordinates so that the square cannot go outside#
+    #of the canvas#
     if(new_x2 > UMLBox.test_canvas.winfo_width()):
         new_x1 = UMLBox.test_canvas.winfo_width() - 80 - 2 * UMLBox.class_list[pos][3]
         new_x2 = UMLBox.test_canvas.winfo_width()
@@ -53,10 +53,10 @@ def can_dragMotion(event):
         new_y1 = 0
         new_y2 = 35 + UMLBox.class_list[pos][7] + UMLBox.class_list[pos][12]
 
-    """find the center of the box"""
+    #find the center of the box#
     center = ((x2 - x1) / 2) + x1
 
-    """move the elements"""
+    #move the elements#
     ViewChange.set_rec(circle, new_x1, new_y1, new_x2, new_y2)
     ViewChange.set_text(label, new_x1 + 40 + UMLBox.class_list[pos][3], new_y1 + 12.5)
     ViewChange.set_text(UMLBox.class_list[pos][8], new_x1 + 25, new_y1 + 30)
@@ -64,7 +64,7 @@ def can_dragMotion(event):
     ViewChange.set_text(UMLBox.class_list[pos][9], new_x1 + 35, new_y2 - 15 - UMLBox.class_list[pos][12])
     ViewChange.set_text(UMLBox.class_list[pos][10], center, new_y2 - 5 - UMLBox.class_list[pos][12])
 
-
+    #Move any lines connected to the box#
     if(len(UMLBox.class_list[pos][4]) > 0):
         for i in UMLBox.class_list[pos][4]:
             if i[0] == "source":

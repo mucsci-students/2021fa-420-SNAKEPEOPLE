@@ -89,6 +89,22 @@ def run():
     btn_list = gui_buttons.make_buttons(control_frame)
     buttons(btn_list)
     
+    key = tk.Label(control_frame, text = "*Realationship Key*",
+                    justify="left")
+    a = tk.Label(control_frame, text = "aggregation: Blue",
+                justify="left", fg="blue")
+    c = tk.Label(control_frame, text = "composition: Green",
+                    justify="left", fg="green")
+    i = tk.Label(control_frame, text = "inheritence: Red",
+                    justify="left", fg="red")
+    r = tk.Label(control_frame, text = "realization: Black",
+                    justify="left")
+    key.pack()
+    a.pack()
+    c.pack()
+    i.pack()
+    r.pack()
+
     window.config(menu=menubar)
     
     window.mainloop()
