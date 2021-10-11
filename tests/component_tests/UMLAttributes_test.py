@@ -12,6 +12,7 @@ from uml_components.interfaces import attr_interface
 
 class UMLAttributes_test (unittest.TestCase) :
 
+    # Tests adding an attribute
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addattr class1 stuff", "exit"])
     def test_addAtr(self, mock):
         snake_uml.main(sys.argv)
@@ -25,6 +26,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests to see if adding a duplicate attribute results in an error message
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addattr class1 stuff", "addattr class1 stuff", "exit"])
     def test_addDupAtr(self, mock):
         out = io.StringIO()
@@ -38,6 +40,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests adding an attribute to a non-existant class
     @unittest.mock.patch('builtins.input', side_effect=["addattr class1 stuff", "exit"])
     def test_addAtrToNothing(self, mock):
         out = io.StringIO()
@@ -50,6 +53,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests renaming an attribute
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addattr class1 stuff", "renattr class1 stuff stuff2", "exit"])
     def test_renameAtr(self, mock):
         out = io.StringIO()
@@ -62,6 +66,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests renaming a non-existant attribute
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "renattr class1 stuff stuff2", "exit"])
     def test_renameNothingAtr(self, mock):
         out = io.StringIO()
@@ -74,6 +79,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests renaming an attribute to the name of an already existing attribute
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addattr class1 stuff", "addattr class1 stuff2", "renattr class1 stuff stuff2", "exit"])
     def test_renameDupAtr(self, mock):
         out = io.StringIO()
@@ -88,6 +94,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests deleting a legitimate attribute
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addattr class1 stuff", "delattr class1 stuff", "exit"])
     def test_deleteAtr(self, mock):
         out = io.StringIO()
@@ -99,6 +106,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests deleting an attribute that does not exist from a class
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "delattr class1 stuff", "exit"])
     def test_deleteFalseAtr(self, mock):
         out = io.StringIO()
@@ -110,6 +118,7 @@ class UMLAttributes_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
+    # Tests deleting an attribute from a class that does not exist
     @unittest.mock.patch('builtins.input', side_effect=["delattr class1 stuff", "exit"])
     def test_deleteAtrFromNothing(self, mock):
         out = io.StringIO()

@@ -11,7 +11,7 @@ from uml_components.interfaces import rel_interface
 
 class UMLRelationship_test (unittest.TestCase) :
 
-    #Test adding a relationship
+    #Test adds a relationship
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class2", "addrel class1 class2", "exit"])
     def test_addRel(self, mock):   
         snake_uml.main(sys.argv)
@@ -21,7 +21,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test adding an invalid source
+    #Test adds an invalid source
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class2", "addrel class3 class2", "exit"])
     def test_falseSource(self, mock):   
         out = io.StringIO()
@@ -34,7 +34,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test adding a relationship with an invalid destination and source
+    #Test adds a relationship with an invalid destination and source
     @unittest.mock.patch('builtins.input', side_effect=["addrel class4 class3", "exit"])
     def test_falseBoth(self, mock):   
         out = io.StringIO()
@@ -47,7 +47,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test addind a relationship with an invalid destination
+    #Test adds a relationship with an invalid destination
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addrel class1 class3", "exit"])
     def test_falseDest(self, mock):
         out = io.StringIO()
@@ -60,7 +60,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test adding a duplicate relationship
+    #Test adds a duplicate relationship
     @unittest.mock.patch('builtins.input', side_effect=["addclass class5", "addclass class6", "addrel class5 class6", "addrel class5 class6", "exit"])
     def test_dupRel(self, mock):
         out = io.StringIO()
@@ -73,7 +73,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test deleting a non-existant relationship
+    #Test deletes a non-existant relationship
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class2", "delrel class1 class2", "exit"])
     def test_deleteNothingRel(self, mock):
         out = io.StringIO()
@@ -86,7 +86,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test deleting a legitimate relationship
+    #Test deletes a legitimate relationship
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class2", "addrel class1 class2", "delrel class1 class2", "exit"])
     def test_deleteRel(self, mock):
         out = io.StringIO()
@@ -99,7 +99,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test deleting an invalid source
+    #Test deletes an invalid source
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "delrel class3 class1", "exit"])
     def test_DelFalseSource(self, mock):   
         out = io.StringIO()
@@ -112,7 +112,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test deleting a relationship with an invalid destination and source
+    #Test deletes a relationship with an invalid destination and source
     @unittest.mock.patch('builtins.input', side_effect=["delrel class4 class3", "exit"])
     def test_DelfalseBoth(self, mock):   
         out = io.StringIO()
@@ -125,7 +125,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test deleting a relationship with an invalid destination
+    #Test deletes a relationship with an invalid destination
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "delrel class1 class3", "exit"])
     def test_DelFalseDest(self, mock):
         out = io.StringIO()
@@ -138,7 +138,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test listing an empty relationship dictionary
+    #Test lists an empty relationship dictionary
     @unittest.mock.patch('builtins.input', side_effect=["listrel", "exit"])
     def test_listNothingRel(self, mock):
         out = io.StringIO()
@@ -151,7 +151,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
         
-    #Test listing all classes while no classes exist   
+    #Test lists all classes while no classes exist   
     @unittest.mock.patch('builtins.input', side_effect=["listclass all", "exit"])
     def test_listNothingClasses(self, mock):
         out = io.StringIO()
@@ -164,7 +164,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test listing a class that does not exist
+    #Test lists a class that does not exist
     @unittest.mock.patch('builtins.input', side_effect=["listclass class1", "exit"])
     def test_listNothingClass(self, mock):
         out = io.StringIO()
@@ -176,7 +176,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test save error handling when no classes are created
+    #Test saves error handlles when no classes are created
     @unittest.mock.patch('builtins.input', side_effect=["save testfile", "exit"])
     def test_saveEmpty(self, mock):
         out = io.StringIO()
@@ -188,7 +188,7 @@ class UMLRelationship_test (unittest.TestCase) :
         UMLClass.class_dict = {}
         UMLRelationship.relationship_dict = {}
 
-    #Test load abort
+    #Test loads abort
     @unittest.mock.patch('builtins.input', side_effect=["load testfile", "n", "exit"])
     def test_loadAbort(self, mock):
         out = io.StringIO()

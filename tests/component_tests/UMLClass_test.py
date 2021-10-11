@@ -1,3 +1,4 @@
+import builtins
 import unittest
 import io
 import sys
@@ -12,6 +13,7 @@ from uml_components.interfaces import class_interface
 
 class UMLClass_test (unittest.TestCase) :
 
+    # Tests adding two classes
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class2", "exit"])
     def test_addClass(self, mock):   
         snake_uml.main(sys.argv)
@@ -22,6 +24,20 @@ class UMLClass_test (unittest.TestCase) :
         self.assertEqual(len(UMLClass.class_dict), 2)
         UMLClass.class_dict = {}
 
+    # Tests input checker for proper argument lengths
+    @unittest.mock.patch ('builtins.input', side_effect=["addclass ", "exit"])
+    def test_inputCheckLength(self, mock):   
+        UMLClass.class_dict = {}
+        out = io.StringIO()
+        sys.stdout = out
+        snake_uml.main(sys.argv)
+        sys.stdout = sys.__stdout__
+        self.assertEqual("<Invalid Arguments Error>\n1 arguments expected. 0 arguments received." in out.getvalue(), True)
+        self.assertEqual(len(UMLClass.class_dict), 0)
+        del out
+        UMLClass.class_dict = {}
+
+    # Tests invalid input of the correct length
     @unittest.mock.patch('builtins.input', side_effect=["poggers class2", "exit"])
     def test_inputCheckValidity(self, mock):   
         UMLClass.class_dict = {}
@@ -34,6 +50,7 @@ class UMLClass_test (unittest.TestCase) :
         del out
         UMLClass.class_dict = {}
 
+    # Tests adding a duplicate of the class
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class1", "exit"])
     def test_addDupClass(self, mock):
         UMLClass.class_dict = {}
@@ -46,6 +63,7 @@ class UMLClass_test (unittest.TestCase) :
         del out
         UMLClass.class_dict = {}
     
+    # Tests deleting a class
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "delclass class1", "exit"])
     def test_deleteClass(self, mock): 
         snake_uml.main(sys.argv)
@@ -57,6 +75,7 @@ class UMLClass_test (unittest.TestCase) :
         del out
         UMLClass.class_dict = {}
 
+    # Tests deleting a non-existant class
     @unittest.mock.patch('builtins.input', side_effect=["delclass class1", "exit"])
     def test_deleteNothingClass(self, mock): 
         out = io.StringIO()
@@ -68,6 +87,7 @@ class UMLClass_test (unittest.TestCase) :
         del out
         UMLClass.class_dict = {}
 
+    # Tests renaming a class
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "renclass class1 class2", "exit"])
     def test_renameClass(self, mock): 
         out = io.StringIO()
@@ -79,6 +99,7 @@ class UMLClass_test (unittest.TestCase) :
         del out
         UMLClass.class_dict = {}
 
+    # Tests renaming a non-existant class
     @unittest.mock.patch('builtins.input', side_effect=["renclass class1 class2", "exit"])
     def test_renameNothingClass(self, mock): 
         out = io.StringIO()
@@ -90,6 +111,7 @@ class UMLClass_test (unittest.TestCase) :
         del out
         UMLClass.class_dict = {}
 
+    # Tests renaming a class to an already existing class
     @unittest.mock.patch('builtins.input', side_effect=["addclass class1", "addclass class2", "renclass class1 class2", "exit"])
     def test_renameClassToExisting(self, mock): 
         out = io.StringIO()
