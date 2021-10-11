@@ -171,9 +171,11 @@ def rel_cleanup(cls : str) -> None:
             # Deletes if cls is source.
             if cls == relationship.source:
                 delete_relationship(cls, relationship.destination)
+                rel_cleanup(cls)
             # Deletes if cls is destination.
             if cls == relationship.destination:
                 delete_relationship(relationship.source, cls)
+                rel_cleanup(cls)
 
 
 def list_relationships() -> None:
