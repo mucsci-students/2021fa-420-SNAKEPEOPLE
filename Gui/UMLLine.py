@@ -22,7 +22,6 @@ def add_line(source : str, dest : str, line_type : str):
     add = True
     for i in UMLBox.class_list:
         for k in i[4]:
-            print(len(i[4]))
             if(k[0] == "source"):
                 if(k[2] == UMLBox.class_list[destpos][1] and k[3] == UMLBox.class_list[source][1]):
                     add = False
@@ -50,8 +49,8 @@ def addline(source, dest, line_type : str):
 ##Find the position of the class_list of the source#
 def findpos(source):
     pos = 0
-    while(pos < len(UMLBox.class_list)):
-        if source == UMLBox.class_list[pos][1]:
+    for i in UMLBox.class_list:
+        if source == i[1]:
             return pos
         else:
             pos += 1
@@ -68,17 +67,15 @@ def deleteline(source, dest):
     destpos = findpos(dest)
     subpos = 0
     #delete all line entries for a box that involve source#
-    while subpos < len(UMLBox.class_list[sourcepos][4]):
-        if (UMLBox.class_list[sourcepos][4][subpos][0] == "source" 
-            and UMLBox.class_list[sourcepos][4][subpos][2] == dest):
-            line = UMLBox.class_list[sourcepos][4][subpos][1]
+    for i in UMLBox.class_list[sourcepos][4]:
+        if (i[0] == "source" and i[2] == dest):
+            line = i[1]
             UMLBox.class_list[sourcepos][4].pop(subpos)
         subpos += 1
     subpos = 0
     #delete all line entries for a box that involve dest#
-    while subpos < len(UMLBox.class_list[destpos][4]):
-        if (UMLBox.class_list[destpos][4][subpos][0] == "dest" 
-            and UMLBox.class_list[destpos][4][subpos][2] == source):
+    for i in UMLBox.class_list[destpos][4]:
+        if (i[0] == "dest" and i[2] == source):
             UMLBox.class_list[destpos][4].pop(subpos)
         subpos += 1
     #delete the line element itself#

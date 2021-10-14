@@ -16,15 +16,15 @@ def on_click(event):
 def can_dragMotion(event):
     #get the index in the class_list of the current rectangle being clicked#
     pos = 0
-    while pos < len(UMLBox.class_list):
-        if crec[0] in UMLBox.class_list[pos]:
-            label = UMLBox.class_list[pos][2]
-            circle = UMLBox.class_list[pos][1]
+    for i in UMLBox.class_list:
+        if crec[0] in i:
+            label = i[2]
+            rec = i[1]
             break
         pos += 1
 
     #Bring all currently selected items from the clicked box to front of view#
-    ViewChange.bring_front(circle)
+    ViewChange.bring_front(rec)
     ViewChange.bring_front(label)
     ViewChange.bring_front(UMLBox.class_list[pos][5])
     ViewChange.bring_front(UMLBox.class_list[pos][8])
@@ -57,7 +57,7 @@ def can_dragMotion(event):
     center = ((x2 - x1) / 2) + x1
 
     #move the elements#
-    ViewChange.set_rec(circle, new_x1, new_y1, new_x2, new_y2)
+    ViewChange.set_rec(rec, new_x1, new_y1, new_x2, new_y2)
     ViewChange.set_text(label, new_x1 + 40 + UMLBox.class_list[pos][3], new_y1 + 12.5)
     ViewChange.set_text(UMLBox.class_list[pos][8], new_x1 + 25, new_y1 + 30)
     ViewChange.set_text(UMLBox.class_list[pos][5], new_x1 + UMLBox.class_list[pos][3] + 40, new_y1 + 25)

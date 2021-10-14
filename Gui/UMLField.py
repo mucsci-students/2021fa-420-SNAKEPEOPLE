@@ -34,8 +34,8 @@ def del_field(name : str, field : str):
     pos = UMLBox.find_pos_from_name(name)
     fieldpos = 0
     #find the fields position in the field list#
-    while fieldpos < len(UMLBox.class_list[pos][6]):
-        if UMLBox.class_list[pos][6][fieldpos].split(' ')[1] == field:
+    for i in UMLBox.class_list[pos][6]:
+        if i.split(' ')[1] == field:
             UMLBox.class_list[pos][6].pop(fieldpos)
             break
         fieldpos += 1
@@ -59,9 +59,9 @@ def rename_field(name : str, oldname : str, newname : str):
     fieldpos = 0
     addfield = True
     #find the field's location in the list#
-    while fieldpos < len(UMLBox.class_list[pos][6]):
-        var_type = UMLBox.class_list[pos][6][fieldpos].split(' ')[0]
-        if UMLBox.class_list[pos][6][fieldpos].split(' ')[1] == oldname:
+    for i in UMLBox.class_list[pos][6]:
+        var_type = i.split(' ')[0]
+        if i.split(' ')[1] == oldname:
             newname = var_type + " " + newname
             #Check for duplicate field names#
             for i in UMLBox.class_list[pos][6]:

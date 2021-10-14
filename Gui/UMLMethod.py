@@ -1,7 +1,6 @@
 import tkinter as tk
 from gui import UMLBox
 from gui import ViewChange
-from uml_components.UMLClass import UMLClass
 
 #add a method and paramters#
 def add_method(classname : str, methodname : str, parameters : list):
@@ -28,13 +27,13 @@ def add_method(classname : str, methodname : str, parameters : list):
 def del_method(classname : str, methodname : str):
     pos = UMLBox.find_pos_from_name(classname)
     del_list = []
-    i = 0
+    ind = 0
     #find the method within the box association and remove it#
-    while i < len(UMLBox.class_list[pos][11]):
-        if UMLBox.class_list[pos][11][i][0].split(' ')[0] == methodname:
-            del_list = UMLBox.class_list[pos][11].pop(i)
+    for i in UMLBox.class_list[pos][11]:
+        if i[0].split(' ')[0] == methodname:
+            del_list = UMLBox.class_list[pos][11].pop(ind)
             break
-        i += 1
+        ind += 1
     newtext = block_text(pos)
     #update the method text element#
     ViewChange.item_config(UMLBox.class_list[pos][10], text = newtext, justify = tk.LEFT, state=tk.DISABLED)
@@ -45,23 +44,23 @@ def del_method(classname : str, methodname : str):
 #change the paramters of a method and increment the vertical length of the box#
 def change_params(classname : str, methodname : str, new_params : list):
     pos = UMLBox.find_pos_from_name(classname)
-    i = 0
+    ind = 0
     #find the position of the method before it is moved#
-    while i < len(UMLBox.class_list[pos][11]):
-        if UMLBox.class_list[pos][11][i][0].split(' ')[0] == methodname:
+    for i in UMLBox.class_list[pos][11]:
+        if i[0].split(' ')[0] == methodname:
             break
-        i += 1
+        ind += 1
     del_method(classname, methodname)
     add_method(classname, methodname, new_params)
     k = 0
     #find the position of the method after it is re-inserted with new parameters#
-    while k < len(UMLBox.class_list[pos][11]):
-        if UMLBox.class_list[pos][11][k][0] == methodname:
+    for i in UMLBox.class_list[pos][11]:
+        if i[0] == methodname:
             break
         k += 1
     #move the method back to its original place in the list#
     save = UMLBox.class_list[pos][11].pop(k)
-    UMLBox.class_list[pos][11].insert(i, save)
+    UMLBox.class_list[pos][11].insert(ind, save)
     #update the text element of method text#
     newtext = block_text(pos)
     ViewChange.item_config(UMLBox.class_list[pos][10], text = newtext, justify = tk.LEFT, state=tk.DISABLED)
@@ -75,15 +74,15 @@ def block_text(pos):
     newtext = ""
     index = 0
     subindex = 0
-    while index < len(UMLBox.class_list[pos][11]):
+    for i in UMLBox.class_list[pos][11]:
         subindex = 0
-        while subindex < len(UMLBox.class_list[pos][11][index]):
+        for k in i:
             if subindex == 0:
-                newtext = newtext + "" + UMLBox.class_list[pos][11][index][subindex] + " (\n"
+                newtext = newtext + "" + k + " (\n"
             else:
-                newtext = newtext + "    " + UMLBox.class_list[pos][11][index][subindex] + ",\n"
+                newtext = newtext + "    " + k + ",\n"
             subindex += 1
-            if(subindex == len(UMLBox.class_list[pos][11][index])):
+            if(subindex == len(i)):
                 newtext = newtext + ")\n\n"
         index += 1
     return newtext
@@ -94,13 +93,13 @@ def del_param(classname: str, methodname : str, del_params: str):
     ind = 0
     param_i = 1
     #Find the method location within the method/param list of the box#
-    while ind < len(UMLBox.class_list[pos][11]):
-        if methodname == UMLBox.class_list[pos][11][ind][0].split(' ')[0]:
+    for i in UMLBox.class_list[pos][11]:
+        if methodname == i[0].split(' ')[0]:
             break
         ind += 1
     #remove del_param from the method/parameter list of the box#
-    while param_i < len(UMLBox.class_list[pos][11][ind]):
-        if UMLBox.class_list[pos][11][ind][param_i].split(' ')[1] == del_params.split(' ')[0]:
+    for i in UMLBox.class_list[pos][11][ind][1:]:
+        if i.split(' ')[1] == del_params.split(' ')[0]:
             UMLBox.class_list[pos][11][ind].pop(param_i)
         param_i += 1
     param_i = 1
@@ -123,8 +122,8 @@ def rename_method(classname : str, oldname : str, newname : str):
         pos = UMLBox.find_pos_from_name(classname)
         i = 0
         #Find the position of the method cooresponding to oldname#
-        while i < len(UMLBox.class_list[pos][11]):
-            if UMLBox.class_list[pos][11][i][0].split(' ')[0] == oldname:
+        for k in UMLBox.class_list[pos][11]:
+            if k[0].split(' ')[0] == oldname:
                 break
             i += 1
         param_list = UMLBox.class_list[pos][11][i]
@@ -146,13 +145,13 @@ def add_param(classname : str, methodname : str, paramname : str):
     param_i = 1
     add = True
     #Find the method location within the method/param list of the box#
-    while ind < len(UMLBox.class_list[pos][11]):
+    for i in UMLBox.class_list[pos][11]:
         if methodname == UMLBox.class_list[pos][11][ind][0].split(' ')[0]:
             break
         ind += 1
     #Check for duplicate parameter names#
-    while param_i < len(UMLBox.class_list[pos][11][ind]):
-        if UMLBox.class_list[pos][11][ind][param_i].split(' ')[1] == paramname.split(' ')[1]:
+    for i in UMLBox.class_list[pos][11][ind][1:]:
+        if i.split(' ')[1] == paramname.split(' ')[1]:
             add = False
         param_i += 1
     if(add):
@@ -171,21 +170,21 @@ def rename_param(classname : str, methodname : str, old_param : str, new_param :
     param_i = 1
     rename = True
     #Find the method location within the method/param list of the box#
-    while ind < len(UMLBox.class_list[pos][11]):
-        if methodname == UMLBox.class_list[pos][11][ind][0].split(' ')[0]:
+    for i in UMLBox.class_list[pos][11]:
+        if methodname == i[0].split(' ')[0]:
             break
         ind += 1
     #Check for duplicate parameter names#
-    while param_i < len(UMLBox.class_list[pos][11][ind]):
+    for i in UMLBox.class_list[pos][11][ind][1:]:
         if UMLBox.class_list[pos][11][ind][param_i].split(' ')[1] == new_param:
             rename = False
         param_i += 1
     if(rename):
         param_i = 1
         #Find the location of the old parameter name#
-        while param_i < len(UMLBox.class_list[pos][11][ind]):
-            if UMLBox.class_list[pos][11][ind][param_i].split(' ')[1] == old_param:
-                UMLBox.class_list[pos][11][ind][param_i] = UMLBox.class_list[pos][11][ind][param_i].split(' ')[0] + " " + new_param
+        for i in UMLBox.class_list[pos][11][ind][1:]:
+            if i.split(' ')[1] == old_param:
+                UMLBox.class_list[pos][11][ind][param_i] = i.split(' ')[0] + " " + new_param
             param_i += 1
         #update the text block#
         newtext = block_text(pos)

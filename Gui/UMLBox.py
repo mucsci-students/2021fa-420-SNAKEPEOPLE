@@ -16,8 +16,8 @@ def init_canvas(frame : tk.Frame) -> tk.Canvas:
 
 def find_pos_from_name(name : str):
     pos = 0
-    while pos < len(class_list):
-        if class_list[pos][0] == name:
+    for i in class_list:
+        if i[0] == name:
             return pos
         pos += 1
 
