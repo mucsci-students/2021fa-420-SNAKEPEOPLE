@@ -2,6 +2,10 @@ import tkinter as tk
 from gui.UMLLine import deleteline
 from gui import EventHandler
 from gui import ViewChange
+from uml_components.interfaces import (attr_interface as ai,
+                                       class_interface as ci,
+                                       rel_interface as ri)
+from uml_components.UMLClass import UMLClass, class_dict
 
 class_list = []
 
@@ -16,8 +20,8 @@ def init_canvas(frame : tk.Frame) -> tk.Canvas:
 
 def find_pos_from_name(name : str):
     pos = 0
-    for i in class_list:
-        if i[0] == name:
+    while pos < len(class_list):
+        if class_list[pos][0] == name:
             return pos
         pos += 1
 
@@ -43,13 +47,22 @@ class UMLsquare():
             x2 += textspace
         rec = test_canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="#D1FF65", tags=name)
         fieldlabel = test_canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
-        fieldtext = test_canvas.create_text(x1 + 40, y1 + 25, text = "", state=tk.HIDDEN, anchor=tk.N)
+        fieldtext = test_canvas.create_text(x1 + 40, y1 + 35, text = "", state=tk.HIDDEN, anchor=tk.N)
         yincrement = 30
         methodlabel = test_canvas.create_text(x1 + 18, y1 + 50, text = "Method(s):", state=tk.DISABLED)
-        methodText = test_canvas.create_text(x1 + 40, y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
+        methodtext = test_canvas.create_text(x1 + 40, y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
         test_canvas.tag_lower(rec)
-        method_increment = 0
-        self.info = [name, rec, label, textspace, [], fieldtext, [], yincrement, fieldlabel, methodlabel, methodText, [], method_increment]
+        self.name = name
+        self.rec = rec
+        self.label = label
+        self.textspace = textspace
+        self.rels = []
+        self.fieldtext = fieldtext
+        self.yinc = yincrement
+        self.fieldlabel = fieldlabel
+        self.methodlabel = methodlabel
+        self.methodtext = methodtext
+        self.info = [name, rec, label, textspace, [], fieldtext, yincrement, fieldlabel, methodlabel, methodtext]
         class_list.append(self.info)
         EventHandler.can_drag(rec)
     
@@ -58,13 +71,7 @@ def create_box(name : str):
     addbox = True
     yinc = 0
     #Get previous row's tallest box height#
-    if len(class_list ) > 1:
-        box1y = class_list[len(class_list) - 2][7] + class_list[len(class_list) - 2][12]
-        box2y = class_list[len(class_list) - 1][7] + class_list[len(class_list) - 1][12]
-        if box1y > box2y:
-            yinc = box1y
-        else:
-            yinc = box2y
+
     #Check for duplicate box names#
     for i in class_list:
         if i[0] == name:
@@ -102,9 +109,9 @@ def delete_box(name : str):
     ViewChange.del_item(class_list[pos][1])
     ViewChange.del_item(class_list[pos][2])
     ViewChange.del_item(class_list[pos][5])
+    ViewChange.del_item(class_list[pos][7])
     ViewChange.del_item(class_list[pos][8])
     ViewChange.del_item(class_list[pos][9])
-    ViewChange.del_item(class_list[pos][10])
     class_list.pop(pos)
 
 #rename a box with the name = oldname#
@@ -132,20 +139,29 @@ def rename_box(oldname : str, newname : str):
 
 #update the width of the box according to the length of the contained text#
 def update_size(pos : int):
+    classname = class_list[pos][0]
     longest_name = 3.5 * len(class_list[pos][0])
     i = 0
     if(len("Fields:") * 3.5 > longest_name):
         longest_name = len("fields:") * 3.5
     if(len("Methods:") * 3.5 > longest_name):
         longest_name = len("methods:") * 3.5
-    #find the longest text entry in the box#
-    for i in class_list[pos][6]:
-        if len(i) *3.5 > longest_name:
-            longest_name = len(i) *3.5
-    for i in class_list[pos][11]:
-        for k in i:
-            if len(k) *3.5 > longest_name:
-                longest_name = len(k) *3.5
+    uml : UMLClass = class_dict[classname]
+    for fields in uml.fields:
+        name = "-" + fields.type + " " + fields.name
+        if len(name) * 3.5 > longest_name:
+            longest_name = len(name) * 3.5
+    uml : UMLClass = class_dict[classname]
+    method : ai.UMLMethod
+    param : ai.UMLParameter
+    for method in uml.methods:
+        name = method.name + " " + method.return_type + "("
+        if len(name) * 3.5 > longest_name:
+            longest_name = len(name) * 3.5
+        for param in method.params:
+            name = "    -" + param.type + " " + method.name
+            if len(name) * 3.5 > longest_name:
+                longest_name = len(name) * 3.5
     class_list[pos][3] = longest_name
     #find the center and build off of it left and right using the#
     #length of the longest text entry#
@@ -155,8 +171,8 @@ def update_size(pos : int):
     x2 = center + 40 + longest_name
     #update the box size, and shift header text elements#
     ViewChange.set_rec(class_list[pos][1], x1, y1, x2, y2)
+    x,y = test_canvas.coords(class_list[pos][7])
+    ViewChange.set_text(class_list[pos][7], x1 + 25, y)
     x,y = test_canvas.coords(class_list[pos][8])
-    ViewChange.set_text(class_list[pos][8], x1 + 25, y)
-    x,y = test_canvas.coords(class_list[pos][9])
-    ViewChange.set_text(class_list[pos][9], x1 + 35, y)
+    ViewChange.set_text(class_list[pos][8], x1 + 35, y)
     return center

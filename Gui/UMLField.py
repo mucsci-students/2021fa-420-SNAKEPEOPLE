@@ -1,87 +1,51 @@
 import tkinter as tk
 from gui import UMLBox
 from gui import ViewChange
+from uml_components.interfaces import (attr_interface as ai,
+                                       class_interface as ci,
+                                       rel_interface as ri)
+from uml_components.UMLClass import UMLClass, class_dict
 
-#add a field#
-def add_field(name : str, field : str):
-    pos = UMLBox.find_pos_from_name(name)
-    addfield = True
-    #Check the list for duplicate field names#
-    for i in UMLBox.class_list[pos][6]:
-        if i.split(' ')[1] == field.split(' ')[1]:
-            addfield = False
-    if(addfield):
-        #add field to list of fields#
-        UMLBox.class_list[pos][6].append(field)
-        #update the height of the box#
-        x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
-        ViewChange.set_rec(UMLBox.class_list[pos][1], x1, y1, x2, y2 + 15)
-        #increase the running count of the height of the box#
-        UMLBox.class_list[pos][7] += 15
-        newtext = new_fieldText(pos)
-        #update the text of the field text element#
-        ViewChange.item_config(UMLBox.class_list[pos][5], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
-        #move everything below the field downward#
-        x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][9])
-        ViewChange.set_text(UMLBox.class_list[pos][9], x, y + 15)
-        x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][10])
-        ViewChange.set_text(UMLBox.class_list[pos][10], x, y + 15)
-        #adjust width of the box#
-        UMLBox.update_size(pos)
 
-#delete a field#
-def del_field(name : str, field : str):
-    pos = UMLBox.find_pos_from_name(name)
-    fieldpos = 0
-    #find the fields position in the field list#
-    for i in UMLBox.class_list[pos][6]:
-        if i.split(' ')[1] == field:
-            UMLBox.class_list[pos][6].pop(fieldpos)
-            break
-        fieldpos += 1
-    #update the running count of the height of the box#
-    UMLBox.class_list[pos][7] -= 15
-    #update the shape of the box#
-    x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
-    ViewChange.set_rec(UMLBox.class_list[pos][1], x1, y1, x2, y2 - 15)
-    newtext = new_fieldText(pos)
-    #update the text of the field text element#
+def update_fields(classname : str):
+    pos = UMLBox.find_pos_from_name(classname)
+    newtext = new_fieldText(classname)
     ViewChange.item_config(UMLBox.class_list[pos][5], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
-    #shift everything below the field section upward#
-    x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][9])
-    ViewChange.set_text(UMLBox.class_list[pos][9], x, y - 15)
-    #adjust the width of the box#
     UMLBox.update_size(pos)
-
-#rename a field#
-def rename_field(name : str, oldname : str, newname : str):
-    pos = UMLBox.find_pos_from_name(name)
-    fieldpos = 0
-    addfield = True
-    #find the field's location in the list#
-    for i in UMLBox.class_list[pos][6]:
-        var_type = i.split(' ')[0]
-        if i.split(' ')[1] == oldname:
-            newname = var_type + " " + newname
-            #Check for duplicate field names#
-            for i in UMLBox.class_list[pos][6]:
-                if i == newname:
-                    addfield = False
-            #Update the old fieldname#
-            if(addfield):
-                UMLBox.class_list[pos][6][fieldpos] = newname
-            break
-        fieldpos += 1
-    if(addfield):
-        #update the text#
-        newtext = new_fieldText(pos)
-        ViewChange.item_config(UMLBox.class_list[pos][5], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
-        #adjust the width of the box#
-        UMLBox.update_size(pos)
+    update_vertical(pos, classname)
+    uml : UMLClass = class_dict[classname]
 
 #create a new block of text conaining the formated parameters#
-def new_fieldText(pos):
+def new_fieldText(classname):
     newtext = ""
-    for i in UMLBox.class_list[pos][6]:
-        newtext = newtext + "\n-" + i
+    uml : UMLClass = class_dict[classname]
+    for field in uml.fields:
+        newtext = newtext + "-" + field.type + " " + field.name + "\n"
     return newtext
+
+def update_vertical(pos, classname):
+    UMLBox.class_list[pos][6] = 30
+    spacer = 0
+    #Find an appropriate vertical spacing to contain the methods and parameters#
+    uml : UMLClass = class_dict[classname]
+    for fields in uml.fields:
+        UMLBox.class_list[pos][6] += 15
+    uml : UMLClass = class_dict[classname]
+    method : ai.UMLMethod
+    param : ai.UMLParameter
+    for method in uml.methods:
+        UMLBox.class_list[pos][6] += 45
+        for param in method.params:
+            UMLBox.class_list[pos][6] += 15
+    if(len(uml.fields) == 0):
+        spacer = 10
+    else:
+        spacer = 0
+    #Update the view#
+    x1,y1,x2,y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
+    x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][7])
+    xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos][8])
+    xl,yl = UMLBox.test_canvas.coords(UMLBox.class_list[pos][9])
+    ViewChange.set_text(UMLBox.class_list[pos][8], xm, y + 10 + 15 * len(uml.fields) + spacer)
+    ViewChange.set_text(UMLBox.class_list[pos][9], xl, y + 20 +  15 * len(uml.fields) + spacer)
+    ViewChange.set_rec(UMLBox.class_list[pos][1], x1, y1, x2, y1 + UMLBox.class_list[pos][6] + 25 + spacer)

@@ -58,8 +58,7 @@ def b_add_method(class_name: str,
                  label : tk.Label) -> None:
     output = ai.add_method(class_name, method_name, method_type)
     label.configure(text = output)
-    if method_name != "" and method_name != None:
-        UMLMethod.add_method(class_name, method_name + " " + method_type, [])
+    UMLMethod.update_methods(class_name)
     
 
 
@@ -68,8 +67,7 @@ def b_delete_method(class_name : str,
                     label : tk.Label) -> None:
     output = ai.delete_method(class_name, method_name)
     label.configure(text = output)
-    UMLMethod.del_method(class_name, method_name)
-
+    UMLMethod.update_methods(class_name)
 
 def b_rename_method(class_name : str, 
                     old_name : str, 
@@ -77,8 +75,7 @@ def b_rename_method(class_name : str,
                     label : tk.Label) -> None:
     output = ai.rename_method(class_name, old_name, new_name)
     label.configure(text = output)
-    if new_name != "" and new_name != None:
-        UMLMethod.rename_method(class_name, old_name, new_name)
+    UMLMethod.update_methods(class_name)
 
 
 def b_add_field(class_name : str,
@@ -87,8 +84,7 @@ def b_add_field(class_name : str,
                 label : tk.Label) -> None:
     output = ai.add_field(class_name, field_name, field_type)
     label.configure(text = output)
-    if field_name != "" and field_name != None:
-        UMLField.add_field(class_name, field_type + " " + field_name)
+    UMLField.update_fields(class_name)
 
 
 def b_delete_field(class_name : str,
@@ -96,7 +92,7 @@ def b_delete_field(class_name : str,
                    label : tk.Label) -> None:
     output = ai.delete_field(class_name, field_name)
     label.configure(text = output)
-    UMLField.del_field(class_name, field_name)
+    UMLField.update_fields(class_name)
 
 
 def b_rename_field(class_name : str,
@@ -105,8 +101,7 @@ def b_rename_field(class_name : str,
                    label : tk.Label) -> None:
     output = ai.rename_field(class_name, old_name, new_name)
     label.configure(text = output)
-    if new_name != "" and new_name != None:
-        UMLField.rename_field(class_name, old_name, new_name)
+    UMLField.update_fields(class_name)
 
 
 def b_add_relation(class1 : str, 
@@ -133,8 +128,7 @@ def b_add_param(class_name : str,
                 label : tk.Label) -> None:
     output = ai.add_param(class_name, method_name, param_name, param_type)
     label.configure(text = output)
-    if param_name != "" and param_name != None:
-        UMLMethod.add_param(class_name, method_name, param_type + " " + param_name)
+    UMLMethod.update_methods(class_name)
     
 
 
@@ -144,7 +138,7 @@ def b_delete_param(class_name : str,
                    label : tk.Label) -> None:
     output = ai.delete_param(class_name, method_name, param_name)
     label.configure(text = output)
-    UMLMethod.del_param(class_name, method_name, param_name)
+    UMLMethod.update_methods(class_name)
 
 
 def b_rename_param(class_name : str, 
@@ -154,8 +148,7 @@ def b_rename_param(class_name : str,
                    label : tk.Label) -> None:
     output = ai.rename_param(class_name, method_name, old_name, new_name)
     label.configure(text = output)
-    if new_name != "" and new_name != None:
-        UMLMethod.rename_param(class_name, method_name, old_name, new_name)
+    UMLMethod.update_methods(class_name)
 
 
 def b_save_file(file_name : str, label : tk.Label) -> None:
