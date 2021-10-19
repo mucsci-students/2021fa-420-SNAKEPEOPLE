@@ -20,30 +20,26 @@ class UMLLine():
         UMLBox.class_list[sourcepos].rels.append(("source", line, dest))
         UMLBox.class_list[destpos].rels.append(("dest", line, source))
 
-#Allow a user to pass in a str version of each box#
+#add a line connecting two classes by name, source and dest#
 def add_line(source : str, dest : str, line_type : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
     if(ri.find_rel(source, dest)[0] == False and (sourcepos != None and destpos != None)):
-        addline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec, line_type)
-
-#add a line connecting two box canvas elements, source and dest#
-def addline(source, dest, line_type : str):
-    if(line_type == "aggregation"):
-        color = 'blue'
-    elif(line_type == "composition"):
-        color = '#000fff000'
-    elif(line_type == "inheritance"):
-        color = 'red'
-    else:
-        color = 'black'
-    sourceItem = UMLBox.class_list[findpos(source)].rec
-    destItem = UMLBox.class_list[findpos(dest)].rec
-    midsourcex = UMLBox.test_canvas.coords(sourceItem)[0]
-    midsourcey = UMLBox.test_canvas.coords(sourceItem)[1]
-    middestx = UMLBox.test_canvas.coords(destItem)[0]
-    middesty = UMLBox.test_canvas.coords(destItem)[1]
-    UMLLine(midsourcex, midsourcey, middestx, middesty, sourceItem, destItem, color)
+        if(line_type == "aggregation"):
+            color = 'blue'
+        elif(line_type == "composition"):
+            color = '#000fff000'
+        elif(line_type == "inheritance"):
+            color = 'red'
+        else:
+            color = 'black'
+        sourceItem = UMLBox.class_list[UMLBox.find_pos_from_name(source)].rec
+        destItem = UMLBox.class_list[UMLBox.find_pos_from_name(dest)].rec
+        midsourcex = UMLBox.test_canvas.coords(sourceItem)[0]
+        midsourcey = UMLBox.test_canvas.coords(sourceItem)[1]
+        middestx = UMLBox.test_canvas.coords(destItem)[0]
+        middesty = UMLBox.test_canvas.coords(destItem)[1]
+        UMLLine(midsourcex, midsourcey, middestx, middesty, sourceItem, destItem, color)
 
 ##Find the position of the class_list of the source#
 def findpos(source):
@@ -58,7 +54,8 @@ def findpos(source):
 def delete_line(source : str, dest : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    deleteline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec)
+    if ri.find_rel(source, dest)[0] == True:
+        deleteline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec)
 
 #remove a line from the class_list storage. Line is stored both ways so two deletes must occur#
 def deleteline(source, dest):

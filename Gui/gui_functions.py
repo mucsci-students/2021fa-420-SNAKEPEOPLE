@@ -113,9 +113,9 @@ def b_add_relation(class1 : str,
 def b_delete_relation(class1 : str, 
                       class2 : str, 
                       label : tk.Label) -> None:
+    UMLLine.delete_line(class1, class2)
     output = ri.delete_relationship(class1, class2)
     label.configure(text = output)
-    UMLLine.delete_line(class1, class2)
 
 
 def b_add_param(class_name : str,
