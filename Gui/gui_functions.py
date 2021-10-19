@@ -32,15 +32,13 @@ and give them feedback on whether it was successful or not.
 def b_add_class(name: str, label : tk.Label) -> None: 
     output = ci.add_class(name)
     label.configure(text = output)
-    if name != "" and name != None:
-        UMLBox.create_box(name)
+    UMLBox.create_box(name)
 
 
 def b_delete_class(name: str, label : tk.Label) -> None:
     output = ci.delete_class(name)
     label.configure(text = output)
-    if name != "" and name != None:
-        UMLBox.delete_box(name)
+    UMLBox.delete_box(name)
 
 
 def b_rename_class(old_name: str, 
@@ -48,8 +46,7 @@ def b_rename_class(old_name: str,
                    label : tk.Label) -> None:
     output = ci.rename_class(old_name, new_name)
     label.configure(text = output)
-    if new_name != "" and new_name != None:
-        UMLBox.rename_box(old_name, new_name)
+    UMLBox.rename_box(old_name, new_name)
 
 
 def b_add_method(class_name: str, 

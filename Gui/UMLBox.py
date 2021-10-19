@@ -109,16 +109,12 @@ def delete_box(name : str):
 
 #rename a box with the name = oldname#
 def rename_box(oldname : str, newname : str):
-    renamebox = True
     #Check for duplicate box names#
-    for i in class_list:
-        if i.name == newname:
-            renamebox = False
-    if(renamebox):
+    if(find_pos_from_name(newname) == None):
         pos = 0
         #Find the position of the box with the old name#
-        while pos < len(class_list):
-            if oldname == class_list[pos].name:
+        for i in class_list:
+            if oldname == i.name:
                 #save the box and text values#
                 class_list[pos].name = newname
                 break
