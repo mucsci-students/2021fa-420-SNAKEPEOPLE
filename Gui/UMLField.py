@@ -6,46 +6,52 @@ from uml_components.interfaces import (attr_interface as ai,
                                        rel_interface as ri)
 from uml_components.UMLClass import UMLClass, class_dict
 
-
+#Every time the class_dict changes its methods or parameters,
+#change the view to reflect that change
 def update_fields(classname : str):
     pos = UMLBox.find_pos_from_name(classname)
     newtext = new_fieldText(classname)
-    ViewChange.item_config(UMLBox.class_list[pos][5], text = newtext, justify = tk.CENTER, state=tk.DISABLED)
+    #Change the text
+    ViewChange.item_config(UMLBox.class_list[pos].fieldtext, text = newtext, justify = tk.LEFT, state=tk.DISABLED)
+    #Update horizontal size of box
     UMLBox.update_size(pos)
+    #Update vertical size of box
     update_vertical(pos, classname)
-    uml : UMLClass = class_dict[classname]
 
 #create a new block of text conaining the formated parameters#
 def new_fieldText(classname):
     newtext = ""
     uml : UMLClass = class_dict[classname]
+    #format every field in the form "{type} {name}"
+    #and display each field on a new line
     for field in uml.fields:
         newtext = newtext + "-" + field.type + " " + field.name + "\n"
     return newtext
 
 def update_vertical(pos, classname):
-    UMLBox.class_list[pos][6] = 30
+    UMLBox.class_list[pos].yinc = 30
     spacer = 0
-    #Find an appropriate vertical spacing to contain the methods and parameters#
+    #Find an appropriate vertical spacing to contain the field
     uml : UMLClass = class_dict[classname]
     for fields in uml.fields:
-        UMLBox.class_list[pos][6] += 15
+        UMLBox.class_list[pos].yinc += 15
     uml : UMLClass = class_dict[classname]
     method : ai.UMLMethod
     param : ai.UMLParameter
+    #Find an appropriate vertical spacing to contain the methods and parameters
     for method in uml.methods:
-        UMLBox.class_list[pos][6] += 45
+        UMLBox.class_list[pos].yinc += 45
         for param in method.params:
-            UMLBox.class_list[pos][6] += 15
+            UMLBox.class_list[pos].yinc += 15
     if(len(uml.fields) == 0):
         spacer = 10
     else:
         spacer = 0
-    #Update the view#
-    x1,y1,x2,y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
-    x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos][7])
-    xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos][8])
-    xl,yl = UMLBox.test_canvas.coords(UMLBox.class_list[pos][9])
-    ViewChange.set_text(UMLBox.class_list[pos][8], xm, y + 10 + 15 * len(uml.fields) + spacer)
-    ViewChange.set_text(UMLBox.class_list[pos][9], xl, y + 20 +  15 * len(uml.fields) + spacer)
-    ViewChange.set_rec(UMLBox.class_list[pos][1], x1, y1, x2, y1 + UMLBox.class_list[pos][6] + 25 + spacer)
+    #Update the view
+    x1,y1,x2,y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos].rec)
+    x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos].fieldlabel)
+    xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
+    xl,yl = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodtext)
+    ViewChange.set_text(UMLBox.class_list[pos].methodlabel, xm, y + 15 + 15 * len(uml.fields) + spacer)
+    ViewChange.set_text(UMLBox.class_list[pos].methodtext, xl, y + 25 +  15 * len(uml.fields) + spacer)
+    ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 25 + spacer)

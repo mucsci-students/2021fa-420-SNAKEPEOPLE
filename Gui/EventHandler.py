@@ -1,5 +1,10 @@
 from gui import UMLBox
 from gui import ViewChange
+from uml_components.UMLAttributes import UMLField
+from uml_components.interfaces import (attr_interface as ai,
+                                       class_interface as ci,
+                                       rel_interface as ri)
+from uml_components.UMLClass import UMLClass, class_dict
 
 #bind clicking and dragging to functions
 def can_drag(rec):
@@ -14,63 +19,71 @@ def on_click(event):
 #line up vriables so that whatever you click on within
 #a box results in the dragging of the box
 def can_dragMotion(event):
-    #get the index in the class_list of the current rectangle being clicked#
+    #get the index in the class_list of the current rectangle being clicked
     pos = 0
     for i in UMLBox.class_list:
-        if crec[0] in i:
-            label = i[2]
-            rec = i[1]
+        if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
+            label = i.label
+            rec = i.rec
             break
         pos += 1
 
     #Bring all currently selected items from the clicked box to front of view#
     ViewChange.bring_front(rec)
     ViewChange.bring_front(label)
-    ViewChange.bring_front(UMLBox.class_list[pos][5])
-    ViewChange.bring_front(UMLBox.class_list[pos][7])
-    ViewChange.bring_front(UMLBox.class_list[pos][8])
-    ViewChange.bring_front(UMLBox.class_list[pos][9])
+    ViewChange.bring_front(UMLBox.class_list[pos].fieldtext)
+    ViewChange.bring_front(UMLBox.class_list[pos].fieldlabel)
+    ViewChange.bring_front(UMLBox.class_list[pos].methodlabel)
+    ViewChange.bring_front(UMLBox.class_list[pos].methodtext)
 
     #get coordinates and modify them to maintain the shape of the box as you move it around#
-    x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos][1])
-    new_x1 = event.x - 20 - UMLBox.class_list[pos][3]
+    new_x1 = event.x - 20 - UMLBox.class_list[pos].textspace
     new_y1 = event.y - 15 
-    new_x2 = event.x + 60 + UMLBox.class_list[pos][3]
-    new_y2 = event.y + 20 + UMLBox.class_list[pos][6]
+    new_x2 = event.x + 60 + UMLBox.class_list[pos].textspace
+    new_y2 = event.y + UMLBox.class_list[pos].yinc
 
     #Bind the new coordinates so that the square cannot go outside#
     #of the canvas#
+    uml : UMLClass = class_dict[UMLBox.class_list[pos].name]
+    if len(uml.fields) == 0:
+        spacer = 20
+    else:
+        spacer = 10
     if(new_x2 > UMLBox.test_canvas.winfo_width()):
-        new_x1 = UMLBox.test_canvas.winfo_width() - 80 - 2 * UMLBox.class_list[pos][3]
+        new_x1 = UMLBox.test_canvas.winfo_width() - 80 - 2 * UMLBox.class_list[pos].textspace
         new_x2 = UMLBox.test_canvas.winfo_width()
     if(new_y2 > UMLBox.test_canvas.winfo_height()):
-        new_y1 = UMLBox.test_canvas.winfo_height() - 35 - UMLBox.class_list[pos][6]
+        new_y1 = UMLBox.test_canvas.winfo_height() - UMLBox.class_list[pos].yinc - 15 - spacer
         new_y2 = UMLBox.test_canvas.winfo_height()
     if(new_x1 < 0):
         new_x1 = 0
-        new_x2 = 80 + 2 * UMLBox.class_list[pos][3] 
+        new_x2 = 80 + 2 * UMLBox.class_list[pos].textspace 
     if(new_y1 < 0):
         new_y1 = 0
-        new_y2 = 35 + UMLBox.class_list[pos][6]
+        new_y2 = 15 + UMLBox.class_list[pos].yinc
 
     #find the center of the box#
+    x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos].rec)
     center = ((x2 - x1) / 2) + x1
 
     #move the elements#
-    ViewChange.set_rec(rec, new_x1, new_y1, new_x2, new_y2)
-    ViewChange.set_text(label, new_x1 + 40 + UMLBox.class_list[pos][3], new_y1 + 12.5)
-    ViewChange.set_text(UMLBox.class_list[pos][7], new_x1 + 25, new_y1 + 30)
-    ViewChange.set_text(UMLBox.class_list[pos][8], new_x1 + 35, new_y2 - 15)
-
+    ViewChange.set_rec(rec, new_x1, new_y1, new_x2, new_y2 + spacer)
+    ViewChange.set_text(label, new_x1 + 40 + UMLBox.class_list[pos].textspace, new_y1 + 12.5)
+    ViewChange.set_text(UMLBox.class_list[pos].fieldlabel, x1 + 25, new_y1 + 30)
+    fx,fy = UMLBox.test_canvas.coords(UMLBox.class_list[pos].fieldlabel)
+    ViewChange.set_text(UMLBox.class_list[pos].fieldtext, center, fy + 5)
+    ViewChange.set_text(UMLBox.class_list[pos].methodlabel, x1 + 35, fy + spacer + 15 * len(uml.fields))
+    mx,my = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
+    ViewChange.set_text(UMLBox.class_list[pos].methodtext, center, my + 10)
 
     #Move any lines connected to the box#
-    if(len(UMLBox.class_list[pos][4]) > 0):
-        for i in UMLBox.class_list[pos][4]:
+    if(len(UMLBox.class_list[pos].rels) > 0):
+        for i in UMLBox.class_list[pos].rels:
             if i[0] == "source":
                 x1, y1, x2, y2 = UMLBox.test_canvas.coords(i[1])
-                ViewChange.set_line(i[1], new_x1 + 40 + UMLBox.class_list[pos][3], new_y1 + 12.5, x2, y2)
+                ViewChange.set_line(i[1], new_x1, new_y1, x2, y2)
             if i[0] == "dest":
                 x1, y1, x2, y2 = UMLBox.test_canvas.coords(i[1])
-                ViewChange.set_line(i[1], x1, y1, new_x2, new_y2 - 20 - UMLBox.class_list[pos][6])
+                ViewChange.set_line(i[1], x1, y1, new_x1, new_y1)
     
     

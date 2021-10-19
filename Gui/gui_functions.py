@@ -108,9 +108,9 @@ def b_add_relation(class1 : str,
                    class2 : str, 
                    type : str, 
                    label : tk.Label) -> None:
+    UMLLine.add_line(class1, class2, type)
     output = ri.add_relationship(class1, class2, type)
     label.configure(text = output)
-    UMLLine.add_line(class1, class2, type)
 
 
 def b_delete_relation(class1 : str, 
