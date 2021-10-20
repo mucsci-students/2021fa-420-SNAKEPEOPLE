@@ -56,7 +56,6 @@ def b_add_method(class_name: str,
     output = ai.add_method(class_name, method_name, method_type)
     label.configure(text = output)
     UMLMethod.update_methods(class_name)
-    
 
 
 def b_delete_method(class_name : str, 
@@ -65,6 +64,7 @@ def b_delete_method(class_name : str,
     output = ai.delete_method(class_name, method_name)
     label.configure(text = output)
     UMLMethod.update_methods(class_name)
+
 
 def b_rename_method(class_name : str, 
                     old_name : str, 
@@ -126,7 +126,6 @@ def b_add_param(class_name : str,
     output = ai.add_param(class_name, method_name, param_name, param_type)
     label.configure(text = output)
     UMLMethod.update_methods(class_name)
-    
 
 
 def b_delete_param(class_name : str, 
@@ -156,5 +155,14 @@ def b_save_file(file_name : str, label : tk.Label) -> None:
 def b_load_file(file_name : str, label : tk.Label) -> None:
     output = snake_uml.load_classes(file_name)
     label.configure(text = output)
+
+
+def b_undo() -> None:
+    print("TODO")
+
+
+def b_redo() -> None:
+    print("TODO")
+
 
 ###################################################################################################
