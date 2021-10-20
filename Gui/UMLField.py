@@ -52,6 +52,6 @@ def update_vertical(pos, classname):
     x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos].fieldlabel)
     xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
     xl,yl = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodtext)
-    ViewChange.set_text(UMLBox.class_list[pos].methodlabel, xm, y + 15 + 15 * len(uml.fields) + spacer)
-    ViewChange.set_text(UMLBox.class_list[pos].methodtext, xl, y + 25 +  15 * len(uml.fields) + spacer)
+    ViewChange.set_text(UMLBox.class_list[pos].methodlabel, xm, y + 10 + 15 * len(uml.fields) + spacer)
+    ViewChange.set_text(UMLBox.class_list[pos].methodtext, xl, y + 30 +  15 * len(uml.fields))
     ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 25 + spacer)

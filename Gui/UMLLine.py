@@ -24,22 +24,21 @@ class UMLLine():
 def add_line(source : str, dest : str, line_type : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    if(ri.find_rel(source, dest)[0] == False and (sourcepos != None and destpos != None)):
-        if(line_type == "aggregation"):
-            color = 'blue'
-        elif(line_type == "composition"):
-            color = '#000fff000'
-        elif(line_type == "inheritance"):
-            color = 'red'
-        else:
-            color = 'black'
-        sourceItem = UMLBox.class_list[UMLBox.find_pos_from_name(source)].rec
-        destItem = UMLBox.class_list[UMLBox.find_pos_from_name(dest)].rec
-        midsourcex = UMLBox.test_canvas.coords(sourceItem)[0]
-        midsourcey = UMLBox.test_canvas.coords(sourceItem)[1]
-        middestx = UMLBox.test_canvas.coords(destItem)[0]
-        middesty = UMLBox.test_canvas.coords(destItem)[1]
-        UMLLine(midsourcex, midsourcey, middestx, middesty, sourceItem, destItem, color)
+    if(line_type == "aggregation"):
+        color = 'blue'
+    elif(line_type == "composition"):
+        color = '#000fff000'
+    elif(line_type == "inheritance"):
+        color = 'red'
+    else:
+        color = 'black'
+    sourceItem = UMLBox.class_list[UMLBox.find_pos_from_name(source)].rec
+    destItem = UMLBox.class_list[UMLBox.find_pos_from_name(dest)].rec
+    midsourcex = UMLBox.test_canvas.coords(sourceItem)[0]
+    midsourcey = UMLBox.test_canvas.coords(sourceItem)[1]
+    middestx = UMLBox.test_canvas.coords(destItem)[0]
+    middesty = UMLBox.test_canvas.coords(destItem)[1]
+    UMLLine(midsourcex, midsourcey, middestx, middesty, sourceItem, destItem, color)
 
 ##Find the position of the class_list of the source#
 def findpos(source):

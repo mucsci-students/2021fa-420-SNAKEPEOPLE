@@ -40,17 +40,14 @@ class UMLsquare():
     y2 = 65
     xspace = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
-        label = test_canvas.create_text(x1 + 40, y1 + 12, text = name, state=tk.DISABLED, tags=name)
+        label = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 12, text = name, state=tk.DISABLED, tags=name)
         textspace =3.5 * len(name)
-        if UMLsquare.tracker % 2 == 1:
-            x1 += textspace
-            x2 += textspace
-        rec = test_canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="#D1FF65", tags=name)
+        rec = test_canvas.create_rectangle(x1, y1, x2, y2 + 40, fill="#D1FF65", tags=name)
         fieldlabel = test_canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
-        fieldtext = test_canvas.create_text(x1 + 40, y1 + 35, text = "", state=tk.HIDDEN, anchor=tk.N)
+        fieldtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 35, text = "", state=tk.HIDDEN, anchor=tk.N)
         yincrement = 30
         methodlabel = test_canvas.create_text(x1, y1 + 50, text = "Method(s):", state=tk.DISABLED)
-        methodtext = test_canvas.create_text(x1 + 40, y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
+        methodtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
         test_canvas.tag_lower(rec)
         self.name = name
         self.rec = rec
@@ -78,20 +75,17 @@ def create_box(name : str):
         else:
             UMLsquare.x1 = 120
             UMLsquare.x2 = 200
-            UMLsquare.y1 += 100 + yinc
-            UMLsquare.y2 += 100 + yinc
+            UMLsquare.y1 += 100
+            UMLsquare.y2 += 100
         UMLsquare.tracker += 1
         #Update width of box#
         update_size(len(class_list) - 1)
 
 def create_box_with_coords(name : str, x1, y1, x2, y2):
-    obj = UMLsquare(x1 + 40, y1, x2, y2, name)
+    obj = UMLsquare(x1, y1, x2, y2, name)
     class_list.append(obj)
     update_size(len(class_list) - 1)
-    # if len(class_dict[name].methods) > 0:
-    #     update_methods(name)
-    # if len(class_dict[name].fields) > 0:
-    #     UMLField.update_fields(name)
+    #UMLField.update_vertical(len(class_list) - 1, name)
 
 #Remove the box with the text = name#
 def delete_box(name : str):
@@ -160,7 +154,7 @@ def update_size(pos : int):
         if len(name) * 3.5 > longest_name:
             longest_name = len(name) * 3.5
         for param in method.params:
-            name = "    -" + param.type + " " + method.name
+            name = "  -" + param.type + " " + method.name
             if len(name) * 3.5 > longest_name:
                 longest_name = len(name) * 3.5
     class_list[pos].textspace = longest_name
@@ -172,6 +166,7 @@ def update_size(pos : int):
     x2 = center + 40 + longest_name
     #update the box size, and shift label text elements#
     ViewChange.set_rec(class_list[pos].rec, x1, y1, x2, y2)
+    ViewChange.set_text(class_list[pos].label, center, y1 + 12)
     x,y = test_canvas.coords(class_list[pos].fieldlabel)
     ViewChange.set_text(class_list[pos].fieldlabel, x1 + 25, y)
     x,y = test_canvas.coords(class_list[pos].methodlabel)

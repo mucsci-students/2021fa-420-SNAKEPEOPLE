@@ -5,6 +5,8 @@ from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
 from uml_components.UMLClass import UMLClass, class_dict
+from . import UMLField
+from . import UMLMethod
 
 #bind clicking and dragging to functions
 def can_drag(rec):
@@ -68,7 +70,7 @@ def can_dragMotion(event):
 
     #move the elements#
     ViewChange.set_rec(rec, new_x1, new_y1, new_x2, new_y2 + spacer)
-    ViewChange.set_text(label, new_x1 + 40 + UMLBox.class_list[pos].textspace, new_y1 + 12.5)
+    ViewChange.set_text(label, new_x1 + 40 + UMLBox.class_list[pos].textspace, new_y1 + 12)
     ViewChange.set_text(UMLBox.class_list[pos].fieldlabel, x1 + 25, new_y1 + 30)
     fx,fy = UMLBox.test_canvas.coords(UMLBox.class_list[pos].fieldlabel)
     ViewChange.set_text(UMLBox.class_list[pos].fieldtext, center, fy + 5)
