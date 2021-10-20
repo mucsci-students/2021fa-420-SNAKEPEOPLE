@@ -1,7 +1,10 @@
 import tkinter as tk
 from gui.UMLLine import deleteline
-from gui import EventHandler
-from gui import ViewChange
+from . import EventHandler
+from . import ViewChange
+from . import UMLField
+from gui.UMLMethod import update_methods
+from uml_components.UMLAttributes import UMLMethod
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
@@ -37,8 +40,6 @@ class UMLsquare():
     y2 = 65
     xspace = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
-        x1 = x1 + UMLsquare.xspace
-        x2 = x2 + UMLsquare.xspace
         label = test_canvas.create_text(x1 + 40, y1 + 12, text = name, state=tk.DISABLED, tags=name)
         textspace =3.5 * len(name)
         if UMLsquare.tracker % 2 == 1:
@@ -79,10 +80,18 @@ def create_box(name : str):
             UMLsquare.x2 = 200
             UMLsquare.y1 += 100 + yinc
             UMLsquare.y2 += 100 + yinc
-            UMLsquare.xspace = 0
         UMLsquare.tracker += 1
         #Update width of box#
         update_size(len(class_list) - 1)
+
+def create_box_with_coords(name : str, x1, y1, x2, y2):
+    obj = UMLsquare(x1 + 40, y1, x2, y2, name)
+    class_list.append(obj)
+    update_size(len(class_list) - 1)
+    # if len(class_dict[name].methods) > 0:
+    #     update_methods(name)
+    # if len(class_dict[name].fields) > 0:
+    #     UMLField.update_fields(name)
 
 #Remove the box with the text = name#
 def delete_box(name : str):
@@ -168,3 +177,8 @@ def update_size(pos : int):
     x,y = test_canvas.coords(class_list[pos].methodlabel)
     ViewChange.set_text(class_list[pos].methodlabel, x1 + 35, y)
     return center
+
+def get_coords(name : str):
+    pos = find_pos_from_name(name)
+    x1, y1, x2, y2 = test_canvas.coords(class_list[pos].rec)
+    return (x1, y1, x2, y2)
