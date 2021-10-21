@@ -131,3 +131,7 @@ def populate_canvas(last_state):
     for i in last_state.relationship_list:
         ri.add_relationship(i.source, i.destination, i.type)
         UMLLine.add_line(i.source, i.destination, i.type)
+
+def clear_stack():
+    while(redo_stack.empty() == False):
+        redo_stack.get()
