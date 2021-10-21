@@ -11,8 +11,8 @@ from tkinter import ttk
 #import UMLbox
 
 # Internal Imports
-#import gui_windows
-#from . import gui_functions as gf
+from . import gui_windows
+from . import gui_functions as gf
 
 
 
