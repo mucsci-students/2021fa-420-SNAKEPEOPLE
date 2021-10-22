@@ -167,11 +167,11 @@ def b_delete_relation(class1 : str,
                       class2 : str, 
                       label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    UMLLine.delete_line(class1, class2)
     output = ri.delete_relationship(class1, class2)
     if(output.split(' ')[0] != "<Deleted"):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "<Deleted"):
+        UMLLine.delete_line(class1, class2)
         UMLSavepoint.clear_stack()
     label.configure(text = output)
 

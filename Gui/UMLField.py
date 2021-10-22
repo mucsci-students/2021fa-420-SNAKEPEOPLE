@@ -1,5 +1,5 @@
 import tkinter as tk
-from gui import UMLBox, UMLMethod
+from gui import UMLBox, UMLLine, UMLMethod
 from gui import ViewChange
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
@@ -68,6 +68,8 @@ def update_vertical(pos : int, classname : str):
     ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 25 + spacer)
     #fix any potential overlap
     fix_pos(pos, classname)
+    #fix any missing lines
+    UMLLine.fix_lines()
 
 def fix_pos(pos : int, classname : str):
     coords = UMLBox.get_coords(classname)
