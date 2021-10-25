@@ -158,7 +158,7 @@ def b_add_relation(class1 : str,
     if(output.split(' ')[0] == "<Added"):
         UMLLine.add_line(class1, class2, type)
         UMLSavepoint.clear_stack()
-    if(output.split(' ')[0] != "<Added"):
+    if(output.split(' ')[0] != "<Added" and ri.find_rel(class1, class2)[0] == False):
         UMLSavepoint.redo_stack.get()
     label.configure(text = output)
 
@@ -166,9 +166,11 @@ def b_add_relation(class1 : str,
 def b_delete_relation(class1 : str, 
                       class2 : str, 
                       label : tk.Label) -> None:
-    UMLSavepoint.save_point()
+    exists = ri.find_rel(class1, class2)[0]
+    if exists:
+        UMLSavepoint.save_point()
     output = ri.delete_relationship(class1, class2)
-    if(output.split(' ')[0] != "<Deleted"):
+    if(output.split(' ')[0] != "<Deleted" and exists):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "<Deleted"):
         UMLLine.delete_line(class1, class2)
@@ -231,7 +233,8 @@ def b_load_file(file_name : str, label : tk.Label) -> None:
 
 
 def b_undo() -> None:
-    UMLSavepoint.undo()
+    if UMLSavepoint.undo_stack.empty() == False:
+        UMLSavepoint.undo()
 
 def b_redo() -> None:
     if UMLSavepoint.redo_stack.empty() == False:

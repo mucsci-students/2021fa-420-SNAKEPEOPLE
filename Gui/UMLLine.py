@@ -54,8 +54,7 @@ def findpos(source):
 def delete_line(source : str, dest : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    if ri.find_rel(source, dest)[0] == True:
-        deleteline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec)
+    deleteline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec)
 
 #remove a line from the class_list storage. Line is stored both ways so two deletes must occur#
 def deleteline(source, dest):
@@ -83,7 +82,7 @@ def fix_lines():
     #Delete all existing relationships on the canvas
     for i in UMLBox.class_list:
         for k in UMLBox.class_list:
-            if ri.find_rel(i.name, i.name)[0] == True:
+            if ri.find_rel(i.name, k.name)[0] == True:
                 delete_line(i.name, k.name)
     #Add all existing relationships to the canvas
     for i in relationship_list:

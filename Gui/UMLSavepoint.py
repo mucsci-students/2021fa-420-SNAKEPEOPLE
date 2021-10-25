@@ -73,14 +73,14 @@ def undo():
 
     last_state : UMLSavepoint
     last_state = undo_stack.get()
-    
-    #Roll back the class dictionary to the previous state
-    class_dict.clear()
-    class_dict.update(last_state.class_dict)
 
     #Clear the relationship list
     while len(relationship_list) > 0:
         ri.delete_relationship(relationship_list[0].source, relationship_list[0].destination)
+
+    #Roll back the class dictionary to the previous state
+    class_dict.clear()
+    class_dict.update(last_state.class_dict)
 
     #Clear the canvas
     UMLBox.test_canvas.delete("all")
@@ -95,13 +95,13 @@ def redo():
     last_state : UMLSavepoint
     last_state = redo_stack.get()
 
-    #Roll back the class dictionary to the previous state (forward state)
-    class_dict.clear()
-    class_dict.update(last_state.class_dict)
-
     #Clear the relationhsip list
     while len(relationship_list) > 0:
         ri.delete_relationship(relationship_list[0].source, relationship_list[0].destination)
+
+    #Roll back the class dictionary to the previous state (forward state)
+    class_dict.clear()
+    class_dict.update(last_state.class_dict)
         
     #clear the canvas
     UMLBox.test_canvas.delete("all")
