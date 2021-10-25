@@ -28,6 +28,18 @@ def on_click(event):
     global saved
     saved = False
     global save
+    pos = 0
+    #Make all borders black
+    clear_border()
+    for i in UMLBox.class_list:
+        if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
+            label = i.label
+            rec = i.rec
+            break
+        pos += 1
+    #Update the current clicked rectangle to have a red outline
+    UMLBox.test_canvas.itemconfig(rec, outline="red")
+    #Save the current state of the canvas
     save = UMLSavepoint.UMLSavepoint()
 
 #line up vriables so that whatever you click on within
@@ -103,5 +115,11 @@ def can_dragMotion(event):
                 ViewChange.set_line(i[1], x1, y1, new_x1, new_y1)
 
 def on_unclick(event):
+    #Add to the undo stack if the box moved
     if saved == False and moved == True:
         UMLSavepoint.undo_stack.put(save)
+
+def clear_border():
+    #Change all outlines to be black
+    for i in UMLBox.class_list:
+        UMLBox.test_canvas.itemconfig(i.rec, outline="black")
