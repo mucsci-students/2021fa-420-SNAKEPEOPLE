@@ -1,7 +1,12 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     gui_main.py
+
+# External Imports
 import tkinter as tk
 from tkinter import ttk
 from tkinter import font
 
+# Internal Imports
 from gui import UMLBox
 
 from . import gui_buttons, gui_functions, gui_windows, Side_Panel

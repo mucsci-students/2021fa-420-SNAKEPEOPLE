@@ -13,8 +13,7 @@ from uml_components.UMLRelationship import UMLRelationship, relationship_list
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-from . import gui_windows as gw
-from . import gui_buttons as gb
+
 from . import UMLBox
 from . import UMLField
 from . import UMLLine
