@@ -35,31 +35,30 @@ and give them feedback on whether it was successful or not.
 def b_add_class(name: str, label : tk.Label) -> None: 
     UMLSavepoint.save_point()
     output = ci.add_class(name)
-    if(output.split(' ')[0] != "<Added"):
+    if(output.split(' ')[0] != "<Added" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.undo_stack.get()
     if(output.split(' ')[0] == "<Added"):
         UMLSavepoint.clear_stack()
+        UMLBox.create_box(name)
     label.configure(text = output)
-    UMLBox.create_box(name)
 
 
 def b_delete_class(name: str, label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ci.delete_class(name)
-    if(output.split(' ')[0] != "<Deleted"):
+    if(output.split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "<Deleted"):
         UMLSavepoint.clear_stack()
+        UMLBox.delete_box(name)
     label.configure(text = output)
-    UMLBox.delete_box(name)
-
 
 def b_rename_class(old_name: str, 
                    new_name : str, 
                    label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ci.rename_class(old_name, new_name)
-    if(output.split(' ')[0] != "<Renamed"):
+    if(output.split(' ')[0] != "<Renamed" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "<Renamed"):
         UMLSavepoint.clear_stack()
@@ -73,7 +72,7 @@ def b_add_method(class_name: str,
                  label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.add_method(class_name, method_name, method_type)
-    if(output.split(' ')[0] != "Successfully"):
+    if(output.split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -86,7 +85,7 @@ def b_delete_method(class_name : str,
                     label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.delete_method(class_name, method_name)
-    if(output.split(' ')[0] != "Successfully"):
+    if(output.split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -100,7 +99,7 @@ def b_rename_method(class_name : str,
                     label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.rename_method(class_name, old_name, new_name)
-    if(output.split(' ')[0] != "Successfully"):
+    if(output.split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -114,7 +113,7 @@ def b_add_field(class_name : str,
                 label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.add_field(class_name, field_name, field_type)
-    if(output.split(' ')[0] != "Successfully"):
+    if(output.split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -127,7 +126,7 @@ def b_delete_field(class_name : str,
                    label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.delete_field(class_name, field_name)
-    if(output.split(' ')[0] != "Successfully"):
+    if(output.split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -141,7 +140,7 @@ def b_rename_field(class_name : str,
                    label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.rename_field(class_name, old_name, new_name)
-    if(output.split(' ')[0] != "Successfully"):
+    if(output.split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -158,7 +157,7 @@ def b_add_relation(class1 : str,
     if(output.split(' ')[0] == "<Added"):
         UMLLine.add_line(class1, class2, type)
         UMLSavepoint.clear_stack()
-    if(output.split(' ')[0] != "<Added" and ri.find_rel(class1, class2)[0] == False):
+    if(output.split(' ')[0] != "<Added"  and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     label.configure(text = output)
 
@@ -170,7 +169,7 @@ def b_delete_relation(class1 : str,
     if exists:
         UMLSavepoint.save_point()
     output = ri.delete_relationship(class1, class2)
-    if(output.split(' ')[0] != "<Deleted" and exists):
+    if(output.split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "<Deleted"):
         UMLLine.delete_line(class1, class2)
@@ -185,7 +184,7 @@ def b_add_param(class_name : str,
                 label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.add_param(class_name, method_name, param_name, param_type)
-    if(output.split(' ')[0] != "Successfuly"):
+    if(output.split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -199,7 +198,7 @@ def b_delete_param(class_name : str,
                    label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.delete_param(class_name, method_name, param_name)
-    if(output.split(' ')[0] != "Successfuly"):
+    if(output.split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
@@ -214,7 +213,7 @@ def b_rename_param(class_name : str,
                    label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ai.rename_param(class_name, method_name, old_name, new_name)
-    if(output.split(' ')[0] != "Successfuly"):
+    if(output.split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()

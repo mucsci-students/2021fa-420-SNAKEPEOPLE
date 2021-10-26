@@ -33,11 +33,6 @@ class UMLsquare():
     """the list tracks the name, the square element, the class name label,
     how much padding to account for lengthy text, lines, yincrement
     field header, method header, methods text element"""
-    tracker = 0
-    x1 = 120
-    x2 = 200
-    y1 = 40
-    y2 = 65
     xspace = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
         label = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 12, text = name, state=tk.DISABLED, tags=name)

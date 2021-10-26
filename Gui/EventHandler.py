@@ -118,6 +118,14 @@ def on_unclick(event):
     #Add to the undo stack if the box moved
     if saved == False and moved == True:
         UMLSavepoint.undo_stack.put(save)
+    pos = 0
+    for i in UMLBox.class_list:
+        if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
+            label = i.label
+            rec = i.rec
+            break
+        pos += 1
+    UMLBox.update_size(pos)
 
 def clear_border():
     #Change all outlines to be black
