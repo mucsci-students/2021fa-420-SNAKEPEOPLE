@@ -3,7 +3,7 @@ from tkinter import font
 
 from gui import UMLBox
 
-from . import gui_buttons
+from . import gui_buttons, gui_functions, gui_windows
 from uml_components import UMLClass, UMLRelationship
 
 
@@ -119,14 +119,20 @@ def clear_dict():
         
 def build_menu(window : tk.Tk) -> tk.Menu:
     menubar = tk.Menu(window)
+
     menu_file = tk.Menu(menubar, tearoff=0)
     menu_file.add_command(label="New", command=clear_dict)
-    menu_file.add_command(label="Save")
-    menu_file.add_command(label="Load")
+    menu_file.add_command(label="Save", command=gui_windows.save_window)
+    menu_file.add_command(label="Load", command=gui_windows.load_window)
     menu_file.add_separator()
     menu_file.add_command(label="Exit", command=exit)
     menubar.add_cascade(label="File", menu=menu_file)
     
+    menu_edit = tk.Menu(menubar, tearoff=0)
+    menu_edit.add_command(label="Undo", command=gui_functions.b_undo)
+    menu_edit.add_command(label="Redo", command=gui_functions.b_redo)
+    menubar.add_cascade(label="Edit", menu=menu_edit)
+
     return menubar
 
 if __name__ == "__main__":

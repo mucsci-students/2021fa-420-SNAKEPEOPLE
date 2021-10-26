@@ -74,7 +74,7 @@ def add_relationship(source : str, destination : str, rel_type : str) -> str:
     ['Aggregation', 'Composition', 'Inheritance', 'Realization'].
     """
     
-    err = f"<Deleted Relationship>: {source} - {destination} ({rel_type})"
+    err = f"<Added Relationship>: {source} - {destination} ({rel_type})"
 
     # Checks if the given relationship type is valid.
     if not check_type(rel_type):
@@ -124,7 +124,7 @@ def delete_relationship(source : str, dest : str) -> str:
     - dest : str -> the name of the secondary class of the relationship.
     """
     
-    err = ""
+    err = f"<Deleted Relationship>: {source} - {dest})"
 
     # Checks if the given source and destination are valid classes.
     if not check_class(source):

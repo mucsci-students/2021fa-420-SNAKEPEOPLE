@@ -1,6 +1,12 @@
 import tkinter as tk
 from gui import ViewChange
 from gui import UMLBox
+from uml_components.UMLRelationship import UMLRelationship
+from uml_components.interfaces import (attr_interface as ai,
+                                       class_interface as ci,
+                                       rel_interface as ri)
+from uml_components.UMLClass import UMLClass, class_dict
+from uml_components.UMLRelationship import UMLRelationship, relationship_list
 
 class UMLLine():
 
@@ -12,25 +18,13 @@ class UMLLine():
         UMLBox.test_canvas.tag_lower(line)
         #store entries for source and dest boxes that tell whether the box is the source
         #or destination of a relationship
-        UMLBox.class_list[sourcepos][4].append(("source", line, dest, source))
-        UMLBox.class_list[destpos][4].append(("dest", line, source, dest))
+        UMLBox.class_list[sourcepos].rels.append(("source", line, dest))
+        UMLBox.class_list[destpos].rels.append(("dest", line, source))
 
-#Allow a user to pass in a str version of each box#
+#add a line connecting two classes by name, source and dest#
 def add_line(source : str, dest : str, line_type : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    add = True
-    for i in UMLBox.class_list:
-        for k in i[4]:
-            print(len(i[4]))
-            if(k[0] == "source"):
-                if(k[2] == UMLBox.class_list[destpos][1] and k[3] == UMLBox.class_list[source][1]):
-                    add = False
-    if(add):
-        addline(UMLBox.class_list[sourcepos][1], UMLBox.class_list[destpos][1], line_type)
-
-#add a line cooresponding to the names of the two boxes, source and dest#
-def addline(source, dest, line_type : str):
     if(line_type == "aggregation"):
         color = 'blue'
     elif(line_type == "composition"):
@@ -39,8 +33,8 @@ def addline(source, dest, line_type : str):
         color = 'red'
     else:
         color = 'black'
-    sourceItem = UMLBox.class_list[findpos(source)][1]
-    destItem = UMLBox.class_list[findpos(dest)][1]
+    sourceItem = UMLBox.class_list[UMLBox.find_pos_from_name(source)].rec
+    destItem = UMLBox.class_list[UMLBox.find_pos_from_name(dest)].rec
     midsourcex = UMLBox.test_canvas.coords(sourceItem)[0]
     midsourcey = UMLBox.test_canvas.coords(sourceItem)[1]
     middestx = UMLBox.test_canvas.coords(destItem)[0]
@@ -51,7 +45,7 @@ def addline(source, dest, line_type : str):
 def findpos(source):
     pos = 0
     while(pos < len(UMLBox.class_list)):
-        if source == UMLBox.class_list[pos][1]:
+        if source == UMLBox.class_list[pos].rec:
             return pos
         else:
             pos += 1
@@ -60,7 +54,7 @@ def findpos(source):
 def delete_line(source : str, dest : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    deleteline(UMLBox.class_list[sourcepos][1], UMLBox.class_list[destpos][1])
+    deleteline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec)
 
 #remove a line from the class_list storage. Line is stored both ways so two deletes must occur#
 def deleteline(source, dest):
@@ -68,18 +62,28 @@ def deleteline(source, dest):
     destpos = findpos(dest)
     subpos = 0
     #delete all line entries for a box that involve source#
-    while subpos < len(UMLBox.class_list[sourcepos][4]):
-        if (UMLBox.class_list[sourcepos][4][subpos][0] == "source" 
-            and UMLBox.class_list[sourcepos][4][subpos][2] == dest):
-            line = UMLBox.class_list[sourcepos][4][subpos][1]
-            UMLBox.class_list[sourcepos][4].pop(subpos)
+    while subpos < len(UMLBox.class_list[sourcepos].rels):
+        if (UMLBox.class_list[sourcepos].rels[subpos][0] == "source" 
+            and UMLBox.class_list[sourcepos].rels[subpos][2] == dest):
+            line = UMLBox.class_list[sourcepos].rels[subpos][1]
+            UMLBox.class_list[sourcepos].rels.pop(subpos)
         subpos += 1
     subpos = 0
     #delete all line entries for a box that involve dest#
-    while subpos < len(UMLBox.class_list[destpos][4]):
-        if (UMLBox.class_list[destpos][4][subpos][0] == "dest" 
-            and UMLBox.class_list[destpos][4][subpos][2] == source):
-            UMLBox.class_list[destpos][4].pop(subpos)
+    while subpos < len(UMLBox.class_list[destpos].rels):
+        if (UMLBox.class_list[destpos].rels[subpos][0] == "dest" 
+            and UMLBox.class_list[destpos].rels[subpos][2] == source):
+            UMLBox.class_list[destpos].rels.pop(subpos)
         subpos += 1
     #delete the line element itself#
     ViewChange.del_item(line)
+
+def fix_lines():
+    #Delete all existing relationships on the canvas
+    for i in UMLBox.class_list:
+        for k in UMLBox.class_list:
+            if ri.find_rel(i.name, k.name)[0] == True:
+                delete_line(i.name, k.name)
+    #Add all existing relationships to the canvas
+    for i in relationship_list:
+        add_line(i.source, i.destination, i.type)

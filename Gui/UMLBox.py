@@ -1,162 +1,203 @@
 import tkinter as tk
 from gui.UMLLine import deleteline
-from gui import EventHandler
-from gui import ViewChange
+from . import EventHandler
+from . import ViewChange
+from . import UMLField
+from gui.UMLMethod import update_methods
+from uml_components.UMLAttributes import UMLMethod
+from uml_components.interfaces import (attr_interface as ai,
+                                       class_interface as ci,
+                                       rel_interface as ri)
+from uml_components.UMLClass import UMLClass, class_dict
 
 class_list = []
 
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
-    global test_canvas 
+    global test_canvas
     test_canvas = tk.Canvas(frame, 
                         width=600, 
                         height=600,
-                        bg="#888",
+                        bg="#D0D0D0",
                         bd=3)
     return test_canvas
 
 def find_pos_from_name(name : str):
     pos = 0
     while pos < len(class_list):
-        if class_list[pos][0] == name:
+        if class_list[pos].name == name:
             return pos
         pos += 1
 
 class UMLsquare():
 
     """the list tracks the name, the square element, the class name label,
-    how much padding to account for lengthy text, lines, fields, yincrement due to fields,
-    field header, method header, methods text element, fields and methods, and vertical increment
-    due to methods and parametes"""
-    tracker = 0
-    x1 = 120
-    x2 = 200
-    y1 = 40
-    y2 = 65
+    how much padding to account for lengthy text, lines, yincrement
+    field header, method header, methods text element"""
     xspace = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
-        x1 = x1 + UMLsquare.xspace
-        x2 = x2 + UMLsquare.xspace
-        label = test_canvas.create_text(x1 + 40, y1 + 12, text = name, state=tk.DISABLED, tags=name)
+        label = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 12, text = name, state=tk.DISABLED, tags=name)
         textspace =3.5 * len(name)
-        if UMLsquare.tracker % 2 == 1:
-            x1 += textspace
-            x2 += textspace
-        rec = test_canvas.create_rectangle(x1 - textspace, y1, x2 + textspace, y2 + 40, fill="#D1FF65", tags=name)
+        rec = test_canvas.create_rectangle(x1, y1, x2, y2 + 40, fill="#D1FF65", tags=name)
         fieldlabel = test_canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
-        fieldtext = test_canvas.create_text(x1 + 40, y1 + 25, text = "", state=tk.HIDDEN, anchor=tk.N)
+        fieldtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 35, text = "", state=tk.HIDDEN, anchor=tk.N)
         yincrement = 30
-        methodlabel = test_canvas.create_text(x1 + 18, y1 + 50, text = "Method(s):", state=tk.DISABLED)
-        methodText = test_canvas.create_text(x1 + 40, y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
-        test_canvas.tag_lower(rec)
-        method_increment = 0
-        self.info = [name, rec, label, textspace, [], fieldtext, [], yincrement, fieldlabel, methodlabel, methodText, [], method_increment]
-        class_list.append(self.info)
+        methodlabel = test_canvas.create_text(x1, y1 + 50, text = "Method(s):", state=tk.DISABLED)
+        methodtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
+        ViewChange.push_back(rec)
+        self.name = name
+        self.rec = rec
+        self.label = label
+        self.textspace = textspace
+        self.rels = []
+        self.fieldtext = fieldtext
+        self.yinc = yincrement
+        self.fieldlabel = fieldlabel
+        self.methodlabel = methodlabel
+        self.methodtext = methodtext
         EventHandler.can_drag(rec)
     
 #add a box to the canvas#      
 def create_box(name : str):
-    addbox = True
     yinc = 0
-    #Get previous row's tallest box height#
-    if len(class_list ) > 1:
-        box1y = class_list[len(class_list) - 2][7] + class_list[len(class_list) - 2][12]
-        box2y = class_list[len(class_list) - 1][7] + class_list[len(class_list) - 1][12]
-        if box1y > box2y:
-            yinc = box1y
-        else:
-            yinc = box2y
-    #Check for duplicate box names#
-    for i in class_list:
-        if i[0] == name:
-            addbox = False
-    if(addbox):
-        obj = UMLsquare(UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
-        #shift everything right after the first box in a row and then shift down after the second#
-        if(UMLsquare.tracker % 2 == 0):
-            UMLsquare.x1 += obj.info[3] + 200
-            UMLsquare.x2 += obj.info[3] + 200
-        else:
-            UMLsquare.x1 = 120
-            UMLsquare.x2 = 200
-            UMLsquare.y1 += 100 + yinc
-            UMLsquare.y2 += 100 + yinc
-            UMLsquare.xspace = 0
-        UMLsquare.tracker += 1
-        #Update width of box#
+    #Make sure the class does not already exist
+    if find_pos_from_name(name) == None and ai.find_class(name)[0] == True:
+        placed = False
+        x_place = 1
+        x1 = 60
+        x2 = 140
+        y1 = 40
+        y2 = 65
+
+        #Account for lenthy boxes
+        last_textspace = 0
+        if len(class_list) > 0:
+            last_textspace = class_list[len(class_list) - 1].textspace
+        current_textspace = len(name) * 3.5
+
+        #Find a big enough gap to place the newest class
+        while not placed:
+            if x1 - last_textspace - current_textspace < 0:
+                x1 = last_textspace + current_textspace + 60
+            if len(test_canvas.find_overlapping(x1 - last_textspace - current_textspace, y1, x2 + current_textspace, y2)) != 0:
+                if x2 > test_canvas.winfo_width() - 75:
+                    y1 += 25
+                    y2 += 25
+                    x1 = 60
+                    x2 = 140
+                    last_textspace = 0
+                else:
+                    x1 += 80
+                    x2 += 80
+            else:
+                placed = True
+
+        #Create the new box
+        obj = UMLsquare(x1, y1, x2, y2, name)
+        #Add the new box to the list
+        class_list.append(obj)
+        #Bring current box to front
+        ViewChange.bring_all_front(obj)
+        #update the size of the current box
         update_size(len(class_list) - 1)
+
+def create_box_with_coords(name : str, x1 : int, y1 : int, x2 : int, y2 : int):
+    obj = UMLsquare(x1, y1, x2, y2, name)
+    class_list.append(obj)
+    update_size(len(class_list) - 1)
+    UMLField.update_vertical(len(class_list) - 1, name)
 
 #Remove the box with the text = name#
 def delete_box(name : str):
     pos = find_pos_from_name(name)
-    subpos = 0
-    #remove any lines connecting the box to any other boxes#
-    while subpos < len(class_list[pos][4]):
-        if(class_list[pos][4][subpos][0] == "source"):
-            deleteline(class_list[pos][1], class_list[pos][4][subpos][2])
-            subpos -= 1
-        else:
-            deleteline(class_list[pos][4][subpos][2], class_list[pos][1])
-            subpos -= 1
-        subpos += 1
-    #delete everything associated with the box#
-    ViewChange.del_item(class_list[pos][1])
-    ViewChange.del_item(class_list[pos][2])
-    ViewChange.del_item(class_list[pos][5])
-    ViewChange.del_item(class_list[pos][8])
-    ViewChange.del_item(class_list[pos][9])
-    ViewChange.del_item(class_list[pos][10])
-    class_list.pop(pos)
+    if pos != None:
+        subpos = 0
+        #remove any lines connecting the box to any other boxes#
+        while subpos < len(class_list[pos].rels):
+            if(class_list[pos].rels[subpos][0] == "source"):
+                deleteline(class_list[pos].rec, class_list[pos].rels[subpos][2])
+                subpos -= 1
+            else:
+                deleteline(class_list[pos].rels[subpos][2], class_list[pos].rec)
+                subpos -= 1
+            subpos += 1
+        #delete everything associated with the box
+        ViewChange.del_item(class_list[pos].rec)
+        ViewChange.del_item(class_list[pos].label)
+        ViewChange.del_item(class_list[pos].fieldtext)
+        ViewChange.del_item(class_list[pos].fieldlabel)
+        ViewChange.del_item(class_list[pos].methodlabel)
+        ViewChange.del_item(class_list[pos].methodtext)
+        class_list.pop(pos)
 
 #rename a box with the name = oldname#
 def rename_box(oldname : str, newname : str):
-    renamebox = True
     #Check for duplicate box names#
-    for i in class_list:
-        if i[0] == newname:
-            renamebox = False
-    if(renamebox):
+    if(find_pos_from_name(newname) == None):
         pos = 0
         #Find the position of the box with the old name#
-        while pos < len(class_list):
-            if oldname == class_list[pos][0]:
+        for i in class_list:
+            if oldname == i.name:
                 #save the box and text values#
-                class_list[pos][0] = newname
+                class_list[pos].name = newname
                 break
             else:
                 pos += 1
         #Change the text of the box to the updated name#
-        ViewChange.item_config(class_list[pos][2], newname, None, None)
+        ViewChange.item_config(class_list[pos].label, newname, None, None)
         #update the width of the box#
         update_size(pos)
 
 
 #update the width of the box according to the length of the contained text#
 def update_size(pos : int):
-    longest_name = 3.5 * len(class_list[pos][0])
+    classname = class_list[pos].name
+    longest_name = 3.5 * len(class_list[pos].name)
     i = 0
+    #Check class name against field and method labels
     if(len("Fields:") * 3.5 > longest_name):
-        longest_name = len("fields:") * 3.5
+        longest_name = len("Fields:") * 3.5
     if(len("Methods:") * 3.5 > longest_name):
-        longest_name = len("methods:") * 3.5
-    #find the longest text entry in the box#
-    for i in class_list[pos][6]:
-        if len(i) *3.5 > longest_name:
-            longest_name = len(i) *3.5
-    for i in class_list[pos][11]:
-        for k in i:
-            if len(k) *3.5 > longest_name:
-                longest_name = len(k) *3.5
-    class_list[pos][3] = longest_name
-    #find the center and build off of it left and right using the#
-    #length of the longest text entry#
-    x1,y1,x2,y2 = test_canvas.coords(class_list[pos][1])
+        longest_name = len("Methods:") * 3.5
+    uml : UMLClass = class_dict[classname]
+    #Check all names in the list of fields
+    for fields in uml.fields:
+        name = "-" + fields.type + " " + fields.name
+        if len(name) * 3.5 > longest_name:
+            longest_name = len(name) * 3.5
+    uml : UMLClass = class_dict[classname]
+    method : ai.UMLMethod
+    param : ai.UMLParameter
+    #Check all info in the list of methods and parameters
+    for method in uml.methods:
+        name = method.name + " " + method.return_type + "("
+        if len(name) * 3.5 > longest_name:
+            longest_name = len(name) * 3.5
+        for param in method.params:
+            name = "  -" + param.type + " " + method.name
+            if len(name) * 3.5 > longest_name:
+                longest_name = len(name) * 3.5
+    class_list[pos].textspace = longest_name
+    #find the center and build off of it left and right using the
+    #length of the longest text entry
+    x1,y1,x2,y2 = test_canvas.coords(class_list[pos].rec)
     center = ((x2 - x1) / 2) + x1
     x1 = center - 40 - longest_name
     x2 = center + 40 + longest_name
-    #update the box size, and shift header text elements#
-    ViewChange.set_rec(class_list[pos][1], x1, y1, x2, y2)
-    x,y = test_canvas.coords(class_list[pos][8])
-    ViewChange.set_text(class_list[pos][8], x1 + 25, y)
-    x,y = test_canvas.coords(class_list[pos][9])
-    ViewChange.set_text(class_list[pos][9], x1 + 35, y)
+    if x1 < 0:
+        x1 = 10
+        x2 = 10 + 80 + 2 * longest_name
+    #update the box size, and shift label text elements#
+    ViewChange.set_rec(class_list[pos].rec, x1, y1, x2, y2)
+    ViewChange.set_text(class_list[pos].label, center, y1 + 12)
+    x,y = test_canvas.coords(class_list[pos].fieldlabel)
+    ViewChange.set_text(class_list[pos].fieldlabel, x1 + 25, y)
+    x,y = test_canvas.coords(class_list[pos].methodlabel)
+    ViewChange.set_text(class_list[pos].methodlabel, x1 + 35, y)
+    #Fix any box that my have been overlapped
+    UMLField.fix_pos(pos, class_list[pos].name)
     return center
+
+def get_coords(name : str):
+    pos = find_pos_from_name(name)
+    x1, y1, x2, y2 = test_canvas.coords(class_list[pos].rec)
+    return (x1, y1, x2, y2)
