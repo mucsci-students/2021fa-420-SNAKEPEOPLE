@@ -4,12 +4,10 @@ from uml_components import UMLRelationship
 import io
 import sys
 import snake_uml
+from uml_components.interfaces import class_interface, attr_interface, rel_interface
 
 # check adding an attribute to a class
 def test_add_attr () :
-    uml = UMLClass ()
-    uml.class_dict.addclass ("class1")
-    uml.class_dict["class1"].add_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -23,10 +21,9 @@ def test_add_attr () :
 
 # check if an error message appears if a duplicate attribute is added
 def test_err_attr () :
-    uml = UMLClass ()
-    uml.class_dict.addclass ("class1")
-    uml.class_dict.add_attr ("stuff")
-    uml.class_dict.add_attr ("stuff")
+    uml = UMLClass ("class1")
+    uml.class_dict["class1"].add_attr ("stuff")
+    uml.class_dict["class1"].add_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -71,7 +68,7 @@ def test_rename_attr () :
 # check renaming a non-existant attribute
 def test_rename_ne_attr () :
     uml = UMLClass ()
-    uml.class_dict.addclass ("class1")
+    uml.class_dict.add_class ("class1")
     uml.class_dict["class1"].rename_attr ("stuff", "stuff2")
     out = io.StringIO ()
     sys.stdout = out
@@ -105,7 +102,7 @@ def test_rename_dup_attr () :
 # check deleting an attribute
 def test_del_attr () :
     uml = UMLClass ()
-    uml.class_dict.addclass ("class1")
+    uml.class_dict.add_class ("class1")
     uml.class_dict["class1"].add_attr ("stuff")
     uml.class_dict["class1"].del_attr ("stuff")
     out = io.StringIO ()
@@ -121,7 +118,7 @@ def test_del_attr () :
 # check deleting an attribute that does not exist from a class
 def test_del_ne_clss_attr () :
     uml = UMLClass ()
-    uml.class_dict.addclass ("class1")
+    uml.class_dict.add_class ("class1")
     uml.class_dict["class1"].del_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
