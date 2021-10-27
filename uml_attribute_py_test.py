@@ -1,24 +1,21 @@
-import io
-import py_test
-import sys
-import snake_uml
+import pytest
 from uml_components.interfaces import class_interface, attr_interface, rel_interface
 
 def test_add_field () :
     class_interface.add_class ("class1")
     attr_interface.add_field ("class1", "attr1", "type1")
     #assert attr_interface.class_dict["class1"].__getattribute__ == "attr1"
-    assert attr_interface.find_field ("class1", "attr1") == True
+    assert attr_interface.find_field ("class1", "attr1") == (True, "attr1")
 
 def test_add_method () :
     class_interface.add_class ("class2")
     attr_interface.add_method ("class2", "method2", "type2")
-    assert attr_interface.find_method ("class2", "method2") == True
+    assert attr_interface.find_method ("class2", "method2") == (True, "method")
 
 def test_add_param () :
     class_interface.add_class ("class3")
     attr_interface.add_param ("class3", "method3", "param3", "type3")
-    attr_interface.find_param ("method3", "param3") == True
+    attr_interface.find_param ("method3", "param3") == (True, "param3")
 
 def test_rename_field () :
     class_interface.add_class ("class4")
