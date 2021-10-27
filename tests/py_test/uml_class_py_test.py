@@ -1,8 +1,9 @@
-from uml_components import UMLClass
 import py_test
 import io
 import sys
 import snake_uml
+from uml_components.UMLClass import UMLClass, class_dict
+from uml_components.interfaces import class_interface
 
 # checks for empty uml_class
 def test_empty_uml () :
