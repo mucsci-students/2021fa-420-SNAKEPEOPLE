@@ -13,8 +13,8 @@ def test_empty_uml () :
 def test_two_uml_class () :
     class_interface.add_class ("class1")
     class_interface.add_class ("class2")
-    assert class_interface.class_dict["class1"].__name__ == "class1"
-    assert class_interface.class_dict["class2"].__name__ == "class2"
+    assert class_interface.class_dict["class1"] == "class1"
+    assert class_interface.class_dict["class2"] == "class2"
 
 # check input for improper argument lengths
 def test_input_length_uml_class () :
@@ -45,7 +45,7 @@ def test_duplicate_uml_class () :
     sys.stdout = out
     snake_uml.main (sys.argv)
     sys.stdout = sys.__stdout__
-    assert class_interface.class_dict["class1"].__name__== "class1"
+    assert class_interface.class_dict["class1"] == "class1"
     assert "Class named 'class1' already exists.\n" in out.getvalue () == True
     del out
     class_interface.class_dict = {}
@@ -77,13 +77,13 @@ def test_delete_ne_uml_class () :
 def test_rename_uml_class () :
     class_interface.add_class ("class1")
     class_interface.rename_class ("class2")
-    out = io.StringIO ()
-    sys.stdout = out
-    snake_uml.main (sys.argv)
-    sys.stdout = sys.__stdout__
+    # out = io.StringIO ()
+    # sys.stdout = out
+    # snake_uml.main (sys.argv)
+    # sys.stdout = sys.__stdout__
     assert class_interface.class_dict["class2"] == "class2"
     assert len (class_interface.class_dict) == 1
-    del out
+    # del out
     class_interface.class_dict = {}
 
 # check renaming a nonexistant uml class

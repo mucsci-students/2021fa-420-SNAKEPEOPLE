@@ -1,4 +1,5 @@
 import io
+import py_test
 import sys
 import snake_uml
 from uml_components.interfaces import class_interface, attr_interface, rel_interface
