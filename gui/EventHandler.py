@@ -40,7 +40,7 @@ def on_click(event):
     #Update the current clicked rectangle to have a red outline
     UMLBox.test_canvas.itemconfig(rec, outline="red")
     #Save the current state of the canvas
-    save = UMLSavepoint.UMLSavepoint()
+    save = UMLSavepoint.UMLSavepoint("gui")
 
 #line up vriables so that whatever you click on within
 #a box results in the dragging of the box
@@ -118,6 +118,7 @@ def on_unclick(event):
     #Add to the undo stack if the box moved
     if saved == False and moved == True:
         UMLSavepoint.undo_stack.put(save)
+        UMLSavepoint.clear_stack()
     pos = 0
     for i in UMLBox.class_list:
         if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
