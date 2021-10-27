@@ -107,3 +107,9 @@ def test_rename_ae_uml_class () :
     assert len (class_interface.class_dict) == 2
     del out
     class_interface.class_dict = {}
+
+def test_add_class () :
+
+def test_rename_class () :
+
+def test_delete_class () :
