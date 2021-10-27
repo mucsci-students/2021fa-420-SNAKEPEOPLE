@@ -1,7 +1,6 @@
 import py_test
 import io
 import sys
-from uml_components.UMLClass import UMLClass, class_dict
 from uml_components.interfaces import class_interface
 import snake_uml
 

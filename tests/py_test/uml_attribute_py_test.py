@@ -1,6 +1,3 @@
-from uml_components import UMLAttributes
-from uml_components import UMLClass
-from uml_components import UMLRelationship
 import io
 import sys
 import snake_uml
