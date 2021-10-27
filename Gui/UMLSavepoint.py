@@ -48,7 +48,7 @@ class UMLSavepoint():
             #Add the current state of the class to the duplicate dictionary
             dup_dict.update({name : new_class})
             #Add coordinates for each canvas box
-            coord_list.append(UMLBox.get_coords(name))
+            coord_list.append(UMLBox.get_xy(name))
             dup_methods = []
             dup_fields = []
 
@@ -67,7 +67,7 @@ def save_point():
     #Add the current state to the undo stack
     undo_stack.put(UMLSavepoint())
 
-def undo():
+def undo(mode = "gui"):
     #Add the current state to the redo stack
     redo_stack.put(UMLSavepoint())
 
@@ -77,18 +77,21 @@ def undo():
     #Clear the relationship list
     while len(relationship_list) > 0:
         ri.delete_relationship(relationship_list[0].source, relationship_list[0].destination)
+    for i in last_state.relationship_list:
+        ri.add_relationship(i.source, i.destination, i.type)
 
     #Roll back the class dictionary to the previous state
     class_dict.clear()
     class_dict.update(last_state.class_dict)
 
-    #Clear the canvas
-    UMLBox.test_canvas.delete("all")
-    UMLBox.class_list = []
+    if mode == "gui": 
+        #clear the canvas
+        UMLBox.test_canvas.delete("all")
+        UMLBox.class_list = []
 
-    populate_canvas(last_state)
+        populate_canvas(last_state)
 
-def redo():
+def redo(mode = "gui"):
     #Place the current state on the undo stack
     undo_stack.put(UMLSavepoint())
 
@@ -98,31 +101,33 @@ def redo():
     #Clear the relationhsip list
     while len(relationship_list) > 0:
         ri.delete_relationship(relationship_list[0].source, relationship_list[0].destination)
+    for i in last_state.relationship_list:
+        ri.add_relationship(i.source, i.destination, i.type)
 
     #Roll back the class dictionary to the previous state (forward state)
     class_dict.clear()
     class_dict.update(last_state.class_dict)
-        
-    #clear the canvas
-    UMLBox.test_canvas.delete("all")
-    UMLBox.class_list = []
 
-    populate_canvas(last_state)
+    if mode == "gui": 
+        #clear the canvas
+        UMLBox.test_canvas.delete("all")
+        UMLBox.class_list = []
+
+        populate_canvas(last_state)
 
 def populate_canvas(last_state):
     index = 0
 
     #Create a canvas element for each dictionary item
     for name, value in class_dict.items():
-        UMLBox.create_box_with_coords(value.name, last_state.coords_list[index][0], last_state.coords_list[index][1],
-                            last_state.coords_list[index][2], last_state.coords_list[index][3])
+        x1, y1, x2, y2 = make_coords(name, last_state.coords_list[index][0], last_state.coords_list[index][1])
+        UMLBox.create_box_with_coords(name, x1, y1, x2, y2)
         UMLField.update_fields(name)
         UMLMethod.update_methods(name)
         index += 1
 
-    #Add any relationships back into the relationship list
-    for i in last_state.relationship_list:
-        ri.add_relationship(i.source, i.destination, i.type)
+    #Add any relationships back into the canvas
+    for i in relationship_list:
         UMLLine.add_line(i.source, i.destination, i.type)
 
 #Clear the redo_stack
@@ -130,3 +135,48 @@ def populate_canvas(last_state):
 def clear_stack():
     while(redo_stack.empty() == False):
         redo_stack.get()
+
+def make_coords(class_name : str, x : int, y : int):
+    """Get horizontal size of box"""
+    longest_name = 3.5 * len(class_name)
+    i = 0
+    #Check class name against field and method labels
+    if(len("Fields:") * 3.5 > longest_name):
+        longest_name = len("Fields:") * 3.5
+    if(len("Methods:") * 3.5 > longest_name):
+        longest_name = len("Methods:") * 3.5
+    uml : UMLClass = class_dict[class_name]
+    #Check to see if the longest name is in fields
+    for fields in uml.fields:
+        name = "-" + fields.type + " " + fields.name
+        if len(name) * 3.5 > longest_name:
+            longest_name = len(name) * 3.5
+    uml : UMLClass = class_dict[class_name]
+    method : ai.UMLMethod
+    param : ai.UMLParameter
+    #find if the longest name is within methods
+    for method in uml.methods:
+        name = method.name + " " + method.return_type + "("
+        if len(name) * 3.5 > longest_name:
+            longest_name = len(name) * 3.5
+        for param in method.params:
+            name = "  -" + param.type + " " + method.name
+            if len(name) * 3.5 > longest_name:
+                longest_name = len(name) * 3.5
+    x1 = x - 40 - longest_name
+    x2 = x + 40 + longest_name
+    """Get Vertical size of box"""
+    yinc = 30
+    #Add 15 to the vertical size of the box for each field
+    for fields in uml.fields:
+        yinc += 15
+    method : ai.UMLMethod
+    param : ai.UMLParameter
+    #Find an appropriate vertical spacing to contain the methods and parameters
+    for method in uml.methods:
+        yinc += 45
+        for param in method.params:
+            yinc += 15
+    y1 = y
+    y2 = y + yinc
+    return (x1, y1, x2, y2)

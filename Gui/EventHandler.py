@@ -118,6 +118,7 @@ def on_unclick(event):
     #Add to the undo stack if the box moved
     if saved == False and moved == True:
         UMLSavepoint.undo_stack.put(save)
+        UMLSavepoint.clear_stack()
     pos = 0
     for i in UMLBox.class_list:
         if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
