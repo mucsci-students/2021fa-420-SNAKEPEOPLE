@@ -18,7 +18,7 @@ redo_stack = queue.LifoQueue()
 
 class UMLSavepoint():
 
-    def __init__(self):
+    def __init__(self, mode):
 
         dup_dict = dict()
         coord_list = []
@@ -48,7 +48,11 @@ class UMLSavepoint():
             #Add the current state of the class to the duplicate dictionary
             dup_dict.update({name : new_class})
             #Add coordinates for each canvas box
-            coord_list.append(UMLBox.get_xy(name))
+            if mode == "gui":
+                coord_list.append(UMLBox.get_xy(name))
+            #placeholder for when UMLClass stores x, y values
+            else:
+                pass
             dup_methods = []
             dup_fields = []
 
@@ -63,13 +67,13 @@ class UMLSavepoint():
         self.relationship_list = dup_rel
 
 
-def save_point():
+def save_point(mode = "gui"):
     #Add the current state to the undo stack
-    undo_stack.put(UMLSavepoint())
+    undo_stack.put(UMLSavepoint(mode))
 
 def undo(mode = "gui"):
     #Add the current state to the redo stack
-    redo_stack.put(UMLSavepoint())
+    redo_stack.put(UMLSavepoint(mode))
 
     last_state : UMLSavepoint
     last_state = undo_stack.get()
@@ -93,7 +97,7 @@ def undo(mode = "gui"):
 
 def redo(mode = "gui"):
     #Place the current state on the undo stack
-    undo_stack.put(UMLSavepoint())
+    undo_stack.put(UMLSavepoint(mode))
 
     last_state : UMLSavepoint
     last_state = redo_stack.get()

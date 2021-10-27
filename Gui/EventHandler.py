@@ -40,7 +40,7 @@ def on_click(event):
     #Update the current clicked rectangle to have a red outline
     UMLBox.test_canvas.itemconfig(rec, outline="red")
     #Save the current state of the canvas
-    save = UMLSavepoint.UMLSavepoint()
+    save = UMLSavepoint.UMLSavepoint("gui")
 
 #line up vriables so that whatever you click on within
 #a box results in the dragging of the box
