@@ -1,9 +1,15 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     gui_main.py
+
+# External Imports
 import tkinter as tk
+from tkinter import ttk
 from tkinter import font
 
+# Internal Imports
 from gui import UMLBox
 
-from . import gui_buttons, gui_functions, gui_windows
+from . import gui_buttons, gui_functions, gui_windows, Side_Panel
 from uml_components import UMLClass, UMLRelationship
 
 
@@ -11,101 +17,56 @@ def run():
     
     window = tk.Tk()
     window.title("Snake People UML Editor")
+    window.state('zoomed')
+    
     window.grid_rowconfigure(0, weight=1)
     window.grid_rowconfigure(1,weight=1)
     window.grid_columnconfigure(1,weight=1)
     
     menubar = build_menu(window)
-    
-    title_font = font.Font(size=12)
-    list_font = font.Font(size=11)
-    
-    # Element Construction
-    classes_frame = tk.LabelFrame(window, 
-                                   labelanchor='nw', 
-                                   text="Classes", 
-                                   font=title_font)
-    
-    relationship_frame = tk.LabelFrame(window, 
-                                   labelanchor='nw', 
-                                   text="Relationships", 
-                                   font=title_font)
-    
-    display_frame = tk.Frame(window)
-    control_frame = tk.Frame(window)
-    
-    class_box = tk.Listbox(classes_frame, 
-                           font=list_font,
-                           width=30,
-                           bd=3)
-    
-    rel_box = tk.Listbox(relationship_frame,
-                         font=list_font,
-                         width=30,
-                         bd=3)
-    
-    test_canvas = UMLBox.init_canvas(display_frame)
-    
-    def update_classes():
-        if class_box.get(0, tk.END) != tuple(UMLClass.class_dict.keys()):
-            class_box.delete(0, tk.END)
-            for key in UMLClass.class_dict:
-                class_box.insert(tk.END, UMLClass.class_dict[key].name)
-        window.after(100, update_classes)
-        
-    def update_rels():
-        if list(rel_box.get(0, tk.END)) != UMLRelationship.relationship_list:
-            rel_box.delete(0, tk.END)
-            for rel in UMLRelationship.relationship_list:
-                rel_box.insert(tk.END, rel)
-        window.after(100, update_rels)
-        
-    # test_canvas.update_idletasks()        
-    update_classes()
-    update_rels()
-    
-    
-    # Element placement in window.
-    classes_frame.grid(row=0, column=0, sticky="nsw")
-    classes_frame.columnconfigure(0, weight=1)
-    classes_frame.rowconfigure(0, weight=1)
-    
-    relationship_frame.grid(row=1, column=0, sticky="nsw")
-    relationship_frame.columnconfigure(0, weight=1)
-    relationship_frame.rowconfigure(1, weight=1)
-    
-    display_frame.grid(row=0, column=1, sticky="nsew", rowspan=2)
-    display_frame.columnconfigure(1, weight=1)
-    display_frame.rowconfigure(0,weight=1)
-    
-    control_frame.grid(row=0, column=2, sticky="nse", rowspan=2)
-    control_frame.columnconfigure(2, weight=1)
-    control_frame.rowconfigure(0, weight=1)
-    
-    class_box.grid(row=0, column=0, sticky="nsw")
-    rel_box.grid(row=1, column=0, sticky="nsw")
-    test_canvas.grid(row=0, column=1, sticky="nsew", rowspan=2)
-    
-    btn_list = gui_buttons.make_buttons(control_frame)
-    buttons(btn_list)
-    
-    key = tk.Label(control_frame, text = "*Realationship Key*",
-                    justify="left")
-    a = tk.Label(control_frame, text = "aggregation: Blue",
-                justify="left", fg="blue")
-    c = tk.Label(control_frame, text = "composition: Green",
-                    justify="left", fg="green")
-    i = tk.Label(control_frame, text = "inheritence: Red",
-                    justify="left", fg="red")
-    r = tk.Label(control_frame, text = "realization: Black",
-                    justify="left")
-    key.pack()
-    a.pack()
-    c.pack()
-    i.pack()
-    r.pack()
-
     window.config(menu=menubar)
+    
+    # Element Construction    
+    main_frame = tk.Frame(window, bd=5, relief=tk.FLAT)
+    side_frame = tk.Frame(window,)
+    
+    s_class_frame = tk.Frame(window)
+    s_relat_frame = tk.Frame(window)
+    
+    main_panel = UMLBox.init_canvas(main_frame)
+    
+    side_panel = Side_Panel.init_notebook(side_frame)
+    
+    
+    # Element Placement
+    main_frame.grid(
+        row=0, 
+        column=1, 
+        sticky="nsew", 
+        rowspan=2)
+    main_frame.columnconfigure(1, weight=1)
+    main_frame.rowconfigure(0,weight=1)
+    
+    side_frame.grid(
+        row=0, 
+        column=2,
+        sticky="nse",
+        rowspan=2)
+    side_frame.columnconfigure(2, weight=1)
+    side_frame.rowconfigure(0, weight=1)
+    
+    main_panel.grid(
+        row=0, 
+        column=1, 
+        sticky="nsew", 
+        rowspan=2)
+    
+    side_panel.grid(
+        row = 0,
+        column = 2,
+        sticky = "nse",
+        rowspan=2
+    )
     
     window.mainloop()
     
