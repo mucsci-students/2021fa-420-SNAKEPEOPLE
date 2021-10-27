@@ -1,5 +1,5 @@
 import tkinter as tk
-from gui import UMLBox
+from gui import UMLBox, UMLLine, UMLMethod
 from gui import ViewChange
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
@@ -19,7 +19,7 @@ def update_fields(classname : str):
     update_vertical(pos, classname)
 
 #create a new block of text conaining the formated parameters#
-def new_fieldText(classname):
+def new_fieldText(classname : str):
     newtext = ""
     uml : UMLClass = class_dict[classname]
     #format every field in the form "{type} {name}"
@@ -28,7 +28,7 @@ def new_fieldText(classname):
         newtext = newtext + "-" + field.type + " " + field.name + "\n"
     return newtext
 
-def update_vertical(pos, classname):
+def update_vertical(pos : int, classname : str):
     UMLBox.class_list[pos].yinc = 30
     spacer = 0
     #Find an appropriate vertical spacing to contain the field
@@ -47,11 +47,45 @@ def update_vertical(pos, classname):
         spacer = 10
     else:
         spacer = 0
-    #Update the view
+    #box coords
     x1,y1,x2,y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos].rec)
+    #field label coords
     x,y = UMLBox.test_canvas.coords(UMLBox.class_list[pos].fieldlabel)
-    xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
+    #method text coords
     xl,yl = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodtext)
+    #method label coords
+    xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
+    
+    #Move the methodlabel according to the number of the fields
     ViewChange.set_text(UMLBox.class_list[pos].methodlabel, xm, y + 10 + 15 * len(uml.fields) + spacer)
-    ViewChange.set_text(UMLBox.class_list[pos].methodtext, xl, y + 30 +  15 * len(uml.fields))
+
+    #method label coords
+    xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
+
+    #Move the method text according to the method label
+    ViewChange.set_text(UMLBox.class_list[pos].methodtext, xl, ym + 10)
+    #Move the box
     ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 25 + spacer)
+    #fix any potential overlap
+    fix_pos(pos, classname)
+    #fix any missing lines
+    UMLLine.fix_lines()
+
+def fix_pos(pos : int, classname : str):
+    coords = UMLBox.get_coords(classname)
+    overlap_list = UMLBox.test_canvas.find_overlapping(coords[0],coords[1],coords[2],coords[3])
+    overlap_class = []
+
+    if len(overlap_list) > 0:
+        #Find the name of all boxes being covered by the most recently updated box
+        for i in overlap_list:
+            for k in UMLBox.class_list:
+                if i == k.rec and k.name != classname:
+                    overlap_class.append(k.name)
+
+    #Move any boxes below the box most recently changed to an open spot on the canvas
+    for i in overlap_class:
+        UMLBox.delete_box(i)
+        UMLBox.create_box(i)
+        UMLMethod.update_methods(i)
+        update_fields(i)

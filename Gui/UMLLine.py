@@ -6,6 +6,7 @@ from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
 from uml_components.UMLClass import UMLClass, class_dict
+from uml_components.UMLRelationship import UMLRelationship, relationship_list
 
 class UMLLine():
 
@@ -53,8 +54,7 @@ def findpos(source):
 def delete_line(source : str, dest : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    if ri.find_rel(source, dest)[0] == True:
-        deleteline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec)
+    deleteline(UMLBox.class_list[sourcepos].rec, UMLBox.class_list[destpos].rec)
 
 #remove a line from the class_list storage. Line is stored both ways so two deletes must occur#
 def deleteline(source, dest):
@@ -77,3 +77,13 @@ def deleteline(source, dest):
         subpos += 1
     #delete the line element itself#
     ViewChange.del_item(line)
+
+def fix_lines():
+    #Delete all existing relationships on the canvas
+    for i in UMLBox.class_list:
+        for k in UMLBox.class_list:
+            if ri.find_rel(i.name, k.name)[0] == True:
+                delete_line(i.name, k.name)
+    #Add all existing relationships to the canvas
+    for i in relationship_list:
+        add_line(i.source, i.destination, i.type)

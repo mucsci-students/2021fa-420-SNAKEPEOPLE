@@ -18,7 +18,7 @@ def update_methods(classname : str):
     UMLField.update_vertical(pos, classname)
 
 #create a new block of text that contains the formatted method list#
-def block_text(classname):
+def block_text(classname : str):
     newtext = ""
     uml : UMLClass = class_dict[classname]
     method : ai.UMLMethod

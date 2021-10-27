@@ -13,11 +13,11 @@ from uml_components.UMLClass import UMLClass, class_dict
 class_list = []
 
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
-    global test_canvas 
+    global test_canvas
     test_canvas = tk.Canvas(frame, 
                         width=600, 
                         height=600,
-                        bg="#888",
+                        bg="#D0D0D0",
                         bd=3)
     return test_canvas
 
@@ -33,11 +33,6 @@ class UMLsquare():
     """the list tracks the name, the square element, the class name label,
     how much padding to account for lengthy text, lines, yincrement
     field header, method header, methods text element"""
-    tracker = 0
-    x1 = 120
-    x2 = 200
-    y1 = 40
-    y2 = 65
     xspace = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
         label = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 12, text = name, state=tk.DISABLED, tags=name)
@@ -48,7 +43,7 @@ class UMLsquare():
         yincrement = 30
         methodlabel = test_canvas.create_text(x1, y1 + 50, text = "Method(s):", state=tk.DISABLED)
         methodtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
-        test_canvas.tag_lower(rec)
+        ViewChange.push_back(rec)
         self.name = name
         self.rec = rec
         self.label = label
@@ -66,26 +61,50 @@ def create_box(name : str):
     yinc = 0
     #Make sure the class does not already exist
     if find_pos_from_name(name) == None and ai.find_class(name)[0] == True:
-        obj = UMLsquare(UMLsquare.x1, UMLsquare.y1, UMLsquare.x2, UMLsquare.y2, name)
+        placed = False
+        x_place = 1
+        x1 = 60
+        x2 = 140
+        y1 = 40
+        y2 = 65
+
+        #Account for lenthy boxes
+        last_textspace = 0
+        if len(class_list) > 0:
+            last_textspace = class_list[len(class_list) - 1].textspace
+        current_textspace = len(name) * 3.5
+
+        #Find a big enough gap to place the newest class
+        while not placed:
+            if x1 - last_textspace - current_textspace < 0:
+                x1 = last_textspace + current_textspace + 60
+            if len(test_canvas.find_overlapping(x1 - last_textspace - current_textspace, y1, x2 + current_textspace, y2)) != 0:
+                if x2 > test_canvas.winfo_width() - 75:
+                    y1 += 25
+                    y2 += 25
+                    x1 = 60
+                    x2 = 140
+                    last_textspace = 0
+                else:
+                    x1 += 80
+                    x2 += 80
+            else:
+                placed = True
+
+        #Create the new box
+        obj = UMLsquare(x1, y1, x2, y2, name)
+        #Add the new box to the list
         class_list.append(obj)
-        #shift everything right after the first box in a row and then shift down after the second#
-        if(UMLsquare.tracker % 2 == 0):
-            UMLsquare.x1 += obj.textspace + 200
-            UMLsquare.x2 += obj.textspace + 200
-        else:
-            UMLsquare.x1 = 120
-            UMLsquare.x2 = 200
-            UMLsquare.y1 += 100
-            UMLsquare.y2 += 100
-        UMLsquare.tracker += 1
-        #Update width of box#
+        #Bring current box to front
+        ViewChange.bring_all_front(obj)
+        #update the size of the current box
         update_size(len(class_list) - 1)
 
-def create_box_with_coords(name : str, x1, y1, x2, y2):
+def create_box_with_coords(name : str, x1 : int, y1 : int, x2 : int, y2 : int):
     obj = UMLsquare(x1, y1, x2, y2, name)
     class_list.append(obj)
     update_size(len(class_list) - 1)
-    #UMLField.update_vertical(len(class_list) - 1, name)
+    UMLField.update_vertical(len(class_list) - 1, name)
 
 #Remove the box with the text = name#
 def delete_box(name : str):
@@ -101,7 +120,7 @@ def delete_box(name : str):
                 deleteline(class_list[pos].rels[subpos][2], class_list[pos].rec)
                 subpos -= 1
             subpos += 1
-        #delete everything associated with the box#
+        #delete everything associated with the box
         ViewChange.del_item(class_list[pos].rec)
         ViewChange.del_item(class_list[pos].label)
         ViewChange.del_item(class_list[pos].fieldtext)
@@ -164,6 +183,9 @@ def update_size(pos : int):
     center = ((x2 - x1) / 2) + x1
     x1 = center - 40 - longest_name
     x2 = center + 40 + longest_name
+    if x1 < 0:
+        x1 = 10
+        x2 = 10 + 80 + 2 * longest_name
     #update the box size, and shift label text elements#
     ViewChange.set_rec(class_list[pos].rec, x1, y1, x2, y2)
     ViewChange.set_text(class_list[pos].label, center, y1 + 12)
@@ -171,6 +193,8 @@ def update_size(pos : int):
     ViewChange.set_text(class_list[pos].fieldlabel, x1 + 25, y)
     x,y = test_canvas.coords(class_list[pos].methodlabel)
     ViewChange.set_text(class_list[pos].methodlabel, x1 + 35, y)
+    #Fix any box that my have been overlapped
+    UMLField.fix_pos(pos, class_list[pos].name)
     return center
 
 def get_coords(name : str):

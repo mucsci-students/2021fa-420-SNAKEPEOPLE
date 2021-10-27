@@ -7,20 +7,46 @@ from uml_components.interfaces import (attr_interface as ai,
 from uml_components.UMLClass import UMLClass, class_dict
 from . import UMLField
 from . import UMLMethod
+from . import UMLSavepoint
+
+global moved
+moved = False
+global saved
+saved = True
 
 #bind clicking and dragging to functions
 def can_drag(rec):
     UMLBox.test_canvas.tag_bind(rec, "<Button-1>", on_click)
     UMLBox.test_canvas.tag_bind(rec, "<B1-Motion>", can_dragMotion)
+    UMLBox.test_canvas.tag_bind(rec, "<ButtonRelease-1>", on_unclick)
 
 #find the closest element to the click
 def on_click(event):
     global crec
     crec = UMLBox.test_canvas.find_closest(event.x, event.y)
+    #Save the current position of all boxes
+    global saved
+    saved = False
+    global save
+    pos = 0
+    #Make all borders black
+    clear_border()
+    for i in UMLBox.class_list:
+        if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
+            label = i.label
+            rec = i.rec
+            break
+        pos += 1
+    #Update the current clicked rectangle to have a red outline
+    UMLBox.test_canvas.itemconfig(rec, outline="red")
+    #Save the current state of the canvas
+    save = UMLSavepoint.UMLSavepoint()
 
 #line up vriables so that whatever you click on within
 #a box results in the dragging of the box
 def can_dragMotion(event):
+    global moved
+    moved = True
     #get the index in the class_list of the current rectangle being clicked
     pos = 0
     for i in UMLBox.class_list:
@@ -87,5 +113,21 @@ def can_dragMotion(event):
             if i[0] == "dest":
                 x1, y1, x2, y2 = UMLBox.test_canvas.coords(i[1])
                 ViewChange.set_line(i[1], x1, y1, new_x1, new_y1)
-    
-    
+
+def on_unclick(event):
+    #Add to the undo stack if the box moved
+    if saved == False and moved == True:
+        UMLSavepoint.undo_stack.put(save)
+    pos = 0
+    for i in UMLBox.class_list:
+        if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
+            label = i.label
+            rec = i.rec
+            break
+        pos += 1
+    UMLBox.update_size(pos)
+
+def clear_border():
+    #Change all outlines to be black
+    for i in UMLBox.class_list:
+        UMLBox.test_canvas.itemconfig(i.rec, outline="black")
