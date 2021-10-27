@@ -82,8 +82,9 @@ def fix_lines():
     #Delete all existing relationships on the canvas
     for i in UMLBox.class_list:
         for k in UMLBox.class_list:
-            if ri.find_rel(i.name, k.name)[0] == True:
+            if ri.find_rel(i.name, k.name)[0] == True and len(i.rels) != 0:
                 delete_line(i.name, k.name)
     #Add all existing relationships to the canvas
     for i in relationship_list:
-        add_line(i.source, i.destination, i.type)
+        if(UMLBox.find_pos_from_name(i.destination) != None):
+            add_line(i.source, i.destination, i.type)

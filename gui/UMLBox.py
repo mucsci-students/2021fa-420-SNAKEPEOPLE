@@ -201,3 +201,9 @@ def get_coords(name : str):
     pos = find_pos_from_name(name)
     x1, y1, x2, y2 = test_canvas.coords(class_list[pos].rec)
     return (x1, y1, x2, y2)
+
+def get_xy(name : str):
+    pos = find_pos_from_name(name)
+    x1, y1, x2, y2 = test_canvas.coords(class_list[pos].rec)
+    centerx = x1 + (x2-x1)/2
+    return (centerx, y1)
