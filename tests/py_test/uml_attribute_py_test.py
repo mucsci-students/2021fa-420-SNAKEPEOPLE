@@ -6,25 +6,32 @@ import sys
 import snake_uml
 
 # check adding an attribute to a class
-def add_attr () :
+def test_add_attr () :
+    uml = UMLClass ()
+    uml.class_dict.addclass ("class1")
+    uml.class_dict["class1"].add_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
     sys.stdout = sys.__stdout__
-    assert UMLClass.class_dict["class1"].attributes[0] == "stuff"
-    assert len (UMLClass.class_dict) == 1
-    assert len (UMLClass.class_dict["class1"].attributes) == 1
+    assert uml.class_dict["class1"].attributes[0] == "stuff"
+    assert len (uml.class_dict) == 1
+    assert len (uml.class_dict["class1"].attributes) == 1
     del out
-    UMLClass.class_dict = {}
+    uml.class_dict = {}
     UMLRelationship.relationship_list = {}
 
 # check if an error message appears if a duplicate attribute is added
-def err_attr () :
+def test_err_attr () :
+    uml = UMLClass ()
+    uml.class_dict.addclass ("class1")
+    uml.class_dict.add_attr ("stuff")
+    uml.class_dict.add_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
     sys.stdout = sys.__stdout__
-    assert "<Attribute Add Error [Invalid Name: 2]>: stuff already exists as an attribute of class1." in out.getvalue () == True
+    assert "Attribute already exists as an attribute of class1. " in out.getvalue () == True
     assert len (UMLClass.class_dict) == 1
     assert len (UMLClass.class_dict["class1"].attributes) == 1
     del out
@@ -32,19 +39,25 @@ def err_attr () :
     UMLRelationship.relationship_list = {}
 
 # check adding an attribute to a non-existant class
-def ne_attr_class () :
+def test_ne_attr_class () :
+    uml = UMLClass ()
+    uml.class_dict["class1"].add_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
     sys.stdout = sys.__stdout__
-    assert "<Attribute Add Error [Invalid Class]>: Class name class1 does not exist." in out.getvalue () == True
+    assert "Class name does not exist." in out.getvalue () == True
     assert len (UMLRelationship.relationship_list) == 0
     del out
     UMLClass.class_dict = {}
     UMLRelationship.relationship_list = {}
 
 # check renaming an attribute
-def rename_attr () :
+def test_rename_attr () :
+    uml = UMLClass ()
+    uml.class_dict.addclass ("class1")
+    uml.class_dict["class1"].add_attr ("stuff")
+    uml.class_dict["class1"].rename_attr ("stuff", "stuff2")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -56,19 +69,27 @@ def rename_attr () :
     UMLRelationship.relationship_list = {}
 
 # check renaming a non-existant attribute
-def rename_ne_attr () :
+def test_rename_ne_attr () :
+    uml = UMLClass ()
+    uml.class_dict.addclass ("class1")
+    uml.class_dict["class1"].rename_attr ("stuff", "stuff2")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
     sys.stdout = sys.__stdout__
-    assert "<Attribute Rename Error [Invalid Name: 1]>: stuff does not exist as the name of an attribute in class1" in out.getvalue () == True
+    assert "Attribute does not exist as the name of an attribute in class1" in out.getvalue () == True
     assert len (UMLClass.class_dict["class_1"].attributes) == 0
     del out
     UMLClass.class_dict = {}
     UMLRelationship.relationship_list = {}
 
 # check renaming an attribute of an already existing attrbute
-def rename_dup_attr () :
+def test_rename_dup_attr () :
+    uml = UMLClass ()
+    uml.class_dict.addclass ("class1")
+    uml.class_dict["class1"].add_attr ("stuff")
+    uml.class_dict["class1"].add_attr ("stuff2")
+    uml.class_dict["class1"].rename_attr ("stuff", "stuff2")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -82,7 +103,11 @@ def rename_dup_attr () :
     UMLRelationship.relationship_list = {}
 
 # check deleting an attribute
-def del_attr () :
+def test_del_attr () :
+    uml = UMLClass ()
+    uml.class_dict.addclass ("class1")
+    uml.class_dict["class1"].add_attr ("stuff")
+    uml.class_dict["class1"].del_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -94,23 +119,28 @@ def del_attr () :
 
 
 # check deleting an attribute that does not exist from a class
-def del_ne_clss_attr () :
+def test_del_ne_clss_attr () :
+    uml = UMLClass ()
+    uml.class_dict.addclass ("class1")
+    uml.class_dict["class1"].del_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
     sys.stdout = sys.__stdout__
-    assert "<Attribute Delete Error [Invalid Name]>: stuff does not exist as the name of an attribute in class1." in out.getvalue () == True
+    assert "Attribute does not exist as the name of an attribute in class1." in out.getvalue () == True
     del out
     UMLClass.class_dict = {}
     UMLRelationship.relationship_list = {}
 
 # check deleting an attribute from a class that does not exist
-def del_attr_frm_nothing () :
+def test_del_attr_frm_nothing () :
+    uml = UMLClass ()
+    uml.class_dict["class1"].del_attr ("stuff")
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
     sys.stdout = sys.__stdout__
-    assert "<Attribute Delete Error [Invalid Class]>: Class named class1 does not exist." in out.getvalue () == True
+    assert "Class named class1 does not exist." in out.getvalue () == True
     del out
     UMLClass.class_dict = {}
     UMLRelationship.relationship_list = {}

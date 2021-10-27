@@ -5,7 +5,7 @@ import sys
 import snake_uml
 
 # check a relationship can be added
-def add_rel () :
+def test_add_rel () :
     snake_uml.main (sys.argv)
     assert UMLRelationship.relationship_list["class1-class2"].source == UMLClass.class_dict["class1"]
     assert UMLRelationship.relationship_list["class1-class2"].source == UMLClass.class_dict["class2"]
@@ -14,7 +14,7 @@ def add_rel () :
     UMLRelationship.relationship_list = {}
 
 # check for adding a relationship with invalid sources
-def invalid_source_rel () :
+def test_invalid_source_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -26,7 +26,7 @@ def invalid_source_rel () :
     UMLRelationship.relationship_list = {}
 
 # check for adding a relationship with invalid source and destination
-def invalid_source_destination_rel () :
+def test_invalid_source_destination_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -38,7 +38,7 @@ def invalid_source_destination_rel () :
     UMLRelationship.relationship_list = {}
 
 # check for adding a relationship with an invalid destination
-def invalid_destination_rel () :
+def test_invalid_destination_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -50,7 +50,7 @@ def invalid_destination_rel () :
     UMLRelationship.relationship_list = {}
 
 # check for adding a duplicate relationship
-def dupl_rel () :
+def test_dupl_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -62,7 +62,7 @@ def dupl_rel () :
     UMLRelationship.relationship_list = {}
 
 # checks for deleting a non-existant relationship
-def del_ne_rel () :
+def test_del_ne_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -74,7 +74,7 @@ def del_ne_rel () :
     UMLRelationship.relationship_list = {}
 
 # checks for deleting a relationship
-def del_rel () :
+def test_del_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -86,7 +86,7 @@ def del_rel () :
     UMLRelationship.relationship_list = {}
 
 # checks for deleting an invalid source
-def del_invalid_source () :
+def test_del_invalid_source () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -98,7 +98,7 @@ def del_invalid_source () :
     UMLRelationship.relationship_list = {}
 
 # checks for deleting a relationship with an invalid and destination
-def del_invalid_source_destination () :
+def test_del_invalid_source_destination () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -110,7 +110,7 @@ def del_invalid_source_destination () :
     UMLRelationship.relationship_list = {}
 
 # checks for deleting a relationship with an invalid destination
-def del_invalid_destination () :
+def test_del_invalid_destination () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -122,7 +122,7 @@ def del_invalid_destination () :
     UMLRelationship.relationship_list = {}
 
 # checks for an empty relationship dictionary
-def empty_rel_dict () :
+def test_empty_rel_dict () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -134,7 +134,7 @@ def empty_rel_dict () :
     UMLRelationship.relationship_list = {}
 
 # checks for listing all classes when no classes exist
-def list_rel_dict () :
+def test_list_rel_dict () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -146,7 +146,7 @@ def list_rel_dict () :
     UMLRelationship.relationship_list = {}
 
 # checks for listing a class that does not exist
-def list_ne_class_rel () :
+def test_list_ne_class_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -157,7 +157,7 @@ def list_ne_class_rel () :
     UMLRelationship.relationship_list = {}
 
 # checks save error handling when no classes are created
-def error_handle_rel () :
+def test_error_handle_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
@@ -168,7 +168,7 @@ def error_handle_rel () :
     UMLRelationship.relationship_list = {}
 
 # checks for testing load abort
-def load_abort_rel () :
+def test_load_abort_rel () :
     out = io.StringIO ()
     sys.stdout = out
     snake_uml.main (sys.argv)
