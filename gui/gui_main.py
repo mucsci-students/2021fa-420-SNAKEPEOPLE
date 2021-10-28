@@ -7,7 +7,7 @@ from tkinter import ttk
 from tkinter import font
 
 # Internal Imports
-from gui import UMLBox
+from . import UMLBox
 
 from . import gui_buttons, gui_functions, gui_windows, Side_Panel
 from uml_components import UMLClass, UMLRelationship
@@ -77,6 +77,8 @@ def buttons(btn_list : list):
      
 def clear_dict():
     UMLClass.class_dict = dict()
+    UMLBox.test_canvas.delete("all")
+    UMLBox.class_list = []
         
 def build_menu(window : tk.Tk) -> tk.Menu:
     menubar = tk.Menu(window)
