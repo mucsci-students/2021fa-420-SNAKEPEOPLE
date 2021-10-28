@@ -39,7 +39,7 @@ def b_add_class(name: str, label : tk.Label) -> None:
         UMLSavepoint.undo_stack.get()
     if(output.split(' ')[0] == "<Added"):
         UMLSavepoint.clear_stack()
-        UMLBox.create_box(name)
+        UMLBox.class_adapter()
     label.configure(text = output)
 
 
@@ -50,7 +50,7 @@ def b_delete_class(name: str, label : tk.Label) -> None:
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "<Deleted"):
         UMLSavepoint.clear_stack()
-        UMLBox.delete_box(name)
+        UMLBox.class_adapter()
     label.configure(text = output)
 
 def b_rename_class(old_name: str, 
@@ -155,7 +155,7 @@ def b_add_relation(class1 : str,
     UMLSavepoint.save_point()
     output = ri.add_relationship(class1, class2, type)
     if(output.split(' ')[0] == "<Added"):
-        UMLLine.add_line(class1, class2, type)
+        UMLLine.line_adapter()
         UMLSavepoint.clear_stack()
     if(output.split(' ')[0] != "<Added"  and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
@@ -172,7 +172,7 @@ def b_delete_relation(class1 : str,
     if(output.split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output.split(' ')[0] == "<Deleted"):
-        UMLLine.delete_line(class1, class2)
+        UMLLine.line_adapter()
         UMLSavepoint.clear_stack()
     label.configure(text = output)
 
@@ -229,7 +229,8 @@ def b_save_file(file_name : str, label : tk.Label) -> None:
 def b_load_file(file_name : str, label : tk.Label) -> None:
     output = snake_uml.load_classes(file_name)
     label.configure(text = output)
-
+    UMLBox.class_adapter()
+    UMLLine.line_adapter()
 
 def b_undo() -> None:
     if UMLSavepoint.undo_stack.empty() == False:
