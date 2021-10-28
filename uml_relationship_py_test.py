@@ -4,12 +4,12 @@ from uml_components.interfaces import rel_interface, class_interface
 import pytest
 
 # check a relationship can be added
-# def test_add_rel () :
-#     index = 0
-#     class_interface.add_class ("source1")
-#     class_interface.add_class ("destination1")
-#     rel_interface.add_relationship ("source1", "destination1", "compostition")
-#     assert rel_interface.find_rel ("source1", "destination1") == (True, index)
+def test_add_rel () :
+    index = 0
+    class_interface.add_class ("source1")
+    class_interface.add_class ("destination1")
+    rel_interface.add_relationship ("source1", "destination1", "compostition")
+    assert rel_interface.find_rel ("source1", "destination1") == (True, index)
 
 def test_del_rel () :
     index = 0
