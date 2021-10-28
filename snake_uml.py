@@ -2,7 +2,7 @@
 # File Name:     snake_uml.py
 
 # External Imports
-import json
+import JSON
 import sys
 import os.path
 
@@ -97,31 +97,71 @@ def cli_loop() -> None:
             
         elif cmd[0] == 'renclass':
             if check_inputs(cmd, 3):
-                class_interface.rename_class(cmd[1], cmd[2])
+                class_interface.rename_class(cmd[1], 
+                                             cmd[2])
                 
         elif cmd[0] == 'addrel':
             if check_inputs(cmd, 4):
-                rel_interface.add_relationship(cmd[1], cmd[2], cmd[3])
+                rel_interface.add_relationship(cmd[1], 
+                                               cmd[2], 
+                                               cmd[3])
                 
         elif cmd[0] == 'delrel':
             if check_inputs(cmd, 3):
-                rel_interface.delete_relationship(cmd[1], cmd[2])
+                rel_interface.delete_relationship(cmd[1], 
+                                                  cmd[2])
                 
         elif cmd[0] == 'addfield':
             if check_inputs(cmd, 4):
-                attr_interface.add_field(cmd[1], cmd[2], cmd[3])
+                attr_interface.add_field(cmd[1], 
+                                         cmd[2], 
+                                         cmd[3])
                 
         elif cmd[0] == 'addmethod':
             if check_inputs(cmd, 4):
-                attr_interface.add_method(cmd[1], cmd[2], cmd[3])
+                attr_interface.add_method(cmd[1], 
+                                          cmd[2], 
+                                          cmd[3])
                 
-        elif cmd[0] == 'delattr':
+        elif cmd[0] == 'addparam':
+            if check_inputs(cmd, 6):
+                attr_interface.add_param(cmd[1], 
+                                         cmd[2], 
+                                         cmd[3], 
+                                         cmd[4], 
+                                         cmd[5])
+                
+        elif cmd[0] == 'delfield':
             if check_inputs(cmd, 3):
-                attr_interface.delete_attribute(cmd[1], cmd[2])
+                attr_interface.delete_field(cmd[1], 
+                                            cmd[2])
                 
-        elif cmd[0] == 'renattr':
+        elif cmd[0] == 'delmethod':
             if check_inputs(cmd, 4):
-                attr_interface.rename_attribute(cmd[1], cmd[2], cmd[3])
+                attr_interface.delete_method(cmd[1], 
+                                             cmd[2], 
+                                             cmd[3])
+                
+        elif cmd[0] == 'renfield':
+            if check_inputs(cmd, 4):
+                attr_interface.rename_field(cmd[1], 
+                                            cmd[2], 
+                                            cmd[3])
+                
+        elif cmd[0] == 'renmethod':
+            if check_inputs(cmd, 5):
+                attr_interface.rename_method(cmd[1], 
+                                             cmd[2], 
+                                             cmd[3], 
+                                             cmd[4])
+                
+        elif cmd[0] == 'renparam':
+            if check_inputs(cmd, 4):
+                attr_interface.rename_param(cmd[1], # Class Name
+                                            cmd[2], # Method Name
+                                            cmd[3], # Method Type
+                                            cmd[4], # Old Param Name
+                                            cmd[5]) # New Param Name
                 
         elif cmd[0] == 'listclass':
             if check_inputs(cmd, 2):
@@ -135,11 +175,11 @@ def cli_loop() -> None:
         
         elif cmd[0] == 'save':
             if check_inputs(cmd, 2):
-                save_classes(cmd[1])
+                save(cmd[1])
         
         elif cmd[0] == 'load':
             if check_inputs(cmd, 2):
-                load_classes(cmd[1])
+                load(cmd[1])
         
         elif cmd[0] == 'help':
             help()
@@ -214,81 +254,26 @@ def list_all_classes() -> None:
             print(UMLClass.class_dict[key])
         print()
  
-def save_classes(filename : str) -> str:
-    '''
-    Saves the dictionary of classes to a .json file.
-    '''
+def save(filename : str):
+    classes = []
+    relationship = []
     
-    err = f"Saved {filename}."
-
-    # Checks if the class dictionary is empty and prints an error if so.
-    if len(UMLClass.class_dict) == 0:
-        err = "Error: There are no classes in the class dictionary.\n" + "Save failed."
-        print("Error: There are no classes in the class dictionary.\n" +
-              "Save failed.")
-    
-    # Initializes a dictionary to store the information that will be converted
-    # to JSON format.
-    save_dict = dict()
-    # Iterates through the dictionary of classes, encoding each entry into JSON
-    for key in UMLClass.class_dict:
-        # Encodes the UMLClass object stored as a value in the class dictionary
-        # into an easily decodable JSON format.
-        cls = jsonpickle.encode(UMLClass.class_dict[key])
-        # Adds the JSON encoded object to 'save_dict' with the same key as in
-        # 'class_dict'.
-        save_dict.update({key : cls})
+    c : UMLClass.UMLClass
+    for c in list(UMLClass.class_dict.values()):
+        classes.append(c.toJson())
         
-    # Opens a file stored in 'save_files/' where the JSON will be saved to.
-    with open(f"save_files/{filename}.json", "w") as savefile:
-        # Writes the contents of 'save_dict' as JSON to the file pointed to by 
-        # 'savefile'.
-        json.dump(save_dict, savefile)
-
-    return err
+    json_text = JSON.encode(classes, relationship)
+    
+    with open(f"save_files/{filename}.json", "w") as file:
+        file.write(json_text)
         
-def load_classes(filename : str) -> str:
-    '''
-    Loads the content of a .json file to the class dictionary.
-    '''
-    
-    etr = f"Loaded {filename}."
-
-    # Prints a warning that the current class dictionary will be overwritten 
-    # upon load.
-    print("Warning: Loading will overwrite any unsaved changes.")
-    # Gets confirmation from user (default yes).
-    cont = input("Continue loading? ([y]/n): ")
-    
-    # Checks if the user confirmed the load or not.
-    if cont == "" or cont.lower() == "y":
-        # If the user confirms the load, clears the class dictionary.
-        UMLClass.class_dict.clear()
-
-        # Checking that the file the user is trying to load is one that exists.
-        if os.path.exists(f"save_files/{filename}.json"):
-            # Intializes a new dictionary to store the loaded JSON data.
-            load_dict = dict()
-            # Opens 'classes.json' for reading, pointed to as 'loadfile'.
-            with open(f"save_files/{filename}.json") as loadfile:
-                # Loads the raw JSON into 'load_dict'
-                load_dict = json.load(loadfile)
-            
-            # Iterates through the keys and values of 'load_dict'. 
-            for key, value in load_dict.items():
-                # Decodes the UMLClass objects and adds them as values to the class
-                # dictionary.
-                UMLClass.class_dict.update({key : jsonpickle.decode(value)})
-        # If the file name doesn't exist, stops and tells the user.
-        else:
-            etr = "Load cancelled, please input the name of an existing file."
-            print("Load cancelled, please input the name of an existing file.")
-
-    else:
-        # If load is not confirmed, print a cancellation message.
-        print("Load cancelled.")
-
-    return etr
+def load(filename : str):
+    json_text : str = ""
+    with open(f"save_files/{filename}.json", "r") as file:
+        json_text = file.read()
+        
+    (UMLClass.class_dict, 
+     UMLRelationship.relationship_list) = JSON.decode(json_text)
  
 # Entry Point
 if __name__ == '__main__':
