@@ -79,7 +79,7 @@ def create_box(name : str):
             if x1 - last_textspace - current_textspace < 0:
                 x1 = last_textspace + current_textspace + 60
             if len(test_canvas.find_overlapping(x1 - last_textspace - current_textspace, y1, x2 + current_textspace, y2)) != 0:
-                if x2 > test_canvas.winfo_width() - 75:
+                if x2 > test_canvas.winfo_width() - 80:
                     y1 += 25
                     y2 += 25
                     x1 = 60
@@ -99,12 +99,14 @@ def create_box(name : str):
         ViewChange.bring_all_front(obj)
         #update the size of the current box
         update_size(len(class_list) - 1)
+        #Fix any box that my have been overlapped
+        UMLField.fix_pos(len(class_list) - 1)
 
 def create_box_with_coords(name : str, x1 : int, y1 : int, x2 : int, y2 : int):
     obj = UMLsquare(x1, y1, x2, y2, name)
     class_list.append(obj)
     update_size(len(class_list) - 1)
-    UMLField.update_vertical(len(class_list) - 1, name)
+    UMLField.update_vertical(len(class_list) - 1)
 
 #Remove the box with the text = name#
 def delete_box(name : str):
@@ -193,8 +195,6 @@ def update_size(pos : int):
     ViewChange.set_text(class_list[pos].fieldlabel, x1 + 25, y)
     x,y = test_canvas.coords(class_list[pos].methodlabel)
     ViewChange.set_text(class_list[pos].methodlabel, x1 + 35, y)
-    #Fix any box that my have been overlapped
-    UMLField.fix_pos(pos, class_list[pos].name)
     return center
 
 def get_coords(name : str):
@@ -207,3 +207,13 @@ def get_xy(name : str):
     x1, y1, x2, y2 = test_canvas.coords(class_list[pos].rec)
     centerx = x1 + (x2-x1)/2
     return (centerx, y1)
+
+def class_adapter():
+    for i in class_list:
+        if i.name not in class_dict:
+            delete_box(i.name)
+    for i in class_dict:
+        if find_pos_from_name(i)  == None:
+            create_box(i)
+            update_methods(i)
+            UMLField.update_fields(i)

@@ -1,5 +1,6 @@
 from types import new_class
 from typing import Text
+from gui import ViewChange
 from uml_components.UMLClass import UMLClass, class_dict
 from uml_components.UMLRelationship import UMLRelationship, relationship_list
 from uml_components.interfaces import (attr_interface as ai,
@@ -126,6 +127,7 @@ def populate_canvas(last_state):
     for name, value in class_dict.items():
         x1, y1, x2, y2 = make_coords(name, last_state.coords_list[index][0], last_state.coords_list[index][1])
         UMLBox.create_box_with_coords(name, x1, y1, x2, y2)
+        ViewChange.bring_all_front(UMLBox.class_list[len(UMLBox.class_list) - 1])
         UMLField.update_fields(name)
         UMLMethod.update_methods(name)
         index += 1

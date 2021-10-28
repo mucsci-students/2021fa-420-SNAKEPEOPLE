@@ -16,7 +16,7 @@ def update_fields(classname : str):
     #Update horizontal size of box
     UMLBox.update_size(pos)
     #Update vertical size of box
-    update_vertical(pos, classname)
+    update_vertical(pos)
 
 #create a new block of text conaining the formated parameters#
 def new_fieldText(classname : str):
@@ -28,8 +28,9 @@ def new_fieldText(classname : str):
         newtext = newtext + "-" + field.type + " " + field.name + "\n"
     return newtext
 
-def update_vertical(pos : int, classname : str):
+def update_vertical(pos : int):
     UMLBox.class_list[pos].yinc = 30
+    classname = UMLBox.class_list[pos].name
     spacer = 0
     #Find an appropriate vertical spacing to contain the field
     uml : UMLClass = class_dict[classname]
@@ -66,12 +67,12 @@ def update_vertical(pos : int, classname : str):
     ViewChange.set_text(UMLBox.class_list[pos].methodtext, xl, ym + 10)
     #Move the box
     ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 25 + spacer)
-    #fix any potential overlap
-    fix_pos(pos, classname)
     #fix any missing lines
-    UMLLine.fix_lines()
+    UMLLine.line_adapter()
+    ViewChange.bring_all_front(UMLBox.class_list[pos])
 
-def fix_pos(pos : int, classname : str):
+def fix_pos(pos : int):
+    classname = UMLBox.class_list[pos].name
     coords = UMLBox.get_coords(classname)
     overlap_list = UMLBox.test_canvas.find_overlapping(coords[0],coords[1],coords[2],coords[3])
     overlap_class = []

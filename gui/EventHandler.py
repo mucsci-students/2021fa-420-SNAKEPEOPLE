@@ -1,3 +1,4 @@
+from tkinter.constants import FALSE
 from gui import UMLBox
 from gui import ViewChange
 from uml_components.UMLAttributes import UMLField
@@ -41,6 +42,7 @@ def on_click(event):
     UMLBox.test_canvas.itemconfig(rec, outline="red")
     #Save the current state of the canvas
     save = UMLSavepoint.UMLSavepoint("gui")
+    ViewChange.bring_all_front(UMLBox.class_list[pos])
 
 #line up vriables so that whatever you click on within
 #a box results in the dragging of the box
@@ -119,6 +121,7 @@ def on_unclick(event):
     if saved == False and moved == True:
         UMLSavepoint.undo_stack.put(save)
         UMLSavepoint.clear_stack()
+        set_moved()
     pos = 0
     for i in UMLBox.class_list:
         if crec[0] in {i.rec, i.label, i.methodlabel, i.methodtext, i.fieldtext, i.fieldlabel}:
@@ -132,3 +135,7 @@ def clear_border():
     #Change all outlines to be black
     for i in UMLBox.class_list:
         UMLBox.test_canvas.itemconfig(i.rec, outline="black")
+
+def set_moved():
+    global moved
+    moved = False

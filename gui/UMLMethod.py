@@ -15,7 +15,7 @@ def update_methods(classname : str):
     #Update horizontal size of box
     UMLBox.update_size(pos)
     #Update vertical size of box
-    UMLField.update_vertical(pos, classname)
+    UMLField.update_vertical(pos)
 
 #create a new block of text that contains the formatted method list#
 def block_text(classname : str):
