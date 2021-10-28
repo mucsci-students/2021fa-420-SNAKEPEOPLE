@@ -31,8 +31,8 @@ class UMLClass():
         self.fields = fields if fields else list()
         self.methods = methods if methods else list()
         
-        self.position_x = position_x if position_x else 0
-        self.position_y = position_y if position_y else 0
+        self.position_x = position_x if position_x else -1
+        self.position_y = position_y if position_y else -1
         
         print(f"<Added Class>: {name}")
         

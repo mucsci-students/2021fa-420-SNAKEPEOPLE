@@ -11,7 +11,8 @@ class ComplexEncoder(json.JSONEncoder):
     
     # Overwrites json.JSONEncoder.default() to account for custom python
     def default(self, 
-                obj: Union[UMLClass or UMLRelationship]) -> dict:
+                obj: Union[UMLClass, UMLRelationship]) -> dict:
+        
         if hasattr(obj, 'toJson'):
             return obj.toJson()
         else:
