@@ -2,6 +2,7 @@
 # File Name:     gui_functions.py
 
 # External Imports
+from queue import LifoQueue
 import sys
 import os.path
 import tkinter as tk
@@ -22,6 +23,7 @@ from . import UMLMethod
 from . import UMLSavepoint
 
 import snake_uml
+import queue
 
 ###################################################################################################
 
@@ -234,6 +236,8 @@ def b_load_file(file_name : str, label : tk.Label) -> None:
     UMLBox.class_mediator()
     print(UMLRelationship.relationship_list)
     UMLLine.line_mediator()
+    if UMLSavepoint.undo_stack.empty() == False:
+        UMLSavepoint.undo_stack = queue.LifoQueue()
     if UMLSavepoint.redo_stack.empty() == False:
         UMLSavepoint.clear_stack()
 
