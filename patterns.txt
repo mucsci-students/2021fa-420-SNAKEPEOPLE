@@ -3,16 +3,6 @@ Design Pattern: Iterators
     Description: I used Python's built in for loop, which makes use of
                  iterators, to traverse a list of fields within the
                  class_dict
-Design Pattern: Iterators
-    Location: File: UMLMethod line: 30/32
-    Description: I used Python's built in for loop, which makes use of
-                 iterators, to traverse a list of methods and parameters
-                 within the class_dict
-Design Pattern: Iterators
-    Location: File: EventHandler line: 54
-    Description: I used Python's built in for loop, which makes use of
-                 iterators, to traverse through all the UMLSquare obects
-                 to find which object contains the clicked on item
 Design Pattern: Memento
     Location: File: UMLSavepoint line: 20-68
     Description: I created a wrapper object that saves the current state
@@ -39,14 +29,14 @@ Design Pattern: State
                  specifically when dealing with method and field textboxes. Initially
                  I want them hidden, but when the text box is populated I want them
                  visible.
-Design Pattern: Command
-    Location: File: UMLMethod line: 10-18
-    Description: The update_methods function works similar to command in that
-                 whenever the gui tells the model to change any methods or
-                 parameters, it signals one command (update_methods) to ensure
-                 that the gui will be presenting all methods and parameters.
-                 This also does all the calculations for updating the size of
-                 the box
+Design Pattern: State
+    Location: File: UMLField line: 15
+    Description: I change the state of the fields textbox to disabled so that
+                 now it gets displayed instead of being hidden
+Design Pattern: State
+    Location: File: UMLMethod line: 14
+    Description: I change the state of the methods textbox to disabled so that
+                 now it gets displayed instead of being hidden
 Design Pattern: Command
     Location: File: UMLField line: 10-18
     Description: The update_fields function works similar to command in that
@@ -54,3 +44,23 @@ Design Pattern: Command
                  signals one command (update_fields) to ensure that the gui
                  will be presenting all fields. This also does all the 
                  calculations for updating the size of the box
+Design Pattern: Mediator
+    Location: File: UMLBox line: 211
+    Description: The class_adapter works as an inbetween piece that reads the
+                 information within the class_dict and converts it to objects
+                 usable to create a canvas element.
+Design Pattern: Mediator
+    Location: File: UMLLine line: 81
+    Description: The line_adapter works to convert the relationship list to
+                 usuable chunks of information that can display a line on the
+                 canvas and relate it to the boxes
+Design Pattern: MVC
+    Location: Model: UMLClass, UMLRelationships
+              View: UMLBox
+              Controller: gui_main, gui_windows, gui_functions
+                          attr_interface, class_interface, rel_interface
+    Description: The model contains all the information for either classes
+                 or relationships. The view creates all necessary components
+                 to display objects on the canvas. And the Controller works
+                 either to listen for button clicks in the gui, or command
+                 line input, depending on the startup mode.

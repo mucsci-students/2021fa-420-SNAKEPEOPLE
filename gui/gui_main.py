@@ -6,6 +6,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import font
 
+from . import UMLSavepoint
+
 # Internal Imports
 from . import UMLBox
 
@@ -76,9 +78,11 @@ def buttons(btn_list : list):
         btn.pack()
      
 def clear_dict():
+    UMLSavepoint.save_point()
     UMLClass.class_dict = dict()
     UMLBox.test_canvas.delete("all")
     UMLBox.class_list = []
+    UMLRelationship.relationship_list = []
         
 def build_menu(window : tk.Tk) -> tk.Menu:
     menubar = tk.Menu(window)

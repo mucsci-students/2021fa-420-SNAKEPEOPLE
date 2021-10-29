@@ -5,8 +5,8 @@ from uml_components.UMLRelationship import UMLRelationship
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-from uml_components.UMLClass import UMLClass, class_dict
-from uml_components.UMLRelationship import UMLRelationship, relationship_list
+from uml_components import UMLClass
+from uml_components import UMLRelationship
 
 class UMLLine():
 
@@ -78,13 +78,13 @@ def deleteline(source, dest):
     #delete the line element itself#
     ViewChange.del_item(line)
 
-def line_adapter():
+def line_mediator():
     #Delete all existing relationships on the canvas
     for i in UMLBox.class_list:
         while len(i.rels) > 0:
             ViewChange.del_item(i.rels[0][1])
             i.rels.pop(0)
         i.rels = []
-    for i in relationship_list:
+    for i in UMLRelationship.relationship_list:
         if UMLBox.find_pos_from_name(i.source) != None and UMLBox.find_pos_from_name(i.destination) != None:
             add_line(i.source, i.destination, i.type)

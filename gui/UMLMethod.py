@@ -5,7 +5,7 @@ from gui import UMLField
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-from uml_components.UMLClass import UMLClass, class_dict
+from uml_components import UMLClass
 
 def update_methods(classname : str):
     pos = UMLBox.find_pos_from_name(classname)
@@ -20,7 +20,7 @@ def update_methods(classname : str):
 #create a new block of text that contains the formatted method list#
 def block_text(classname : str):
     newtext = ""
-    uml : UMLClass = class_dict[classname]
+    uml : UMLClass = UMLClass.class_dict[classname]
     method : ai.UMLMethod
     param : ai.UMLParameter
     #Put every method/paramter in the form 

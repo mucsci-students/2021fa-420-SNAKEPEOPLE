@@ -1,4 +1,4 @@
-from uml_components.UMLClass import UMLClass, class_dict
+from uml_components import UMLClass
 from uml_components.UMLAttributes import (UMLField,
                                           UMLMethod,
                                           UMLParameter)
@@ -14,8 +14,8 @@ def find_class(class_name : str) -> tuple:
     Parameters:
     - class_name : str -> the class name to be checked.
     """
-    if class_name in class_dict:
-        return True, class_dict[class_name]
+    if class_name in UMLClass.class_dict:
+        return True, UMLClass.class_dict[class_name]
     
     return False, None
     
@@ -123,7 +123,7 @@ def add_field(class_name : str,
         
         # Grabs the class with the name 'class_name' that is stored in the class 
         # dictionary.           
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         
         found, _ = find_field(uml, field_name)
         
@@ -171,7 +171,7 @@ def add_method(class_name : str,
         
         # Grabs the class with the name 'class_name' that is stored in the class 
         # dictionary.           
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         
         found, _ = find_method(uml, method_name, method_type)
             
@@ -222,7 +222,7 @@ def add_param(class_name : str,
          
     else:
         # Creates variable to hold a UMLClass and a UMLMethod object.
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         
         # Searches for a method with the same name as 'method_name' in 'uml'.
         found_method, method = find_method(uml, method_name, method_type)
@@ -283,7 +283,7 @@ def rename_field(class_name : str,
         
     else: 
         # Grabs the class named 'class_name' from the class dictionary.
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         # Declares a variable to hold a field object.
         found, field = find_field(uml, field_name)
         
@@ -326,7 +326,7 @@ def rename_method(class_name : str,
         print(f"<Method Rename Error>: {err}")
               
     else:
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         
         found, method = find_method(uml, method_name, method_type)
                 
@@ -359,7 +359,7 @@ def rename_param(class_name : str,
     err : str = (f"Successfully renamed parameter '{param_name}' to '{new_name}' " + 
                  f"in '{class_name}.{method_name}'.")
     
-    if class_name not in class_dict:
+    if class_name not in UMLClass.class_dict:
         err = f"'{class_name}' does not exist as the name of a class."
         print(f"<Parameter Rename Error>: {err}")
         
@@ -368,7 +368,7 @@ def rename_param(class_name : str,
         print(f"<Parameter Rename Error>: {err}")
         
     else:
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         found_method, method = find_method(uml, method_name, method_type)
         
         found_param, param = find_param(method, param_name)
@@ -409,7 +409,7 @@ def delete_field(class_name : str,
         print(f"<Field Delete Error>: {err}")
     
     else:
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         found, field = find_field(uml, field_name)
         
         if not found:
@@ -440,7 +440,7 @@ def delete_method(class_name : str,
         err = f"{class_name} does not exist as the name of a class."
         print(f"<Method Delete Error>: {err}")
     else:
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         found, method = find_method(uml, method_name, method_type)
         
         if not found:
@@ -473,7 +473,7 @@ def delete_param(class_name : str,
         err = f"{class_name} does not exist as the name of a class."
         print(f"<Parameter Delete Error>: {err}")
     else:
-        uml : UMLClass = class_dict[class_name]
+        uml : UMLClass = UMLClass.class_dict[class_name]
         found_method, method = find_method(uml, method_name, method_type)
         found_param, param = find_param(method, param_name)
         

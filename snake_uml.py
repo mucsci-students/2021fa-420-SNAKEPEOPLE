@@ -261,6 +261,10 @@ def save(filename : str):
     c : UMLClass.UMLClass
     for c in list(UMLClass.class_dict.values()):
         classes.append(c.toJson())
+
+    r : UMLRelationship.UMLRelationship
+    for r in UMLRelationship.relationship_list:
+        relationship.append(r.toJson())
         
     json_text = JSON.encode(classes, relationship)
     
@@ -269,12 +273,14 @@ def save(filename : str):
         
 def load(filename : str):
     json_text : str = ""
-    with open(f"save_files/{filename}.json", "r") as file:
-        json_text = file.read()
-        
+    try:
+        with open(f"save_files/{filename}.json", "r") as file:
+            file.seek(0)
+            json_text = file.read()
+    except FileNotFoundError:
+        f"File {filename}.json does not exist."
     (UMLClass.class_dict, 
-     UMLRelationship.relationship_list) = JSON.decode(json_text)
- 
+        UMLRelationship.relationship_list) = JSON.decode(json_text)
 # Entry Point
 if __name__ == '__main__':
     main(sys.argv)

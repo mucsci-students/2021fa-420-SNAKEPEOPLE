@@ -1,5 +1,6 @@
 import tkinter as tk
 from gui.UMLLine import deleteline
+from . import UMLSavepoint
 from . import EventHandler
 from . import ViewChange
 from . import UMLField
@@ -8,7 +9,7 @@ from uml_components.UMLAttributes import UMLMethod
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-from uml_components.UMLClass import UMLClass, class_dict
+from uml_components import UMLClass
 
 class_list = []
 
@@ -60,47 +61,46 @@ class UMLsquare():
 def create_box(name : str):
     yinc = 0
     #Make sure the class does not already exist
-    if find_pos_from_name(name) == None and ai.find_class(name)[0] == True:
-        placed = False
-        x_place = 1
-        x1 = 60
-        x2 = 140
-        y1 = 40
-        y2 = 65
+    placed = False
+    x_place = 1
+    x1 = 60
+    x2 = 140
+    y1 = 40
+    y2 = 65
 
-        #Account for lenthy boxes
-        last_textspace = 0
-        if len(class_list) > 0:
-            last_textspace = class_list[len(class_list) - 1].textspace
-        current_textspace = len(name) * 3.5
+    #Account for lenthy boxes
+    last_textspace = 0
+    if len(class_list) > 0:
+        last_textspace = class_list[len(class_list) - 1].textspace
+    current_textspace = len(name) * 3.5
 
-        #Find a big enough gap to place the newest class
-        while not placed:
-            if x1 - last_textspace - current_textspace < 0:
-                x1 = last_textspace + current_textspace + 60
-            if len(test_canvas.find_overlapping(x1 - last_textspace - current_textspace, y1, x2 + current_textspace, y2)) != 0:
-                if x2 > test_canvas.winfo_width() - 80:
-                    y1 += 25
-                    y2 += 25
-                    x1 = 60
-                    x2 = 140
-                    last_textspace = 0
-                else:
-                    x1 += 80
-                    x2 += 80
+    #Find a big enough gap to place the newest class
+    while not placed:
+        if x1 - last_textspace - current_textspace < 0:
+            x1 = last_textspace + current_textspace + 60
+        if len(test_canvas.find_overlapping(x1 - last_textspace - current_textspace, y1, x2 + current_textspace, y2)) != 0:
+            if x2 > test_canvas.winfo_width() - 80:
+                y1 += 25
+                y2 += 25
+                x1 = 60
+                x2 = 140
+                last_textspace = 0
             else:
-                placed = True
+                x1 += 80
+                x2 += 80
+        else:
+            placed = True
 
-        #Create the new box
-        obj = UMLsquare(x1, y1, x2, y2, name)
-        #Add the new box to the list
-        class_list.append(obj)
-        #Bring current box to front
-        ViewChange.bring_all_front(obj)
-        #update the size of the current box
-        update_size(len(class_list) - 1)
-        #Fix any box that my have been overlapped
-        UMLField.fix_pos(len(class_list) - 1)
+    #Create the new box
+    obj = UMLsquare(x1, y1, x2, y2, name)
+    #Add the new box to the list
+    class_list.append(obj)
+    #Bring current box to front
+    ViewChange.bring_all_front(obj)
+    #update the size of the current box
+    update_size(len(class_list) - 1)
+    #Fix any box that my have been overlapped
+    UMLField.fix_pos(len(class_list) - 1)
 
 def create_box_with_coords(name : str, x1 : int, y1 : int, x2 : int, y2 : int):
     obj = UMLsquare(x1, y1, x2, y2, name)
@@ -160,13 +160,13 @@ def update_size(pos : int):
         longest_name = len("Fields:") * 3.5
     if(len("Methods:") * 3.5 > longest_name):
         longest_name = len("Methods:") * 3.5
-    uml : UMLClass = class_dict[classname]
+    uml : UMLClass = UMLClass.class_dict[classname]
     #Check all names in the list of fields
     for fields in uml.fields:
         name = "-" + fields.type + " " + fields.name
         if len(name) * 3.5 > longest_name:
             longest_name = len(name) * 3.5
-    uml : UMLClass = class_dict[classname]
+    uml : UMLClass = UMLClass.class_dict[classname]
     method : ai.UMLMethod
     param : ai.UMLParameter
     #Check all info in the list of methods and parameters
@@ -208,12 +208,18 @@ def get_xy(name : str):
     centerx = x1 + (x2-x1)/2
     return (centerx, y1)
 
-def class_adapter():
+def class_mediator():
     for i in class_list:
-        if i.name not in class_dict:
+        if i.name not in UMLClass.class_dict:
             delete_box(i.name)
-    for i in class_dict:
-        if find_pos_from_name(i)  == None:
-            create_box(i)
-            update_methods(i)
-            UMLField.update_fields(i)
+    for name, value in UMLClass.class_dict.items():
+        if value.position_x == -1 and value.position_y == -1:
+            create_box(name)
+            x, y = get_xy(name)
+            value.position_x = x
+            value.position_y = y
+        else:
+            x1, y1, x2, y2 = UMLSavepoint.make_coords(name, value.position_x, value.position_y)
+            create_box_with_coords(name, x1, y1, x2, y2)
+        update_methods(name)
+        UMLField.update_fields(name)
