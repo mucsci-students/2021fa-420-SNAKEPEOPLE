@@ -1,21 +1,22 @@
 import pytest
 from uml_components.UMLAttributes import UMLField, UMLMethod, UMLParameter
-from uml_components.UMLClass import UMLClass, class_dict
+from uml_components import UMLClass
 from uml_components.interfaces import class_interface, attr_interface, rel_interface
 
 def test_add_field () :
     class_interface.add_class ("class1")
-    assert attr_interface.add_field ("class1", "attr1", "type1")
+    assert attr_interface.add_field ("class1", "attr1", "type1")[0]
 
 def test_add_method () :
     class_interface.add_class ("class2")
-    assert attr_interface.add_method ("class2", "method2", "type2")
+    assert attr_interface.add_method ("class2", "method2", "type2")[0]
     
 def test_add_param () :
     class_interface.add_class ("class3")
     assert attr_interface.add_param ("class3", "method3", "param3", "type3")
     class_interface.add_class ("class12")
-    umlM =  attr_interface.add_method ("class12", "method12", "int")
+    uml : UMLClass.UMLClass = UMLClass.class_dict['class12']
+    umlM = attr_interface.add_method ("class12", "method12", "int")
     assert attr_interface.add_param ("class12", "method12", "param12", "int")
     assert attr_interface.find_param (umlM, "param12")
 
@@ -31,7 +32,7 @@ def test_rename_method () :
 
 def test_rename_param () :
     class_interface.add_class ("tanner")
-    tanner = class_dict["tanner"]
+    tanner = UMLClass.class_dict["tanner"]
     tanner.add_method ("doHW", "bool")
     tanner.add_method_param (tanner.methods[0], "pp", "int")
     assert attr_interface.rename_param ("tanner", "doHW", "pp", "ppp")

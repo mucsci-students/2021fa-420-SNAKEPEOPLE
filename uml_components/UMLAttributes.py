@@ -53,10 +53,12 @@ class UMLMethod (UMLAttribute):
         
     def add_param(self, 
                   param_name : str,
-                  param_type : str) -> None:
+                  param_type : str) -> UMLParameter:
         
         param = UMLParameter(param_name, param_type)
         self.params.append(param)
+        
+        return param
         
     def clear(self) -> None:
         self.params = []
