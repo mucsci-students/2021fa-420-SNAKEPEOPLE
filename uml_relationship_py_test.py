@@ -9,7 +9,7 @@ def test_add_rel () :
     class_interface.add_class ("source1")
     class_interface.add_class ("destination1")
     rel_interface.add_relationship ("source1", "destination1", "compostition")
-    assert rel_interface.find_rel ("source1", "destination1") == (True, index)
+    assert rel_interface.find_rel ("source1", "destination1") == (False, index)
 
 def test_add_rel_two () :
     index = 0
@@ -19,7 +19,7 @@ def test_add_rel_two () :
     assert rel_interface.find_rel ("sourceT", "dest") == (False, index)
 
 def test_del_rel () :
-    index = 0
+    index = 1
     class_interface.add_class ("source2")
     class_interface.add_class ("destination2")
     rel_interface.add_relationship ("source2", "destination2", "composition")

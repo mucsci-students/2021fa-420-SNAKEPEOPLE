@@ -12,13 +12,11 @@ def test_add_method () :
     assert attr_interface.add_method ("class2", "method2", "type2")[0]
     
 def test_add_param () :
-    class_interface.add_class ("class3")
-    assert attr_interface.add_param ("class3", "method3", "param3", "type3")
     class_interface.add_class ("class12")
     uml : UMLClass.UMLClass = UMLClass.class_dict['class12']
     umlM = attr_interface.add_method ("class12", "method12", "int")
-    assert attr_interface.add_param ("class12", "method12", "param12", "int")
-    assert attr_interface.find_param (umlM, "param12")
+    attr_interface.add_param ("class12", "method12", "param12", "int")
+    assert attr_interface.find_param (umlM[0], "param12")
 
 def test_rename_field () :
     class_interface.add_class ("class4")
@@ -49,7 +47,7 @@ def test_delete_method () :
 
 def test_delete_param () :
     class_interface.add_class("beenis")
-    beenis = class_dict["beenis"]
+    beenis = class_interface.class_dict["beenis"]
     beenis.add_method ("quicksort", "int")
     beenis.add_method_param (beenis.methods[0], "p", "double")
     me = beenis.methods[0]
@@ -71,14 +69,14 @@ def test_find_method () :
 
 def test_find_param () :
     class_interface.add_class ("sadge")
-    sad = class_dict["sadge"]
+    sad = class_interface.class_dict["sadge"]
     sad.add_method ("crying", "int")
     sad.add_method_param (sad.methods[0], "p", "double")
     assert attr_interface.find_param (sad.methods[0], "p")
 
 def test_find_field_two () :
     class_interface.add_class ("Super")
-    assert type (attr_interface.add_field ("Super", "static", "auto")) is str
+    assert isinstance (attr_interface.add_field ("Super", "static", "auto"), tuple)
     umlF2 = class_interface.class_dict["Super"]
     assert attr_interface.find_field (umlF2, "static")
 
