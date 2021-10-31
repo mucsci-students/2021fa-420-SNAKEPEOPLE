@@ -6,15 +6,187 @@ import sys
 import os.path
 import tkinter as tk
 from tkinter import *
+from tkinter.tix import *
 #import UMLbox
 
 # Internal Imports
 from . import gui_windows as gw
-from . import gui_functions as gf
 
 ###################################################################################################
+'''
+Functions for use in the Side_Panel file. Used to make the buttons on each panel.
+'''
+def set_class_buttons(frame : tk.Frame) -> None:
+    # Add Class Button
+    add_button = tk.Button(
+        master = frame,
+        command = gw.add_class_window,
+        text = "Add Class", 
+        width = 20)
+    add_button.grid(
+        row = 0,
+        column = 0,
+        sticky = "n")
 
+    # Delete Class Button
+    delete_button = tk.Button(
+        master = frame,
+        command = gw.delete_class_window,
+        text = "Delete Class", 
+        width = 20)
+    delete_button.grid(
+        row = 0,
+        column = 1,
+        sticky = "n")
+
+    # Rename Class Button
+    rename_button = tk.Button(
+        master = frame,
+        command = gw.rename_class_window,
+        text = "Rename Class", 
+        width = 20)
+    rename_button.grid(
+        row = 0,
+        column = 2,
+        sticky = "n")
+    
+    # Blank space under the class buttons to make the panel look better.
+    blank = tk.Label(master = frame)
+    blank.grid(row = 1, column = 0, sticky = "w", columnspan = 10)
+
+
+def set_method_buttons(frame : tk.Frame) -> None:
+    # Add Method Button
+    add_button = tk.Button(
+        master = frame,
+        command = gw.add_method_window,
+        text = "Add", 
+        width = 20)
+    add_button.grid(
+        row = 0,
+        column = 0,
+        sticky = "n")
+
+    # Delete Method Button
+    delete_button = tk.Button(
+        master = frame,
+        command = gw.delete_method_window,
+        text = "Delete", 
+        width = 20)
+    delete_button.grid(
+        row = 0,
+        column = 1,
+        sticky = "n")
+
+    # Rename Method Button
+    rename_button = tk.Button(
+        master = frame,
+        command = gw.rename_method_window,
+        text = "Rename", 
+        width = 20)
+    rename_button.grid(
+        row = 0,
+        column = 2,
+        sticky = "n")
+
+
+def set_field_buttons(frame : tk.Frame) -> None:
+    # Add Field Button
+    add_button = tk.Button(
+        master = frame,
+        command = gw.add_field_window,
+        text = "Add", 
+        width = 20)
+    add_button.grid(
+        row = 0,
+        column = 0,
+        sticky = "n")
+
+    # Delete Field Button
+    delete_button = tk.Button(
+        master = frame,
+        command = gw.delete_field_window,
+        text = "Delete", 
+        width = 20)
+    delete_button.grid(
+        row = 0,
+        column = 1,
+        sticky = "n")
+
+    # Rename Field Button
+    rename_button = tk.Button(
+        master = frame,
+        command = gw.rename_field_window,
+        text = "Rename", 
+        width = 20)
+    rename_button.grid(
+        row = 0,
+        column = 2,
+        sticky = "n")
+
+
+def set_param_buttons(frame : tk.Frame) -> None:
+    # Add Param Button
+    add_button = tk.Button(
+        master = frame,
+        command = gw.add_param_window,
+        text = "Add", 
+        width = 20)
+    add_button.grid(
+        row = 0,
+        column = 0,
+        sticky = "n")
+
+    # Delete Param Button
+    delete_button = tk.Button(
+        master = frame,
+        command = gw.delete_param_window,
+        text = "Delete", 
+        width = 20)
+    delete_button.grid(
+        row = 0,
+        column = 1,
+        sticky = "n")
+
+    # Rename Param Button
+    rename_button = tk.Button(
+        master = frame,
+        command = gw.rename_param_window,
+        text = "Rename", 
+        width = 20)
+    rename_button.grid(
+        row = 0,
+        column = 2,
+        sticky = "n")
+
+
+def set_rel_buttons(frame : tk.Frame) -> None:
+    # Add Relation Button
+    add_button = tk.Button(
+        master = frame,
+        command = gw.add_relation_window,
+        text = "Add", 
+        width = 20)
+    add_button.grid(
+        row = 0,
+        column = 0,
+        sticky = "n")
+
+    # Delete Relation Button
+    delete_button = tk.Button(
+        master = frame,
+        command = gw.delete_relation_window,
+        text = "Delete", 
+        width = 20)
+    delete_button.grid(
+        row = 0,
+        column = 1,
+        sticky = "n")
+
+###################################################################################################
+'''
 # Function to make the frame with all the right-side buttons for the GUI.
+'''
 def make_buttons(frame : tk.Frame) -> list:
     '''
     Function to make the buttons on the right side of the GUI:

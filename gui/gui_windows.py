@@ -2,13 +2,11 @@
 # File Name:     gui_windows.py
 
 # External Imports
-import sys
-import os.path
 import tkinter as tk
 from tkinter import *
+from tkinter.tix import *
 
 # Internal Imports
-from gui import gui_buttons as gb
 from gui import gui_functions as gf
 
 ###################################################################################################
@@ -75,6 +73,8 @@ def add_class_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_add_class(etr.get(), lbl2))
     root.mainloop()
 
 
@@ -134,6 +134,8 @@ def delete_class_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_delete_class(etr.get(), lbl2))
     root.mainloop()
 
 
@@ -212,6 +214,8 @@ def rename_class_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_rename_class(etr1.get(), etr2.get(), lbl3))
     root.mainloop()
 
 
@@ -222,7 +226,7 @@ def add_method_window() -> None:
 
     # Frame containing the elements.
     frame = tk.Frame(
-        master = root,  
+        master = root, 
         relief = tk.SUNKEN,  
         borderwidth = 3)
     frame.pack(ipadx = 10)
@@ -309,6 +313,8 @@ def add_method_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_add_method(etr1.get(), etr2.get(), etr3.get(), lbl4))
     root.mainloop()
 
 
@@ -387,6 +393,8 @@ def delete_method_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_delete_method(etr1.get(), etr2.get(), lbl3))
     root.mainloop()
 
 
@@ -484,6 +492,8 @@ def rename_method_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_rename_method(etr1.get(), etr2.get(), etr3.get(), lbl4))
     root.mainloop()
 
 
@@ -581,6 +591,8 @@ def add_field_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_add_field(etr1.get(), etr2.get(), etr3.get(), lbl4))
     root.mainloop()
 
 
@@ -659,6 +671,8 @@ def delete_field_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_delete_field(etr1.get(), etr2.get(), lbl3))
     root.mainloop()
 
 
@@ -756,6 +770,8 @@ def rename_field_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_rename_field(etr1.get(), etr2.get(), etr3.get(), lbl4))
     root.mainloop()
 
 
@@ -859,6 +875,8 @@ def add_relation_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_add_relation(etr1.get(), etr2.get(), types[type.get()], lbl4))
     root.mainloop()
 
 
@@ -937,11 +955,13 @@ def delete_relation_window() -> None:
         pady = 5)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_delete_relation(etr1.get(), etr2.get(), lbl3))
     root.mainloop()
 
 
 def add_param_window() -> None:
-   # Window for Adding a Parameter to a Method in a Class.
+    # Window for Adding a Parameter to a Method in a Class.
     root = tk.Toplevel(name = 'dn')
     root.title("Add Parameter")
 
@@ -1053,6 +1073,8 @@ def add_param_window() -> None:
         pady = 5)
     
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5))
     root.mainloop()
 
 
@@ -1150,6 +1172,8 @@ def delete_param_window() -> None:
         pady = 5)
     
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_delete_param(etr1.get(), etr2.get(), etr3.get(), lbl4))
     root.mainloop()
 
 
@@ -1266,6 +1290,8 @@ def rename_param_window() -> None:
         pady = 5)
     
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_rename_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl4))
     root.mainloop()
 
 
