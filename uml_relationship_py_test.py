@@ -12,7 +12,7 @@ def test_add_rel () :
     assert rel_interface.find_rel ("source1", "destination1") == (True, index)
 
 def test_add_rel_two () :
-    index = 1
+    index = 0
     class_interface.add_class ("sourceT")
     class_interface.add_class ("destT")
     rel_interface.add_relationship ("sourceT", "destination1", "composition")
@@ -27,7 +27,7 @@ def test_del_rel () :
     assert rel_interface.find_rel ("source2", "destination2") == (False, index)
 
 def test_rel_del_two () :
-    index = 0
+    index = 1
     class_interface.add_class ("Rocky")
     class_interface.add_class ("Balboa")
     rel_interface.add_relationship ("Rocky", "Balboa", "aggregation")
@@ -42,18 +42,18 @@ def test_check_type () :
     assert rel_interface.check_type ("aggregation") == True
 
 def test_find_rel () :
-    index = 1
+    index = 3
     class_interface.add_class ("source4")
     class_interface.add_class ("destination4")
     rel_interface.add_relationship ("source4", "destination4", "aggregation")
     assert rel_interface.find_rel ("source4", "destination4") == (True, index)
 
 def test_find_rel_two () :
-    index = 1
+    index = 0
     assert rel_interface.find_rel ("source4", "DESTFAIL") == (False, index)
 
 def test_rel_cleanup () :
-    index = 2
+    index = 4
     class_interface.add_class ("source5")
     class_interface.add_class ("destination5")
     rel_interface.add_relationship ("source5", "destination5", "aggregation")
