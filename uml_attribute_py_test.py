@@ -14,6 +14,10 @@ def test_add_method () :
 def test_add_param () :
     class_interface.add_class ("class3")
     assert attr_interface.add_param ("class3", "method3", "param3", "type3")
+    class_interface.add_class ("class12")
+    umlM =  attr_interface.add_method ("class12", "method12", "int")
+    assert attr_interface.add_param ("class12", "method12", "param12", "int")
+    assert attr_interface.find_param (umlM, "param12")
 
 def test_rename_field () :
     class_interface.add_class ("class4")
