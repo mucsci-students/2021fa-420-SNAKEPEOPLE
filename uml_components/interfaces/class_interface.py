@@ -4,7 +4,7 @@ from uml_components.interfaces import rel_interface
 
 from typing import Union
 
-def add_class(name : str) -> tuple[Union[UMLClass, None], str]:
+def add_class(name : str) -> tuple:
     """
     Adds a new, empty class to the class dictionary.
     
@@ -41,7 +41,7 @@ def add_class(name : str) -> tuple[Union[UMLClass, None], str]:
     return ret, msg
 
 
-def delete_class(name : str) -> tuple[Union[UMLClass, None], str]:
+def delete_class(name : str) -> tuple:
     """
     Deletes an existing class in the class dictionary.
     
@@ -73,7 +73,7 @@ def delete_class(name : str) -> tuple[Union[UMLClass, None], str]:
 
 
 def rename_class(old_name : str, 
-                 new_name : str) -> tuple[Union[UMLClass, None], str]:
+                 new_name : str) -> tuple:
     """
     Renames a class. 
     
