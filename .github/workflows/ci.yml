@@ -1,8 +1,10 @@
 name: Project Tests
 on: 
   push:
-    - develop
-    - pytest
+    branches:
+      - develop
+      - pytest
+
   pull_request:
     branches:
       - develop
