@@ -1,3 +1,6 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLField.py
+
 import tkinter as tk
 from gui import UMLBox, UMLLine, UMLMethod
 from gui import ViewChange
@@ -71,6 +74,7 @@ def update_vertical(pos : int):
     UMLLine.line_mediator()
     ViewChange.bring_all_front(UMLBox.class_list[pos])
 
+#WIP function for respacing boxes
 def fix_pos(pos : int):
     classname = UMLBox.class_list[pos].name
     coords = UMLBox.get_coords(classname)

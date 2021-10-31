@@ -1,5 +1,8 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLBox.py
+
 import tkinter as tk
-from gui.UMLLine import deleteline
+from gui.UMLLine import deleteline, findpos
 from . import UMLSavepoint
 from . import EventHandler
 from . import ViewChange
@@ -202,24 +205,32 @@ def get_coords(name : str):
     x1, y1, x2, y2 = test_canvas.coords(class_list[pos].rec)
     return (x1, y1, x2, y2)
 
+#Function used to store location of the box in UMLClass
 def get_xy(name : str):
     pos = find_pos_from_name(name)
     x1, y1, x2, y2 = test_canvas.coords(class_list[pos].rec)
     centerx = x1 + (x2-x1)/2
     return (centerx, y1)
 
+#General function for telling the canvas to update the boxes
 def class_mediator():
+    #Delete any boxes not found in the class dict (Model)
     for i in class_list:
         if i.name not in UMLClass.class_dict:
             delete_box(i.name)
+    #Add any boxes that are in the class dict (Model)
     for name, value in UMLClass.class_dict.items():
-        if value.position_x == -1 and value.position_y == -1:
-            create_box(name)
-            x, y = get_xy(name)
-            value.position_x = x
-            value.position_y = y
-        else:
-            x1, y1, x2, y2 = UMLSavepoint.make_coords(name, value.position_x, value.position_y)
-            create_box_with_coords(name, x1, y1, x2, y2)
-        update_methods(name)
-        UMLField.update_fields(name)
+        if find_pos_from_name(name) == None:
+            #If the class was created in CLI, create its representation
+            #in the first available space
+            if value.position_x == -1 and value.position_y == -1:
+                create_box(name)
+                x, y = get_xy(name)
+                value.position_x = x
+                value.position_y = y
+            #Otherwise place the box in its correct space    
+            else:
+                x1, y1, x2, y2 = UMLSavepoint.make_coords(name, value.position_x, value.position_y)
+                create_box_with_coords(name, x1, y1, x2, y2)
+            update_methods(name)
+            UMLField.update_fields(name)

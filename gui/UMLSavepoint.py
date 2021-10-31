@@ -1,5 +1,6 @@
-from types import new_class
-from typing import Text
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLSavepoint.py
+
 from gui import ViewChange
 from uml_components import UMLClass
 from uml_components import UMLRelationship
@@ -87,6 +88,7 @@ def undo(mode = "gui"):
     while len(UMLRelationship.relationship_list) > 0:
         ri.delete_relationship(UMLRelationship.relationship_list[0].source, 
         UMLRelationship.relationship_list[0].destination)
+    #Recreate the previous state's relationship list
     for i in last_state.relationship_list:
         ri.add_relationship(i.source, i.destination, i.type)
 
@@ -112,6 +114,7 @@ def redo(mode = "gui"):
     while len(UMLRelationship.relationship_list) > 0:
         ri.delete_relationship(UMLRelationship.relationship_list[0].source,
          UMLRelationship.relationship_list[0].destination)
+    #Recreate the previous state of the relationship list
     for i in last_state.relationship_list:
         ri.add_relationship(i.source, i.destination, i.type)
 
@@ -184,7 +187,7 @@ def make_coords(class_name : str, x : int, y : int):
         yinc += 15
     method : ai.UMLMethod
     param : ai.UMLParameter
-    #Find an appropriate vertical spacing to contain the methods and parameters
+    #Add 45 to the vertical increment for each method and 15 for each parameter
     for method in uml.methods:
         yinc += 45
         for param in method.params:

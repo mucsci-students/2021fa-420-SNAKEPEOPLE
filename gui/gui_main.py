@@ -3,17 +3,20 @@
 
 # External Imports
 import tkinter as tk
-from tkinter import ttk
-from tkinter import font
-
-from . import UMLSavepoint
 
 # Internal Imports
 from . import UMLBox
 
-from . import gui_buttons, gui_functions, gui_windows, Side_Panel
-from uml_components import UMLClass, UMLRelationship
+from . import (
+    gui_functions, 
+    gui_windows, 
+    Side_Panel)
+from uml_components import UMLClass
 
+###################################################################################################
+'''
+Main function to create the GUI.
+'''
 
 def run():
     
@@ -31,9 +34,6 @@ def run():
     # Element Construction    
     main_frame = tk.Frame(window, bd=5, relief=tk.FLAT)
     side_frame = tk.Frame(window,)
-    
-    s_class_frame = tk.Frame(window)
-    s_relat_frame = tk.Frame(window)
     
     main_panel = UMLBox.init_canvas(main_frame)
     
@@ -71,36 +71,41 @@ def run():
     )
     
     window.mainloop()
-    
-        
-def buttons(btn_list : list):
-    for btn in btn_list:
-        btn.pack()
-     
+
+###################################################################################################
+'''
+Clear the dictionary of classes.
+'''
+
 def clear_dict():
-    UMLSavepoint.save_point()
     UMLClass.class_dict = dict()
     UMLBox.test_canvas.delete("all")
     UMLBox.class_list = []
-    UMLRelationship.relationship_list = []
-        
+
+###################################################################################################
+'''
+Building the menus above the canvas.
+'''
+
 def build_menu(window : tk.Tk) -> tk.Menu:
     menubar = tk.Menu(window)
 
-    menu_file = tk.Menu(menubar, tearoff=0)
-    menu_file.add_command(label="New", command=clear_dict)
-    menu_file.add_command(label="Save", command=gui_windows.save_window)
-    menu_file.add_command(label="Load", command=gui_windows.load_window)
+    menu_file = tk.Menu(menubar, tearoff = 0)
+    menu_file.add_command(label = "New", command = clear_dict)
+    menu_file.add_command(label = "Save", command = gui_windows.save_window)
+    menu_file.add_command(label = "Load", command = gui_windows.load_window)
     menu_file.add_separator()
-    menu_file.add_command(label="Exit", command=exit)
-    menubar.add_cascade(label="File", menu=menu_file)
+    menu_file.add_command(label = "Exit", command = exit)
+    menubar.add_cascade(label = "File", menu = menu_file)
     
     menu_edit = tk.Menu(menubar, tearoff=0)
-    menu_edit.add_command(label="Undo", command=gui_functions.b_undo)
-    menu_edit.add_command(label="Redo", command=gui_functions.b_redo)
-    menubar.add_cascade(label="Edit", menu=menu_edit)
+    menu_edit.add_command(label = "Undo", command = gui_functions.b_undo)
+    menu_edit.add_command(label = "Redo", command = gui_functions.b_redo)
+    menubar.add_cascade(label = "Edit", menu = menu_edit)
 
     return menubar
+
+###################################################################################################
 
 if __name__ == "__main__":
     run()

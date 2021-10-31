@@ -1,7 +1,8 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLLine.py
+
 import tkinter as tk
-from gui import EventHandler, ViewChange
-from gui import UMLBox
-from uml_components.UMLRelationship import UMLRelationship
+from gui import EventHandler, ViewChange, UMLBox
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
@@ -85,6 +86,7 @@ def line_mediator():
             ViewChange.del_item(i.rels[0][1])
             i.rels.pop(0)
         i.rels = []
+    #Add any relationships back to the list, if both boxes exist in the canvas
     for i in UMLRelationship.relationship_list:
         if UMLBox.find_pos_from_name(i.source) != None and UMLBox.find_pos_from_name(i.destination) != None:
             add_line(i.source, i.destination, i.type)

@@ -1,3 +1,6 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLMethod.py
+
 import tkinter as tk
 from gui import UMLBox
 from gui import ViewChange

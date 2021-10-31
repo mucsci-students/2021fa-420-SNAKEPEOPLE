@@ -1,3 +1,6 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     ViewChange.py
+
 """THIS FILE ACTS AS THE VIEW CHANGER ALL OTHER METHODS USE THIS FILE TO UPDATE THE CANVAS"""
 from gui import UMLBox
 

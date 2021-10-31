@@ -2,11 +2,7 @@
 # File Name:     Side_Panel.py
 
 # External Imports
-import sys
-import os.path
 import tkinter as tk
-from tkinter import *
-from tkinter.tix import *
 from tkinter import ttk
 
 # Internal Imports
@@ -18,19 +14,19 @@ Main function for creating the sidebar of the GUI with all the panels.
 
 Creates the frames for each panel and puts them under the appropriate spot.
 
-Repurposes the functions in the gui_windows file in order to
-    populate each panel.
+Each frame has buttons for Add, Delete, and Rename, which each open up a
+    respective window, created by the gui_windows file.
 '''
-def init_notebook(frame : Frame) -> ttk.Notebook:
+def init_notebook(frame : tk.Frame) -> ttk.Notebook:
     # Making the contents of the Main Panel
     # [Class]  [Relation]
     panel = ttk.Notebook(frame)
 
-    class_frame = Frame(master = panel, borderwidth = 3)
+    class_frame = tk.Frame(master = panel, borderwidth = 3)
     panel.add(class_frame, text = "Class")
     panel.insert(0, class_frame)
 
-    relation_frame = Frame(master = panel, borderwidth = 3)
+    relation_frame = tk.Frame(master = panel, borderwidth = 3)
     panel.add(relation_frame, text = "Relation")
     panel.insert(1, relation_frame)
 
@@ -51,17 +47,17 @@ def init_notebook(frame : Frame) -> ttk.Notebook:
 
     gb.set_class_buttons(class_frame)
 
-    method_frame = Frame(master = class_panel, borderwidth = 3)
+    method_frame = tk.Frame(master = class_panel, borderwidth = 3)
     class_panel.add(method_frame, text = "Method")
     class_panel.insert(0, method_frame)
     gb.set_method_buttons(method_frame)
 
-    field_frame = Frame(master = class_panel, borderwidth = 3)
+    field_frame = tk.Frame(master = class_panel, borderwidth = 3)
     class_panel.add(field_frame, text = "Field")
     class_panel.insert(1, field_frame)
     gb.set_field_buttons(field_frame)
 
-    param_frame = Frame(master = class_panel, borderwidth = 3)
+    param_frame = tk.Frame(master = class_panel, borderwidth = 3)
     class_panel.add(param_frame, text = "Param")
     class_panel.insert(2, param_frame)
     gb.set_param_buttons(param_frame)
@@ -74,8 +70,8 @@ def init_notebook(frame : Frame) -> ttk.Notebook:
 ###################################################################################################
 
 if __name__ == "__main__":
-    root = Tk()
-    frame = Frame(root)
+    root = tk.Tk()
+    frame = tk.Frame(root)
     panel = init_notebook(frame)
     panel.pack()
     frame.pack()

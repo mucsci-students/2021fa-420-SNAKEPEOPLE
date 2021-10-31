@@ -1,7 +1,8 @@
-from tkinter.constants import FALSE
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     EventHandler.py
+
 from gui import UMLBox
 from gui import ViewChange
-from uml_components.UMLAttributes import UMLField
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
