@@ -62,7 +62,7 @@ class UMLClass():
         
     def add_field(self,
                   name : str,
-                  type : str):
+                  type : str) -> UMLField:
         
         # Adds a new field object to the built-in list of fields.
         new_field = UMLField(name, type)
@@ -70,11 +70,13 @@ class UMLClass():
         self.fields.append(new_field)
         print(f"<Added Field ({self.name})>: {type} {name}")
         
+        return new_field
+        
         
     def add_method(self,
                    name : str,
                    return_type : str,
-                   parameters : Union[list, None] = None) -> None:
+                   parameters : Union[list, None] = None) -> UMLMethod:
         
         param_list = parameters if parameters else list()
         new_method = UMLMethod(name, return_type, param_list)
@@ -82,28 +84,35 @@ class UMLClass():
         self.methods.append(new_method)
         print(f"<Added Method ({self.name})>: {return_type} " +
               f"{name}({param_list})")
+        
+        return new_method
     
     
     def add_method_param(self,
                          method : UMLMethod,
                          param_name : str,
-                         param_type : str) -> None:
+                         param_type : str) -> UMLParameter:
         
-        method.add_param(param_name, param_type)
+        param = method.add_param(param_name, param_type)
         
         print(f"<Added Method Parameter ({self.name}.{method.name}())>: " +
               f"{param_type} {param_name}")
+        
+        return param
+        
         
     def delete_field(self,
                      field : UMLField) -> None:
         idx = self.fields.index(field)
         self.fields.pop(idx)
         
+        
     def delete_method(self,
                       method : UMLMethod) -> None:
         method.clear()
         idx = self.methods.index(method)
         self.methods.pop(idx)
+        
         
     def delete_param(self,
                      method : UMLMethod,
