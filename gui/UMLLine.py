@@ -3,6 +3,7 @@
 
 import tkinter as tk
 from gui import EventHandler, ViewChange, UMLBox
+
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)

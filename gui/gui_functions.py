@@ -258,7 +258,6 @@ def b_load_file(
     if UMLSavepoint.redo_stack.empty() == False:
         UMLSavepoint.clear_stack()
 
-
 def b_undo() -> None:
     if UMLSavepoint.undo_stack.empty() == False:
         UMLSavepoint.undo()

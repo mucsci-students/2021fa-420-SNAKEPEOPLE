@@ -88,6 +88,7 @@ def create_box(name : str):
                 x1 = 60
                 x2 = 140
                 last_textspace = 0
+
             else:
                 x1 += 80
                 x2 += 80

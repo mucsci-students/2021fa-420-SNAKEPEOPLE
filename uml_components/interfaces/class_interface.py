@@ -2,7 +2,9 @@ from uml_components import UMLClass
 from uml_components import UMLRelationship
 from uml_components.interfaces import rel_interface
 
-def add_class(name : str) -> str:
+from typing import Union
+
+def add_class(name : str) -> tuple:
     """
     Adds a new, empty class to the class dictionary.
     
@@ -11,19 +13,20 @@ def add_class(name : str) -> str:
     vaild; that is, it should not be None or the empty string.
     """
     
-    err = f"<Added Class>: {name}"
+    msg = f"<Added Class>: {name}"
+    ret = None
 
     # Checks if 'name' is a valid class name.
     if name == "" or name == None:
         # If 'name' is invalid, prints an error.
-        err = "Class name must not be empty."
+        msg = "Class name must not be empty."
         print("<Class Add Error [Invalid Name:1]>: " + 
               "Class name must not be empty.")
         
     # Checks if 'name' already exists as a class name.
     elif name in UMLClass.class_dict:
         # If 'name' already exists as a class name, prints an error.
-        err = f"Class named '{name}' already exists."
+        msg = f"Class named '{name}' already exists."
         print("<Class Add Error [Invalid Name:2]>: " + 
              f"Class named '{name}' already exists.")
     
@@ -33,10 +36,10 @@ def add_class(name : str) -> str:
         new_class = UMLClass.UMLClass(name)
         UMLClass.class_dict.update({name : new_class})
 
-    return err
+    return ret, msg
 
 
-def delete_class(name : str) -> str:
+def delete_class(name : str) -> tuple:
     """
     Deletes an existing class in the class dictionary.
     
@@ -45,12 +48,13 @@ def delete_class(name : str) -> str:
     name of an existing class, an error is printed. 
     """
     
-    err = f"<Deleted Class>: {name}"
+    msg = f"<Deleted Class>: {name}"
+    ret = None
 
     # Checks if 'name' is already the name of an existing class.
     if name not in UMLClass.class_dict:
         # If 'name' is not the name of an existing class, prints an error.
-        err = f"Class named '{name}' does not exist."
+        msg = f"Class named '{name}' does not exist."
         print("<Class Delete Error [Invalid Name]>: " +
               f"Class named '{name}' does not exist.")
     else:
@@ -59,12 +63,14 @@ def delete_class(name : str) -> str:
         rel_interface.rel_cleanup(name)
         UMLClass.class_dict.pop(name)
         print(f"<Deleted Class>: {name}")
+        
+        ret = del_class
 
-    return err
+    return ret, msg
 
 
 def rename_class(old_name : str, 
-                 new_name : str) -> str:
+                 new_name : str) -> tuple:
     """
     Renames a class. 
     
@@ -81,12 +87,13 @@ def rename_class(old_name : str,
     that already exists in the class dict.
     """
     
-    err = f"<Renamed Class>: {old_name} -> {new_name}"
+    msg = f"<Renamed Class>: {old_name} -> {new_name}"
+    ret = None
 
     # Checks if 'old_name' exists in the class dict.
     if old_name not in UMLClass.class_dict:
         # If 'old_name' doesn't exist, prints an error.
-        err = f"{old_name} does not exist as the name of a class."
+        msg = f"{old_name} does not exist as the name of a class."
         print("<Class Rename Error [Invalid Name:1]>: " + 
              f"{old_name} does not exist as the name of a class.")
         
@@ -95,14 +102,14 @@ def rename_class(old_name : str,
         # Checks if 'new_name' is a valid class name.
         if new_name == "" or new_name == None:
             # If 'new_name' isn't valid, prints an error.
-            err = "New class name must not be empty."
+            msg = "New class name must not be empty."
             print("<Class Rename Error [Invalid Name:2]>: " +
                   "New class name must not be empty.")
         
         # Checks if 'new_name' is a unique name.
         elif new_name in UMLClass.class_dict:
             # If 'new_name' is not a unique class name, prints an error.
-            err = f"Class name '{new_name}' alread exists."
+            msg = f"Class name '{new_name}' alread exists."
             print("<Class Rename Error [Invalid Name:3]>: " +
                  f"Class name '{new_name}' alread exists.")
         
@@ -130,4 +137,4 @@ def rename_class(old_name : str,
             # key of 'new_name'.
             UMLClass.class_dict.update({new_name : uml})
 
-    return err
+    return ret, msg
