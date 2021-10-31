@@ -89,7 +89,7 @@ def find_param(method : UMLMethod,
 
 def add_field(class_name : str,
               field_name : str,
-              field_type : str) -> tuple[Union[UMLField, None], str]:
+              field_type : str) -> tuple:
     """
     Adds a field to the list of fields for a given class.
     
@@ -138,7 +138,7 @@ def add_field(class_name : str,
         
 def add_method(class_name : str,
                method_name : str,
-               method_type : str) -> tuple[Union[UMLMethod, None], str]:
+               method_type : str) -> tuple:
     """
     Adds a method to the list of methods for a given class.
     
@@ -189,7 +189,7 @@ def add_method(class_name : str,
 def add_param(class_name : str,
               method_name : str,
               param_name : str,
-              param_type : str) -> tuple[Union[UMLParameter, None], str]:
+              param_type : str) -> tuple:
     """
     Adds a parameter to a given method of a given class.
     
@@ -254,7 +254,7 @@ def add_param(class_name : str,
 
 def rename_field(class_name : str,
                  field_name : str,
-                 new_name :str) -> tuple[Union[UMLField, None], str]:
+                 new_name :str) -> tuple:
     """
     Renames a field of a given class.
     
@@ -301,7 +301,7 @@ def rename_field(class_name : str,
                   
 def rename_method(class_name : str, 
                   method_name : str, 
-                  new_name : str) -> tuple[Union[UMLMethod, None], str]:
+                  new_name : str) -> tuple:
     """
     Renames a method of the given class.
     
@@ -344,7 +344,7 @@ def rename_method(class_name : str,
 def rename_param(class_name : str,
                  method_name : str,
                  param_name : str,
-                 new_name : str) -> tuple[Union[UMLParameter, None], str]:
+                 new_name : str) -> tuple:
     """
     Renames a parameter of a given method of a given class.
     
@@ -394,7 +394,7 @@ def rename_param(class_name : str,
 # Attr Delete Methods ========================================================
                 
 def delete_field(class_name : str,
-                 field_name : str) -> tuple[Union[UMLField, None], str]:
+                 field_name : str) -> tuple:
     """
     Deletes a field from a given class.
     
@@ -427,7 +427,7 @@ def delete_field(class_name : str,
     return ret, msg
 
 def delete_method(class_name : str,
-                  method_name : str) -> tuple[Union[UMLMethod, None], str]:
+                  method_name : str) -> tuple:
     """
     Deletes a method from a given class.
     
@@ -460,7 +460,7 @@ def delete_method(class_name : str,
 
 def delete_param(class_name : str,
                  method_name : str,
-                 param_name : str) -> tuple[Union[UMLParameter, None], str]:
+                 param_name : str) -> tuple:
     """
     Deletes a parameter from a given method of a given class.
     
