@@ -21,12 +21,12 @@ def test_add_param () :
 def test_rename_field () :
     class_interface.add_class ("class4")
     attr_interface.add_field ("class4", "field4", "type4")
-    # assert type (attr_interface.rename_field ("class4", "field4", "newfield")) is tuple
+    assert isinstance (attr_interface.rename_field ("class4", "field4", "newfield"), tuple)
 
 def test_rename_method () :
     class_interface.add_class ("class5")
     attr_interface.add_method ("class5", "method5", "type5")
-    #assert type (attr_interface.rename_method ("class5", "method5", "newmethod")) is tuple
+    assert isinstance (attr_interface.rename_method ("class5", "method5", "newmethod"), tuple)
 
 def test_rename_param () :
     class_interface.add_class ("tanner")
@@ -61,7 +61,6 @@ def test_find_field () :
     assert attr_interface.find_field (umlT, "field10") 
 
 def test_find_method () :
-    testM = UMLMethod ("testmethod", "int", "param")
     assert class_interface.add_class ("class11")
     assert attr_interface.add_method ("class11", "method11", "int")
     umlT2 = class_interface.class_dict["class11"]
