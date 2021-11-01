@@ -1,5 +1,5 @@
-from uml_components.UMLClass import class_dict
-from uml_components.UMLRelationship import UMLRelationship, relationship_list
+from uml_components import UMLClass
+from uml_components import UMLRelationship
 
 def check_class(cls : str) -> bool:
     """
@@ -16,7 +16,7 @@ def check_class(cls : str) -> bool:
     
     # Loops through the class dictionary and sets found to True if 'cls' is in
     # the class dictionary.
-    for key in class_dict:
+    for key in  UMLClass.class_dict:
         if cls == key:
             found = True
             
@@ -48,7 +48,7 @@ def find_rel(source : str, dest : str) -> tuple:
     
     if check_class(source) and check_class(dest): 
         relationship : UMLRelationship
-        for relationship in relationship_list:
+        for relationship in  UMLRelationship.relationship_list:
             # If source and destination are both valid, iterates through the
             # relationship list until it finds a matching relationship.
             if (source == relationship.source and 
@@ -98,7 +98,7 @@ def add_relationship(source : str, destination : str, rel_type : str) -> str:
         if check_class(source) and check_class(destination):
             # If both source and destination are valid, checks if the 
             # relationship already exists.
-            for relationship in relationship_list:
+            for relationship in  UMLRelationship.relationship_list:
                 if (source == relationship.source and 
                     destination == relationship.destination):
                     err = f"Relationship {source} - {destination} already " + "exists"
@@ -108,8 +108,8 @@ def add_relationship(source : str, destination : str, rel_type : str) -> str:
             
             # If the relationship does not already exist, creates a new 
             # UMLRelationship object and adds it to the relationship list.
-            rel = UMLRelationship(source, destination, rel_type)
-            relationship_list.append(rel)
+            rel = UMLRelationship.UMLRelationship(source, destination, rel_type)
+            UMLRelationship.relationship_list.append(rel)
 
     return err
 
@@ -142,7 +142,7 @@ def delete_relationship(source : str, dest : str) -> str:
     if found:
         # If matching relationship found, deletes the relationship from the
         # list.
-        rel = relationship_list.pop(index)
+        rel =  UMLRelationship.relationship_list.pop(index)
         err = f"<Deleted Relationship>: {source} - {dest} ({rel.type})"
         print(f"<Deleted Relationship>: {source} - {dest} ({rel.type})")
     else:
@@ -163,11 +163,11 @@ def rel_cleanup(cls : str) -> None:
     """
     
     # Checks if the class exists in the class dictionary.
-    if cls in class_dict:
+    if cls in  UMLClass.class_dict:
         # If cls is the name of the class, iterates through the relationship
         # list and deletes all relationships where cls is source or destination.
         relationship : UMLRelationship
-        for relationship in relationship_list:
+        for relationship in  UMLRelationship.relationship_list:
             # Deletes if cls is source.
             if cls == relationship.source:
                 delete_relationship(cls, relationship.destination)
@@ -184,11 +184,11 @@ def list_relationships() -> None:
     """
 
     # Prints '(none)' if no relationships in list.
-    if len(relationship_list) < 1:
+    if len( UMLRelationship.relationship_list) < 1:
         print("(none)")
     else:
         # Loops through the relationship list and prints each entry.
-        for relationship in relationship_list:
+        for relationship in  UMLRelationship.relationship_list:
             print(relationship)
 
 
@@ -215,5 +215,5 @@ def change_type(source : str, dest : str, new_type : str):
               f"{new_type} is not a valid relationship type.")
     else:
         #Update the relationship type
-        relationship : UMLRelationship = relationship_list[index]
+        relationship : UMLRelationship =  UMLRelationship.relationship_list[index]
         relationship.change_type(new_type)

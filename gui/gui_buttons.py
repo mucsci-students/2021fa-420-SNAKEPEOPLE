@@ -2,12 +2,7 @@
 # File Name:     gui_buttons.py
 
 # External Imports
-import sys
-import os.path
 import tkinter as tk
-from tkinter import *
-from tkinter.tix import *
-#import UMLbox
 
 # Internal Imports
 from . import gui_windows as gw
@@ -16,6 +11,7 @@ from . import gui_windows as gw
 '''
 Functions for use in the Side_Panel file. Used to make the buttons on each panel.
 '''
+
 def set_class_buttons(frame : tk.Frame) -> None:
     # Add Class Button
     add_button = tk.Button(
@@ -187,6 +183,7 @@ def set_rel_buttons(frame : tk.Frame) -> None:
 '''
 # Function to make the frame with all the right-side buttons for the GUI.
 '''
+
 def make_buttons(frame : tk.Frame) -> list:
     '''
     Function to make the buttons on the right side of the GUI:

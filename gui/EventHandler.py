@@ -1,11 +1,12 @@
-from tkinter.constants import FALSE
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     EventHandler.py
+
 from gui import UMLBox
 from gui import ViewChange
-from uml_components.UMLAttributes import UMLField
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-from uml_components.UMLClass import UMLClass, class_dict
+from uml_components import UMLClass
 from . import UMLField
 from . import UMLMethod
 from . import UMLSavepoint
@@ -74,7 +75,7 @@ def can_dragMotion(event):
 
     #Bind the new coordinates so that the square cannot go outside#
     #of the canvas#
-    uml : UMLClass = class_dict[UMLBox.class_list[pos].name]
+    uml : UMLClass = UMLClass.class_dict[UMLBox.class_list[pos].name]
     if len(uml.fields) == 0:
         spacer = 20
     else:
@@ -130,6 +131,9 @@ def on_unclick(event):
             break
         pos += 1
     UMLBox.update_size(pos)
+    x, y = UMLBox.get_xy(UMLBox.class_list[pos].name)
+    UMLClass.class_dict[UMLBox.class_list[pos].name].position_x = x
+    UMLClass.class_dict[UMLBox.class_list[pos].name].position_y = y
 
 def clear_border():
     #Change all outlines to be black
