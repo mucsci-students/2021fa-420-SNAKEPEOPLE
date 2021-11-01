@@ -61,6 +61,7 @@ def delete_class(name : str) -> tuple:
         # If 'name' is the name of an existing class, deconstructs the object,
         # and then removes the listing of the class from the class dict.
         rel_interface.rel_cleanup(name)
+        del_class = UMLClass.class_dict[name]
         UMLClass.class_dict.pop(name)
         print(f"<Deleted Class>: {name}")
         
@@ -118,10 +119,10 @@ def rename_class(old_name : str,
         else:
             # Temporarily stores the UMLClass object stored in the class dict
             # under 'old_name'.
-            uml : UMLClass = UMLClass.class_dict[old_name]
+            uml : UMLClass.UMLClass = UMLClass.class_dict[old_name]
             
             
-            rel : UMLRelationship
+            rel : UMLRelationship.UMLRelationship
             for rel in UMLRelationship.relationship_list:
                 if rel.source == old_name:
                     rel.source = new_name

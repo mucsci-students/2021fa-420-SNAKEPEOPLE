@@ -10,9 +10,8 @@ def test_rename_class () :
     assert isinstance (class_interface.rename_class ("class10", "class1"), tuple)
 
 def test_delete_class () :
-    assert class_interface.delete_class ("class09")
     assert class_interface.add_class ("class69")
-    assert isinstance (class_interface.delete_class ("class69"), tuple)
+    assert isinstance (class_interface.delete_class("class69"), tuple)
 
 def test_add_empty_class () :
     assert class_interface.add_class ("")
