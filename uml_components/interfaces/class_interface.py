@@ -1,5 +1,5 @@
-from uml_components.UMLClass import UMLClass, class_dict
-from uml_components.UMLRelationship import UMLRelationship, relationship_list
+from uml_components import UMLClass
+from uml_components import UMLRelationship
 from uml_components.interfaces import rel_interface
 
 from typing import Union
@@ -24,7 +24,7 @@ def add_class(name : str) -> tuple:
               "Class name must not be empty.")
         
     # Checks if 'name' already exists as a class name.
-    elif name in class_dict:
+    elif name in UMLClass.class_dict:
         # If 'name' already exists as a class name, prints an error.
         msg = f"Class named '{name}' already exists."
         print("<Class Add Error [Invalid Name:2]>: " + 
@@ -33,10 +33,8 @@ def add_class(name : str) -> tuple:
     else:
         # If all other checks are valid, creates a new UMLCLass object with
         # name 'name' and adds it to the dict of existing classes.
-        new_class = UMLClass(name)
-        class_dict.update({name : new_class})
-        
-        ret = new_class
+        new_class = UMLClass.UMLClass(name)
+        UMLClass.class_dict.update({name : new_class})
 
     return ret, msg
 
@@ -54,7 +52,7 @@ def delete_class(name : str) -> tuple:
     ret = None
 
     # Checks if 'name' is already the name of an existing class.
-    if name not in class_dict:
+    if name not in UMLClass.class_dict:
         # If 'name' is not the name of an existing class, prints an error.
         msg = f"Class named '{name}' does not exist."
         print("<Class Delete Error [Invalid Name]>: " +
@@ -63,8 +61,8 @@ def delete_class(name : str) -> tuple:
         # If 'name' is the name of an existing class, deconstructs the object,
         # and then removes the listing of the class from the class dict.
         rel_interface.rel_cleanup(name)
-        del_class = class_dict[name]
-        class_dict.pop(name)
+        del_class = UMLClass.class_dict[name]
+        UMLClass.class_dict.pop(name)
         print(f"<Deleted Class>: {name}")
         
         ret = del_class
@@ -94,7 +92,7 @@ def rename_class(old_name : str,
     ret = None
 
     # Checks if 'old_name' exists in the class dict.
-    if old_name not in class_dict:
+    if old_name not in UMLClass.class_dict:
         # If 'old_name' doesn't exist, prints an error.
         msg = f"{old_name} does not exist as the name of a class."
         print("<Class Rename Error [Invalid Name:1]>: " + 
@@ -110,7 +108,7 @@ def rename_class(old_name : str,
                   "New class name must not be empty.")
         
         # Checks if 'new_name' is a unique name.
-        elif new_name in class_dict:
+        elif new_name in UMLClass.class_dict:
             # If 'new_name' is not a unique class name, prints an error.
             msg = f"Class name '{new_name}' alread exists."
             print("<Class Rename Error [Invalid Name:3]>: " +
@@ -121,11 +119,11 @@ def rename_class(old_name : str,
         else:
             # Temporarily stores the UMLClass object stored in the class dict
             # under 'old_name'.
-            uml : UMLClass = class_dict[old_name]
-            ret = uml
+            uml : UMLClass.UMLClass = UMLClass.class_dict[old_name]
             
-            rel : UMLRelationship
-            for rel in relationship_list:
+            
+            rel : UMLRelationship.UMLRelationship
+            for rel in UMLRelationship.relationship_list:
                 if rel.source == old_name:
                     rel.source = new_name
                 if rel.destination == old_name:
@@ -135,9 +133,9 @@ def rename_class(old_name : str,
             uml.rename(new_name)
             
             # Removes the listing for 'old_name' from the class dict.
-            class_dict.pop(old_name)
+            UMLClass.class_dict.pop(old_name)
             # Creates a new listing for 'uml' in the class dict with the
             # key of 'new_name'.
-            class_dict.update({new_name : uml})
+            UMLClass.class_dict.update({new_name : uml})
 
     return ret, msg

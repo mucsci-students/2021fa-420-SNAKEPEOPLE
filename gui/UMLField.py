@@ -1,10 +1,13 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLField.py
+
 import tkinter as tk
 from gui import UMLBox, UMLLine, UMLMethod
 from gui import ViewChange
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-from uml_components.UMLClass import UMLClass, class_dict
+from uml_components import UMLClass
 
 #Every time the class_dict changes its methods or parameters,
 #change the view to reflect that change
@@ -21,7 +24,7 @@ def update_fields(classname : str):
 #create a new block of text conaining the formated parameters#
 def new_fieldText(classname : str):
     newtext = ""
-    uml : UMLClass = class_dict[classname]
+    uml : UMLClass = UMLClass.class_dict[classname]
     #format every field in the form "{type} {name}"
     #and display each field on a new line
     for field in uml.fields:
@@ -33,10 +36,10 @@ def update_vertical(pos : int):
     classname = UMLBox.class_list[pos].name
     spacer = 0
     #Find an appropriate vertical spacing to contain the field
-    uml : UMLClass = class_dict[classname]
+    uml : UMLClass = UMLClass.class_dict[classname]
     for fields in uml.fields:
         UMLBox.class_list[pos].yinc += 15
-    uml : UMLClass = class_dict[classname]
+    uml : UMLClass = UMLClass.class_dict[classname]
     method : ai.UMLMethod
     param : ai.UMLParameter
     #Find an appropriate vertical spacing to contain the methods and parameters
@@ -68,9 +71,10 @@ def update_vertical(pos : int):
     #Move the box
     ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 25 + spacer)
     #fix any missing lines
-    UMLLine.line_adapter()
+    UMLLine.line_mediator()
     ViewChange.bring_all_front(UMLBox.class_list[pos])
 
+#WIP function for respacing boxes
 def fix_pos(pos : int):
     classname = UMLBox.class_list[pos].name
     coords = UMLBox.get_coords(classname)

@@ -1,23 +1,23 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     patterns.txt
+
 Design Pattern: Iterators
     Location: File: UMLField line: 27
     Description: I used Python's built in for loop, which makes use of
                  iterators, to traverse a list of fields within the
                  class_dict
-Design Pattern: Iterators
-    Location: File: UMLMethod line: 30/32
-    Description: I used Python's built in for loop, which makes use of
-                 iterators, to traverse a list of methods and parameters
-                 within the class_dict
-Design Pattern: Iterators
-    Location: File: EventHandler line: 54
-    Description: I used Python's built in for loop, which makes use of
-                 iterators, to traverse through all the UMLSquare obects
-                 to find which object contains the clicked on item
 Design Pattern: Memento
     Location: File: UMLSavepoint line: 20-68
     Description: I created a wrapper object that saves the current state
-                 of the model and coords for the canvas, so that later
+                 of the model for the canvas, so that later
                  I can repopulate the canvas with the previous state.
+Design Pattern: Facade
+    Location: File: ViewChange line: 28-34
+    Description: I created a function called bring_all_front which can be
+                 called with a UMLSquare object so that everything within
+                 the square is brought to the front of the canvas. This hides
+                 all the calls necessary to bring each individual canvas element
+                 within the square to the front.
 Design Pattern: Facade
     Location: File: ViewChange line: 28-34
     Description: I created a function called bring_all_front which can be
@@ -32,25 +32,46 @@ Design Pattern: Observer
                  'subscribing' lines (lines that are connected to the box)
                  and they are told to update their position
 Design Pattern: State
-    Location: File: UMLBox line: 42/45
-    Description: Each canvas element can be designated as having three states,
-                 Normal, Disabled, or Hidden. These states make the object appear
-                 to be different, but its the same type of object. I use this
-                 specifically when dealing with method and field textboxes. Initially
-                 I want them hidden, but when the text box is populated I want them
-                 visible.
-Design Pattern: Command
-    Location: File: UMLMethod line: 10-18
-    Description: The update_methods function works similar to command in that
-                 whenever the gui tells the model to change any methods or
-                 parameters, it signals one command (update_methods) to ensure
-                 that the gui will be presenting all methods and parameters.
-                 This also does all the calculations for updating the size of
-                 the box
-Design Pattern: Command
+    Location: File: UMLField line: 15
+    Description: I change the state of the fields textbox to disabled so that
+                 now it gets displayed instead of being hidden
+Design Pattern: State
+    Location: File: UMLMethod line: 14
+    Description: I change the state of the methods textbox to disabled so that
+                 now it gets displayed instead of being hidden
+Design Pattern: Mediator
     Location: File: UMLField line: 10-18
-    Description: The update_fields function works similar to command in that
+    Description: The update_fields function works as a mediator in that
                  whenever the gui tells the model to change fields, it 
                  signals one command (update_fields) to ensure that the gui
                  will be presenting all fields. This also does all the 
                  calculations for updating the size of the box
+Design Pattern: Mediator
+    Location: File: UMLMethod line: 10-18
+    Description: The update_methods function works as a mediator in that
+                 whenever the gui tells the model to change methods or prameters,
+                 it signals one command (update_methods) to ensure that the gui
+                 will be presenting all parameters and methods. This also does all the 
+                 calculations for updating the size of the box
+Design Pattern: Mediator
+    Location: File: UMLBox line: 211
+    Description: The class_adapter works as an inbetween piece that reads the
+                 information within the class_dict and converts it to objects
+                 usable to create a canvas element.
+Design Pattern: Mediator
+    Location: File: UMLLine line: 81
+    Description: The line_adapter works to convert the relationship list to
+                 usuable chunks of information that can display a line on the
+                 canvas and relate it to the boxes
+Design Pattern: MVC
+    Location: Model: UMLClass, UMLRelationships
+              View: UMLBox
+              Controller: gui_main, Side_Panel, snake_uml
+    Description: The model contains all the information for either classes
+                 or relationships. This takes the form of class_dict and 
+                 relationship_list. The view creates all necessary components
+                 to display objects on the canvas. The view componants are
+                 contained within the class_list. And the Controller works
+                 either to listen for button clicks in the gui, or command
+                 line input, depending on the startup mode. This is found throughout
+                 all the controller files

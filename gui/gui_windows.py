@@ -3,11 +3,9 @@
 
 # External Imports
 import tkinter as tk
-from tkinter import *
-from tkinter.tix import *
 
 # Internal Imports
-from gui import gui_functions as gf
+from . import gui_functions as gf
 
 ###################################################################################################
 '''
@@ -350,13 +348,23 @@ def delete_method_window() -> None:
         column = 0, 
         sticky = "w")
 
-    # Label: Output Message
+    # Label: "Method Type"
     lbl3 = tk.Label(
         master = frame,  
-        text = "", 
+        text = "Method Type:", 
         font = ('bold'))
     lbl3.grid(
         row = 2, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: Output Message
+    lbl4 = tk.Label(
+        master = frame,  
+        text = "", 
+        font = ('bold'))
+    lbl4.grid(
+        row = 3, 
         column = 0, 
         sticky = "w")
 
@@ -378,15 +386,24 @@ def delete_method_window() -> None:
         column = 1, 
         sticky = "w")
 
+    # Entry where the user can enter their method type.
+    etr3 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr3.grid(
+        row = 2, 
+        column = 1, 
+        sticky = "w")
+
     # Confirm Button, command is the helper checking the user input
     #     and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_delete_method(etr1.get(), etr2.get(), lbl3),
+        command = lambda: gf.b_delete_method(etr1.get(), etr2.get(), etr3.get(), lbl4),
         master = frame, 
         text = "Confirm", 
         font = ('bold'))
     btn.grid(
-        row = 2, 
+        row = 3, 
         column = 1, 
         sticky = "e", 
         padx = 5, 
@@ -394,7 +411,7 @@ def delete_method_window() -> None:
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_delete_method(etr1.get(), etr2.get(), lbl3))
+        lambda event: gf.b_delete_method(etr1.get(), etr2.get(), etr3.get(), lbl4))
     root.mainloop()
 
 
@@ -440,13 +457,23 @@ def rename_method_window() -> None:
         column = 0, 
         sticky = "w")
 
-    # Label: Output Message
+    # Label: "Method Type"
     lbl4 = tk.Label(
         master = frame,  
-        text = "", 
+        text = "Method Type:", 
         font = ('bold'))
     lbl4.grid(
         row = 3, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: Output Message
+    lbl5 = tk.Label(
+        master = frame,  
+        text = "", 
+        font = ('bold'))
+    lbl5.grid(
+        row = 4, 
         column = 0, 
         sticky = "w")
 
@@ -477,15 +504,24 @@ def rename_method_window() -> None:
         column = 1, 
         sticky = "w")
 
+    # Entry where the user can enter their method type.
+    etr4 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr4.grid(
+        row = 3, 
+        column = 1, 
+        sticky = "w")
+
     # Confirm Button, command is the helper checking the user input
     #     and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_rename_method(etr1.get(), etr2.get(), etr3.get(), lbl4),
+        command = lambda: gf.b_rename_method(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5),
         master = frame, 
         text = "Confirm", 
         font = ('bold'))
     btn.grid(
-        row = 3, 
+        row = 4, 
         column = 1, 
         sticky = "e", 
         padx = 5, 
@@ -493,7 +529,7 @@ def rename_method_window() -> None:
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_rename_method(etr1.get(), etr2.get(), etr3.get(), lbl4))
+        lambda event: gf.b_rename_method(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5))
     root.mainloop()
 
 
@@ -831,7 +867,7 @@ def add_relation_window() -> None:
     type = tk.IntVar()
     types = ["aggregation", "composition", "inheritance", "realization"]
     for index in range(len(types)):
-        rdo = Radiobutton(
+        rdo = tk.Radiobutton(
             master = frame, 
             text = types[index], 
             value = index, 
@@ -992,33 +1028,43 @@ def add_param_window() -> None:
         column = 0, 
         sticky = "w")
 
-    # Label: "Param Name"
+    # Label: "Method Type"
     lbl3 = tk.Label(
         master = frame,  
-        text = "Param Name:", 
+        text = "Method Type:", 
         font = ('bold'))
     lbl3.grid(
         row = 2, 
         column = 0, 
         sticky = "w")
 
-    # Label: "Param Type"
+    # Label: "Param Name"
     lbl4 = tk.Label(
         master = frame,  
-        text = "Param Type:", 
+        text = "Param Name:", 
         font = ('bold'))
     lbl4.grid(
         row = 3, 
         column = 0, 
         sticky = "w")
 
-    # Label: Output Message
+    # Label: "Param Type"
     lbl5 = tk.Label(
         master = frame,  
-        text = "", 
+        text = "Param Type:", 
         font = ('bold'))
     lbl5.grid(
         row = 4, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: Output Message
+    lbl6 = tk.Label(
+        master = frame,  
+        text = "", 
+        font = ('bold'))
+    lbl6.grid(
+        row = 5, 
         column = 0, 
         sticky = "w")
 
@@ -1040,7 +1086,7 @@ def add_param_window() -> None:
         column = 1, 
         sticky = "w")
 
-    # Entry where the user can enter their param name.
+    # Entry where the user can enter their method type.
     etr3 = tk.Entry(
         master = frame, 
         width = 50)
@@ -1048,8 +1094,8 @@ def add_param_window() -> None:
         row = 2, 
         column = 1, 
         sticky = "w")
-    
-    # Entry where the user can enter their param type.
+
+    # Entry where the user can enter their param name.
     etr4 = tk.Entry(
         master = frame, 
         width = 50)
@@ -1057,16 +1103,25 @@ def add_param_window() -> None:
         row = 3, 
         column = 1, 
         sticky = "w")
+    
+    # Entry where the user can enter their param type.
+    etr5 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr5.grid(
+        row = 4, 
+        column = 1, 
+        sticky = "w")
 
     # Confirm Button, command is the helper checking the user input
     #     and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5),
+        command = lambda: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6),
         master = frame, 
         text = "Confirm", 
         font = ('bold'))
     btn.grid(
-        row = 4, 
+        row = 5, 
         column = 1, 
         sticky = "e", 
         padx = 5, 
@@ -1074,7 +1129,7 @@ def add_param_window() -> None:
     
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5))
+        lambda event: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6))
     root.mainloop()
 
 
@@ -1110,23 +1165,33 @@ def delete_param_window() -> None:
         column = 0, 
         sticky = "w")
 
-    # Label: "Param Name"
+    # Label: "Method Type"
     lbl3 = tk.Label(
         master = frame,  
-        text = "Param Name:", 
+        text = "Method Type:", 
         font = ('bold'))
     lbl3.grid(
         row = 2, 
         column = 0, 
         sticky = "w")
 
-    # Label: Output Message
+    # Label: "Param Name"
     lbl4 = tk.Label(
         master = frame,  
-        text = "", 
+        text = "Param Name:", 
         font = ('bold'))
     lbl4.grid(
         row = 3, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: Output Message
+    lbl5 = tk.Label(
+        master = frame,  
+        text = "", 
+        font = ('bold'))
+    lbl5.grid(
+        row = 4, 
         column = 0, 
         sticky = "w")
 
@@ -1148,7 +1213,7 @@ def delete_param_window() -> None:
         column = 1, 
         sticky = "w")
 
-    # Entry where the user can enter their param name.
+    # Entry where the user can enter their method type.
     etr3 = tk.Entry(
         master = frame, 
         width = 50)
@@ -1157,15 +1222,24 @@ def delete_param_window() -> None:
         column = 1, 
         sticky = "w")
 
+    # Entry where the user can enter their param name.
+    etr4 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr4.grid(
+        row = 3, 
+        column = 1, 
+        sticky = "w")
+
     # Confirm Button, command is the helper checking the user input
     #     and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_delete_param(etr1.get(), etr2.get(), etr3.get(), lbl4),
+        command = lambda: gf.b_delete_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5),
         master = frame, 
         text = "Confirm", 
         font = ('bold'))
     btn.grid(
-        row = 3, 
+        row = 4, 
         column = 1, 
         sticky = "e", 
         padx = 5, 
@@ -1173,7 +1247,7 @@ def delete_param_window() -> None:
     
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_delete_param(etr1.get(), etr2.get(), etr3.get(), lbl4))
+        lambda event: gf.b_delete_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5))
     root.mainloop()
 
 
@@ -1209,33 +1283,43 @@ def rename_param_window() -> None:
         column = 0, 
         sticky = "w")
 
-    # Label: "Old Param Name"
+    # Label: "Method Type"
     lbl3 = tk.Label(
         master = frame,  
-        text = "Old Param Name:", 
+        text = "Method Type:", 
         font = ('bold'))
     lbl3.grid(
         row = 2, 
         column = 0, 
         sticky = "w")
 
-    # Label: "New Param Name"
+    # Label: "Old Param Name"
     lbl4 = tk.Label(
         master = frame,  
-        text = "New Param Name:", 
+        text = "Old Param Name:", 
         font = ('bold'))
     lbl4.grid(
         row = 3, 
         column = 0, 
         sticky = "w")
 
-    # Label: Output Message
+    # Label: "New Param Name"
     lbl5 = tk.Label(
         master = frame,  
-        text = "", 
+        text = "New Param Name:", 
         font = ('bold'))
     lbl5.grid(
         row = 4, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: Output Message
+    lbl6 = tk.Label(
+        master = frame,  
+        text = "", 
+        font = ('bold'))
+    lbl6.grid(
+        row = 5, 
         column = 0, 
         sticky = "w")
 
@@ -1257,7 +1341,7 @@ def rename_param_window() -> None:
         column = 1, 
         sticky = "w")
 
-    # Entry where the user can enter their old param name.
+    # Entry where the user can enter their method type.
     etr3 = tk.Entry(
         master = frame, 
         width = 50)
@@ -1266,7 +1350,7 @@ def rename_param_window() -> None:
         column = 1, 
         sticky = "w")
 
-    # Entry where the user can enter their new param name.
+    # Entry where the user can enter their old param name.
     etr4 = tk.Entry(
         master = frame, 
         width = 50)
@@ -1275,15 +1359,24 @@ def rename_param_window() -> None:
         column = 1, 
         sticky = "w")
 
+    # Entry where the user can enter their new param name.
+    etr5 = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr5.grid(
+        row = 4, 
+        column = 1, 
+        sticky = "w")
+
     # Confirm Button, command is the helper checking the user input
     #     and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_rename_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl4),
+        command = lambda: gf.b_rename_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6),
         master = frame, 
         text = "Confirm", 
         font = ('bold'))
     btn.grid(
-        row = 4, 
+        row = 5, 
         column = 1, 
         sticky = "e", 
         padx = 5, 
@@ -1291,7 +1384,7 @@ def rename_param_window() -> None:
     
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_rename_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl4))
+        lambda event: gf.b_rename_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6))
     root.mainloop()
 
 

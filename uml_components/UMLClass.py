@@ -22,12 +22,17 @@ class UMLClass():
                  name : str,
                  fields : list = None,
                  methods : list = None,
+                 position_x : int = None,
+                 position_y : int = None,
                  **kwargs):
         
         self.name = name
             
         self.fields = fields if fields else list()
         self.methods = methods if methods else list()
+        
+        self.position_x = position_x if position_x else -1
+        self.position_y = position_y if position_y else -1
         
         print(f"<Added Class>: {name}")
         
