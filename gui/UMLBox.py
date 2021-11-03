@@ -235,3 +235,4 @@ def class_mediator():
                 create_box_with_coords(name, x1, y1, x2, y2)
             update_methods(name)
             UMLField.update_fields(name)
+    

@@ -58,7 +58,6 @@ class UMLSavepoint():
             new_class = UMLClass.UMLClass(name, dup_fields, dup_methods, x, y)
             #Add the current state of the class to the duplicate dictionary
             dup_dict.update({name : new_class})
-
             dup_methods = []
             dup_fields = []
 

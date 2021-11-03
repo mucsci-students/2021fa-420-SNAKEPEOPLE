@@ -144,11 +144,9 @@ def delete_relationship(source : str, dest : str) -> tuple:
     if found:
         # If matching relationship found, deletes the relationship from the
         # list.
-        rel =  UMLRelationship.relationship_list.pop(index)
-        err = f"<Deleted Relationship>: {source} - {dest} ({rel.type})"
-        print(f"<Deleted Relationship>: {source} - {dest} ({rel.type})")
-
-        ret = rel
+        ret =  UMLRelationship.relationship_list.pop(index)
+        err = f"<Deleted Relationship>: {source} - {dest} ({ret.type})"
+        print(f"<Deleted Relationship>: {source} - {dest} ({ret.type})")
     else:
         # Otherwise, prints an error.
         err = f"Relationship {source} - {dest} does not exist."
