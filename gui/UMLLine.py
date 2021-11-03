@@ -1,12 +1,14 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLLine.py
+
 import tkinter as tk
-from gui import ViewChange
-from gui import UMLBox
-from uml_components.UMLRelationship import UMLRelationship
+from gui import EventHandler, ViewChange, UMLBox
+
 from uml_components.interfaces import (attr_interface as ai,
                                        class_interface as ci,
                                        rel_interface as ri)
-from uml_components.UMLClass import UMLClass, class_dict
-from uml_components.UMLRelationship import UMLRelationship, relationship_list
+from uml_components import UMLClass
+from uml_components import UMLRelationship
 
 class UMLLine():
 
@@ -78,13 +80,14 @@ def deleteline(source, dest):
     #delete the line element itself#
     ViewChange.del_item(line)
 
-def fix_lines():
+def line_mediator():
     #Delete all existing relationships on the canvas
     for i in UMLBox.class_list:
-        for k in UMLBox.class_list:
-            if ri.find_rel(i.name, k.name)[0] == True and len(i.rels) != 0:
-                delete_line(i.name, k.name)
-    #Add all existing relationships to the canvas
-    for i in relationship_list:
-        if(UMLBox.find_pos_from_name(i.destination) != None):
+        while len(i.rels) > 0:
+            ViewChange.del_item(i.rels[0][1])
+            i.rels.pop(0)
+        i.rels = []
+    #Add any relationships back to the list, if both boxes exist in the canvas
+    for i in UMLRelationship.relationship_list:
+        if UMLBox.find_pos_from_name(i.source) != None and UMLBox.find_pos_from_name(i.destination) != None:
             add_line(i.source, i.destination, i.type)
