@@ -47,7 +47,7 @@ def find_rel(source : str, dest : str) -> tuple:
     index : int = 0
     
     if check_class(source) and check_class(dest): 
-        relationship : UMLRelationship
+        relationship : UMLRelationship.UMLRelationship
         for relationship in  UMLRelationship.relationship_list:
             # If source and destination are both valid, iterates through the
             # relationship list until it finds a matching relationship.
@@ -62,7 +62,7 @@ def find_rel(source : str, dest : str) -> tuple:
                 
     return (False, index)
 
-def add_relationship(source : str, destination : str, rel_type : str) -> str:
+def add_relationship(source : str, destination : str, rel_type : str) -> tuple:
 
     """
     Adds a new relationship to the relationship list.
@@ -75,6 +75,7 @@ def add_relationship(source : str, destination : str, rel_type : str) -> str:
     """
     
     err = f"<Added Relationship>: {source} - {destination} ({rel_type})"
+    ret = None
 
     # Checks if the given relationship type is valid.
     if not check_type(rel_type):
@@ -111,9 +112,9 @@ def add_relationship(source : str, destination : str, rel_type : str) -> str:
             rel = UMLRelationship.UMLRelationship(source, destination, rel_type)
             UMLRelationship.relationship_list.append(rel)
 
-    return err
+    return ret, err
 
-def delete_relationship(source : str, dest : str) -> str:
+def delete_relationship(source : str, dest : str) -> tuple:
 
     """
     Deletes an existing relationship of source - dest from the relationship 
@@ -125,6 +126,7 @@ def delete_relationship(source : str, dest : str) -> str:
     """
     
     err = f"<Deleted Relationship>: {source} - {dest})"
+    ret = None
 
     # Checks if the given source and destination are valid classes.
     if not check_class(source):
@@ -145,13 +147,15 @@ def delete_relationship(source : str, dest : str) -> str:
         rel =  UMLRelationship.relationship_list.pop(index)
         err = f"<Deleted Relationship>: {source} - {dest} ({rel.type})"
         print(f"<Deleted Relationship>: {source} - {dest} ({rel.type})")
+
+        ret = rel
     else:
         # Otherwise, prints an error.
         err = f"Relationship {source} - {dest} does not exist."
         print("<Relationship Delete Error>: " +
                 f"Relationship {source} - {dest} does not exist.")
 
-    return err
+    return ret, err
 
 
 def rel_cleanup(cls : str) -> None:
@@ -166,7 +170,7 @@ def rel_cleanup(cls : str) -> None:
     if cls in  UMLClass.class_dict:
         # If cls is the name of the class, iterates through the relationship
         # list and deletes all relationships where cls is source or destination.
-        relationship : UMLRelationship
+        relationship : UMLRelationship.UMLRelationship
         for relationship in  UMLRelationship.relationship_list:
             # Deletes if cls is source.
             if cls == relationship.source:
@@ -215,5 +219,5 @@ def change_type(source : str, dest : str, new_type : str):
               f"{new_type} is not a valid relationship type.")
     else:
         #Update the relationship type
-        relationship : UMLRelationship =  UMLRelationship.relationship_list[index]
+        relationship : UMLRelationship.UMLRelationship =  UMLRelationship.relationship_list[index]
         relationship.change_type(new_type)
