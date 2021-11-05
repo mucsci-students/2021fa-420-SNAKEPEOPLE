@@ -4,8 +4,9 @@ from ntpath import realpath
 import sys
 import os.path
 import cmd
+import readline
 from typing import _Alias
-from relationships import list_relationships
+#from relationships import list_relationships
 
 
 # Internal Imports
@@ -57,23 +58,8 @@ class SnakeREPL(cmd.Cmd):
         doc_header = docHead
         
         ruler = '-'
-
-        aliases = ['addclass', 
-                    'delclass', 
-                    'renclass', 
-                    'addrel', 
-                    'delrel',
-                    'addattr',
-                    'delattr',
-                    'renattr',
-                    'listclass',
-                    'listrel',
-                    'save',
-                    'load',
-                    'help'
-                    ]
     
-    
+        
 
         
     def print_cmd_help(self, command):
@@ -83,8 +69,6 @@ class SnakeREPL(cmd.Cmd):
     # Do functions
     # No command is created from these, they are standalone functions 
     #   that don't affect anything
-    def do_add_class():
-        pass
 
     def do_help(self, args):
         help()
@@ -102,9 +86,6 @@ class SnakeREPL(cmd.Cmd):
         pass
 
     def do_load(self, args):
-        pass
-    
-    def do_undo(self, args):
         pass
 
     def do_undo(self, args):
@@ -195,10 +176,10 @@ class SnakeREPL(cmd.Cmd):
     #   that match. Otherwise the full list of commands is returned.
     def complete_add_class(self, text, line, begidx, endidx):
         if not text:
-            completions = self.aliases[:]
+            completions = aliases[:]
         else:
             completions = [ f
-                            for f in self.aliases
+                            for f in aliases
                             if f.startswith(text)
                             ]
         return completions
@@ -214,10 +195,10 @@ class SnakeREPL(cmd.Cmd):
             return aliases
         '''
         if not text:
-            completions = self.aliases[:]
+            completions = aliases[:]
         else:
             completions = [ f 
-                            for f in self.aliases
+                            for f in aliases
                             if f.startswith(text)
                             ]
         return completions
@@ -326,7 +307,7 @@ class SnakeREPL(cmd.Cmd):
     def postcmd(self, stop, line):
         pass
 
-    def help() -> None:
+    def help(self) -> None:
         with open("help.txt") as help:
             content = help.read()
             print(content)
