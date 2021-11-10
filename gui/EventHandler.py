@@ -10,6 +10,7 @@ from uml_components import UMLClass
 from . import UMLField
 from . import UMLMethod
 from . import UMLSavepoint
+from . import gui_main
 
 global moved
 moved = False
@@ -24,8 +25,11 @@ def can_drag(rec):
 
 #find the closest element to the click
 def on_click(event):
+    canvas = event.widget
+    x = canvas.canvasx(event.x)
+    y = canvas.canvasy(event.y)
     global crec
-    crec = UMLBox.test_canvas.find_closest(event.x, event.y)
+    crec = UMLBox.test_canvas.find_closest(x, y)
     #Save the current position of all boxes
     global saved
     saved = False
@@ -68,10 +72,15 @@ def can_dragMotion(event):
     ViewChange.bring_front(UMLBox.class_list[pos].methodtext)
 
     #get coordinates and modify them to maintain the shape of the box as you move it around#
-    new_x1 = event.x - 20 - UMLBox.class_list[pos].textspace
-    new_y1 = event.y - 15 
-    new_x2 = event.x + 60 + UMLBox.class_list[pos].textspace
-    new_y2 = event.y + UMLBox.class_list[pos].yinc
+    canvas = event.widget
+    x = canvas.canvasx(event.x)
+    y = canvas.canvasy(event.y)
+    maxx = canvas.canvasx(canvas.winfo_width())
+    maxy = canvas.canvasy(canvas.winfo_height())
+    new_x1 = x - 20 - UMLBox.class_list[pos].textspace
+    new_y1 = y - 15 
+    new_x2 = x + 60 + UMLBox.class_list[pos].textspace
+    new_y2 = y + UMLBox.class_list[pos].yinc
 
     #Bind the new coordinates so that the square cannot go outside#
     #of the canvas#
@@ -80,12 +89,13 @@ def can_dragMotion(event):
         spacer = 20
     else:
         spacer = 10
-    if(new_x2 > UMLBox.test_canvas.winfo_width()):
-        new_x1 = UMLBox.test_canvas.winfo_width() - 80 - 2 * UMLBox.class_list[pos].textspace
-        new_x2 = UMLBox.test_canvas.winfo_width()
-    if(new_y2 > UMLBox.test_canvas.winfo_height()):
-        new_y1 = UMLBox.test_canvas.winfo_height() - UMLBox.class_list[pos].yinc - 15 - spacer
-        new_y2 = UMLBox.test_canvas.winfo_height()
+
+    if(new_x2 > maxx):
+        new_x1 = maxx - 80 - 2 * UMLBox.class_list[pos].textspace
+        new_x2 = maxx
+    if(new_y2 > maxy - 15):
+        new_y1 = maxy - UMLBox.class_list[pos].yinc - 30
+        new_y2 = maxy - 15
     if(new_x1 < 0):
         new_x1 = 0
         new_x2 = 80 + 2 * UMLBox.class_list[pos].textspace 
