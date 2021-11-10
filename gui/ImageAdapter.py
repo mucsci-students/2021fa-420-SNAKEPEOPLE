@@ -30,7 +30,7 @@ def save_as_png(file_name):
     UMLBox.test_canvas.update()
     bounds = UMLBox.test_canvas.bbox('all')
     #Create a new image to draw on
-    image1 = Image.new("RGB", (bounds[2] + 30, bounds[3]), 
+    image1 = Image.new("RGB", (bounds[2] + 30, bounds[3] + 30), 
                         color="#D0D0D0")
     draw = ImageDraw.Draw(image1)
     #Set the font of the pillow image

@@ -11,20 +11,6 @@ Design Pattern: Memento
     Description: I created a wrapper object that saves the current state
                  of the model for the canvas, so that later
                  I can repopulate the canvas with the previous state.
-Design Pattern: Facade
-    Location: File: ViewChange line: 28-34
-    Description: I created a function called bring_all_front which can be
-                 called with a UMLSquare object so that everything within
-                 the square is brought to the front of the canvas. This hides
-                 all the calls necessary to bring each individual canvas element
-                 within the square to the front.
-Design Pattern: Facade
-    Location: File: ViewChange line: 28-34
-    Description: I created a function called bring_all_front which can be
-                 called with a UMLSquare object so that everything within
-                 the square is brought to the front of the canvas. This hides
-                 all the calls necessary to bring each individual canvas element
-                 within the square to the front.
 Design Pattern: Observer
     Location: File: UMLBox line: 51
     Description: I create a list of all lines that would need to be updated.
@@ -80,3 +66,18 @@ Design Pattern: Bridge
     Description: Each class is composed of lists of UMLFields and UMLMethods.
                  The UMLClass object refers to previously created UMLField
                  objects and UMLMethod objects.
+Design Pattern: Bridge
+    Location: UMLMethod objects located in UMLAttributes
+    Description: Each method is composed of UMLParameter objects. Each method
+                 Object can have variable numbers of parameters with different
+                 types and names.
+Design Pattern: Decorator
+    Location: UMLBox
+    Description: Each box on the canvas is composed of multiple parts. I wrap these
+                 parts into one object so that the entire UMLClass respresentation
+                 can be accessed as one entity.
+Design Pattern: Singleton
+    Location: UMLBox
+    Desciption: A single canvas object is created within UMLBox, so that the canvas
+                has a single instance and a global access point for all other
+                functions.

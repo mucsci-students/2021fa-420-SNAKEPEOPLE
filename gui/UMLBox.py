@@ -16,17 +16,23 @@ from uml_components import UMLClass
 
 class_list = []
 global maxx
-maxx = 2000
+maxx = 1000
 global maxy
-maxy = 2000
+maxy = 1000
 
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
     global test_canvas
     test_canvas = tk.Canvas(frame,
                         bg="#D0D0D0",
-                        scrollregion=(0,0,2000,2000),
+                        scrollregion=(0,0,4000,4000),
                         bd=3)
     return test_canvas
+
+def update_global(xinc, yinc):
+    global maxx
+    maxx = maxx + xinc
+    global maxy
+    maxy = maxy + yinc
 
 def find_pos_from_name(name : str):
     pos = 0
@@ -98,6 +104,9 @@ def create_box(name : str):
             else:
                 x1 += 1
                 x2 += 1
+            if x2 > maxx - current_textspace - 40 and y2 > maxy:
+                update_global(1000, 1000)
+                test_canvas.config(scrollregion=(0,0,maxx,maxy))
         else:
             placed = True
 
