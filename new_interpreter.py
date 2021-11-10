@@ -63,7 +63,8 @@ class SnakeREPL(cmd.Cmd):
 
         
     def print_cmd_help(self, command):
-        print(self.cmd_desc[command])
+        pass
+        # print(self.cmd_desc[command])
 
 #################################################################################
     # Do functions
@@ -77,7 +78,8 @@ class SnakeREPL(cmd.Cmd):
         sys.exit()
 
     def do_clear(self, args):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        pass
+        # os.system('cls' if os.name == 'nt' else 'clear')
 
     def do_list_relationships(self, args):
         pass
