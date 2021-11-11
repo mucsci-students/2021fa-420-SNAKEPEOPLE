@@ -94,6 +94,7 @@ def build_menu(window : tk.Tk) -> tk.Menu:
     menu_file.add_command(label = "New", command = clear_dict)
     menu_file.add_command(label = "Save", command = gui_windows.save_window)
     menu_file.add_command(label = "Load", command = gui_windows.load_window)
+    menu_file.add_command(label = "Export", command = gui_windows.export_window)
     menu_file.add_separator()
     menu_file.add_command(label = "Exit", command = exit)
     menubar.add_cascade(label = "File", menu = menu_file)

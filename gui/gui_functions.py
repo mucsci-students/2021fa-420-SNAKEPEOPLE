@@ -15,6 +15,7 @@ from . import UMLField
 from . import UMLLine
 from . import UMLMethod
 from . import UMLSavepoint
+from . import ImageAdapter
 
 import snake_uml
 
@@ -258,6 +259,12 @@ def b_load_file(
         UMLSavepoint.undo_stack = queue.LifoQueue()
     if UMLSavepoint.redo_stack.empty() == False:
         UMLSavepoint.clear_stack()
+
+def b_export(
+        file_name : str,
+        label : tk.Label) -> None:
+    output = ImageAdapter.save_as_png(file_name)
+    label.configure(text = output)
 
 def b_undo() -> None:
     if UMLSavepoint.undo_stack.empty() == False:

@@ -34,5 +34,5 @@ def block_text(classname : str):
         newtext = newtext + method.name + " " + method.return_type + " (\n"
         for param in method.params:
             newtext = newtext + "    -" + param.type + " " + param.name + "\n"
-        newtext = newtext + ")\n\n"
+        newtext = newtext + ")\n"
     return newtext

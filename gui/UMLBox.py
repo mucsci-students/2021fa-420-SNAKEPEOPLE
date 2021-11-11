@@ -19,8 +19,8 @@ class_list = []
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
     global test_canvas
     test_canvas = tk.Canvas(frame, 
-                        width=600, 
-                        height=600,
+                        width=627, 
+                        height=800,
                         bg="#D0D0D0",
                         bd=3)
     return test_canvas
