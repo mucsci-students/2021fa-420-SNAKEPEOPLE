@@ -185,7 +185,8 @@ def cli_loop() -> None:
 
         elif cmd[0] == 'export':
             if check_inputs(cmd, 2):
-                ImageAdapter.ImageAdapter.__init__(cmd[1])
+                adapter = ImageAdapter.ImageAdapter()
+                adapter.export(cmd[1])
         
         elif cmd[0] == 'help':
             help()
