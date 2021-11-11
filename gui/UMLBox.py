@@ -26,6 +26,10 @@ def init_canvas(frame : tk.Frame) -> tk.Canvas:
                         bg="#D0D0D0",
                         scrollregion=(0,0,4000,4000),
                         bd=3)
+    test_canvas.bind("<Left>",  lambda event: test_canvas.xview_scroll(-1, "units"))
+    test_canvas.bind("<Right>", lambda event: test_canvas.xview_scroll( 1, "units"))
+    test_canvas.bind("<Up>",    lambda event: test_canvas.yview_scroll(-1, "units"))
+    test_canvas.bind("<Down>",  lambda event: test_canvas.yview_scroll( 1, "units"))
     return test_canvas
 
 def update_global(xinc, yinc):

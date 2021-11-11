@@ -51,8 +51,8 @@ def save_as_png(file_name):
                 draw.line(xy=((coords[0], coords[1]), (dx1, dy1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=4)
                 #Get start and end points of the line
                 lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(k[1])
-                v1 = 0.98*(lx2-lx1)+lx1
-                v2 = 0.98*(ly2-ly1)+ly1
+                v1 = 0.99*(lx2-lx1)+lx1
+                v2 = 0.99*(ly2-ly1)+ly1
                 # Check if line is vertical
                 if lx1 == lx2:
                     vtx1 = (v1-5, v2)

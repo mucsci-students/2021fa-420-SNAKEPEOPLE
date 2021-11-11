@@ -137,7 +137,7 @@ def can_dragMotion(event):
         new_x1 = x - event.x + 5
         new_x2 = x - event.x + 2*UMLBox.class_list[pos].textspace + 80 + 5
         #Check to see if the pull is far enough, scroll if it is
-        if event.x < -5:
+        if event.x < 0:
             UMLBox.test_canvas.xview_scroll(-1, 'units')
             new_x1 -= 78
             new_x2 -= 78
