@@ -13,18 +13,21 @@ from . import UMLLine
 class ImageAdapter():
 
 
-    def __init__(file_name):
-        window = tk.Tk()
-        window.geometry('800x627')
-        main_frame = tk.Frame(window, width=627, height=800)
-        main_panel = UMLBox.init_canvas(main_frame)
-        main_frame.pack(fill="both")
-        main_panel.pack(fill="both")
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.geometry("800x627")
+        self.main_frame = tk.Frame(self.window, width=627, height=800)
+        self.main_panel = UMLBox.init_canvas(self.main_frame)
+
+    
+    def export(self, file_name):
+        self.main_frame.pack(fill="both")
+        self.main_panel.pack(fill="both")
         UMLBox.class_mediator()
         UMLLine.line_mediator()
         save_as_png(file_name)
         UMLBox.test_canvas.update()
-        window.destroy()
+        self.window.destroy()
 
 def save_as_png(file_name):
     UMLBox.test_canvas.update()
