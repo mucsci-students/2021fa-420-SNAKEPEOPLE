@@ -16,9 +16,9 @@ from uml_components import UMLClass
 
 class_list = []
 global maxx
-maxx = 1000
+maxx = 4000
 global maxy
-maxy = 1000
+maxy = 4000
 
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
     global test_canvas

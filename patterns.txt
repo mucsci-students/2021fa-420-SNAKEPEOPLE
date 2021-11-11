@@ -25,30 +25,6 @@ Design Pattern: State
     Location: File: UMLMethod line: 14
     Description: I change the state of the methods textbox to disabled so that
                  now it gets displayed instead of being hidden
-Design Pattern: Mediator
-    Location: File: UMLField line: 10-18
-    Description: The update_fields function works as a mediator in that
-                 whenever the gui tells the model to change fields, it 
-                 signals one command (update_fields) to ensure that the gui
-                 will be presenting all fields. This also does all the 
-                 calculations for updating the size of the box
-Design Pattern: Mediator
-    Location: File: UMLMethod line: 10-18
-    Description: The update_methods function works as a mediator in that
-                 whenever the gui tells the model to change methods or prameters,
-                 it signals one command (update_methods) to ensure that the gui
-                 will be presenting all parameters and methods. This also does all the 
-                 calculations for updating the size of the box
-Design Pattern: Mediator
-    Location: File: UMLBox line: 211
-    Description: The class_adapter works as an inbetween piece that reads the
-                 information within the class_dict and converts it to objects
-                 usable to create a canvas element.
-Design Pattern: Mediator
-    Location: File: UMLLine line: 81
-    Description: The line_adapter works to convert the relationship list to
-                 usuable chunks of information that can display a line on the
-                 canvas and relate it to the boxes
 Design Pattern: MVC
     Location: Model: UMLClass, UMLRelationships
               View: UMLBox

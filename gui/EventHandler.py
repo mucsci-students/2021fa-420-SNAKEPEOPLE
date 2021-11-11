@@ -1,6 +1,9 @@
 # Project Name:  SNAKE PEOPLE UML Editor
 # File Name:     EventHandler.py
 
+import tkinter as tk
+
+from PIL.Image import new
 from gui import UMLBox
 from gui import ViewChange
 from uml_components.interfaces import (attr_interface as ai,
@@ -71,37 +74,93 @@ def can_dragMotion(event):
     ViewChange.bring_front(UMLBox.class_list[pos].methodlabel)
     ViewChange.bring_front(UMLBox.class_list[pos].methodtext)
 
-    #get coordinates and modify them to maintain the shape of the box as you move it around#
+
     canvas = event.widget
+    #Get the absolute coordinates of the canvas
     x = canvas.canvasx(event.x)
     y = canvas.canvasy(event.y)
-    maxx = canvas.canvasx(canvas.winfo_width())
-    maxy = canvas.canvasy(canvas.winfo_height())
+    #Get the absolute max width and height of the canvas
+    cx = canvas.canvasx(canvas.winfo_width())
+    cy = canvas.canvasy(canvas.winfo_height())
+    #get coordinates and modify them to maintain the shape of the box as you move it around#
     new_x1 = x - 20 - UMLBox.class_list[pos].textspace
     new_y1 = y - 15 
     new_x2 = x + 60 + UMLBox.class_list[pos].textspace
     new_y2 = y + UMLBox.class_list[pos].yinc
 
-    #Bind the new coordinates so that the square cannot go outside#
-    #of the canvas#
+    #Store some variables to account for if fields exist
+    #These are used to add padding when necessary
     uml : UMLClass = UMLClass.class_dict[UMLBox.class_list[pos].name]
     if len(uml.fields) == 0:
         spacer = 20
+        spacer2 = 0
     else:
         spacer = 10
+        spacer2 = 15
 
-    if(new_x2 > maxx):
-        new_x1 = maxx - 80 - 2 * UMLBox.class_list[pos].textspace
-        new_x2 = maxx
-    if(new_y2 > maxy - 15):
-        new_y1 = maxy - UMLBox.class_list[pos].yinc - 30
-        new_y2 = maxy - 15
-    if(new_x1 < 0):
-        new_x1 = 0
-        new_x2 = 80 + 2 * UMLBox.class_list[pos].textspace 
-    if(new_y1 < 0):
-        new_y1 = 0
-        new_y2 = 15 + UMLBox.class_list[pos].yinc
+    #If box is pulled right enough beyond the current view of the canvas, scroll right
+    if new_x2 > cx - 1:
+        #Check to see if pull is far enough, scroll if it is
+        if new_x2 > cx + 50:
+            UMLBox.test_canvas.xview_scroll(1, 'units')
+            new_x1 = cx - 80 - 2 * UMLBox.class_list[pos].textspace + 71
+            new_x2 = cx + 71
+        #Otherwise confine the box to the right side of the view of the canvas
+        else:
+            new_x1 = cx - 80 - 2 * UMLBox.class_list[pos].textspace
+            new_x2 = cx
+        #Stop the box from going past the end of the canvas
+        if new_x2 > UMLBox.maxx:
+            new_x1 = UMLBox.maxx - 80 - 2 * UMLBox.class_list[pos].textspace - 1
+            new_x2 = UMLBox.maxx - 1
+        scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
+
+    #If box is pulled down enough beyond the current view of the canvas, scroll down
+    if new_y2 > cy - 27 + spacer2*(2/3):
+        #Check to see if pull is far enough, scroll if it is
+        if new_y2 > cy + 75:
+            UMLBox.test_canvas.yview_scroll(1, 'units')
+            new_y1 = cy - UMLBox.class_list[pos].yinc - 42 + (spacer2*(2/3)) + 60
+            new_y2 = cy - 27 + (spacer2*(2/3)) + 60
+        #Otherwise confine the box to the bottom side of the view of the canvas
+        else:
+            new_y1 = cy - UMLBox.class_list[pos].yinc - 42 + (spacer2*(2/3))
+            new_y2 = cy - 27 + (spacer2*(2/3))
+        #Stop the box from going past the end of the canvas
+        if new_y2 > UMLBox.maxy:
+            new_y1 = UMLBox.maxy - UMLBox.class_list[pos].yinc - 42 + spacer2
+            new_y2 = UMLBox.maxy - 27 + spacer2
+        scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
+
+    #If box is pulled left enough beyond the current view of the canvas, scroll left
+    if event.x < 20 + UMLBox.class_list[pos].textspace + 5:
+        new_x1 = x - event.x + 5
+        new_x2 = x - event.x + 2*UMLBox.class_list[pos].textspace + 80 + 5
+        #Check to see if the pull is far enough, scroll if it is
+        if event.x < -20:
+            UMLBox.test_canvas.xview_scroll(-1, 'units')
+            new_x1 -= 78
+            new_x2 -= 78
+        #Stop the box from going past the end of the canvas
+        if x < 0:
+            new_x1 = 0
+            new_x2 = 2*UMLBox.class_list[pos].textspace + 80
+        scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
+
+    #If box is pulled up enough beyond the current view of the canvas, scroll up    
+    if event.y < 20:
+        new_y1 = y - event.y + 5
+        new_y2 = y - event.y + UMLBox.class_list[pos].yinc + 15 + 5
+        #Check to see if the pull is far enough, scroll if it is
+        if event.y < -10:
+            UMLBox.test_canvas.yview_scroll(-1, 'units')
+            new_y1 -= 60
+            new_y2 -= 60
+        #Stop the box from going past the end of the canvas
+        if y < 15:
+            new_y1 = 0
+            new_y2 = 15 + UMLBox.class_list[pos].yinc
+        scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
 
     #find the center of the box#
     x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos].rec)
@@ -153,3 +212,27 @@ def clear_border():
 def set_moved():
     global moved
     moved = False
+
+#This function helps to maintain the shape of the UMLBox object and its contents.
+def scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label):
+    #Account for presence of UMLFields
+    #These are used later to add padding
+    uml : UMLClass = UMLClass.class_dict[UMLBox.class_list[pos].name]
+    if len(uml.fields) == 0:
+        spacer = 20
+    else:
+        spacer = 10
+
+    #find the center of the box#
+    x1, y1, x2, y2 = UMLBox.test_canvas.coords(UMLBox.class_list[pos].rec)
+    center = ((x2 - x1) / 2) + x1
+
+    #move the elements#
+    ViewChange.set_rec(rec, new_x1, new_y1, new_x2, new_y2 + spacer)
+    ViewChange.set_text(label, new_x1 + 40 + UMLBox.class_list[pos].textspace, new_y1 + 12)
+    ViewChange.set_text(UMLBox.class_list[pos].fieldlabel, x1 + 25, new_y1 + 30)
+    fx,fy = UMLBox.test_canvas.coords(UMLBox.class_list[pos].fieldlabel)
+    ViewChange.set_text(UMLBox.class_list[pos].fieldtext, center, fy + 5)
+    ViewChange.set_text(UMLBox.class_list[pos].methodlabel, x1 + 35, fy + spacer + 15 * len(uml.fields))
+    mx,my = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
+    ViewChange.set_text(UMLBox.class_list[pos].methodtext, center, my + 10)
