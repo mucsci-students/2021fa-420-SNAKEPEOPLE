@@ -75,3 +75,8 @@ Design Pattern: MVC
                  either to listen for button clicks in the gui, or command
                  line input, depending on the startup mode. This is found throughout
                  all the controller files
+Design Pattern: Bridge
+    Location: UMLClass/UMLField/UMLMethod objects located in UMLclass/UMLAttributes
+    Description: Each class is composed of lists of UMLFields and UMLMethods.
+                 The UMLClass object refers to previously created UMLField
+                 objects and UMLMethod objects.

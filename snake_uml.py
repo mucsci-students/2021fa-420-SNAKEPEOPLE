@@ -2,6 +2,7 @@
 # File Name:     snake_uml.py
 
 # External Imports
+from PIL import Image
 import JSON
 import sys
 import os.path
@@ -14,6 +15,7 @@ from uml_components.interfaces import (class_interface,
                                        rel_interface,
                                        attr_interface)
 from gui import gui_main
+from gui import ImageAdapter
 
 def main(args : list) -> None:
     '''
@@ -180,6 +182,11 @@ def cli_loop() -> None:
         elif cmd[0] == 'load':
             if check_inputs(cmd, 2):
                 load(cmd[1])
+
+        elif cmd[0] == 'export':
+            if check_inputs(cmd, 2):
+                adapter = ImageAdapter.ImageAdapter()
+                adapter.export(cmd[1])
         
         elif cmd[0] == 'help':
             help()
@@ -254,10 +261,10 @@ def list_all_classes() -> None:
             print(UMLClass.class_dict[key])
         print()
  
-def save(filename : str):
+def save(filename : str) -> str:
     classes = []
     relationship = []
-    
+    msg = ""
     c : UMLClass.UMLClass
     for c in list(UMLClass.class_dict.values()):
         classes.append(c.toJson())
@@ -270,17 +277,23 @@ def save(filename : str):
     
     with open(f"save_files/{filename}.json", "w") as file:
         file.write(json_text)
+        msg = "Saved Successfully"
+    return msg
         
-def load(filename : str):
+def load(filename : str) -> str:
+    msg = ""
     json_text : str = ""
     try:
         with open(f"save_files/{filename}.json", "r") as file:
             file.seek(0)
             json_text = file.read()
+            msg = "Loaded Successfully."
     except FileNotFoundError:
-        f"File {filename}.json does not exist."
+        msg = f"File {filename}.json does not exist."
     (UMLClass.class_dict, 
         UMLRelationship.relationship_list) = JSON.decode(json_text)
+    return msg
+
 # Entry Point
 if __name__ == '__main__':
     main(sys.argv)
