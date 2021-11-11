@@ -50,6 +50,7 @@ def b_delete_class(
     if(output[1].split(' ')[0] == "<Deleted"):
         UMLSavepoint.clear_stack()
         UMLBox.class_mediator()
+        UMLField.fix_pos(name)
     label.configure(text = output[1])
 
 
@@ -63,8 +64,9 @@ def b_rename_class(
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "<Renamed"):
         UMLSavepoint.clear_stack()
+        UMLBox.rename_box(old_name, new_name)
+        UMLField.fix_pos(new_name)
     label.configure(text = output[1])
-    UMLBox.rename_box(old_name, new_name)
 
 
 def b_add_method(
@@ -80,6 +82,7 @@ def b_add_method(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLMethod.update_methods(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_delete_method(
@@ -95,6 +98,7 @@ def b_delete_method(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLMethod.update_methods(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_rename_method(
@@ -111,6 +115,7 @@ def b_rename_method(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLMethod.update_methods(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_add_field(
@@ -126,6 +131,7 @@ def b_add_field(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLField.update_fields(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_delete_field(
@@ -140,6 +146,7 @@ def b_delete_field(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLField.update_fields(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_rename_field(
@@ -155,6 +162,7 @@ def b_rename_field(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLField.update_fields(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_add_relation(
@@ -204,6 +212,7 @@ def b_add_param(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLMethod.update_methods(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_delete_param(
@@ -220,6 +229,7 @@ def b_delete_param(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLMethod.update_methods(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_rename_param(
@@ -237,6 +247,7 @@ def b_rename_param(
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
     UMLMethod.update_methods(class_name)
+    UMLField.fix_pos(class_name)
 
 
 def b_save_file(
@@ -250,7 +261,7 @@ def b_load_file(
         file_name : str, 
         label : tk.Label) -> None:
     output = snake_uml.load(file_name)
-    label.configure(text = output[1])
+    label.configure(text = output)
     UMLBox.test_canvas.delete("all")
     UMLBox.class_list = []
     UMLBox.class_mediator()
