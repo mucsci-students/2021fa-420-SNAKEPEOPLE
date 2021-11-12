@@ -31,8 +31,9 @@ class ImageAdapter():
 
 def save_as_png(file_name):
     UMLBox.test_canvas.update()
+    bounds = UMLBox.test_canvas.bbox('all')
     #Create a new image to draw on
-    image1 = Image.new("RGB", (UMLBox.test_canvas.winfo_width(), UMLBox.test_canvas.winfo_height()), 
+    image1 = Image.new("RGB", (bounds[2] + 30, bounds[3] + 30), 
                         color="#D0D0D0")
     draw = ImageDraw.Draw(image1)
     #Set the font of the pillow image
@@ -53,8 +54,8 @@ def save_as_png(file_name):
                 draw.line(xy=((coords[0], coords[1]), (dx1, dy1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=4)
                 #Get start and end points of the line
                 lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(k[1])
-                v1 = 0.98*(lx2-lx1)+lx1
-                v2 = 0.98*(ly2-ly1)+ly1
+                v1 = 0.99*(lx2-lx1)+lx1
+                v2 = 0.99*(ly2-ly1)+ly1
                 # Check if line is vertical
                 if lx1 == lx2:
                     vtx1 = (v1-5, v2)
