@@ -254,7 +254,7 @@ def b_save_file(
         file_name : str, 
         label : tk.Label) -> None:
     output = snake_uml.save(file_name)
-    label.configure(text = output[1])
+    label.configure(text = output)
 
 
 def b_load_file(
