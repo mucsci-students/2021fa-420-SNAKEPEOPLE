@@ -358,6 +358,277 @@ class TabComp(cmd.Cmd):
         '''
         ri.delete_relationship(source, dest)
 
+
+    def do_addfield(
+            self,
+            classname : str,
+            fieldname : str,
+            type : str) -> None:
+        '''
+        NAME
+            addfield
+        SYNTAX
+            addfield <class name> <field name> <type>
+        DESCRIPTION
+            Adds a new field to a given class in the system. The class name must
+            be one that exists in the system. The field must also not share a
+            name with another field in the class.
+        '''
+        ai.add_field(classname, fieldname, type)
+
+
+    def do_delfield(
+            self,
+            classname : str,
+            fieldname : str) -> None:
+        '''
+        NAME
+            delfield
+        SYNTAX
+            delfield <class_name> <field name>
+        DESCRIPTION
+            Deletes a field from a class in the system. The class name and field 
+            name must both be ones that exist in the system, and the field must be
+            in the specified class.
+        '''
+        ai.delete_field(classname, fieldname)
+
+
+    def do_renfield(
+            self,
+            classname : str,
+            oldname : str,
+            newname : str) -> None:
+        '''
+        NAME
+            renfield
+        SYNTAX
+            renfield <class name> <field name> <new name>
+        DESCRIPTION
+            Renames an existing field in a class in the system. The class name and
+            current field name must both exist in the system, and the current field
+            must be in the specified class. The new field name must not be one that
+            already exists in that class.
+        '''
+        ai.rename_field(classname, oldname, newname)
+
+
+    def do_addmethod(
+            self,
+            classname : str,
+            methodname : str,
+            type : str) -> None:
+        '''
+        NAME
+            addmethod
+        SYNTAX
+            addmethod <class name> <method name> <method return type>
+        DESCRIPTION
+            Adds a new method to a given class in the system. The class name must
+            be one that exists in the system. The method must also not share a
+            combination of the same name and return type as another method in the
+            class. 
+        '''
+        ai.add_method(classname, methodname, type)
+
+
+    def do_delmethod(
+            self,
+            classname : str,
+            methodname : str,
+            type : str) -> None:
+        '''
+        NAME
+            delmethod
+        SYNTAX
+            delmethod <class name> <method name> <method return type>
+        DESCRIPTION
+            Deletes a method from a class in the system. The class name and method
+            name must both be ones that exist in the system, and the method must be
+            in the specified class, with the specified method type.
+        '''
+        ai.delete_method(classname, methodname, type)
+
+
+    def do_renmethod(
+            self,
+            classname : str,
+            oldname : str,
+            type : str,
+            newname : str) -> None:
+        '''
+        NAME
+            renmethod
+        SYNTAX
+            renmethod <class name> <method name> <method return type> <new name>
+        DESCRIPTION
+            Renames an existing method in a class in the system. The class name and
+            current method name must both exist in the system, and the current
+            method must be in the specified class with the specified type. The new
+            method name must not be one that exists in that class already.
+        '''
+        ai.rename_method(classname, oldname, type, newname)
+
+
+    def do_addparam(
+            self,
+            classname : str,
+            methodname : str,
+            methodtype : str,
+            paramname : str,
+            paramtype : str) -> None:
+        '''
+        NAME
+            addparam
+        SYNTAX
+            addparam <class name> <method name> <method type> <param name> <param type>
+        DESCRIPTION
+            Adds a parameter to a method in the system. The specified class name
+            must have the method with the method type. The param name with the
+            specified type must not already exist in that method.
+        '''
+        ai.add_param(classname, methodname, methodtype, paramname, paramtype)
+
+
+    def do_delparam(
+            self,
+            classname : str,
+            methodname : str,
+            methodtype : str,
+            paramname : str) -> None:
+        '''
+        NAME
+            delparam
+        SYNTAX
+            delparam <class_name> <method name> <method type> <param name>
+        DESCRIPTION
+            Deletes a parameter from a method in the system. The specified class
+            name must have the method with the method type, and the param with the
+            method.
+        '''
+        ai.delete_param(classname, methodname, methodtype, paramname)
+
+
+    def do_renparam(
+            self,
+            classname : str,
+            methodname : str,
+            methodtype : str,
+            oldname : str,
+            newname : str) -> None:
+        '''
+        NAME
+            renparam
+        SYNTAX
+            renparam <class_name> <method name> <method type> <param name> <new name>
+        DESCRIPTION
+            Renames an existing parameter in a method in the system. The specified
+            class name must have the method with the method type. The new param
+            name must not be one that exists in the method already.
+        '''
+        ai.rename_param(classname, methodname, methodtype, oldname, newname)
+
+
+    def do_listclass(
+            self,
+            input : str) -> None:
+        '''
+        NAME
+            listclass
+        SYNTAX
+            listclass <input>
+        DESCRIPTION
+            If the user inputs 'all' as the input, list all the classes in the current
+            system, as well as their contents. If the user inputs the name of a class
+            in the system, lists the contents of the specified class.
+        '''
+        if input == 'all':
+            snake_uml.list_all_classes()
+        else:
+            snake_uml.list_a_class(input)
+
+
+    def do_listrel(
+            self) -> None:
+        '''
+        NAME
+            listrel
+        SYNTAX
+            listrel
+        DESCRIPTION
+            List all the relationships that exist between classes in the
+            current system.
+        '''
+        ri.list_relationships()
+
+
+    def do_export(
+            self) -> None:
+        '''
+        NAME
+            export
+        SYNTAX
+            export <TODO>
+        DESCRIPTION
+            Export a picture of the current UML to the user's PC.
+        '''
+        print("TODO: Implement into CLI")
+
+
+    def do_undo(
+            self) -> None:
+        '''
+        NAME
+            undo
+        SYNTAX
+            undo <TODO>
+        DESCRIPTION
+            Undo the last performed action, returning the UML to the state it was
+            previously at.
+        '''
+        print("TODO: Implement into CLI")
+
+
+    def do_redo(
+            self) -> None:
+        '''
+        NAME
+            redo
+        SYNTAX
+            redo <TODO>
+        DESCRIPTION
+            Redo the last action that was undid by the user.
+        '''
+        print("TODO: Implement into CLI")
+
+
+    def do_save(
+            self,
+            filename : str) -> None:
+        '''
+        NAME
+            save
+        SYNTAX
+            save <filename>
+        DESCRIPTION
+            Saves the current work to a JSONfile, with a user-specified name.
+        '''
+        snake_uml.save(filename)
+
+
+    def do_load(
+            self,
+            filename : str) -> None:
+        '''
+        NAME
+            load
+        SYNTAX
+            load <filename>
+        DESCRIPTION
+            Load a JSONfile, providing a name of an existing file.
+        '''
+        snake_uml.load(filename)
+
     #############################################################################
 
     # Completers => Check for terminal text for tab completion
