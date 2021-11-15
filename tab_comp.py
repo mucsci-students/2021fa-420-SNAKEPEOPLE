@@ -5,16 +5,16 @@
 import sys
 import os.path
 import keyboard
+import cmd
+import readline
+import pyreadline
 
 # Internal Imports
-from uml_components import (UMLClass, 
-                            UMLRelationship,
-                            UMLAttributes)
-from uml_components.interfaces import (class_interface,
-                                       rel_interface,
-                                       attr_interface)
+from uml_components.interfaces import (class_interface as ci,
+                                       rel_interface as ri,
+                                       attr_interface as ai)
 from gui import gui_main
-from snake_uml import *
+import snake_uml
 
 # List of commands that can be tab completed.
 valids = [
@@ -80,174 +80,9 @@ aliases = {
 }
 
 #################################################################################
-
-def cli_loop() -> None:
-    '''
-    Processes an infinite loop waiting for a command from the user. Once input
-    is given, executes a command, if valid.
-    '''
-
-    # Addition to previous version of CLI mode, to do tab completion.
-    cmd = []
-    keyboard.add_hotkey('tab', when_tab, args=[cmd])
-
-    print("===============================================\n" +
-          "|           Snake People UML Editor           |\n" +
-          "===============================================\n" +
-          "      Type 'help' for a list of commands.      \n" +
-          "       Type 'exit' to close the program.       \n")
-    
-    aliases = {
-        'exit' : ['exit', 'e',
-                  'quit', 'q'],
-        
-        'addclass' : ['addclass'],
-        
-        'delclass' : ['delclass'],
-        
-        'renclass' : ['renclass'],
-        
-        'addrel' : ['addrel'],
-        
-        'delrel' : ['delrel'],
-        
-        'addattr' : ['addattr'],
-        
-        'delattr' : ['delattr'],
-        
-        'renattr' : ['renattr'],
-        
-        'listclass' : ['listclass'],
-        
-        'listrel' : ['listrel'],
-        
-        'save' : ['save'],
-        
-        'load' : ['load'],
-        
-        'help' : ['help'],
-    }
-    
-    while True:
-        cmd = input(">> ").split()
-        
-        if len(cmd) == 0:
-            continue
-        
-        elif cmd[0] in aliases['exit']:
-            break
-        
-        elif cmd[0] == 'addclass':
-            if check_inputs(cmd, 2):
-                class_interface.add_class(cmd[1])
-            
-        elif cmd[0] == 'delclass':
-            if check_inputs(cmd, 2):
-                class_interface.delete_class(cmd[1])
-            
-        elif cmd[0] == 'renclass':
-            if check_inputs(cmd, 3):
-                class_interface.rename_class(cmd[1], 
-                                             cmd[2])
-                
-        elif cmd[0] == 'addrel':
-            if check_inputs(cmd, 4):
-                rel_interface.add_relationship(cmd[1], 
-                                               cmd[2], 
-                                               cmd[3])
-                
-        elif cmd[0] == 'delrel':
-            if check_inputs(cmd, 3):
-                rel_interface.delete_relationship(cmd[1], 
-                                                  cmd[2])
-                
-        elif cmd[0] == 'addfield':
-            if check_inputs(cmd, 4):
-                attr_interface.add_field(cmd[1], 
-                                         cmd[2], 
-                                         cmd[3])
-                
-        elif cmd[0] == 'addmethod':
-            if check_inputs(cmd, 4):
-                attr_interface.add_method(cmd[1], 
-                                          cmd[2], 
-                                          cmd[3])
-                
-        elif cmd[0] == 'addparam':
-            if check_inputs(cmd, 6):
-                attr_interface.add_param(cmd[1], 
-                                         cmd[2], 
-                                         cmd[3], 
-                                         cmd[4], 
-                                         cmd[5])
-                
-        elif cmd[0] == 'delfield':
-            if check_inputs(cmd, 3):
-                attr_interface.delete_field(cmd[1], 
-                                            cmd[2])
-                
-        elif cmd[0] == 'delmethod':
-            if check_inputs(cmd, 4):
-                attr_interface.delete_method(cmd[1], 
-                                             cmd[2], 
-                                             cmd[3])
-        
-        elif cmd[0] == 'delparam':
-            if check_inputs(cmd, 5):
-                attr_interface.delete_param(cmd[1],
-                                            cmd[2],
-                                            cmd[3],
-                                            cmd[4])
-                
-        elif cmd[0] == 'renfield':
-            if check_inputs(cmd, 4):
-                attr_interface.rename_field(cmd[1], 
-                                            cmd[2], 
-                                            cmd[3])
-                
-        elif cmd[0] == 'renmethod':
-            if check_inputs(cmd, 5):
-                attr_interface.rename_method(cmd[1], 
-                                             cmd[2], 
-                                             cmd[3], 
-                                             cmd[4])
-                
-        elif cmd[0] == 'renparam':
-            if check_inputs(cmd, 6):
-                attr_interface.rename_param(cmd[1], # Class Name
-                                            cmd[2], # Method Name
-                                            cmd[3], # Method Type
-                                            cmd[4], # Old Param Name
-                                            cmd[5]) # New Param Name
-                
-        elif cmd[0] == 'listclass':
-            if check_inputs(cmd, 2):
-                if cmd[1] == 'all':
-                    list_all_classes()
-                else:
-                    list_a_class(cmd[1])
-
-        elif cmd[0] == 'listrel':
-            rel_interface.list_relationships()
-        
-        elif cmd[0] == 'save':
-            if check_inputs(cmd, 2):
-                save(cmd[1])
-        
-        elif cmd[0] == 'load':
-            if check_inputs(cmd, 2):
-                load(cmd[1])
-        
-        elif cmd[0] == 'help':
-            help()
-        
-        else:
-            print("<Invalid Command Error>: " +
-                  f"'{cmd[0]}' is not a valid command.\n" +
-                  "Type 'help' for a list of valid commands.")
-    
-    keyboard.unhook_all_hotkeys()
-
+'''
+Tesing stuff, dont pay attention, will delete later when not needed.
+'''
 def when_tab(command : list[str]):
     # If the user hasn't typed in anything, pressing tab should put in the 
     #   help command.
@@ -402,7 +237,6 @@ def when_tab(command : list[str]):
     else:
         return
 
-
 def test():
     print("===============================================\n" +
           "|           Snake People UML Editor           |\n" +
@@ -423,18 +257,133 @@ def test():
             continue
 
     keyboard.unhook_all_hotkeys()
-'''    
-    if(command == 'deez'):
-        keyboard.write("\b\b\b\b\bnuts")
-    else:
-        keyboard.write("deez")
-'''
+
+#################################################################################
 
 def main():
-    cli_loop()
+    TabComp().cmdloop()
+
+class TabComp(cmd.Cmd):
+    
+    intro = ("===============================================\n" +
+             "|           Snake People UML Editor           |\n" +
+             "===============================================\n" +
+             "      Type 'help' for a list of commands.      \n" +
+             "       Type 'exit' to close the program.       \n")
+    prompt = (">> ")
+
+    #############################################################################
+
+    # Doers => Do the action based on text entered.
+    def do_addclass(
+            self, 
+            classname : str) -> None:
+        '''
+        NAME
+            addclass
+        SYNTAX
+            addclass <class name>
+        DESCRIPTION
+            Add a new class to the system. The provided class name must not
+            already exist in the system.
+        '''
+        ci.add_class(classname)
+
+
+    def do_delclass(
+            self, 
+            classname : str) -> None:
+        '''
+        NAME
+            delclass
+        SYNTAX
+            delclass <class name>
+        DESCRIPTION
+            Delete a class from the system forever. The provided class name must
+            exist in the system in order to be deleted. When a class is deleted,
+            all attributes attached to the class and all relationships associated
+            with the class are also deleted.
+        '''
+        ci.delete_class(classname)
+
+
+    def do_renclass(
+            self,
+            oldname : str,
+            newname : str) -> None:
+        '''
+        NAME
+            renclass
+        SYNTAX
+            renclass <class name> <new name>
+        DESCRIPTION
+            Rename an existing class that is in the system. All attributes
+            attached to the class and all relationships associated with the class
+            are also updated upon the renaming of the class.
+        '''
+        ci.rename_class(oldname, newname)
+
+
+    def do_addrel(
+            self, 
+            source : str,
+            dest : str, 
+            type : str) -> None:
+        '''
+        NAME
+            addrel
+        SYNTAX
+            addrel <source> <destination>
+        DESCRIPTION
+            Add a new relationship between two classes. Both the source class
+            and the destination class specified by the user have to exist in
+            the system.
+        '''
+        ri.add_relationship(source, dest, type)
+
+
+    def do_delrel(
+            self,
+            source : str,
+            dest : str) -> None:
+        '''
+        NAME
+            delrel
+        SYNTAX
+            delrel <source> <destination>
+        DESCRIPTION
+            Delete a relationship between two classes in the system. Both
+            user-specified class names must exist and must already have an
+            existing relationship.
+        '''
+        ri.delete_relationship(source, dest)
+
+    #############################################################################
+
+    # Completers => Check for terminal text for tab completion
+    def complete_addclass(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+
+    def complete_addrel(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
 
 #################################################################################
 
 if __name__ == '__main__':
     main()
     #test()
+    #TabComp().cmdloop()

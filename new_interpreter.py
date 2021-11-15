@@ -18,20 +18,36 @@ from uml_components.interfaces import (class_interface,
                                        attr_interface)
 from gui import gui_main
     
-aliases = ['addclass', 
-                    'delclass', 
-                    'renclass', 
-                    'addrel', 
-                    'delrel',
-                    'addattr',
-                    'delattr',
-                    'renattr',
-                    'listclass',
-                    'listrel',
-                    'save',
-                    'load',
-                    'help'
-                    ]
+aliases = [
+    'addclass', 
+    'delclass', 
+    'renclass', 
+
+    'addrel', 
+    'delrel',
+
+    'addfield',
+    'delfield',
+    'renfield',
+
+    'addmethod',
+    'delmethod',
+    'renmethod',
+
+    'addparam',
+    'delparam',
+    'renparam',
+
+    'listclass',
+    'listrel',
+
+    'export',
+    'undo',
+    'redo',
+    'save',
+    'load',
+    'help'
+]
 
 #################################################################################
 
