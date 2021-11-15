@@ -641,6 +641,23 @@ class TabComp(cmd.Cmd):
         else:
             return valids
 
+    def complete_delclass(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_renclass(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
 
     def complete_addrel(self, text):
         if text:
@@ -650,6 +667,160 @@ class TabComp(cmd.Cmd):
             ]
         else:
             return valids
+
+    def complete_delrel(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_addfield(self, text):
+        if text:
+            return [
+                command for command in valids 
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+        
+    def complete_delfield(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_renfield(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_addmethod(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_delmethod(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_renmethod(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_addparam(self, text):
+        if text:
+            return [
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
+    def complete_delparam(self, text):
+        if text:
+            return [
+                command for command in valids   
+                    if command.startswith(text)
+            ]
+        else: 
+            return valids
+
+    def complete_renparam(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+    
+    def complete_listclass(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else: 
+            return valids
+
+    def complete_listrel(self, text):
+        if text:
+            return [ 
+                command for command in valids  
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+        
+    def complete_export(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else: 
+            return valids
+
+    def complete_undo(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+        
+    def complete_redo(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+    
+    def complete_save(self, text):
+        if text:
+            return [ 
+                command for command in valids   
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+    
+    def complete_load(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
+
 
 
 #################################################################################
