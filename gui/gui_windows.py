@@ -1516,7 +1516,10 @@ def export_window() -> None:
     # Window for Loading data from an existing file.
     root = tk.Toplevel(name = 'dn')
     root.title("Export Image")
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2f1e55f06e2d8ccca5eb4a6de3d2c953f6437d3e
     # Frame containing the elements.
     frame = tk.Frame(
         master = root,  
@@ -1524,6 +1527,18 @@ def export_window() -> None:
         borderwidth = 3)
     frame.pack(ipadx = 10)
 
+<<<<<<< HEAD
+=======
+    # Label: Warning Message
+    lbl1 = tk.Label(
+        master = frame,  
+        text = "Warning: Saving duplicate file names will override previous ones.", 
+        font = ('bold'))
+    lbl1.grid(
+        row = 0, 
+        column = 0, 
+        sticky = "w")
+>>>>>>> 2f1e55f06e2d8ccca5eb4a6de3d2c953f6437d3e
     # Label: "File Name"
     lbl2 = tk.Label(
         master = frame,  
