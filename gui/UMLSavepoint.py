@@ -14,6 +14,7 @@ from . import UMLField
 from . import UMLLine
 from . import UMLMethod
 import queue
+import sys, os
 
 undo_stack = queue.LifoQueue()
 redo_stack = queue.LifoQueue()
@@ -21,7 +22,7 @@ redo_stack = queue.LifoQueue()
 class UMLSavepoint():
 
     def __init__(self, mode):
-
+        stopPrint()
         dup_dict = dict()
         coord_list = []
         dup_fields = []
@@ -70,9 +71,11 @@ class UMLSavepoint():
             #to the duplicate relationship list
             dup_rel.append(UMLRelationship.UMLRelationship(i.source, i.destination, i.type))
         self.relationship_list = dup_rel
+        startPrint()
 
 
 def save_point(mode = "gui"):
+    stopPrint()
     #Add the current state to the undo stack
     undo_stack.put(UMLSavepoint(mode))
 
@@ -101,8 +104,10 @@ def undo(mode = "gui"):
         UMLBox.class_list = []
 
         populate_canvas(last_state)
+    startPrint()
 
 def redo(mode = "gui"):
+    stopPrint()
     #Place the current state on the undo stack
     undo_stack.put(UMLSavepoint(mode))
 
@@ -127,8 +132,10 @@ def redo(mode = "gui"):
         UMLBox.class_list = []
 
         populate_canvas(last_state)
+    startPrint()
 
 def populate_canvas(last_state):
+    stopPrint()
     index = 0
 
     #Create a canvas element for each dictionary item
@@ -143,6 +150,7 @@ def populate_canvas(last_state):
     #Add any relationships back into the canvas
     for i in UMLRelationship.relationship_list:
         UMLLine.add_line(i.source, i.destination, i.type)
+    startPrint()
 
 #Clear the redo_stack
 #Used only when undos occur and a new action is taken other than redo
@@ -194,3 +202,11 @@ def make_coords(class_name : str, x : int, y : int):
     y1 = y
     y2 = y + yinc
     return (x1, y1, x2, y2)
+
+# Stop any print lines when saving or loading a UMLSavepoint
+def stopPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+# Enable printing again
+def startPrint():
+    sys.stdout = sys.__stdout__
