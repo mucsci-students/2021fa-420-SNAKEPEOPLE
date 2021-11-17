@@ -14,6 +14,8 @@ from gui import UMLSavepoint
 
 from gui import ImageAdapter as ia
 
+import queue
+
 import snake_uml
 
 #################################################################################
@@ -262,7 +264,12 @@ class TabComp(cmd.Cmd):
             already exist in the system.
         '''
         lst = arg.split()
-        ci.add_class(lst[0])
+        UMLSavepoint.save_point("cli")
+        output = ci.add_class(lst[0])
+        if(output[1].split(' ')[0] != "<Added" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.undo_stack.get()
+        if(output[1].split(' ')[0] == "<Added"):
+            UMLSavepoint.clear_stack()
 #
     def do_delclass(
             self, 
@@ -279,7 +286,12 @@ class TabComp(cmd.Cmd):
             with the class are also deleted.
         '''
         lst = arg.split()
-        ci.delete_class(lst[0])
+        UMLSavepoint.save_point("cli")
+        output = ci.delete_class(lst[0])
+        if(output[1].split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "<Deleted"):
+            UMLSavepoint.clear_stack()
 #
     def do_renclass(
             self,
@@ -295,7 +307,12 @@ class TabComp(cmd.Cmd):
             are also updated upon the renaming of the class.
         '''
         lst = arg.split()
-        ci.rename_class(lst[0], lst[1])
+        UMLSavepoint.save_point("cli")
+        output = ci.rename_class(lst[0], lst[1])
+        if(output[1].split(' ')[0] != "<Renamed" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "<Renamed"):
+            UMLSavepoint.clear_stack()
 #
     def do_addrel(
             self, 
@@ -312,8 +329,13 @@ class TabComp(cmd.Cmd):
             "aggregation", "composition", "inheritance", "realization".
         '''
         lst = arg.split()
-        ri.add_relationship(lst[0], lst[1], lst[2])
-#
+        UMLSavepoint.save_point("cli")
+        output = ri.add_relationship(lst[0], lst[1], lst[2])
+        if(output[1].split(' ')[0] == "<Added"):
+            UMLSavepoint.clear_stack()
+        if(output[1].split(' ')[0] != "<Added" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+
     def do_delrel(
             self,
             arg : str) -> None:
@@ -328,7 +350,12 @@ class TabComp(cmd.Cmd):
             existing relationship. 
         '''
         lst = arg.split()
-        ri.delete_relationship(lst[0], lst[1])
+        UMLSavepoint.save_point("cli")
+        output = ri.delete_relationship(lst[0], lst[1])
+        if(output[1].split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "<Deleted"):
+            UMLSavepoint.clear_stack()
 #
     def do_addfield(
             self,
@@ -344,7 +371,12 @@ class TabComp(cmd.Cmd):
             name with another field in the class.
         '''
         lst = arg.split()
-        ai.add_field(lst[0], lst[1], lst[2])
+        UMLSavepoint.save_point("cli")
+        output = ai.add_field(lst[0], lst[1], lst[2])
+        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_delfield(
             self,
@@ -360,7 +392,12 @@ class TabComp(cmd.Cmd):
             in the specified class.
         '''
         lst = arg.split()
-        ai.delete_field(lst[0], lst[1])
+        UMLSavepoint.save_point("cli")
+        output = ai.delete_field(lst[0], lst[1])
+        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_renfield(
             self,
@@ -377,7 +414,12 @@ class TabComp(cmd.Cmd):
             already exists in that class.
         '''
         lst = arg.split()
-        ai.rename_field(lst[0], lst[1], lst[2])
+        UMLSavepoint.save_point("cli")
+        output = ai.rename_field(lst[0], lst[1], lst[2])
+        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_addmethod(
             self,
@@ -394,7 +436,12 @@ class TabComp(cmd.Cmd):
             class. 
         '''
         lst = arg.split()
-        ai.add_method(lst[0], lst[1], lst[2])
+        UMLSavepoint.save_point("cli")
+        output = ai.add_method(lst[0], lst[1], lst[2])
+        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_delmethod(
             self,
@@ -410,7 +457,12 @@ class TabComp(cmd.Cmd):
             in the specified class, with the specified method type.
         '''
         lst = arg.split()
-        ai.delete_method(lst[0], lst[1], lst[2])
+        UMLSavepoint.save_point("cli")
+        output = ai.delete_method(lst[0], lst[1], lst[2])
+        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_renmethod(
             self,
@@ -427,8 +479,13 @@ class TabComp(cmd.Cmd):
             method name must not be one that exists in that class already.
         '''
         lst = arg.split()
-        ai.rename_method(lst[0], lst[1], lst[2], lst[3])
-#
+        UMLSavepoint.save_point("cli")
+        output = ai.rename_method(lst[0], lst[1], lst[2], lst[3])
+        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
+
     def do_addparam(
             self,
             arg : str) -> None:
@@ -443,7 +500,12 @@ class TabComp(cmd.Cmd):
             specified type must not already exist in that method.
         '''
         lst = arg.split()
-        ai.add_param(lst[0], lst[1], lst[2], lst[3], lst[4])
+        UMLSavepoint.save_point("cli")
+        output = ai.add_param(lst[0], lst[1], lst[2], lst[3], lst[4])
+        if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_delparam(
             self,
@@ -459,7 +521,12 @@ class TabComp(cmd.Cmd):
             method.
         '''
         lst = arg.split()
-        ai.delete_param(lst[0], lst[1], lst[2], lst[3])
+        UMLSavepoint.save_point("cli")
+        output = ai.delete_param(lst[0], lst[1], lst[2], lst[3])
+        if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_renparam(
             self,
@@ -475,7 +542,12 @@ class TabComp(cmd.Cmd):
             name must not be one that exists in the method already.
         '''
         lst = arg.split()
-        ai.rename_param(lst[0], lst[1], lst[2], lst[3], lst[4])
+        UMLSavepoint.save_point("cli")
+        output = ai.rename_param(lst[0], lst[1], lst[2], lst[3], lst[4])
+        if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
 #
     def do_listclass(
             self,
@@ -577,7 +649,11 @@ class TabComp(cmd.Cmd):
             Load a JSONfile, providing a name of an existing file.
         '''
         lst = arg.split()
-        snake_uml.load(lst[0])
+        output = snake_uml.load(lst[0])
+        if UMLSavepoint.undo_stack.empty() == False:
+            UMLSavepoint.undo_stack = queue.LifoQueue()
+        if UMLSavepoint.redo_stack.empty() == False:
+            UMLSavepoint.clear_stack()
 #
     def do_exit(self, s) -> bool:
         '''
