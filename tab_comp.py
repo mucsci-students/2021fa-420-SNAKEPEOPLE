@@ -2,19 +2,21 @@
 # File Name:     tab_comp.py
 
 # External Imports
-import sys
-import os.path
-import keyboard
 import cmd
-import readline
-import pyreadline
 
 # Internal Imports
-from uml_components.interfaces import (class_interface as ci,
-                                       rel_interface as ri,
-                                       attr_interface as ai)
-from gui import gui_main
+from uml_components.interfaces import (
+    class_interface as ci,
+    rel_interface as ri,
+    attr_interface as ai)
+
+from gui import UMLSavepoint
+
+from gui import ImageAdapter as ia
+
 import snake_uml
+
+#################################################################################
 
 # List of commands that can be tab completed.
 valids = [
@@ -45,44 +47,14 @@ valids = [
     'redo',
     'save',
     'load',
-    'help'
+    'help',
+    'exit'
 ]
-
-aliases = {
-    'exit' : ['exit', 'e',
-                'quit', 'q'],
-    
-    'addclass' : ['addclass'],
-    
-    'delclass' : ['delclass'],
-    
-    'renclass' : ['renclass'],
-    
-    'addrel' : ['addrel'],
-    
-    'delrel' : ['delrel'],
-    
-    'addattr' : ['addattr'],
-    
-    'delattr' : ['delattr'],
-    
-    'renattr' : ['renattr'],
-    
-    'listclass' : ['listclass'],
-    
-    'listrel' : ['listrel'],
-    
-    'save' : ['save'],
-    
-    'load' : ['load'],
-    
-    'help' : ['help'],
-}
 
 #################################################################################
 '''
 Tesing stuff, dont pay attention, will delete later when not needed.
-'''
+
 def when_tab(command : list[str]):
     # If the user hasn't typed in anything, pressing tab should put in the 
     #   help command.
@@ -257,6 +229,7 @@ def test():
             continue
 
     keyboard.unhook_all_hotkeys()
+'''
 
 #################################################################################
 
@@ -275,9 +248,10 @@ class TabComp(cmd.Cmd):
     #############################################################################
 
     # Doers => Do the action based on text entered.
+#
     def do_addclass(
             self, 
-            classname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             addclass
@@ -287,12 +261,12 @@ class TabComp(cmd.Cmd):
             Add a new class to the system. The provided class name must not
             already exist in the system.
         '''
-        ci.add_class(classname)
-
-
+        lst = arg.split()
+        ci.add_class(lst[0])
+#
     def do_delclass(
             self, 
-            classname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             delclass
@@ -304,13 +278,12 @@ class TabComp(cmd.Cmd):
             all attributes attached to the class and all relationships associated
             with the class are also deleted.
         '''
-        ci.delete_class(classname)
-
-
+        lst = arg.split()
+        ci.delete_class(lst[0])
+#
     def do_renclass(
             self,
-            oldname : str,
-            newname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             renclass
@@ -321,49 +294,45 @@ class TabComp(cmd.Cmd):
             attached to the class and all relationships associated with the class
             are also updated upon the renaming of the class.
         '''
-        ci.rename_class(oldname, newname)
-
-
+        lst = arg.split()
+        ci.rename_class(lst[0], lst[1])
+#
     def do_addrel(
             self, 
-            source : str,
-            dest : str, 
-            type : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             addrel
         SYNTAX
-            addrel <source> <destination>
+            addrel <source> <destination> <type>
         DESCRIPTION
             Add a new relationship between two classes. Both the source class
             and the destination class specified by the user have to exist in
-            the system.
+            the system. The relation type must be one of the following:
+            "aggregation", "composition", "inheritance", "realization".
         '''
-        ri.add_relationship(source, dest, type)
-
-
+        lst = arg.split()
+        ri.add_relationship(lst[0], lst[1], lst[2])
+#
     def do_delrel(
             self,
-            source : str,
-            dest : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             delrel
         SYNTAX
-            delrel <source> <destination>
+            delrel <source> <destination> <type>
         DESCRIPTION
             Delete a relationship between two classes in the system. Both
             user-specified class names must exist and must already have an
-            existing relationship.
+            existing relationship. 
         '''
-        ri.delete_relationship(source, dest)
-
-
+        lst = arg.split()
+        ri.delete_relationship(lst[0], lst[1])
+#
     def do_addfield(
             self,
-            classname : str,
-            fieldname : str,
-            type : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             addfield
@@ -374,13 +343,12 @@ class TabComp(cmd.Cmd):
             be one that exists in the system. The field must also not share a
             name with another field in the class.
         '''
-        ai.add_field(classname, fieldname, type)
-
-
+        lst = arg.split()
+        ai.add_field(lst[0], lst[1], lst[2])
+#
     def do_delfield(
             self,
-            classname : str,
-            fieldname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             delfield
@@ -391,14 +359,12 @@ class TabComp(cmd.Cmd):
             name must both be ones that exist in the system, and the field must be
             in the specified class.
         '''
-        ai.delete_field(classname, fieldname)
-
-
+        lst = arg.split()
+        ai.delete_field(lst[0], lst[1])
+#
     def do_renfield(
             self,
-            classname : str,
-            oldname : str,
-            newname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             renfield
@@ -410,14 +376,12 @@ class TabComp(cmd.Cmd):
             must be in the specified class. The new field name must not be one that
             already exists in that class.
         '''
-        ai.rename_field(classname, oldname, newname)
-
-
+        lst = arg.split()
+        ai.rename_field(lst[0], lst[1], lst[2])
+#
     def do_addmethod(
             self,
-            classname : str,
-            methodname : str,
-            type : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             addmethod
@@ -429,14 +393,12 @@ class TabComp(cmd.Cmd):
             combination of the same name and return type as another method in the
             class. 
         '''
-        ai.add_method(classname, methodname, type)
-
-
+        lst = arg.split()
+        ai.add_method(lst[0], lst[1], lst[2])
+#
     def do_delmethod(
             self,
-            classname : str,
-            methodname : str,
-            type : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             delmethod
@@ -447,15 +409,12 @@ class TabComp(cmd.Cmd):
             name must both be ones that exist in the system, and the method must be
             in the specified class, with the specified method type.
         '''
-        ai.delete_method(classname, methodname, type)
-
-
+        lst = arg.split()
+        ai.delete_method(lst[0], lst[1], lst[2])
+#
     def do_renmethod(
             self,
-            classname : str,
-            oldname : str,
-            type : str,
-            newname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             renmethod
@@ -467,16 +426,12 @@ class TabComp(cmd.Cmd):
             method must be in the specified class with the specified type. The new
             method name must not be one that exists in that class already.
         '''
-        ai.rename_method(classname, oldname, type, newname)
-
-
+        lst = arg.split()
+        ai.rename_method(lst[0], lst[1], lst[2], lst[3])
+#
     def do_addparam(
             self,
-            classname : str,
-            methodname : str,
-            methodtype : str,
-            paramname : str,
-            paramtype : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             addparam
@@ -487,15 +442,12 @@ class TabComp(cmd.Cmd):
             must have the method with the method type. The param name with the
             specified type must not already exist in that method.
         '''
-        ai.add_param(classname, methodname, methodtype, paramname, paramtype)
-
-
+        lst = arg.split()
+        ai.add_param(lst[0], lst[1], lst[2], lst[3], lst[4])
+#
     def do_delparam(
             self,
-            classname : str,
-            methodname : str,
-            methodtype : str,
-            paramname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             delparam
@@ -506,16 +458,12 @@ class TabComp(cmd.Cmd):
             name must have the method with the method type, and the param with the
             method.
         '''
-        ai.delete_param(classname, methodname, methodtype, paramname)
-
-
+        lst = arg.split()
+        ai.delete_param(lst[0], lst[1], lst[2], lst[3])
+#
     def do_renparam(
             self,
-            classname : str,
-            methodname : str,
-            methodtype : str,
-            oldname : str,
-            newname : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             renparam
@@ -526,12 +474,12 @@ class TabComp(cmd.Cmd):
             class name must have the method with the method type. The new param
             name must not be one that exists in the method already.
         '''
-        ai.rename_param(classname, methodname, methodtype, oldname, newname)
-
-
+        lst = arg.split()
+        ai.rename_param(lst[0], lst[1], lst[2], lst[3], lst[4])
+#
     def do_listclass(
             self,
-            input : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             listclass
@@ -542,12 +490,12 @@ class TabComp(cmd.Cmd):
             system, as well as their contents. If the user inputs the name of a class
             in the system, lists the contents of the specified class.
         '''
+        lst = arg.split()
         if input == 'all':
             snake_uml.list_all_classes()
         else:
-            snake_uml.list_a_class(input)
-
-
+            snake_uml.list_a_class(lst[0])
+#
     def do_listrel(
             self) -> None:
         '''
@@ -560,51 +508,52 @@ class TabComp(cmd.Cmd):
             current system.
         '''
         ri.list_relationships()
-
-
+#
     def do_export(
-            self) -> None:
+            self,
+            arg : str) -> None:
         '''
         NAME
             export
         SYNTAX
-            export <TODO>
+            export <filename>
         DESCRIPTION
-            Export a picture of the current UML to the user's PC.
+            Export a picture of the current UML to the user's PC, setting the
+            name of the new image file to the user-inputted name.
         '''
-        print("TODO: Implement into CLI")
-
-
+        lst = arg.split()
+        ia.save_as_png(lst[0])
+#
     def do_undo(
             self) -> None:
         '''
         NAME
             undo
         SYNTAX
-            undo <TODO>
+            undo
         DESCRIPTION
             Undo the last performed action, returning the UML to the state it was
             previously at.
         '''
-        print("TODO: Implement into CLI")
-
-
+        if UMLSavepoint.undo_stack.empty() == False:
+            UMLSavepoint.undo("cli")
+#
     def do_redo(
             self) -> None:
         '''
         NAME
             redo
         SYNTAX
-            redo <TODO>
+            redo
         DESCRIPTION
             Redo the last action that was undid by the user.
         '''
-        print("TODO: Implement into CLI")
-
-
+        if UMLSavepoint.redo_stack.empty() == False:
+            UMLSavepoint.redo("cli")
+#
     def do_save(
             self,
-            filename : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             save
@@ -613,12 +562,12 @@ class TabComp(cmd.Cmd):
         DESCRIPTION
             Saves the current work to a JSONfile, with a user-specified name.
         '''
-        snake_uml.save(filename)
-
-
+        lst = arg.split()
+        snake_uml.save(lst[0])
+#
     def do_load(
             self,
-            filename : str) -> None:
+            arg : str) -> None:
         '''
         NAME
             load
@@ -627,7 +576,20 @@ class TabComp(cmd.Cmd):
         DESCRIPTION
             Load a JSONfile, providing a name of an existing file.
         '''
-        snake_uml.load(filename)
+        lst = arg.split()
+        snake_uml.load(lst[0])
+#
+    def do_exit(self, s) -> bool:
+        '''
+        NAME
+            exit
+        SYNTAX
+            exit
+        DESCRIPTION
+            Quit the program.
+        '''
+        return True
+
 
     #############################################################################
 
@@ -821,9 +783,18 @@ class TabComp(cmd.Cmd):
         else:
             return valids
 
-
+    def complete_exit(self, text):
+        if text:
+            return [ 
+                command for command in valids
+                    if command.startswith(text)
+            ]
+        else:
+            return valids
 
 #################################################################################
+
+
 
 if __name__ == '__main__':
     main()
