@@ -1512,6 +1512,69 @@ def load_window() -> None:
         padx = 5, 
         pady = 5)
 
+def export_window() -> None:
+    # Window for Loading data from an existing file.
+    root = tk.Toplevel(name = 'dn')
+    root.title("Export Image")
+    # Frame containing the elements.
+    frame = tk.Frame(
+        master = root,  
+        relief = tk.SUNKEN,  
+        borderwidth = 3)
+    frame.pack(ipadx = 10)
+
+    # Label: Warning Message
+    lbl1 = tk.Label(
+        master = frame,  
+        text = "Warning: Saving duplicate file names will override previous ones.", 
+        font = ('bold'))
+    lbl1.grid(
+        row = 0, 
+        column = 0, 
+        sticky = "w")
+    # Label: "File Name"
+    lbl2 = tk.Label(
+        master = frame,  
+        text = "File Name:", 
+        font = ('bold'))
+    lbl2.grid(
+        row = 1, 
+        column = 0, 
+        sticky = "w")
+
+    # Label: Output Message
+    lbl3 = tk.Label(
+        master = frame,  
+        text = "", 
+        font = ('bold'))
+    lbl3.grid(
+        row = 2, 
+        column = 0, 
+        sticky = "w")
+
+    # Entry where the user can enter their file name.
+    etr = tk.Entry(
+        master = frame, 
+        width = 50)
+    etr.grid(
+        row = 1, 
+        column = 1, 
+        sticky = "w")
+
+    # Confirm Button, command is the helper checking the user input
+    #     and executing the appropriate function.
+    btn = tk.Button(
+        command = lambda: gf.b_export(etr.get(), lbl3),
+        master = frame, 
+        text = "Confirm", 
+        font = ('bold'))
+    btn.grid(
+        row = 2, 
+        column = 1, 
+        sticky = "e", 
+        padx = 5, 
+        pady = 5)
+
     # Generate the window.
     root.mainloop()
 

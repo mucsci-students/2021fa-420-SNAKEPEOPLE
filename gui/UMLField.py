@@ -44,7 +44,7 @@ def update_vertical(pos : int):
     param : ai.UMLParameter
     #Find an appropriate vertical spacing to contain the methods and parameters
     for method in uml.methods:
-        UMLBox.class_list[pos].yinc += 45
+        UMLBox.class_list[pos].yinc += 30
         for param in method.params:
             UMLBox.class_list[pos].yinc += 15
     if(len(uml.fields) == 0):
@@ -75,7 +75,8 @@ def update_vertical(pos : int):
     ViewChange.bring_all_front(UMLBox.class_list[pos])
 
 #WIP function for respacing boxes
-def fix_pos(pos : int):
+def fix_pos(name : str):
+    pos = UMLBox.find_pos_from_name(name)
     classname = UMLBox.class_list[pos].name
     coords = UMLBox.get_coords(classname)
     overlap_list = UMLBox.test_canvas.find_overlapping(coords[0],coords[1],coords[2],coords[3])

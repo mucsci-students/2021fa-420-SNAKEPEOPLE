@@ -4,6 +4,7 @@
 # External Imports
 import json
 from ntpath import realpath
+
 import sys
 import os.path
 #from typing import _Alias
@@ -16,6 +17,7 @@ from uml_components.interfaces import (class_interface,
                                        rel_interface,
                                        attr_interface)
 from gui import gui_main
+from gui import ImageAdapter
 
 def main(args : list) -> None:
     '''
@@ -182,6 +184,11 @@ def cli_loop() -> None:
         elif cmd[0] == 'load':
             if check_inputs(cmd, 2):
                 load(cmd[1])
+
+        elif cmd[0] == 'export':
+            if check_inputs(cmd, 2):
+                adapter = ImageAdapter.ImageAdapter()
+                adapter.export(cmd[1])
         
         elif cmd[0] == 'help':
             help()

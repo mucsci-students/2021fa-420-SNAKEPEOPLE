@@ -15,15 +15,24 @@ from uml_components.interfaces import (attr_interface as ai,
 from uml_components import UMLClass
 
 class_list = []
+global maxx
+maxx = 4000
+global maxy
+maxy = 4000
 
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
     global test_canvas
-    test_canvas = tk.Canvas(frame, 
-                        width=600, 
-                        height=600,
+    test_canvas = tk.Canvas(frame,
                         bg="#D0D0D0",
+                        scrollregion=(0,0,4000,4000),
                         bd=3)
     return test_canvas
+
+def update_global(xinc, yinc):
+    global maxx
+    maxx = maxx + xinc
+    global maxy
+    maxy = maxy + yinc
 
 def find_pos_from_name(name : str):
     pos = 0
@@ -66,6 +75,7 @@ def create_box(name : str):
     #Make sure the class does not already exist
     placed = False
     x_place = 1
+    prev_inc = False
     x1 = 60
     x2 = 140
     y1 = 40
@@ -75,23 +85,28 @@ def create_box(name : str):
     last_textspace = 0
     if len(class_list) > 0:
         last_textspace = class_list[len(class_list) - 1].textspace
-    current_textspace = len(name) * 3.5
+    if(len(name) > 8):
+        current_textspace = len(name) * 10
+    else:
+        current_textspace = len("methods:") * 3.5
 
     #Find a big enough gap to place the newest class
     while not placed:
-        if x1 - last_textspace - current_textspace < 0:
-            x1 = last_textspace + current_textspace + 60
-        if len(test_canvas.find_overlapping(x1 - last_textspace - current_textspace, y1, x2 + current_textspace, y2)) != 0:
-            if x2 > test_canvas.winfo_width() - 80:
+        if x1 - current_textspace < 0:
+            x1 = current_textspace + 60
+        if len(test_canvas.find_overlapping(x1 - current_textspace - 20, y1 - 20, x2 + current_textspace - 20, y2 + 20)) != 0:
+            if x2 > maxx - current_textspace - 40:
                 y1 += 25
                 y2 += 25
                 x1 = 60
                 x2 = 140
                 last_textspace = 0
-
             else:
-                x1 += 80
-                x2 += 80
+                x1 += 1
+                x2 += 1
+            if x2 > maxx - current_textspace - 40 and y2 > maxy:
+                update_global(1000, 1000)
+                test_canvas.config(scrollregion=(0,0,maxx,maxy))
         else:
             placed = True
 
@@ -103,8 +118,8 @@ def create_box(name : str):
     ViewChange.bring_all_front(obj)
     #update the size of the current box
     update_size(len(class_list) - 1)
-    #Fix any box that my have been overlapped
-    UMLField.fix_pos(len(class_list) - 1)
+    #Fix any box that may have been overlapped
+    # UMLField.fix_pos(len(class_list) - 1)
 
 def create_box_with_coords(name : str, x1 : int, y1 : int, x2 : int, y2 : int):
     obj = UMLsquare(x1, y1, x2, y2, name)

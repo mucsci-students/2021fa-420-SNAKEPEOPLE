@@ -39,6 +39,13 @@ def run():
     
     side_panel = Side_Panel.init_notebook(side_frame)
     
+    hbar=tk.Scrollbar(main_frame,orient=tk.HORIZONTAL, command=UMLBox.test_canvas.xview)
+    hbar.pack(fill=tk.X, side=tk.BOTTOM)
+    vbar=tk.Scrollbar(main_frame,orient=tk.VERTICAL, command=UMLBox.test_canvas.yview)
+    vbar.pack(fill=tk.Y, side=tk.RIGHT)
+    UMLBox.test_canvas.configure(yscrollcommand=vbar.set)
+    UMLBox.test_canvas.configure(xscrollcommand=hbar.set)
+    UMLBox.test_canvas.bind('<Configure>', lambda e: UMLBox.test_canvas.configure(scrollregion= UMLBox.test_canvas.bbox("all")))
     
     # Element Placement
     main_frame.grid(
@@ -47,7 +54,7 @@ def run():
         sticky="nsew", 
         rowspan=2)
     main_frame.columnconfigure(1, weight=1)
-    main_frame.rowconfigure(0,weight=1)
+    main_frame.rowconfigure(1,weight=1)
     
     side_frame.grid(
         row=0, 
@@ -57,11 +64,7 @@ def run():
     side_frame.columnconfigure(2, weight=1)
     side_frame.rowconfigure(0, weight=1)
     
-    main_panel.grid(
-        row=0, 
-        column=1, 
-        sticky="nsew", 
-        rowspan=2)
+    main_panel.pack(fill=tk.BOTH, expand=tk.YES)
     
     side_panel.grid(
         row = 0,
@@ -94,6 +97,7 @@ def build_menu(window : tk.Tk) -> tk.Menu:
     menu_file.add_command(label = "New", command = clear_dict)
     menu_file.add_command(label = "Save", command = gui_windows.save_window)
     menu_file.add_command(label = "Load", command = gui_windows.load_window)
+    menu_file.add_command(label = "Export", command = gui_windows.export_window)
     menu_file.add_separator()
     menu_file.add_command(label = "Exit", command = exit)
     menubar.add_cascade(label = "File", menu = menu_file)

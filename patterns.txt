@@ -75,3 +75,22 @@ Design Pattern: MVC
                  either to listen for button clicks in the gui, or command
                  line input, depending on the startup mode. This is found throughout
                  all the controller files
+Design Pattern: Bridge
+    Location: UMLClass/UMLField/UMLMethod objects located in UMLclass/UMLAttributes
+    Description: Each class is composed of lists of UMLFields and UMLMethods.
+                 The UMLClass object refers to previously created UMLField
+                 objects and UMLMethod objects.
+Design Pattern: Adapter
+    Location: ImageAdapter
+    Description: The ImageAdapter is an object that sets up a canvas and window which
+                 can then be called to adapt the data from the model into a format
+                 used by the gui.
+Design Pattern: Decorator
+    Location: UMLLine
+    Description: The UMLLine initializer creates two pseudo-objects that are tuples,
+                 but it creates two in parrallel that can now easily tell how
+                 the line is connected to the box, a reference to the line tkinter
+                 object itself, and what the destination box is on the canvas. Its a
+                 Decorator because it packs multiple bits of information on top of the
+                 tkinter line object so that later it can be manipulated easily along
+                 with the tkinter rectangle object it is connected to.
