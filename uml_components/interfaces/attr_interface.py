@@ -52,10 +52,7 @@ def find_field(uml : UMLClass.UMLClass,
     returns False and None.
     """
     
-    if field in uml.fields:
-        return True
-        
-    return False
+    return field in uml.fields
 
 def find_param(method : UMLMethod,
                param : UMLParameter) -> bool:
@@ -72,17 +69,14 @@ def find_param(method : UMLMethod,
     returns False and None.
     """
     
-    if param in method.params:
-        return True
-    
-    return False
+    return param in method.params
 
 
 # Attr Add Methods ===========================================================
 
 def add_field(class_name : str,
               field_name : str,
-              field_type : str) -> tuple:
+              field_type : str) -> Tuple [Union[UMLField, None], str]:
     """
     Adds a field to the list of fields for a given class.
     
@@ -200,7 +194,7 @@ def add_param(class_name : str,
                           parameter in 'method'.
     - param_type : str -> the type of the parameter to be added.
     
-    Return : Tuple [UMLParameter | None, str]
+    Return -> Tuple [UMLParameter | None, str]
         If the operation was successful, returns the instance of the
         UMLParameter object added and a success message. Otherwise, if the 
         operation fails, returns None and an error message describing the issue.
