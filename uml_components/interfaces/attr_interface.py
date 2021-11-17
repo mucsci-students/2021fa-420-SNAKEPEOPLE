@@ -208,7 +208,7 @@ def add_param(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    msg : str = (f"Successfuly added parameter '{param_name}' to method" + 
+    msg : str = (f"Successfuly added parameter '{param_name}' to method " + 
                  f"'{method_name}' in class '{class_name}'.")
     ret = None
     

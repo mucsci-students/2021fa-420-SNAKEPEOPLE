@@ -43,17 +43,24 @@ List of Available Commands:
 
     addfield <class name> <field name> <type>
 
-        TODO: add description
+        Adds a new field to a given class in the system. The class name must
+        be one that exists in the system. The field must also not share a
+        name with another field in the class.
 
 
     delfield <class_name> <field name>
 
-        TODO: add description
+        Deletes a field from a class in the system. The class name and field 
+        name must both be ones that exist in the system, and the field must be
+        in the specified class.
 
 
     renfield <class name> <field name> <new name>
 
-        TODO: add description
+        Renames an existing field in a class in the system. The class name and
+        current field name must both exist in the system, and the current field
+        must be in the specified class. The new field name must not be one that
+        already exists in that class.
 
 
     addmethod <class name> <method name> <method return type>
@@ -66,27 +73,38 @@ List of Available Commands:
     
     delmethod <class name> <method name> <method type>
     
-        TODO: add description
+        Deletes a method from a class in the system. The class name and method
+        name must both be ones that exist in the system, and the method must be
+        in the specified class, with the specified method type.
 
     
     renmethod <class name> <method name> <return type> <new name>
     
-        TODO: add description
+        Renames an existing method in a class in the system. The class name and
+        current method name must both exist in the system, and the current
+        method must be in the specified class with the specified type. The new
+        method name must not be one that exists in that class already.
 
     
     addparam <class name> <method name> <return type> <param name> <param type>
     
-        TODO: add description
+        Adds a parameter to a method in the system. The specified class name
+        must have the method with the method type. The param name with the
+        specified type must not already exist in that method.
 
     
     delparam <class_name> <method name> <return type> <param name>
     
-        TODO: add description
+        Deletes a parameter from a method in the system. The specified class
+        name must have the method with the method type, and the param with the
+        method.
 
     
     renparam <class_name> <method name> <return type> <param name> <new name>
     
-        TODO: add description
+        Renames an existing parameter in a method in the system. The specified
+        class name must have the method with the method type. The new param
+        name must not be one that exists in the method already.
 
     
     listclass all

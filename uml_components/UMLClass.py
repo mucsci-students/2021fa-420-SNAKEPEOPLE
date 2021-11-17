@@ -34,8 +34,6 @@ class UMLClass():
         self.position_x = position_x if position_x else -1
         self.position_y = position_y if position_y else -1
         
-        print(f"<Added Class>: {name}")
-        
 
     def __repr__(self):
         
