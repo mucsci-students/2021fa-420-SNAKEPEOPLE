@@ -1,8 +1,9 @@
 import json
+from typing import Union
+
 from uml_components.UMLAttributes import UMLField, UMLMethod, UMLParameter
 from uml_components.UMLRelationship import UMLRelationship
 from uml_components.UMLClass import UMLClass
-from typing import Union
 
 class ComplexEncoder(json.JSONEncoder):
     """
@@ -147,43 +148,3 @@ def decode(json_str : str) -> tuple:
     
     return (decode_classes(classes), decode_relationships(relationships))
         
-if __name__ == "__main__":
-    
-    from uml_components.interfaces import (class_interface as cif, 
-                                           attr_interface as aif,
-                                           rel_interface as rif)
-    from uml_components.UMLClass import class_dict
-    from uml_components.UMLRelationship import relationship_list
-        
-    cif.add_class("Apple")
-    clsa : UMLClass = class_dict["Apple"]
-    aif.add_field("Apple", "variety", "String")
-    aif.add_field("Apple", "height", "int")
-    aif.add_method("Apple", "getObj", "Object")
-    
-    cif.add_class("Banana")
-    clsb : UMLClass = class_dict["Banana"]
-    aif.add_field("Banana", "color", "String")
-    aif.add_field("Banana", "weight", "int")
-    aif.add_method("Banana", "getObj", "Object")
-    
-    rif.add_relationship(clsa.name, clsb.name, "inheritance")
-    rela : UMLRelationship = relationship_list[0]
-    
-    
-    cls_list = [clsa.toJson(), clsb.toJson()]
-    rel_list = [rela.toJson()]
-    
-    xmp = encode(cls_list, rel_list)
-    print(xmp)
-    
-    input()
-    json_dict = json.loads(xmp)
-    class_json = json_dict['classes']
-    rel_json = json_dict['relationships']
-    
-    old_cd = class_dict
-    class_dict, rel_list = decode(xmp)
-    print (class_dict)
-    print (rel_list)
-    
