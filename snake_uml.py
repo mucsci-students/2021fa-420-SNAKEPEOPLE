@@ -2,7 +2,7 @@
 # File Name:     snake_uml.py
 
 # External Imports
-import json
+import JSON
 from ntpath import realpath
 
 import sys
