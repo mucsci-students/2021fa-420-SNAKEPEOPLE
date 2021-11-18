@@ -172,7 +172,6 @@ def b_add_relation(
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ri.add_relationship(class1, class2, type)
-    print(output)
     if(output[1].split(' ')[0] == "<Added"):
         UMLLine.line_mediator()
         UMLSavepoint.clear_stack()

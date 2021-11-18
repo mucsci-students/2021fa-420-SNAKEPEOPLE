@@ -2,11 +2,12 @@
 # File Name:     snake_uml.py
 
 # External Imports
-import json
+import JSON
 from ntpath import realpath
 
 import sys
 import os.path
+import tab_comp
 #from typing import _Alias
 
 # Internal Imports
@@ -30,7 +31,7 @@ def main(args : list) -> None:
     if len(args) == 2:
         # Enters CLI mode if the user selects CLI.
         if args[1] == "--cli":
-            cli_loop()
+            tab_comp.main()
         # Stops the program if the user selection is invalid.
         else:
             print("Invalid input.")
