@@ -172,7 +172,6 @@ def b_add_relation(
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
     output = ri.add_relationship(class1, class2, type)
-    print(output)
     if(output[1].split(' ')[0] == "<Added"):
         UMLLine.line_mediator()
         UMLSavepoint.clear_stack()
@@ -261,7 +260,7 @@ def b_load_file(
         file_name : str, 
         label : tk.Label) -> None:
     output = snake_uml.load(file_name)
-    label.configure(text = output)
+    label.configure(text = output[1])
     UMLBox.test_canvas.delete("all")
     UMLBox.class_list = []
     UMLBox.class_mediator()

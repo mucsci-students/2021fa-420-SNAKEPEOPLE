@@ -35,6 +35,7 @@ def add_class(name : str) -> tuple:
         # name 'name' and adds it to the dict of existing classes.
         new_class = UMLClass.UMLClass(name)
         UMLClass.class_dict.update({name : new_class})
+        print(msg)
 
     return ret, msg
 

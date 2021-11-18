@@ -2,10 +2,12 @@
 # File Name:     snake_uml.py
 
 # External Imports
-from PIL import Image
 import JSON
+from ntpath import realpath
+
 import sys
 import os.path
+#from typing import _Alias
 
 # Internal Imports
 from uml_components import (UMLClass, 
@@ -16,6 +18,7 @@ from uml_components.interfaces import (class_interface,
                                        attr_interface)
 from gui import gui_main
 from gui import ImageAdapter
+import tab_comp
 
 def main(args : list) -> None:
     '''
@@ -28,7 +31,7 @@ def main(args : list) -> None:
     if len(args) == 2:
         # Enters CLI mode if the user selects CLI.
         if args[1] == "--cli":
-            cli_loop()
+            tab_comp.main()
         # Stops the program if the user selection is invalid.
         else:
             print("Invalid input.")
