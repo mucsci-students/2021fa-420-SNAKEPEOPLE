@@ -36,9 +36,9 @@ def save_as_png(file_name):
         UMLBox.test_canvas.update()
         bounds = UMLBox.test_canvas.bbox('all')
         #Create a new image to draw on
-        image1 = Image.new("RGB", (bounds[2] + 30, bounds[3] + 30), 
+        image = Image.new("RGB", (bounds[2] + 30, bounds[3] + 30), 
                             color="#D0D0D0")
-        draw = ImageDraw.Draw(image1)
+        draw = ImageDraw.Draw(image)
         #Set the font of the pillow image
         font = ImageFont.truetype(font="Font/arial.ttf", size=12)
         for i in UMLBox.class_list:
@@ -94,8 +94,10 @@ def save_as_png(file_name):
             mx,my = UMLBox.test_canvas.coords(i.methodlabel)
             #Draw the method/parameter text
             draw.text(xy=(center, my + 12), text=UMLMethod.block_text(i.name), fill="black", font=font, anchor="ma")
+        #crop the image
+        cropped_image = image.crop((bounds[0] - 50, bounds[1] - 50, bounds[2] + 50, bounds[3] + 50))
         #Save the file as a png
-        image1.save(file_name + '.png')
+        cropped_image.save(file_name + '.png')
         return "Exported png successfully."
     except:
         return "Failed to export."

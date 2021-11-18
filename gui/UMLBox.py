@@ -257,4 +257,15 @@ def class_mediator():
                 create_box_with_coords(name, x1, y1, x2, y2)
             update_methods(name)
             UMLField.update_fields(name)
-    
+    size_x = 0
+    size_y = 0
+    for name, value in UMLClass.class_dict.items():
+        if value.position_x > size_x:
+            size_x = value.position_x + 1000
+        if value.position_y > size_y:
+            size_y = value.position_y + 1000
+    global maxx
+    maxx = size_x
+    global maxy
+    maxy = size_y
+    test_canvas.config(scrollregion=(0,0, maxx, maxy))
