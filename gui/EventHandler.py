@@ -110,9 +110,9 @@ def can_dragMotion(event):
             new_x1 = cx - 80 - 2 * UMLBox.class_list[pos].textspace
             new_x2 = cx
         #Stop the box from going past the end of the canvas
-        if new_x2 > UMLBox.maxx:
-            new_x1 = UMLBox.maxx - 80 - 2 * UMLBox.class_list[pos].textspace - 1
-            new_x2 = UMLBox.maxx - 1
+        if new_x2 >= UMLBox.maxx - 1:
+            UMLBox.update_global(1000, 0)
+            UMLBox.test_canvas.config(scrollregion=(0,0,UMLBox.maxx,UMLBox.maxy))
         scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
 
     #If box is pulled down enough beyond the current view of the canvas, scroll down
@@ -128,8 +128,8 @@ def can_dragMotion(event):
             new_y2 = cy - 27 + (spacer2*(2/3))
         #Stop the box from going past the end of the canvas
         if new_y2 > UMLBox.maxy:
-            new_y1 = UMLBox.maxy - UMLBox.class_list[pos].yinc - 42 + spacer2
-            new_y2 = UMLBox.maxy - 27 + spacer2
+            UMLBox.update_global(0, 1000)
+            UMLBox.test_canvas.config(scrollregion=(0,0,UMLBox.maxx,UMLBox.maxy))
         scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
 
     #If box is pulled left enough beyond the current view of the canvas, scroll left
@@ -142,9 +142,9 @@ def can_dragMotion(event):
             new_x1 -= 78
             new_x2 -= 78
         #Stop the box from going past the end of the canvas
-        if x < 0:
-            new_x1 = 0
-            new_x2 = 2*UMLBox.class_list[pos].textspace + 80
+        if x < 5:
+            new_x1 = canvas.canvasx(5)
+            new_x2 = canvas.canvasx(5) + 2*UMLBox.class_list[pos].textspace + 80
         scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
 
     #If box is pulled up enough beyond the current view of the canvas, scroll up    
@@ -157,9 +157,9 @@ def can_dragMotion(event):
             new_y1 -= 60
             new_y2 -= 60
         #Stop the box from going past the end of the canvas
-        if y < 15:
-            new_y1 = 0
-            new_y2 = 15 + UMLBox.class_list[pos].yinc
+        if canvas.canvasy(event.y) <= canvas.canvasy(5):
+            new_y1 = canvas.canvasy(5)
+            new_y2 = canvas.canvasy(5) + 15 + UMLBox.class_list[pos].yinc
         scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label)
 
     #find the center of the box#
@@ -236,3 +236,11 @@ def scroll_helper(rec, pos, new_x1, new_x2, new_y1, new_y2, spacer, label):
     ViewChange.set_text(UMLBox.class_list[pos].methodlabel, x1 + 35, fy + spacer + 15 * len(uml.fields))
     mx,my = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
     ViewChange.set_text(UMLBox.class_list[pos].methodtext, center, my + 10)
+
+def crop():
+    if UMLBox.class_list != []:
+        bounds = UMLBox.test_canvas.bbox("all")
+        UMLBox.test_canvas.config(scrollregion=(0,0,bounds[2],bounds[3]))
+        xinc = bounds[2] - UMLBox.maxx
+        yinc = bounds[3] - UMLBox.maxy
+        UMLBox.update_global(xinc, yinc)

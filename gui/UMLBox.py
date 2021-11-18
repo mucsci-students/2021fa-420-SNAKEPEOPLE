@@ -15,17 +15,24 @@ from uml_components.interfaces import (attr_interface as ai,
 from uml_components import UMLClass
 
 class_list = []
-global maxx
-maxx = 4000
-global maxy
-maxy = 4000
 
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
+    size_x = 0
+    size_y = 0
+    for name, value in UMLClass.class_dict:
+        if value.position_x > size_x:
+            size_x = value.position_x + 1000
+        if value.position_y > size_y:
+            size_y = value.position_y + 1000
     global test_canvas
     test_canvas = tk.Canvas(frame,
                         bg="#D0D0D0",
-                        scrollregion=(0,0,4000,4000),
+                        scrollregion=(0,0,size_x, size_y),
                         bd=3)
+    global maxx
+    maxx = size_x
+    global maxy
+    maxy = size_y
     return test_canvas
 
 def update_global(xinc, yinc):
@@ -204,9 +211,9 @@ def update_size(pos : int):
     center = ((x2 - x1) / 2) + x1
     x1 = center - 40 - longest_name
     x2 = center + 40 + longest_name
-    if x1 < 0:
-        x1 = 10
-        x2 = 10 + 80 + 2 * longest_name
+    if x1 < test_canvas.canvasx(0):
+        x1 = test_canvas.canvasx(10)
+        x2 = test_canvas.canvasx(10) + 80 + 2 * longest_name
     #update the box size, and shift label text elements#
     ViewChange.set_rec(class_list[pos].rec, x1, y1, x2, y2)
     ViewChange.set_text(class_list[pos].label, center, y1 + 12)

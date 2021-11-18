@@ -16,12 +16,7 @@ class UMLLine():
     def __init__(self, x1, y1, x2, y2, source, dest, line_type):
         sourcepos = findpos(source)
         destpos = findpos(dest)
-        if line_type == "#000fff000":
-            shape = (20, 10, 7)
-        # if line_type == "aggregation":
-        else:
-            shape = (0,0,0)
-        line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, arrow=tk.FIRST, fill=line_type, width=3, arrowshape=shape)
+        line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill=line_type, width=3)
         UMLBox.test_canvas.tag_lower(line)
         #store entries for source and dest boxes that tell whether the box is the source
         #or destination of a relationship
