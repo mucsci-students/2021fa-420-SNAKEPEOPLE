@@ -16,7 +16,44 @@ class UMLLine():
     def __init__(self, x1, y1, x2, y2, source, dest, line_type):
         sourcepos = findpos(source)
         destpos = findpos(dest)
-        line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill=line_type, width=3)
+        b1x1, b1y1, b1x2, b1y2 = UMLBox.test_canvas.coords(source)
+        b2x1, b2y1, b2x2, b2y2 = UMLBox.test_canvas.coords(dest)
+
+        x1 = b1x1 + abs(b1x1-b1x2)/2
+        x2 = b2x1 + abs(b2x1-b2x2)/2
+        y1 = b1y1 + abs(b1y1-b1y2)/2
+        y2 = b2y1 + abs(b2y1-b2y2)/2
+
+        if x2 > x1:
+            if b2y2 < b1y1:
+                test = UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                    b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="red")
+            elif b2y1 > b1y2:
+                test = UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                    b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="red")
+            else:
+                test = UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 10, 
+                    y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, fill="red")
+        else:
+            if b2y2 < b1y1:
+                test = UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                    b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="red")
+            elif b2y1 > b1y2:
+                test = UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                    b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="red")
+            else:
+                test = UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
+                    y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, fill="red")
+
+        if(line_type == "aggregation"):
+            color = 'blue'
+        elif(line_type == "composition"):
+            color = '#000fff000'
+        elif(line_type == "inheritance"):
+            color = 'red'
+        else:
+            color = 'black'
+        line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, arrow=tk.FIRST, fill=color, width=3)
         UMLBox.test_canvas.tag_lower(line)
         #store entries for source and dest boxes that tell whether the box is the source
         #or destination of a relationship
@@ -27,21 +64,13 @@ class UMLLine():
 def add_line(source : str, dest : str, line_type : str):
     sourcepos = UMLBox.find_pos_from_name(source)
     destpos = UMLBox.find_pos_from_name(dest)
-    if(line_type == "aggregation"):
-        color = 'blue'
-    elif(line_type == "composition"):
-        color = '#000fff000'
-    elif(line_type == "inheritance"):
-        color = 'red'
-    else:
-        color = 'black'
     sourceItem = UMLBox.class_list[UMLBox.find_pos_from_name(source)].rec
     destItem = UMLBox.class_list[UMLBox.find_pos_from_name(dest)].rec
     midsourcex = UMLBox.test_canvas.coords(sourceItem)[0]
     midsourcey = UMLBox.test_canvas.coords(sourceItem)[1]
     middestx = UMLBox.test_canvas.coords(destItem)[0]
     middesty = UMLBox.test_canvas.coords(destItem)[1]
-    UMLLine(midsourcex, midsourcey, middestx, middesty, sourceItem, destItem, color)
+    UMLLine(midsourcex, midsourcey, middestx, middesty, sourceItem, destItem, line_type)
 
 ##Find the position of the class_list of the source#
 def findpos(source):
