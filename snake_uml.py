@@ -124,6 +124,7 @@ def cli_loop() -> None:
                 
         elif cmd[0] == 'addmethod':
             if check_inputs(cmd, 4):
+                method = UMLAttributes.UMLMethod(cmd[2],)
                 attr_interface.add_method(cmd[1], 
                                           cmd[2], 
                                           cmd[3])

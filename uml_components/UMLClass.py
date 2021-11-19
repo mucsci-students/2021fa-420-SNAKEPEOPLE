@@ -122,6 +122,15 @@ class UMLClass():
                      param : UMLParameter) -> None:
         idx = method.params.index(param)
         method.params.pop(idx)
+        
+    def get_field(self,
+                  field_name : str) -> Union[UMLField, None]:
+        field : UMLField
+        for field in self.fields:
+            if field_name == field.name:
+                return field
+        
+        return None
             
     
     def toJson(self) -> dict:

@@ -3,6 +3,8 @@
 
 # External Imports
 import cmd
+from uml_components.UMLAttributes import UMLField, UMLParameter
+from uml_components.UMLClass import UMLClass, class_dict
 
 # Internal Imports
 from uml_components.interfaces import (
@@ -18,7 +20,7 @@ import queue
 
 import snake_uml
 
-#################################################################################
+################################################################################
 
 # List of commands that can be tab completed.
 valids = [
@@ -53,187 +55,7 @@ valids = [
     'exit'
 ]
 
-#################################################################################
-'''
-Tesing stuff, dont pay attention, will delete later when not needed.
-
-def when_tab(command : list[str]):
-    # If the user hasn't typed in anything, pressing tab should put in the 
-    #   help command.
-    if len(command) == 0:
-        keyboard.write('\b\b\b\b\b\bhelp ')
-        return
-
-    # If the user has one word typed, aka the command, then we should try to
-    #   tab complete the command if we can.
-    elif len(command) == 1:
-        word = command[0]
-        
-        # Conditionals checking for 'exit' command.
-        if word[0] == 'e':
-            if word in 'exit':
-                keyboard.write('\b\b\b\b\bexit ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'quit' command (same as exit command).
-        if word[0] == 'q':
-            if word in 'quit':
-                keyboard.write('\b\b\b\b\bquit ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'save' command.
-        elif word[0] == 's':
-            if word in 'save':
-                keyboard.write('\b\b\b\b\bsave ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'undo' command.
-        elif word[0] == 'u':
-            if word in 'undo':
-                keyboard.write('\b\b\b\b\bundo ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'help' command.
-        elif word[0] == 'h':
-            if word in 'help':
-                keyboard.write('\b\b\b\b\bhelp ')
-                return
-            else:
-                return
-
-        # Conditionals checking for commands that start with 'l'.
-        #   Defaults to 'listclass'.
-        elif word[0] == 'l':
-            if len(word) == 1:
-                keyboard.write('\b\blistclass ')
-                return
-            else:
-                if word in 'load':
-                    keyboard.write('\b\b\b\b\bload ')
-                else:
-                    if len(word) <= 4 and word in 'list':
-                        keyboard.write('\b\b\b\b\blistclass ')
-                        return
-                    elif word in 'listclass':
-                        keyboard.write('\b\b\b\b\b\b\b\b\b\blistclass ')
-                        return
-                    elif word in 'listrel':
-                        keyboard.write('\b\b\b\b\b\b\b\blistrel ')
-                        return
-                    else:
-                        return
-
-        # Conditionals checking for commands that start with 'a'.
-        #   Defaults to 'addclass'.
-        elif word[0] == 'a':
-            if len(word) <= 3:
-                keyboard.write('\b\b\b\baddclass ')
-                return
-            else:
-                if word in 'addclass':
-                    keyboard.write('\b\b\b\b\b\b\b\b\baddclass ')
-                    return
-                elif word in 'addrel':
-                    keyboard.write('\b\b\b\b\b\b\baddrel ')
-                    return
-                elif word in 'addfield':
-                    keyboard.write('\b\b\b\b\b\b\b\b\baddfield ')
-                    return
-                elif word in 'addmethod':
-                    keyboard.write('\b\b\b\b\b\b\b\b\b\baddmethod ')
-                    return
-                elif word in 'addparam':
-                    keyboard.write('\b\b\b\b\b\b\b\b\baddparam ')
-                    return
-                else:
-                    return
-
-        # Conditionals checking for commands that start with 'd'.
-        #   Defaults to 'delclass'.
-        elif word[0] == 'd':
-            if len(word) <= 3:
-                keyboard.write('\b\b\b\bdelclass ')
-                return
-            else:
-                if word in 'delclass':
-                    keyboard.write('\b\b\b\b\b\b\b\b\bdelclass ')
-                    return
-                elif word in 'delrel':
-                    keyboard.write('\b\b\b\b\b\b\bdelrel ')
-                    return
-                elif word in 'delfield':
-                    keyboard.write('\b\b\b\b\b\b\b\b\bdelfield ')
-                    return
-                elif word in 'delmethod':
-                    keyboard.write('\b\b\b\b\b\b\b\b\b\bdelmethod ')
-                    return
-                elif word in 'delparam':
-                    keyboard.write('\b\b\b\b\b\b\b\b\bdelparam ')
-                    return
-                else:
-                    return
-
-        # Conditionals checking for commands that start with 'r'.
-        #   Defaults to 'renclass'.
-        elif word[0] == 'r':
-            if len(word) <= 3:
-                keyboard.write('\b\b\b\brenclass ')
-                return
-            else:
-                if word in 'redo':
-                    keyboard.write('\b\b\b\b\bredo ')
-                    return
-                elif word in 'renclass':
-                    keyboard.write('\b\b\b\b\b\b\b\b\brenclass ')
-                    return
-                elif word in 'renfield':
-                    keyboard.write('\b\b\b\b\b\b\b\b\brenfield ')
-                    return
-                elif word in 'renmethod':
-                    keyboard.write('\b\b\b\b\b\b\b\b\b\brenmethod ')
-                    return
-                elif word in 'renparam':
-                    keyboard.write('\b\b\b\b\b\b\b\b\brenparam ')
-                    return
-                else:
-                    return
-
-    # If the user typed in a command and then an argument(s) for the command.
-    #   If we wanted to implement tab completion for argument names, that would go here.
-    else:
-        return
-
-def test():
-    print("===============================================\n" +
-          "|           Snake People UML Editor           |\n" +
-          "===============================================\n" +
-          "      Type 'help' for a list of commands.      \n" +
-          "       Type 'exit' to close the program.       \n")
-    keyboard.add_hotkey('tab', keyboard.write, args = ["\b\b\b\b\bnuts"])
-    while True:
-        cmd = input(">> ").split()
-        
-        if len(cmd) == 0:
-            continue
-
-        elif cmd[0] == 'exit':
-            break
-
-        else:
-            continue
-
-    keyboard.unhook_all_hotkeys()
-'''
-
-#################################################################################
+################################################################################
 
 def main():
     TabComp().cmdloop()
@@ -371,12 +193,19 @@ class TabComp(cmd.Cmd):
             name with another field in the class.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.add_field(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 3:
+            class_name = lst[0]
+            field_name = lst[1]
+            field_type = lst[2]
+            
+            UMLSavepoint.save_point("cli")
+            output = ai.add_field(class_name, field_name, field_type)
+            if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+            if(output[1].split(' ')[0] == "Successfully"):
+                UMLSavepoint.clear_stack()
+        else:
+            print(f"Invalid Arguments Error: Expected 3, received {len(lst)}")
 #
     def do_delfield(
             self,
@@ -392,12 +221,22 @@ class TabComp(cmd.Cmd):
             in the specified class.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.delete_field(lst[0], lst[1])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 2:
+            class_name = lst[0]
+            field_name = lst[1]
+            
+            UMLSavepoint.save_point("cli")
+            
+            uml : UMLClass = class_dict[class_name]
+            field = uml.get_field(field_name)
+            output = ai.delete_field(class_name, field)
+            
+            if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+            if(output[1].split(' ')[0] == "Successfully"):
+                UMLSavepoint.clear_stack()
+        else:
+            print(f"Invalid Arguments Error: Expected 2, received {len(lst)}")
 #
     def do_renfield(
             self,
@@ -414,12 +253,21 @@ class TabComp(cmd.Cmd):
             already exists in that class.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.rename_field(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 3:
+            class_name = lst[0]
+            field_name = lst[1]
+            new_name = lst[2]
+            
+            uml : UMLClass = class_dict[class_name]
+            field = uml.get_field(field_name)
+            
+            UMLSavepoint.save_point("cli")
+            output = ai.rename_field(class_name, field, new_name)
+            
+            if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+            if(output[1].split(' ')[0] == "Successfully"):
+                UMLSavepoint.clear_stack()
 #
     def do_addmethod(
             self,
@@ -428,20 +276,56 @@ class TabComp(cmd.Cmd):
         NAME
             addmethod
         SYNTAX
-            addmethod <class name> <method name> <method return type>
+            addmethod <class name> <method name> <method return type> 
         DESCRIPTION
             Adds a new method to a given class in the system. The class name must
             be one that exists in the system. The method must also not share a
             combination of the same name and return type as another method in the
             class. 
+            
+            -p, --params
+                Arguments following this flag pre-add parameters to the method.
+                SYNTAX
+                    <param name> <param_type> ...
+
         '''
+        flags = {"-p", "--params"}
+        
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.add_method(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) >= 3:
+            class_name = lst[0]
+            method_name = lst[1]
+            return_type = lst[2]
+            
+            if len(lst) >= 3:
+                
+                
+                UMLSavepoint.save_point("cli")
+                output = ai.add_method(class_name, method_name, return_type)
+                if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if(output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+                    
+            elif lst[3] in pf and len(lst[4:]) % 2 == 0:
+                
+                params_raw = lst[4:]
+                param_lst = []
+                while params_raw != []:
+                    p_name = params_raw[0]
+                    p_type = params_raw[1]
+                    param = UMLParameter(p_name, p_type)
+                    param_lst.append(param)
+                    params_raw.pop(0)
+                    params_raw.pop(0)
+                    
+                UMLSavepoint.save_point("cli")
+                output = ai.add_method(class_name, method_name, return_type, param_lst)
+                if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if(output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+                
 #
     def do_delmethod(
             self,

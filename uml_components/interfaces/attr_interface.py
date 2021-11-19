@@ -128,7 +128,7 @@ def add_field(class_name : str,
 def add_method(class_name : str,
                method_name : str,
                method_type : str,
-               param_list : List) -> Tuple [Union[UMLMethod, None], str]:
+               param_list : List = []) -> Tuple [Union[UMLMethod, None], str]:
     """
     Adds a method to the list of methods for a given class.
     
