@@ -289,7 +289,7 @@ def add_method_window() -> None:
         padx = 5, 
         pady = 5)
 
-    # Label for Program Output
+    # Label for Program Output.
     outputlabel = tk.Label(frame, text = "", font = ('bold'))
     outputlabel.grid(row = 4, column = 0, sticky = "w")
 
