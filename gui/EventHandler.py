@@ -181,10 +181,135 @@ def can_dragMotion(event):
         for i in UMLBox.class_list[pos].rels:
             if i[0] == "source":
                 x1, y1, x2, y2 = UMLBox.test_canvas.coords(i[1])
-                ViewChange.set_line(i[1], new_x1, new_y1, x2, y2)
+
+                b1x1, b1y1, b1x2, b1y2 = UMLBox.get_coords(UMLBox.class_list[pos].name)
+                b2x1, b2y1, b2x2, b2y2 = UMLBox.test_canvas.coords(i[2])
+
+                lx1 = b1x1 + abs(b1x1-b1x2)/2
+                lx2 = b2x1 + abs(b2x1-b2x2)/2
+                ly1 = b1y1 + abs(b1y1-b1y2)/2
+                ly2 = b2y1 + abs(b2y1-b2y2)/2
+
+                if len(UMLBox.test_canvas.coords(i[3])) == 8:
+                    if lx2 > lx1:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, x1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 10, 
+                                ly1 - 10, b1x2 + 20, ly1, b1x2 + 10, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, lx1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 10, 
+                                ly1 - 10, b1x1 - 20, ly1, b1x1 - 10, ly1 + 10)
+                            lx1 = b1x1 - 20
+                else:
+                    if lx2 > lx1:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 20, 
+                                ly1 - 10, b1x2 + 20, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 20, 
+                                ly1 - 10, b1x1 - 20, ly1 + 10)
+                            lx1 = b1x1 - 20
+                ViewChange.set_line(i[1], lx1, ly1, lx2, ly2)
             if i[0] == "dest":
                 x1, y1, x2, y2 = UMLBox.test_canvas.coords(i[1])
-                ViewChange.set_line(i[1], x1, y1, new_x1, new_y1)
+                b2x1, b2y1, b2x2, b2y2 = UMLBox.get_coords(UMLBox.class_list[pos].name)
+                b1x1, b1y1, b1x2, b1y2 = UMLBox.test_canvas.coords(i[2])
+
+                lx1 = b1x1 + abs(b1x1-b1x2)/2
+                lx2 = b2x1 + abs(b2x1-b2x2)/2
+                ly1 = b1y1 + abs(b1y1-b1y2)/2
+                ly2 = b2y1 + abs(b2y1-b2y2)/2
+
+                if len(UMLBox.test_canvas.coords(i[3])) == 8:
+                    if lx2 > lx1:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, lx1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 10, 
+                                ly1 - 10, b1x2 + 20, ly1, b1x2 + 10, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, lx1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 10, 
+                                ly1 - 10, b1x1 - 20, ly1, b1x1 - 10, ly1 + 10)
+                            lx1 = b1x1 - 20
+                else:
+                    if lx2 > lx1:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 20, 
+                                ly1 - 10, b1x2 + 20, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        if b2y2 < b1y1:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        elif b2y1 > b1y2:
+                            shape= UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        else:
+                            shape= UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 20, 
+                                ly1 - 10, b1x1 - 20, ly1 + 10)
+                            lx1 = b1x1 - 20
+                ViewChange.set_line(i[1], lx2, ly2, lx1, ly1)
 
 def on_unclick(event):
     #Add to the undo stack if the box moved

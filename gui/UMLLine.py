@@ -24,41 +24,131 @@ class UMLLine():
         y1 = b1y1 + abs(b1y1-b1y2)/2
         y2 = b2y1 + abs(b2y1-b2y2)/2
 
-        if x2 > x1:
-            if b2y2 < b1y1:
-                test = UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
-                    b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="red")
-            elif b2y1 > b1y2:
-                test = UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
-                    b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="red")
-            else:
-                test = UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 10, 
-                    y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, fill="red")
-        else:
-            if b2y2 < b1y1:
-                test = UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
-                    b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="red")
-            elif b2y1 > b1y2:
-                test = UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
-                    b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="red")
-            else:
-                test = UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
-                    y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, fill="red")
-
         if(line_type == "aggregation"):
             color = 'blue'
+            add_dash = False
+            if x2 > x1:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, outline=color, fill="#D0D0D0", width=2)
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, outline=color, fill="#D0D0D0", width=2)
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 10, 
+                        y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, outline=color, fill="#D0D0D0", width=2)
+                    x1 = b1x2 + 20
+            else:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, outline=color, fill="#D0D0D0", width=2)
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, outline=color, fill="#D0D0D0", width=2)
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
+                        y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, outline=color, fill="#D0D0D0", width=2)
+                    x1 = b1x2 - 20
         elif(line_type == "composition"):
             color = '#000fff000'
+            add_dash = False
+            if x2 > x1:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="black", outline=color)
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="black", outline=color)
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 10, 
+                        y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, fill="black", outline=color)
+                    x1 = b1x2 + 20
+            else:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="black", outline=color)
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="black", outline=color)
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
+                        y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, fill="black", outline=color)
+                    x1 = b1x2 - 20
         elif(line_type == "inheritance"):
             color = 'red'
+            add_dash = False
+            if x2 > x1:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 20, 
+                        y1 - 10, b1x2 + 20, y1 + 10, outline=color, fill="#D0D0D0")
+                    x1 = b1x2 + 20
+            else:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 20, 
+                        y1 - 10, b1x1 - 20, y1 + 10, outline=color, fill="#D0D0D0")
+                    x1 = b1x1 - 20
         else:
             color = 'black'
-        line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, arrow=tk.FIRST, fill=color, width=3)
+            add_dash = True
+            if x2 > x1:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 20, 
+                        y1 - 10, b1x2 + 20, y1 + 10, outline=color, fill="#D0D0D0")
+                    x1 = b1x2 + 20
+            else:
+                if b2y2 < b1y1:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
+                        b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y1 - 20
+                elif b2y1 > b1y2:
+                    shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
+                        b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
+                    y1 = b1y2 + 20
+                else:
+                    shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 20, 
+                        y1 - 10, b1x1 - 20, y1 + 10, outline=color, fill="#D0D0D0")
+                    x1 = b1x1 - 20
+        if not add_dash:    
+            line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, fill=color, width=3)
+        else:
+            line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, fill=color, width=3, dash=(255,255))
         UMLBox.test_canvas.tag_lower(line)
         #store entries for source and dest boxes that tell whether the box is the source
         #or destination of a relationship
-        UMLBox.class_list[sourcepos].rels.append(("source", line, dest))
-        UMLBox.class_list[destpos].rels.append(("dest", line, source))
+        UMLBox.class_list[sourcepos].rels.append(("source", line, dest, shape))
+        UMLBox.class_list[destpos].rels.append(("dest", line, source, shape))
 
 #add a line connecting two classes by name, source and dest#
 def add_line(source : str, dest : str, line_type : str):
@@ -97,6 +187,7 @@ def deleteline(source, dest):
         if (UMLBox.class_list[sourcepos].rels[subpos][0] == "source" 
             and UMLBox.class_list[sourcepos].rels[subpos][2] == dest):
             line = UMLBox.class_list[sourcepos].rels[subpos][1]
+            ViewChange.del_item(UMLBox.class_list[sourcepos].rels[subpos][3])
             UMLBox.class_list[sourcepos].rels.pop(subpos)
         subpos += 1
     subpos = 0
@@ -104,16 +195,19 @@ def deleteline(source, dest):
     while subpos < len(UMLBox.class_list[destpos].rels):
         if (UMLBox.class_list[destpos].rels[subpos][0] == "dest" 
             and UMLBox.class_list[destpos].rels[subpos][2] == source):
+            ViewChange.del_item(UMLBox.class_list[sourcepos].rels[subpos][3])
             UMLBox.class_list[destpos].rels.pop(subpos)
         subpos += 1
     #delete the line element itself#
     ViewChange.del_item(line)
+    
 
 def line_mediator():
     #Delete all existing relationships on the canvas
     for i in UMLBox.class_list:
         while len(i.rels) > 0:
             ViewChange.del_item(i.rels[0][1])
+            ViewChange.del_item(i.rels[0][3])
             i.rels.pop(0)
         i.rels = []
     #Add any relationships back to the list, if both boxes exist in the canvas
