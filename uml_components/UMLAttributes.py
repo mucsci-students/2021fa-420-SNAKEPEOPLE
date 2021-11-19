@@ -6,11 +6,16 @@ class UMLAttribute:
     
     def toJson(self) -> dict:
         return self.__dict__
-
-    
+  
 @dataclass
 class UMLParameter (UMLAttribute):
     type : str
+    
+    def __eq__(self, 
+               other):
+        if isinstance(other, UMLParameter):
+            return (self.name == other.name and
+                    self.type == other.type)
     
     def __repr__(self) -> str:
         output = f"{self.type} {self.name}"
@@ -24,6 +29,12 @@ class UMLParameter (UMLAttribute):
 class UMLField (UMLAttribute):
     type : str
     
+    def __eq__(self, 
+               other):
+        if isinstance(other, UMLField):
+            return (self.name == other.name and
+                    self.type == other.type)
+    
     def __repr__(self):
         output = f"{self.type} {self.name}"
         return output
@@ -36,6 +47,13 @@ class UMLField (UMLAttribute):
 class UMLMethod (UMLAttribute):
     return_type : str
     params : list = field(default_factory=list)
+            
+    def __eq__(self, 
+               other):
+        if isinstance(other, UMLMethod):
+            return (self.name == other.name and
+                    self.return_type == other.return_type and
+                    self.params == other.params)
             
     def __repr__(self):
         output = f"{self.return_type} {self.name}("
@@ -62,9 +80,5 @@ class UMLMethod (UMLAttribute):
         
     def clear(self) -> None:
         self.params = []
-
-if __name__ == "__main__":       
-    method = UMLMethod("get_attr", "UMLAttribute")
-    method.add_param("index", "int")
-    method.add_param("count", "int")
-    print(method)
+        
+    

@@ -3,9 +3,11 @@
 
 # External Imports
 import tkinter as tk
+from tkinter import ttk
 
 # Internal Imports
 from . import gui_functions as gf
+from uml_components import (UMLClass, UMLAttributes)
 
 ###################################################################################################
 '''
@@ -229,90 +231,85 @@ def add_method_window() -> None:
         borderwidth = 3)
     frame.pack(ipadx = 10)
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
+    # List of classes in the current system.
+    classes = []
+    for class_name in UMLClass.class_dict:
+        classes.append(class_name)
+
+    # Label: Select a Class.
+    classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+    classlabel.grid(row = 0, column = 0, sticky = "w")
+
+    # Creating the classes dropdown.
+    classvar = tk.StringVar(frame)
+    classvar.set("Click to Select") # Default value
+    class_dropdown = tk.OptionMenu(frame, classvar, *classes, value = "")
+    class_dropdown.config(width = 20) # Set the width of the dropdown
+    class_dropdown.grid(row = 1, column = 0, sticky = "w")
+
+    # Label/Entry for Method Name
+    label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
+    label1.grid(row = 2, column = 0, sticky = "w")
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 3, column = 0, sticky = "w")
+
+    # Label/Entry for Method Type
+    label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
+    label2.grid(row = 4, column = 0, sticky = "w")
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 5, column = 0, sticky = "w")
+
+    # Adding Parameters Section
+    paramlist = []
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 7, column = 0, sticky = "ew")
+
+    label3 = tk.Label(frame,text = "Parameters w/ Methods", font = ('bold'))
+    label3.grid(row = 8, column = 0)
+
+    label4 = tk.Label(frame, text = "Param Name :", font = ('bold'))
+    label4.grid(row = 9, column = 0, sticky = "w")
+    entry4 = tk.Entry(frame, width = 50)
+    entry4.grid(row = 10, column = 0, sticky = "w")
+
+    label5 = tk.Label(frame, text = "Param Type :", font = ('bold'))
+    label5.grid(row = 11, column = 0, sticky = "w")
+    entry5 = tk.Entry(frame, width = 50)
+    entry5.grid(row = 12, column = 0, sticky = "w")
+
+    new_param_btn = tk.Button(
+        command = lambda: paramlist.append(UMLAttributes.UMLParameter(entry4.get(), entry5.get())),
+        master = frame,
+        text = "+ Param",
         font = ('bold'))
-    lbl1.grid(
-        row = 0, 
+    new_param_btn.grid(
+        row = 13, 
         column = 0, 
-        sticky = "w")
+        sticky = "e", 
+        padx = 5, 
+        pady = 5)
 
-    # Label: "Method Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Method Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: "Method Type"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "Method Type:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: Output Message
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their method name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their method type.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
+    # Label for Program Output
+    outputlabel = tk.Label(frame, text = "", font = ('bold'))
+    outputlabel.grid(row = 4, column = 0, sticky = "w")
 
     # Confirm Button, command is the helper checking the user input
     #     and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_add_method(etr1.get(), etr2.get(), etr3.get(), lbl4),
+        command = lambda: gf.b_add_method(classvar.get(), entry1.get(), entry2.get(), outputlabel),
         master = frame, 
         text = "Confirm", 
         font = ('bold'))
     btn.grid(
-        row = 3, 
-        column = 1, 
+        row = 6, 
+        column = 0, 
         sticky = "e", 
         padx = 5, 
         pady = 5)
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_add_method(etr1.get(), etr2.get(), etr3.get(), lbl4))
+        lambda event: gf.b_add_method(classvar.get(), entry1.get(), entry2.get(), outputlabel))
     root.mainloop()
 
 
@@ -1008,110 +1005,39 @@ def add_param_window() -> None:
         borderwidth = 3)
     frame.pack(ipadx = 10)
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # List of classes in the current system.
+    classes = []
+    for class_name in UMLClass.class_dict:
+        classes.append(class_name)
 
-    # Label: "Method Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Method Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    # Label: Select a Class.
+    classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+    classlabel.grid(row = 0, column = 0, sticky = "w")
 
-    # Label: "Method Type"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "Method Type:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+    # Creating the classes dropdown.
+    classvar = tk.StringVar(frame)
+    classvar.set("Click to Select") # Default value
+    class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+    class_dropdown.config(width = 20) # Set the width of the dropdown
+    class_dropdown.grid(row = 0, column = 1, sticky = "w")
 
-    # Label: "Param Name"
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "Param Name:", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
+    # List of methods
+    methods = []
+    classname = classvar.get()
+    selected_class = UMLClass.class_dict[classname]
+    for method in selected_class.methods:
+        methods.append(method)
 
-    # Label: "Param Type"
-    lbl5 = tk.Label(
-        master = frame,  
-        text = "Param Type:", 
-        font = ('bold'))
-    lbl5.grid(
-        row = 4, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: Output Message
-    lbl6 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl6.grid(
-        row = 5, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their method name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their method type.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their param name.
-    etr4 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr4.grid(
-        row = 3, 
-        column = 1, 
-        sticky = "w")
+    # Label: Select a Method.
+    methodlabel = tk.Label(frame, text = "Select a Method: ", font = ('bold'))
+    methodlabel.grid(row = 1, column = 0, sticky = "w")
     
-    # Entry where the user can enter their param type.
-    etr5 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr5.grid(
-        row = 4, 
-        column = 1, 
-        sticky = "w")
+    # Creating the methods dropdown.
+    methodvar = tk.StringVar(master = frame)
+    methodvar.set("Click to Select") # Default value
+    method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
+    method_dropdown.config(width = 50) # Set the width of the dropdown
+    method_dropdown.grid(row = 1, column = 1, sticky = "w")
 
     # Confirm Button, command is the helper checking the user input
     #     and executing the appropriate function.

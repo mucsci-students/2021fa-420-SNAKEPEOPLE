@@ -1,4 +1,4 @@
-relationship_list = []
+from typing import List
 
 class UMLRelationship():
     
@@ -40,3 +40,5 @@ class UMLRelationship():
         
     def toJson(self):
         return self.__dict__
+
+relationship_list : List[UMLRelationship] = []
