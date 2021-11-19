@@ -28,11 +28,11 @@ class UMLLine():
             color = 'blue'
             add_dash = False
             if x2 > x1:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y2 + 20
@@ -41,11 +41,11 @@ class UMLLine():
                         y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, outline=color, fill="#D0D0D0", width=2)
                     x1 = b1x2 + 20
             else:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y2 + 20
@@ -57,11 +57,11 @@ class UMLLine():
             color = '#000fff000'
             add_dash = False
             if x2 > x1:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="black", outline=color)
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="black", outline=color)
                     y1 = b1y2 + 20
@@ -70,11 +70,11 @@ class UMLLine():
                         y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, fill="black", outline=color)
                     x1 = b1x2 + 20
             else:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="black", outline=color)
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="black", outline=color)
                     y1 = b1y2 + 20
@@ -86,11 +86,11 @@ class UMLLine():
             color = 'red'
             add_dash = False
             if x2 > x1:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
@@ -99,11 +99,11 @@ class UMLLine():
                         y1 - 10, b1x2 + 20, y1 + 10, outline=color, fill="#D0D0D0")
                     x1 = b1x2 + 20
             else:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
@@ -115,11 +115,11 @@ class UMLLine():
             color = 'black'
             add_dash = True
             if x2 > x1:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
@@ -128,11 +128,11 @@ class UMLLine():
                         y1 - 10, b1x2 + 20, y1 + 10, outline=color, fill="#D0D0D0")
                     x1 = b1x2 + 20
             else:
-                if b2y2 < b1y1:
+                if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
-                elif b2y1 > b1y2:
+                elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
