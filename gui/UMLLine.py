@@ -54,7 +54,7 @@ class UMLLine():
                         y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, outline=color, fill="#D0D0D0", width=2)
                     x1 = b1x2 - 20
         elif(line_type == "composition"):
-            color = '#000fff000'
+            color = 'green'
             add_dash = False
             if x2 > x1:
                 if b2y2 <= b1y1:
@@ -147,8 +147,8 @@ class UMLLine():
         UMLBox.test_canvas.tag_lower(line)
         #store entries for source and dest boxes that tell whether the box is the source
         #or destination of a relationship
-        UMLBox.class_list[sourcepos].rels.append(("source", line, dest, shape))
-        UMLBox.class_list[destpos].rels.append(("dest", line, source, shape))
+        UMLBox.class_list[sourcepos].rels.append(("source", line, dest, shape, line_type))
+        UMLBox.class_list[destpos].rels.append(("dest", line, source, shape, line_type))
 
 #add a line connecting two classes by name, source and dest#
 def add_line(source : str, dest : str, line_type : str):

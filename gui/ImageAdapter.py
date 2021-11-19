@@ -32,7 +32,7 @@ class ImageAdapter():
         self.window.destroy()
 
 def save_as_png(file_name):
-    try:
+    # try:
         UMLBox.test_canvas.update()
         bounds = UMLBox.test_canvas.bbox('all')
         #Create a new image to draw on
@@ -54,31 +54,132 @@ def save_as_png(file_name):
                     pos = UMLLine.findpos(k[2])
                     #Get coords of the destination box
                     dx1, dy1, dx2, dy2 = UMLBox.get_coords(UMLBox.class_list[pos].name)
-                    draw.line(xy=((coords[0], coords[1]), (dx1, dy1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=4)
-                    #Get start and end points of the line
-                    lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(k[1])
-                    #Find the slope of the current line
-                    slope = (ly2-ly1)/(lx2-lx1)
-                    #Get the y intercept of the line
-                    b = ly2 - slope*lx2
-                    #Aquire the base vertices for the arrowhead
-                    v1, v2 = get_vals(lx2, lx1, ly2, ly1, b, slope)
-                    # Check if line is vertical
-                    if lx1 == lx2:
-                        vtx1 = (v1-5, v2)
-                        vtx2 = (v1+5, v2)
-                    # Check if line is horizontal
-                    elif ly1==ly2:
-                        vtx1 = (v1, v2+5)
-                        vtx2 = (v1, v2-5)
+                    #Get the dimensions of the source and destination box.
+                    b1x1, b1y1, b1x2, b1y2 = UMLBox.test_canvas.coords(i.name)
+                    b2x1, b2y1, b2x2, b2y2 = UMLBox.test_canvas.coords(k[2])
+
+                    x1 = b1x1 + abs(b1x1-b1x2)/2
+                    x2 = b2x1 + abs(b2x1-b2x2)/2
+                    y1 = b1y1 + abs(b1y1-b1y2)/2
+                    y2 = b2y1 + abs(b2y1-b2y2)/2
+
+                    if(k[4] == "aggregation"):
+                        color = 'blue'
+                        add_dash = False
+                        if x2 > x1:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 10, 
+                                    y1 - 10), (b1x2 + 20, y1), (b1x2 + 10, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 + 20
+                        else:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
+                                    y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 - 20
+                    elif(k[4] == "composition"):
+                        color = 'green'
+                        add_dash = False
+                        if x2 > x1:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10), (b1y1 - 10)]), fill="black", outline=color)
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), fill="black", outline=color)
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 10, 
+                                    y1 - 10), (b1x2 + 20, y1), (b1x2 + 10, y1 + 10)]), fill="black", outline=color)
+                                x1 = b1x2 + 20
+                        else:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), fill="black", outline=color)
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), fill="black", outline=color)
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
+                                    y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), fill="black", outline=color)
+                                x1 = b1x2 - 20
+                    elif(k[4] == "inheritance"):
+                        color = 'red'
+                        add_dash = False
+                        if x2 > x1:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 20, 
+                                    y1 - 10), (b1x2 + 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 + 20
+                        else:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 20, 
+                                    y1 - 10), (b1x1 - 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x1 - 20
                     else:
-                        alpha = math.atan2(ly2-ly1,lx2-lx1)-90*math.pi/180
-                        a = 4*math.cos(alpha)
-                        b = 4*math.sin(alpha)
-                        vtx1 = (v1+a, v2+b)
-                        vtx2 = (v1-a, v2-b)
-                    #Draw the triangle at the end of the line
-                    draw.polygon([vtx1, vtx2, (lx2, ly2)], fill=UMLBox.test_canvas.itemcget(k[1], "fill"))
+                        color = 'black'
+                        add_dash = True
+                        if x2 > x1:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 20, 
+                                    y1 - 10), (b1x2 + 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 + 20
+                        else:
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 20, 
+                                    y1 - 10), (b1x1 - 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x1 - 20
+                draw.line(xy=((x1, y1), (x2,y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
             #Draw the box
             draw.rectangle(xy=(coords), fill="#D1FF65", outline="black")
             center = (coords[2]-coords[0])/2 + coords[0]
@@ -99,68 +200,6 @@ def save_as_png(file_name):
         #Save the file as a png
         cropped_image.save(file_name + '.png')
         return "Exported png successfully."
-    except:
-        return "Failed to export."
+    # except:
+    #     return "Failed to export."
 
-#Recursively get the y coordinate that is
-#less than 10 units away from the endpoint
-def get_v2(val, slope, ly2, ly1, b):
-    #Get a triangle base y if the line goes
-    #from top to bottom
-    if ly2 > ly1:
-        v2 = ly2 - val
-        v1 = (v2 - b)/slope
-    #Get a triangle base y if the line goes
-    #from bottom to top
-    else:
-        v2 = ly2 + val
-        v1 = (v2 - b)/slope
-    #Return if the base y is less than 10 units
-    #away from the endpoint
-    if abs(v2 - ly2) < 10:
-        return v2
-    #Recurse if the base y is not less than 10
-    #units away from the endpoint
-    else:
-        return get_v2(val - 1, slope, ly2, ly1, b)
-
-#Recursively get the x coordinate that is
-#less than 10 units away from the endpoint
-def get_v1(val, slope, lx2, lx1, b):
-    #Get a triangle base x if the line goes
-    #from right to left
-    if lx2 > lx1:
-        v1 = lx2 - val
-        v2 = slope*(v1) + b
-    #Get a triangle base x if the line goes
-    #from left to right
-    else:
-        v1 = lx2 + val
-        v2 = slope*(v1) + b
-    #Return if the base x is less than 10 units
-    #away from the endpoint
-    if abs(v1 - lx2) < 10:
-        return v1
-    #Recurse if the base x is not less than 10
-    #units away from the endpoint
-    else:
-        return get_v1(val - 1, slope, lx2, lx1, b)
-
-#Get the base x and y for the triangle that goes
-#at the end of the line
-def get_vals(lx2, lx1, ly2, ly1, b, slope):
-    #Get the base x
-    v1 = get_v1(10, slope, lx2, lx1, b)
-    #Get the base y
-    v2 = get_v2(10, slope, ly2, ly1, b)
-    #If delta x is greater than delta y
-    #define the arrowhead to be based off
-    #the x coordinate on the line
-    if abs(lx2 - lx1) > abs(ly2 - ly1):
-        v2 = slope*(v1) + b
-    #If delta y is greater than delta x
-    #define the arrowhead to be based off
-    #the y coordinate on the line
-    else:
-        v1 = (v2 - b)/slope
-    return v1, v2
