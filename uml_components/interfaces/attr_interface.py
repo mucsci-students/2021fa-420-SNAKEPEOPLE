@@ -3,6 +3,7 @@ from uml_components.UMLAttributes import (UMLField,
                                           UMLMethod,
                                           UMLParameter)
 from typing import List, Tuple, Union
+from copy import deepcopy
 
 # Helper Methods =============================================================
 
@@ -33,10 +34,7 @@ def find_method(uml : UMLClass.UMLClass,
     returns False and None.
     """
     
-    if method in uml.methods:
-        return True
-    
-    return False
+    return method in uml.methods
     
 def find_field(uml : UMLClass.UMLClass, 
                field : UMLField) -> bool:
@@ -163,7 +161,7 @@ def add_method(class_name : str,
         # dictionary.           
         uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
         method = UMLMethod(method_name, method_type, param_list)
-        found= find_method(uml, method)
+        found = find_method(uml, method)
             
         if found:
             msg = (f"{method_name} already exists as a method of " +
@@ -232,8 +230,17 @@ def add_param(class_name : str,
             # Otherwise create a new Parameter object using 'param_name' and
             # 'param_type' and add it to the method's list of parameters.
             else:
-                ret = uml.add_method_param(method, param_name, param_type)
-        
+                p_list = deepcopy(method.params)
+                p_list.append(param)
+                m = UMLMethod(method.name, method.return_type, p_list)
+                
+                if find_method(uml, m):
+                    msg = (f"Adding {param} to {method} would result in " +
+                           f"duplicate methods in {class_name}.")
+                    print(f"<Parameter Add Error>: {msg}")
+                else:
+                    ret = uml.add_method_param(method, param_name, param_type)
+                
         # If a matching method was not found, prints an error.     
         else:
             msg = (f"{method.name} does not exist as a method in {class_name}.")
@@ -259,7 +266,7 @@ def rename_field(class_name : str,
     return : str -> the error message of the operation.
     """
     
-    msg : str = (f"Successfully renamed field '{field.name}' in "+
+    msg : str = (f"Successfully renamed field '{field.name}' in " +
                  f"'{class_name}' to '{new_name}'")
     ret = None
     
@@ -325,8 +332,15 @@ def rename_method(class_name : str,
                    f"{class_name}.")
             print(f"<Method Rename Error>: {msg}")
         else:
-            method.rename(new_name)
-            ret = method
+            if find_method(uml, UMLMethod(new_name, method.return_type, 
+                                          method.params)):
+                msg = (f"'{new_name}' already exists as a method with the " +
+                       f"same type and parameters as '{method.name}' in " +
+                       f"class '{class_name}'")
+                print(f"<Method Rename Error>: {msg}")
+            else:
+                method.rename(new_name)
+                ret = method
             
     return ret, msg
             

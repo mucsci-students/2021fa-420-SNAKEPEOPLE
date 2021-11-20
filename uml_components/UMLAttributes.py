@@ -1,4 +1,7 @@
+from copy import deepcopy
 from dataclasses import dataclass, field
+from functools import total_ordering
+from typing import List, Union
 
 @dataclass
 class UMLAttribute:
@@ -6,7 +9,7 @@ class UMLAttribute:
     
     def toJson(self) -> dict:
         return self.__dict__
-  
+
 @dataclass
 class UMLParameter (UMLAttribute):
     type : str
@@ -16,6 +19,9 @@ class UMLParameter (UMLAttribute):
         if isinstance(other, UMLParameter):
             return (self.name == other.name and
                     self.type == other.type)
+            
+    def __hash__(self) -> int:
+        return hash(self.type)
     
     def __repr__(self) -> str:
         output = f"{self.type} {self.name}"
@@ -34,6 +40,9 @@ class UMLField (UMLAttribute):
         if isinstance(other, UMLField):
             return (self.name == other.name and
                     self.type == other.type)
+            
+    def __hash__(self) -> int:
+        return hash(self.type)
     
     def __repr__(self):
         output = f"{self.type} {self.name}"
@@ -42,27 +51,25 @@ class UMLField (UMLAttribute):
     def rename(self, 
                new_name : str) -> None:
         self.name = new_name
-    
+
 @dataclass
 class UMLMethod (UMLAttribute):
     return_type : str
-    params : list = field(default_factory=list)
+    params : List[UMLParameter] = field(default_factory=list)
             
     def __eq__(self, 
                other):
         if isinstance(other, UMLMethod):
             return (self.name == other.name and
                     self.return_type == other.return_type and
-                    self.params == other.params)
+                    set(self.params) == set(other.params))
+            
+    def __hash__(self) -> int:
+        return hash(self.return_type)
             
     def __repr__(self):
         output = f"{self.return_type} {self.name}("
-        for param in self.params:
-            if param == self.params[len(self.params) - 1]:
-                output += f"{param}"
-            else:
-                output += f"{param}, "
-        
+        output += ", ".join([str(e) for e in self.params])
         return output + ")"
                 
     def rename(self, 
@@ -77,6 +84,13 @@ class UMLMethod (UMLAttribute):
         self.params.append(param)
         
         return param
+    
+    def get_param(self,
+                  param_name) -> Union[UMLParameter, None]:
+        p:UMLParameter
+        for p in self.params:
+            if p.name == param_name:
+                return p
         
     def clear(self) -> None:
         self.params = []
