@@ -179,7 +179,70 @@ def save_as_png(file_name):
                                 draw.polygon(xy=([(b1x1, y1), (b1x1 - 20, 
                                     y1 - 10), (b1x1 - 20, y1 + 10)]), outline=color, fill="#D0D0D0")
                                 x1 = b1x1 - 20
-                draw.line(xy=((x1, y1), (x2,y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                    if not add_dash:
+                        draw.line(xy=((x1, y1), (x2,y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                    else:
+                        #Get start and end points of the line
+                        lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(k[1])
+                        #Find the slope of the current line
+                        slope = (ly2-ly1)/(lx2-lx1)
+                        #Get the y intercept of the line
+                        b = ly2 - slope*lx2
+                        var = 0
+                        if abs(x2-x1) > abs(y2-y1):
+                            if x1 < x2:
+                                while x1 < x2:
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        x1 = x1 + 3
+                                        temp_y2 = slope * x1 + b
+                                        draw.line(xy=((x1 - 3, y1), (x1,temp_y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        y1 = temp_y2
+                                    else:
+                                        var = var + 1
+                                        x1 = x1 + 3
+                                        temp_y2 = slope * x1 + b
+                                        y1 = temp_y2
+                            else:
+                                while x1 > x2:
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        x1 = x1 - 3
+                                        temp_y2 = slope * x1 + b
+                                        draw.line(xy=((x1 + 3, y1), (x1,temp_y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        y1 = temp_y2
+                                    else:
+                                        var = var + 1
+                                        x1 = x1 - 3
+                                        temp_y2 = slope * x1 + b
+                                        y1 = temp_y2
+                        else:
+                            if y1 < y2:
+                                while y1 < y2:
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        y1 = y1 + 3
+                                        temp_x2 = (y1 - b) / slope
+                                        draw.line(xy=((x1, y1 - 3), (temp_x2, y1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        x1 = temp_x2
+                                    else:
+                                        var = var + 1
+                                        y1 = y1 + 3
+                                        temp_x2 = (y1 - b) / slope
+                                        x1 = temp_x2
+                            else:
+                                while y1 > y2:
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        y1 = y1 - 3
+                                        temp_x2 = (y1 - b) / slope
+                                        draw.line(xy=((x1, y1 + 3), (temp_x2, y1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        x1 = temp_x2
+                                    else:
+                                        var = var + 1
+                                        y1 = y1 - 3
+                                        temp_x2 = (y1 - b) / slope
+                                        x1 = temp_x2
             #Draw the box
             draw.rectangle(xy=(coords), fill="#D1FF65", outline="black")
             center = (coords[2]-coords[0])/2 + coords[0]
