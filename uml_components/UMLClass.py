@@ -4,9 +4,7 @@
 from uml_components.UMLAttributes import (UMLField,
                                           UMLMethod,
                                           UMLParameter)
-from typing import List, Union
-
-class_dict = dict()
+from typing import Dict, List, Union
 
 class UMLClass():
     """
@@ -20,8 +18,8 @@ class UMLClass():
     
     def __init__(self, 
                  name : str,
-                 fields : list = None,
-                 methods : list = None,
+                 fields : List[UMLField] = None,
+                 methods : List[UMLMethod] = None,
                  position_x : int = None,
                  position_y : int = None,
                  **kwargs):
@@ -138,3 +136,5 @@ class UMLClass():
     
     def toJson(self) -> dict:
         return self.__dict__
+
+class_dict: Dict[str, UMLClass] = dict()

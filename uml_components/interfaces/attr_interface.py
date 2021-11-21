@@ -385,7 +385,7 @@ def rename_param(class_name : str,
         else:
             err = (f"'{method.name}' does not exist as the name of a method " +
                    f"in '{class_name}'.")
-            print(f"<Parameter Rename Error>: {err}")
+            print(f"\n<Parameter Rename Error>: {err}\n")
        
             
         
@@ -419,7 +419,7 @@ def delete_field(class_name : str,
         if not find_field(uml, field):
             msg = (f"'{field.name}' does not exist as the name of a field in " +
                    f"'{class_name}'.")
-            print(f"<Field Delete Error>: {msg}")
+            print(f"\n<Field Delete Error>: {msg}\n")
         else:
             ret = field
             uml.delete_field(field)
@@ -427,7 +427,7 @@ def delete_field(class_name : str,
     return ret, msg
 
 def delete_method(class_name : str,
-                  method : UMLMethod) -> tuple:
+                  method : UMLMethod) -> Tuple[Union[UMLMethod, None], str]:
     """
     Deletes a method from a given class.
     
@@ -450,7 +450,7 @@ def delete_method(class_name : str,
         if not find_method(uml, method):
             msg = (f"'{method.name}' does not exist as the name of a method in " +
                    f"'{class_name}'.")
-            print(f"<Method Delete Error>: {msg}")
+            print(f"\n<Method Delete Error>: {msg}\n")
         else:
             ret = method
             uml.delete_method(method)
@@ -459,7 +459,7 @@ def delete_method(class_name : str,
 
 def delete_param(class_name : str,
                  method : UMLMethod,
-                 param : UMLParameter) -> tuple:
+                 param : UMLParameter) -> Tuple[Union[UMLParameter, None], str]:
     """
     Deletes a parameter from a given method of a given class.
     
@@ -469,29 +469,37 @@ def delete_param(class_name : str,
     
     return : str -> the error message of the operation.
     """
-    
     msg : str = (f"Successfully deleted parameter '{param.name}' from " + 
                  f"'{class_name}.{method.name}'.")
     ret = None
     
     if not find_class(class_name):
         msg = f"{class_name} does not exist as the name of a class."
-        print(f"<Parameter Delete Error>: {msg}")
+        print(f"\n<Parameter Delete Error>: {msg}\n")
     else:
         uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
         
         if not find_method(uml, method):
-            err = (f"'{method.name}' does not exist as the name of a method " +
+            msg = (f"'{method.name}' does not exist as the name of a method " +
                    f"in '{class_name}'.")
-            print(f"<Parameter Delete Error>: {err}")
+            print(f"\n<Parameter Delete Error>: {msg}\n")
         else:
             if not find_param(method, param):
-                err = (f"'{param.name}' does not exist as the name of a " +
-                       f"parameter in '{class_name}.{method.name}'.")
-                print(f"<Parameter Delete Error>: {err}")
+                msg = (f"'{param.name}' does not exist as the name of a " +
+                       f"parameter in any '{class_name}.{method.name}()'.")
+                print(f"\n<Parameter Delete Error>: {msg}\n")
             else:
-                ret = param
-                uml.delete_param(method, param)
+                p_list = deepcopy(method.params)
+                p_list.pop(p_list.index(param))
+                m = UMLMethod(method.name, method.return_type, p_list)
+                
+                if find_method(uml, m):
+                    msg = (f"Deleting {param} from {method} would result in " +
+                           f"duplicate methods in {class_name}.")
+                    print(f"\n<Parameter Delete Error>: {msg}\n")
+                else:
+                    ret = param
+                    uml.delete_param(method, param)
     
     return ret, msg
     
