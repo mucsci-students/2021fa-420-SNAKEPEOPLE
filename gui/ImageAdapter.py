@@ -1,9 +1,7 @@
 import tkinter as tk
-from typing import Text
 from PIL import Image, ImageDraw, ImageFont
 import math
 from gui import UMLMethod
-from snake_uml import save
 from uml_components import UMLClass
 from . import UMLBox
 from . import UMLField

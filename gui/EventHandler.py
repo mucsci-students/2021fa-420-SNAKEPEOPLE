@@ -3,7 +3,6 @@
 
 import tkinter as tk
 
-from PIL.Image import new
 from gui import UMLBox
 from gui import ViewChange
 from uml_components.interfaces import (attr_interface as ai,
