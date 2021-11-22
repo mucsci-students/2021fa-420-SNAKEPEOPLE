@@ -3,7 +3,6 @@
 
 import tkinter as tk
 
-from PIL.Image import new
 from gui import UMLBox
 from gui import ViewChange
 from uml_components.interfaces import (attr_interface as ai,
@@ -181,10 +180,164 @@ def can_dragMotion(event):
         for i in UMLBox.class_list[pos].rels:
             if i[0] == "source":
                 x1, y1, x2, y2 = UMLBox.test_canvas.coords(i[1])
-                ViewChange.set_line(i[1], new_x1, new_y1, x2, y2)
+
+                b1x1, b1y1, b1x2, b1y2 = UMLBox.get_coords(UMLBox.class_list[pos].name)
+                b2x1, b2y1, b2x2, b2y2 = UMLBox.test_canvas.coords(i[2])
+
+                #Get the center for the source and destination boxes
+                lx1 = b1x1 + abs(b1x1-b1x2)/2
+                lx2 = b2x1 + abs(b2x1-b2x2)/2
+                ly1 = b1y1 + abs(b1y1-b1y2)/2
+                ly2 = b2y1 + abs(b2y1-b2y2)/2
+
+                #Move sequence for the diamonds
+                if len(UMLBox.test_canvas.coords(i[3])) == 8:
+                    if lx2 > lx1:
+                        #Move the diamond to the top
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, x1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        #Move the diamond to the bottom
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        #Move the diamond to the right
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 10, 
+                                ly1 - 10, b1x2 + 20, ly1, b1x2 + 10, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        #Move the diamond to the top
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, lx1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        #Move the diamond to the bottom
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        #Move the diamond to the left
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 10, 
+                                ly1 - 10, b1x1 - 20, ly1, b1x1 - 10, ly1 + 10)
+                            lx1 = b1x1 - 20
+                #Move sequence for the triangles
+                else:
+                    if lx2 > lx1:
+                        #Move the triangle to the top
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        #Move the triangle to the bottom
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        #Move the triangle to the right
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 20, 
+                                ly1 - 10, b1x2 + 20, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        #Move the triangle to the top
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        #Move the triangle to the bottom
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        #Move the triangle to the left
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 20, 
+                                ly1 - 10, b1x1 - 20, ly1 + 10)
+                            lx1 = b1x1 - 20
+                ViewChange.set_line(i[1], lx1, ly1, lx2, ly2)
             if i[0] == "dest":
                 x1, y1, x2, y2 = UMLBox.test_canvas.coords(i[1])
-                ViewChange.set_line(i[1], x1, y1, new_x1, new_y1)
+                b2x1, b2y1, b2x2, b2y2 = UMLBox.get_coords(UMLBox.class_list[pos].name)
+                b1x1, b1y1, b1x2, b1y2 = UMLBox.test_canvas.coords(i[2])
+
+                lx1 = b1x1 + abs(b1x1-b1x2)/2
+                lx2 = b2x1 + abs(b2x1-b2x2)/2
+                ly1 = b1y1 + abs(b1y1-b1y2)/2
+                ly2 = b2y1 + abs(b2y1-b2y2)/2
+
+                #Move sequence for the diamond
+                if len(UMLBox.test_canvas.coords(i[3])) == 8:
+                    if lx2 > lx1:
+                        #Move the diamond to the top
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, lx1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        #Move the diamond to the bottom
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        #Move the diamond to the right
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 10, 
+                                ly1 - 10, b1x2 + 20, ly1, b1x2 + 10, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        #Move the diamond to the top
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 10, lx1, b1y1 - 20, lx1 + 10, b1y1 - 10)
+                            ly1 = b1y1 - 20
+                        #Move the diamond to the botttom
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 10, lx1, b1y2 + 20, lx1 + 10, b1y2 + 10)
+                            ly1 = b1y2 + 20
+                        #Move the diamond to the left
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 10, 
+                                ly1 - 10, b1x1 - 20, ly1, b1x1 - 10, ly1 + 10)
+                            lx1 = b1x1 - 20
+                #Move sequence for the triangle
+                else:
+                    if lx2 > lx1:
+                        #Move the triangle to the top
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        #Move the triangle to the bottom
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        #Move the triangle to the right
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x2, ly1, b1x2 + 20, 
+                                ly1 - 10, b1x2 + 20, ly1 + 10)
+                            lx1 = b1x2 + 20
+                    else:
+                        #Move the triangle to the bottom
+                        if b2y2 <= b1y1:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y1, lx1 - 10, 
+                                b1y1 - 20, lx1 + 10, b1y1 - 20)
+                            ly1 = b1y1 - 20
+                        #Move the triangle to the top
+                        elif b2y1 >= b1y2:
+                            UMLBox.test_canvas.coords(i[3], lx1, b1y2, lx1 - 10, 
+                                b1y2 + 20, lx1 + 10, b1y2 + 20)
+                            ly1 = b1y2 + 20
+                        #Move the triangle to the left
+                        else:
+                            UMLBox.test_canvas.coords(i[3], b1x1, ly1, b1x1 - 20, 
+                                ly1 - 10, b1x1 - 20, ly1 + 10)
+                            lx1 = b1x1 - 20
+                ViewChange.set_line(i[1], lx2, ly2, lx1, ly1)
 
 def on_unclick(event):
     #Add to the undo stack if the box moved

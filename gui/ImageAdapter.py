@@ -1,9 +1,7 @@
 import tkinter as tk
-from typing import Text
 from PIL import Image, ImageDraw, ImageFont
 import math
 from gui import UMLMethod
-from snake_uml import save
 from uml_components import UMLClass
 from . import UMLBox
 from . import UMLField
@@ -54,31 +52,238 @@ def save_as_png(file_name):
                     pos = UMLLine.findpos(k[2])
                     #Get coords of the destination box
                     dx1, dy1, dx2, dy2 = UMLBox.get_coords(UMLBox.class_list[pos].name)
-                    draw.line(xy=((coords[0], coords[1]), (dx1, dy1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=4)
-                    #Get start and end points of the line
-                    lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(k[1])
-                    #Find the slope of the current line
-                    slope = (ly2-ly1)/(lx2-lx1)
-                    #Get the y intercept of the line
-                    b = ly2 - slope*lx2
-                    #Aquire the base vertices for the arrowhead
-                    v1, v2 = get_vals(lx2, lx1, ly2, ly1, b, slope)
-                    # Check if line is vertical
-                    if lx1 == lx2:
-                        vtx1 = (v1-5, v2)
-                        vtx2 = (v1+5, v2)
-                    # Check if line is horizontal
-                    elif ly1==ly2:
-                        vtx1 = (v1, v2+5)
-                        vtx2 = (v1, v2-5)
+                    #Get the dimensions of the source and destination box.
+                    b1x1, b1y1, b1x2, b1y2 = UMLBox.test_canvas.coords(i.name)
+                    b2x1, b2y1, b2x2, b2y2 = UMLBox.test_canvas.coords(k[2])
+
+                    x1 = b1x1 + abs(b1x1-b1x2)/2
+                    x2 = b2x1 + abs(b2x1-b2x2)/2
+                    y1 = b1y1 + abs(b1y1-b1y2)/2
+                    y2 = b2y1 + abs(b2y1-b2y2)/2
+
+                    #Add a hollow diamond for the relationship type aggregation
+                    if(k[4] == "aggregation"):
+                        color = 'blue'
+                        add_dash = False
+                        if x2 > x1:
+                            #Draw a diamond on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            #Draw a diamond on the bottom of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            #Draw a diamond on the right of the box
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 10, 
+                                    y1 - 10), (b1x2 + 20, y1), (b1x2 + 10, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 + 20
+                        else:
+                            #Draw a diamond on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            #Draw a diamond on the bottom of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            #Draw a diamond on the left of the box
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
+                                    y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 - 20
+                    #Add a filled diamond for the relationship type aggregation
+                    elif(k[4] == "composition"):
+                        color = 'green'
+                        add_dash = False
+                        if x2 > x1:
+                            #Draw a triangle on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10), (b1y1 - 10)]), fill="black", outline=color)
+                                y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), fill="black", outline=color)
+                                y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 10, 
+                                    y1 - 10), (b1x2 + 20, y1), (b1x2 + 10, y1 + 10)]), fill="black", outline=color)
+                                x1 = b1x2 + 20
+                        else:
+                            #Draw a triangle on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), fill="black", outline=color)
+                                y1 = b1y1 - 20
+                            #Draw a triangle on the top of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), fill="black", outline=color)
+                                y1 = b1y2 + 20
+                            #Draw a triangle on the left of the box
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
+                                    y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), fill="black", outline=color)
+                                x1 = b1x2 - 20
+                    #Add a hollow triangle for the relationship type aggregation
+                    elif(k[4] == "inheritance"):
+                        color = 'red'
+                        add_dash = False
+                        if x2 > x1:
+                            #Draw a triangle on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            #Draw a triangle on the top of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 20, 
+                                    y1 - 10), (b1x2 + 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 + 20
+                        else:
+                            #Draw a triangle on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 20, 
+                                    y1 - 10), (b1x1 - 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x1 - 20
+                    #Add a hollow triangle for the relationship type aggregation
                     else:
-                        alpha = math.atan2(ly2-ly1,lx2-lx1)-90*math.pi/180
-                        a = 4*math.cos(alpha)
-                        b = 4*math.sin(alpha)
-                        vtx1 = (v1+a, v2+b)
-                        vtx2 = (v1-a, v2-b)
-                    #Draw the triangle at the end of the line
-                    draw.polygon([vtx1, vtx2, (lx2, ly2)], fill=UMLBox.test_canvas.itemcget(k[1], "fill"))
+                        color = 'black'
+                        add_dash = True
+                        if x2 > x1:
+                            #Draw a triangle on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
+                            else:
+                                draw.polygon(xy=([(b1x2, y1), (b1x2 + 20, 
+                                    y1 - 10), (b1x2 + 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x2 + 20
+                        else:
+                            #Draw a triangle on the top of the box
+                            if b2y2 <= b1y1:
+                                draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
+                                    b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
+                            elif b2y1 >= b1y2:
+                                draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
+                                    b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
+                                y1 = b1y2 + 20
+                            #Draw a triangle on the left of the box
+                            else:
+                                draw.polygon(xy=([(b1x1, y1), (b1x1 - 20, 
+                                    y1 - 10), (b1x1 - 20, y1 + 10)]), outline=color, fill="#D0D0D0")
+                                x1 = b1x1 - 20
+                    #Add a solid line if the relationship type is not realization
+                    if not add_dash:
+                        draw.line(xy=((x1, y1), (x2,y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                    else:
+                        #Get start and end points of the line
+                        lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(k[1])
+                        #Find the slope of the current line
+                        slope = (ly2-ly1)/(lx2-lx1)
+                        #Get the y intercept of the line
+                        b = ly2 - slope*lx2
+                        var = 0
+                        if abs(x2-x1) > abs(y2-y1):
+                            #create a dash lne along the line equation incrementing along the x axis
+                            if x1 < x2:
+                                #Increment from right to left
+                                while x1 < x2:
+                                    #Add a dash
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        x1 = x1 + 3
+                                        temp_y2 = slope * x1 + b
+                                        draw.line(xy=((x1 - 3, y1), (x1,temp_y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        y1 = temp_y2
+                                    #Leave some empty space
+                                    else:
+                                        var = var + 1
+                                        x1 = x1 + 3
+                                        temp_y2 = slope * x1 + b
+                                        y1 = temp_y2
+                            else:
+                                #Increment from left to right
+                                while x1 > x2:
+                                    #Add a dash
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        x1 = x1 - 3
+                                        temp_y2 = slope * x1 + b
+                                        draw.line(xy=((x1 + 3, y1), (x1,temp_y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        y1 = temp_y2
+                                    #Leave some empty space
+                                    else:
+                                        var = var + 1
+                                        x1 = x1 - 3
+                                        temp_y2 = slope * x1 + b
+                                        y1 = temp_y2
+                        else:
+                            #create a dash lne along the line equation incrementing along the y axis
+                            if y1 < y2:
+                                #Increment from bottom to top
+                                while y1 < y2:
+                                    #Add a dash
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        y1 = y1 + 3
+                                        temp_x2 = (y1 - b) / slope
+                                        draw.line(xy=((x1, y1 - 3), (temp_x2, y1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        x1 = temp_x2
+                                    #Leave some empty space
+                                    else:
+                                        var = var + 1
+                                        y1 = y1 + 3
+                                        temp_x2 = (y1 - b) / slope
+                                        x1 = temp_x2
+                            else:
+                                #Increment from top to bottom
+                                while y1 > y2:
+                                    #Add a dash
+                                    if var % 2 == 0:
+                                        var = var + 1
+                                        y1 = y1 - 3
+                                        temp_x2 = (y1 - b) / slope
+                                        draw.line(xy=((x1, y1 + 3), (temp_x2, y1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
+                                        x1 = temp_x2
+                                    #Leave some empty space
+                                    else:
+                                        var = var + 1
+                                        y1 = y1 - 3
+                                        temp_x2 = (y1 - b) / slope
+                                        x1 = temp_x2
             #Draw the box
             draw.rectangle(xy=(coords), fill="#D1FF65", outline="black")
             center = (coords[2]-coords[0])/2 + coords[0]
@@ -95,72 +300,10 @@ def save_as_png(file_name):
             #Draw the method/parameter text
             draw.text(xy=(center, my + 12), text=UMLMethod.block_text(i.name), fill="black", font=font, anchor="ma")
         #crop the image
-        cropped_image = image.crop((bounds[0] - 50, bounds[1] - 50, bounds[2] + 50, bounds[3] + 50))
+        cropped_image = image.crop((bounds[0] - 10, bounds[1] - 10, bounds[2] + 10, bounds[3] + 10))
         #Save the file as a png
         cropped_image.save(file_name + '.png')
         return "Exported png successfully."
     except:
         return "Failed to export."
 
-#Recursively get the y coordinate that is
-#less than 10 units away from the endpoint
-def get_v2(val, slope, ly2, ly1, b):
-    #Get a triangle base y if the line goes
-    #from top to bottom
-    if ly2 > ly1:
-        v2 = ly2 - val
-        v1 = (v2 - b)/slope
-    #Get a triangle base y if the line goes
-    #from bottom to top
-    else:
-        v2 = ly2 + val
-        v1 = (v2 - b)/slope
-    #Return if the base y is less than 10 units
-    #away from the endpoint
-    if abs(v2 - ly2) < 10:
-        return v2
-    #Recurse if the base y is not less than 10
-    #units away from the endpoint
-    else:
-        return get_v2(val - 1, slope, ly2, ly1, b)
-
-#Recursively get the x coordinate that is
-#less than 10 units away from the endpoint
-def get_v1(val, slope, lx2, lx1, b):
-    #Get a triangle base x if the line goes
-    #from right to left
-    if lx2 > lx1:
-        v1 = lx2 - val
-        v2 = slope*(v1) + b
-    #Get a triangle base x if the line goes
-    #from left to right
-    else:
-        v1 = lx2 + val
-        v2 = slope*(v1) + b
-    #Return if the base x is less than 10 units
-    #away from the endpoint
-    if abs(v1 - lx2) < 10:
-        return v1
-    #Recurse if the base x is not less than 10
-    #units away from the endpoint
-    else:
-        return get_v1(val - 1, slope, lx2, lx1, b)
-
-#Get the base x and y for the triangle that goes
-#at the end of the line
-def get_vals(lx2, lx1, ly2, ly1, b, slope):
-    #Get the base x
-    v1 = get_v1(10, slope, lx2, lx1, b)
-    #Get the base y
-    v2 = get_v2(10, slope, ly2, ly1, b)
-    #If delta x is greater than delta y
-    #define the arrowhead to be based off
-    #the x coordinate on the line
-    if abs(lx2 - lx1) > abs(ly2 - ly1):
-        v2 = slope*(v1) + b
-    #If delta y is greater than delta x
-    #define the arrowhead to be based off
-    #the y coordinate on the line
-    else:
-        v1 = (v2 - b)/slope
-    return v1, v2
