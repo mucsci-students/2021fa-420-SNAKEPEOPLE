@@ -13,6 +13,8 @@ from . import (
     Side_Panel)
 from uml_components import UMLClass
 
+from . import EventHandler
+
 ###################################################################################################
 '''
 Main function to create the GUI.
@@ -105,8 +107,9 @@ def build_menu(window : tk.Tk) -> tk.Menu:
     menu_edit = tk.Menu(menubar, tearoff=0)
     menu_edit.add_command(label = "Undo", command = gui_functions.b_undo)
     menu_edit.add_command(label = "Redo", command = gui_functions.b_redo)
+    menu_edit.add_command(label = "Crop", command = EventHandler.crop)
     menubar.add_cascade(label = "Edit", menu = menu_edit)
-
+    
     return menubar
 
 ###################################################################################################
