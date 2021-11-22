@@ -300,7 +300,7 @@ def save_as_png(file_name):
             #Draw the method/parameter text
             draw.text(xy=(center, my + 12), text=UMLMethod.block_text(i.name), fill="black", font=font, anchor="ma")
         #crop the image
-        cropped_image = image.crop((bounds[0] - 50, bounds[1] - 50, bounds[2] + 50, bounds[3] + 50))
+        cropped_image = image.crop((bounds[0] - 10, bounds[1] - 10, bounds[2] + 10, bounds[3] + 10))
         #Save the file as a png
         cropped_image.save(file_name + '.png')
         return "Exported png successfully."
