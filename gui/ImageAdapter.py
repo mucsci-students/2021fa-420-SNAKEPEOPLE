@@ -32,7 +32,7 @@ class ImageAdapter():
         self.window.destroy()
 
 def save_as_png(file_name):
-    # try:
+    try:
         UMLBox.test_canvas.update()
         bounds = UMLBox.test_canvas.bbox('all')
         #Create a new image to draw on
@@ -63,122 +63,151 @@ def save_as_png(file_name):
                     y1 = b1y1 + abs(b1y1-b1y2)/2
                     y2 = b2y1 + abs(b2y1-b2y2)/2
 
+                    #Add a hollow diamond for the relationship type aggregation
                     if(k[4] == "aggregation"):
                         color = 'blue'
                         add_dash = False
                         if x2 > x1:
+                            #Draw a diamond on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y1 - 20
+                            #Draw a diamond on the bottom of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y2 + 20
+                            #Draw a diamond on the right of the box
                             else:
                                 draw.polygon(xy=([(b1x2, y1), (b1x2 + 10, 
                                     y1 - 10), (b1x2 + 20, y1), (b1x2 + 10, y1 + 10)]), outline=color, fill="#D0D0D0")
                                 x1 = b1x2 + 20
                         else:
+                            #Draw a diamond on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y1 - 20
+                            #Draw a diamond on the bottom of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y2 + 20
+                            #Draw a diamond on the left of the box
                             else:
                                 draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
                                     y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), outline=color, fill="#D0D0D0")
                                 x1 = b1x2 - 20
+                    #Add a filled diamond for the relationship type aggregation
                     elif(k[4] == "composition"):
                         color = 'green'
                         add_dash = False
                         if x2 > x1:
+                            #Draw a triangle on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 10), (x1, b1y1 - 20), (x1 + 10), (b1y1 - 10)]), fill="black", outline=color)
                                 y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), fill="black", outline=color)
                                 y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
                             else:
                                 draw.polygon(xy=([(b1x2, y1), (b1x2 + 10, 
                                     y1 - 10), (b1x2 + 20, y1), (b1x2 + 10, y1 + 10)]), fill="black", outline=color)
                                 x1 = b1x2 + 20
                         else:
+                            #Draw a triangle on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 10), (x1, b1y1 - 20), (x1 + 10, b1y1 - 10)]), fill="black", outline=color)
                                 y1 = b1y1 - 20
+                            #Draw a triangle on the top of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 10), (x1, b1y2 + 20), (x1 + 10, b1y2 + 10)]), fill="black", outline=color)
                                 y1 = b1y2 + 20
+                            #Draw a triangle on the left of the box
                             else:
                                 draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
                                     y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), fill="black", outline=color)
                                 x1 = b1x2 - 20
+                    #Add a hollow triangle for the relationship type aggregation
                     elif(k[4] == "inheritance"):
                         color = 'red'
                         add_dash = False
                         if x2 > x1:
+                            #Draw a triangle on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y1 - 20
+                            #Draw a triangle on the top of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
                             else:
                                 draw.polygon(xy=([(b1x2, y1), (b1x2 + 20, 
                                     y1 - 10), (b1x2 + 20, y1 + 10)]), outline=color, fill="#D0D0D0")
                                 x1 = b1x2 + 20
                         else:
+                            #Draw a triangle on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
                             else:
                                 draw.polygon(xy=([(b1x1, y1), (b1x1 - 20, 
                                     y1 - 10), (b1x1 - 20, y1 + 10)]), outline=color, fill="#D0D0D0")
                                 x1 = b1x1 - 20
+                    #Add a hollow triangle for the relationship type aggregation
                     else:
                         color = 'black'
                         add_dash = True
                         if x2 > x1:
+                            #Draw a triangle on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y2 + 20
+                            #Draw a triangle on the right of the box
                             else:
                                 draw.polygon(xy=([(b1x2, y1), (b1x2 + 20, 
                                     y1 - 10), (b1x2 + 20, y1 + 10)]), outline=color, fill="#D0D0D0")
                                 x1 = b1x2 + 20
                         else:
+                            #Draw a triangle on the top of the box
                             if b2y2 <= b1y1:
                                 draw.polygon(xy=([(x1, b1y1), (x1 - 10, 
                                     b1y1 - 20), (x1 + 10, b1y1 - 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y1 - 20
+                            #Draw a triangle on the bottom of the box
                             elif b2y1 >= b1y2:
                                 draw.polygon(xy=([(x1, b1y2), (x1 - 10, 
                                     b1y2 + 20), (x1 + 10, b1y2 + 20)]), outline=color, fill="#D0D0D0")
                                 y1 = b1y2 + 20
+                            #Draw a triangle on the left of the box
                             else:
                                 draw.polygon(xy=([(b1x1, y1), (b1x1 - 20, 
                                     y1 - 10), (b1x1 - 20, y1 + 10)]), outline=color, fill="#D0D0D0")
                                 x1 = b1x1 - 20
+                    #Add a solid line if the relationship type is not realization
                     if not add_dash:
                         draw.line(xy=((x1, y1), (x2,y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
                     else:
@@ -190,54 +219,68 @@ def save_as_png(file_name):
                         b = ly2 - slope*lx2
                         var = 0
                         if abs(x2-x1) > abs(y2-y1):
+                            #create a dash lne along the line equation incrementing along the x axis
                             if x1 < x2:
+                                #Increment from right to left
                                 while x1 < x2:
+                                    #Add a dash
                                     if var % 2 == 0:
                                         var = var + 1
                                         x1 = x1 + 3
                                         temp_y2 = slope * x1 + b
                                         draw.line(xy=((x1 - 3, y1), (x1,temp_y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
                                         y1 = temp_y2
+                                    #Leave some empty space
                                     else:
                                         var = var + 1
                                         x1 = x1 + 3
                                         temp_y2 = slope * x1 + b
                                         y1 = temp_y2
                             else:
+                                #Increment from left to right
                                 while x1 > x2:
+                                    #Add a dash
                                     if var % 2 == 0:
                                         var = var + 1
                                         x1 = x1 - 3
                                         temp_y2 = slope * x1 + b
                                         draw.line(xy=((x1 + 3, y1), (x1,temp_y2)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
                                         y1 = temp_y2
+                                    #Leave some empty space
                                     else:
                                         var = var + 1
                                         x1 = x1 - 3
                                         temp_y2 = slope * x1 + b
                                         y1 = temp_y2
                         else:
+                            #create a dash lne along the line equation incrementing along the y axis
                             if y1 < y2:
+                                #Increment from bottom to top
                                 while y1 < y2:
+                                    #Add a dash
                                     if var % 2 == 0:
                                         var = var + 1
                                         y1 = y1 + 3
                                         temp_x2 = (y1 - b) / slope
                                         draw.line(xy=((x1, y1 - 3), (temp_x2, y1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
                                         x1 = temp_x2
+                                    #Leave some empty space
                                     else:
                                         var = var + 1
                                         y1 = y1 + 3
                                         temp_x2 = (y1 - b) / slope
                                         x1 = temp_x2
                             else:
+                                #Increment from top to bottom
                                 while y1 > y2:
+                                    #Add a dash
                                     if var % 2 == 0:
                                         var = var + 1
                                         y1 = y1 - 3
                                         temp_x2 = (y1 - b) / slope
                                         draw.line(xy=((x1, y1 + 3), (temp_x2, y1)), fill=UMLBox.test_canvas.itemcget(k[1], "fill"), width=2)
                                         x1 = temp_x2
+                                    #Leave some empty space
                                     else:
                                         var = var + 1
                                         y1 = y1 - 3
@@ -263,6 +306,6 @@ def save_as_png(file_name):
         #Save the file as a png
         cropped_image.save(file_name + '.png')
         return "Exported png successfully."
-    # except:
-    #     return "Failed to export."
+    except:
+        return "Failed to export."
 

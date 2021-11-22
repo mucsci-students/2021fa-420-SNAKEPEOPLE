@@ -19,129 +19,164 @@ class UMLLine():
         b1x1, b1y1, b1x2, b1y2 = UMLBox.test_canvas.coords(source)
         b2x1, b2y1, b2x2, b2y2 = UMLBox.test_canvas.coords(dest)
 
+        #Get the center coords of the source and destination box
         x1 = b1x1 + abs(b1x1-b1x2)/2
         x2 = b2x1 + abs(b2x1-b2x2)/2
         y1 = b1y1 + abs(b1y1-b1y2)/2
         y2 = b2y1 + abs(b2y1-b2y2)/2
 
+        #Create a relationship identifier for aggregation (empty diamond)
+        #and place it along the border of the box
         if(line_type == "aggregation"):
             color = 'blue'
             add_dash = False
             if x2 > x1:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y2 + 20
+                #Place relationship identifier on the right of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 10, 
                         y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, outline=color, fill="#D0D0D0", width=2)
                     x1 = b1x2 + 20
             else:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, outline=color, fill="#D0D0D0", width=2)
                     y1 = b1y2 + 20
+                #Place relationship identifier on the left of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
                         y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, outline=color, fill="#D0D0D0", width=2)
                     x1 = b1x2 - 20
+        #Create a relationship identifier for composition (filled diamond)
+        #and place it along the border of the box
         elif(line_type == "composition"):
             color = 'green'
             add_dash = False
             if x2 > x1:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="black", outline=color)
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="black", outline=color)
                     y1 = b1y2 + 20
+                #Place relationship identifier on the right of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 10, 
                         y1 - 10, b1x2 + 20, y1, b1x2 + 10, y1 + 10, fill="black", outline=color)
                     x1 = b1x2 + 20
             else:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 10, x1, b1y1 - 20, x1 + 10, b1y1 - 10, fill="black", outline=color)
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 10, x1, b1y2 + 20, x1 + 10, b1y2 + 10, fill="black", outline=color)
                     y1 = b1y2 + 20
+                #Place relationship identifier on the left of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
                         y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, fill="black", outline=color)
                     x1 = b1x2 - 20
+        #Create a relationship identifier for inheritance (empty triangle)
+        #and place it along the border of the box
         elif(line_type == "inheritance"):
             color = 'red'
             add_dash = False
             if x2 > x1:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
+                #Place relationship identifier on the right of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 20, 
                         y1 - 10, b1x2 + 20, y1 + 10, outline=color, fill="#D0D0D0")
                     x1 = b1x2 + 20
             else:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
+                #Place relationship identifier on the left of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 20, 
                         y1 - 10, b1x1 - 20, y1 + 10, outline=color, fill="#D0D0D0")
                     x1 = b1x1 - 20
+        #Create a relationship identifier for Realization (empty triangle, dashed line)
+        #and place it along the border of the box
         else:
             color = 'black'
             add_dash = True
             if x2 > x1:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
+                #Place relationship identifier on the right of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x2, y1, b1x2 + 20, 
                         y1 - 10, b1x2 + 20, y1 + 10, outline=color, fill="#D0D0D0")
                     x1 = b1x2 + 20
             else:
+                #Place relationship identifier on the top of the box
                 if b2y2 <= b1y1:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y1, x1 - 10, 
                         b1y1 - 20, x1 + 10, b1y1 - 20, outline=color, fill="#D0D0D0")
                     y1 = b1y1 - 20
+                #Place relationship identifier on the bottom of the box
                 elif b2y1 >= b1y2:
                     shape= UMLBox.test_canvas.create_polygon(x1, b1y2, x1 - 10, 
                         b1y2 + 20, x1 + 10, b1y2 + 20, outline=color, fill="#D0D0D0")
                     y1 = b1y2 + 20
+                #Place relationship identifier on the left of the box
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 20, 
                         y1 - 10, b1x1 - 20, y1 + 10, outline=color, fill="#D0D0D0")
                     x1 = b1x1 - 20
+        #If not realization create a line of the specified color
         if not add_dash:    
             line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, fill=color, width=3)
+        #If Realization create a dashed line
         else:
             line = UMLBox.test_canvas.create_line(x1, y1, x2, y2, fill=color, width=3, dash=(255,255))
         UMLBox.test_canvas.tag_lower(line)
