@@ -6,19 +6,18 @@ import JSON
 from ntpath import realpath
 
 import sys
-import os.path
 import tab_comp
-#from typing import _Alias
 
 # Internal Imports
-from uml_components import (UMLClass, 
-                            UMLRelationship,
-                            UMLAttributes)
-from uml_components.interfaces import (class_interface,
-                                       rel_interface,
-                                       attr_interface)
+from uml_components import (
+    UMLClass, 
+    UMLRelationship)
 from gui import gui_main
-from gui import ImageAdapter
+
+###################################################################################################
+'''
+Main file for running the UML program.
+'''
 
 def main(args : list) -> None:
     '''
@@ -74,6 +73,7 @@ def help() -> None:
         content = help.read()
         print(content)
 
+
 def list_a_class(input : str) -> None:
     '''
     Given a class name, if the class exists in the system, printz the name of 
@@ -91,6 +91,7 @@ def list_a_class(input : str) -> None:
         # If the class does not exist in the class dictionary, prints an error.
         print(f"<Illegal Argument Error>: {input} does not exist as a class.")
 
+
 def list_all_classes() -> None:
     '''
     Prints a list of all classes in the class dictionary and their attributes. 
@@ -104,6 +105,7 @@ def list_all_classes() -> None:
             print(UMLClass.class_dict[key])
         print()
  
+
 def save(filename : str) -> str:
     classes = []
     relationship = []
@@ -122,7 +124,8 @@ def save(filename : str) -> str:
         file.write(json_text)
         msg = "Saved Successfully"
     return msg
-        
+
+
 def load(filename : str) -> str:
     msg = ""
     json_text : str = ""

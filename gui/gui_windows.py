@@ -23,58 +23,33 @@ def add_class_window() -> None:
     root.title("Add Class")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: Output Message
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their class name.
-    etr = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+    # Label/Entry for Class Name.
+    label1 = tk.Label(frame, text = "Class Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_add_class(etr.get(), lbl2),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_add_class(entry1.get(), outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 2, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 3, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 4, column = 0)
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_add_class(etr.get(), lbl2))
+        lambda event: gf.b_add_class(entry1.get(), outputlabel))
     root.mainloop()
 
 
@@ -84,58 +59,33 @@ def delete_class_window() -> None:
     root.title("Delete Class")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: Output Message
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their class name.
-    etr = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+    # Label/Entry for Class Name.
+    label1 = tk.Label(frame, text = "Class Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_delete_class(etr.get(), lbl2),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_delete_class(entry1.get(), outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 2, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 3, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 4, column = 0)
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_delete_class(etr.get(), lbl2))
+        lambda event: gf.b_delete_class(entry1.get(), outputlabel))
     root.mainloop()
 
 
@@ -145,77 +95,41 @@ def rename_class_window() -> None:
     root.title("Rename Class")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Old Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Old Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Label/Entry for Old Method Type.
+    label1 = tk.Label(frame, text = "Old Class Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
 
-    # Label: "New Class Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "New Class Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: Output Message
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their old class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their new class name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+    # Label/Entry for New Method Name.
+    label2 = tk.Label(frame, text = "New Class Name :", font = ('bold'))
+    label2.grid(row = 2, column = 0)
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 3, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_rename_class(etr1.get(), etr2.get(), lbl3),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_rename_class(
+            entry1.get(), entry2.get(), outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 4, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 5, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 6, column = 0)
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_rename_class(etr1.get(), etr2.get(), lbl3))
+        lambda event: gf.b_rename_class(
+            entry1.get(), entry2.get(), outputlabel))
     root.mainloop()
 
 
@@ -225,91 +139,104 @@ def add_method_window() -> None:
     root.title("Add Method")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root, 
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root, relief = tk.SUNKEN, borderwidth = 3)
+    frame.pack()
 
-    # List of classes in the current system.
-    classes = []
-    for class_name in UMLClass.class_dict:
-        classes.append(class_name)
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: Select a Class.
-    classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
-    classlabel.grid(row = 0, column = 0, sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Creating the classes dropdown.
-    classvar = tk.StringVar(frame)
-    classvar.set("Click to Select") # Default value
-    class_dropdown = tk.OptionMenu(frame, classvar, *classes, value = "")
-    class_dropdown.config(width = 20) # Set the width of the dropdown
-    class_dropdown.grid(row = 1, column = 0, sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Label/Entry for Method Name
-    label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
-    label1.grid(row = 2, column = 0, sticky = "w")
-    entry1 = tk.Entry(frame, width = 50)
-    entry1.grid(row = 3, column = 0, sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Label/Entry for Method Type
-    label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
-    label2.grid(row = 4, column = 0, sticky = "w")
-    entry2 = tk.Entry(frame, width = 50)
-    entry2.grid(row = 5, column = 0, sticky = "w")
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Adding Parameters Section
-    paramlist = []
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 7, column = 0, sticky = "ew")
+        # Label/Entry for Method Type.
+        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    label3 = tk.Label(frame,text = "Parameters w/ Methods", font = ('bold'))
-    label3.grid(row = 8, column = 0)
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_add_method(
+                classvar.get(), entry1.get(), entry2.get(), paramlist, outputlabel, paramoutput),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 6, column = 0, padx = 5, pady = 5)
 
-    label4 = tk.Label(frame, text = "Param Name :", font = ('bold'))
-    label4.grid(row = 9, column = 0, sticky = "w")
-    entry4 = tk.Entry(frame, width = 50)
-    entry4.grid(row = 10, column = 0, sticky = "w")
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 7, column = 0, sticky = "ew")
 
-    label5 = tk.Label(frame, text = "Param Type :", font = ('bold'))
-    label5.grid(row = 11, column = 0, sticky = "w")
-    entry5 = tk.Entry(frame, width = 50)
-    entry5.grid(row = 12, column = 0, sticky = "w")
+        # Adding Parameters Section.
+        label3 = tk.Label(frame,text = "Parameters w/ Methods:", font = ('bold'))
+        label3.grid(row = 8, column = 0)
 
-    new_param_btn = tk.Button(
-        command = lambda: paramlist.append(UMLAttributes.UMLParameter(entry4.get(), entry5.get())),
-        master = frame,
-        text = "+ Param",
-        font = ('bold'))
-    new_param_btn.grid(
-        row = 13, 
-        column = 0, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        # Label/Entry for Param Name.
+        label4 = tk.Label(frame, text = "Param Name :", font = ('bold'))
+        label4.grid(row = 9, column = 0)
+        entry4 = tk.Entry(frame, width = 50)
+        entry4.grid(row = 10, column = 0)
 
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "", font = ('bold'))
-    outputlabel.grid(row = 4, column = 0, sticky = "w")
+        # Label/Entry for Param Type.
+        label5 = tk.Label(frame, text = "Param Type :", font = ('bold'))
+        label5.grid(row = 11, column = 0)
+        entry5 = tk.Entry(frame, width = 50)
+        entry5.grid(row = 12, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_add_method(classvar.get(), entry1.get(), entry2.get(), outputlabel),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 6, 
-        column = 0, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        paramlist = []
 
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_add_method(classvar.get(), entry1.get(), entry2.get(), outputlabel))
+        def paramlist_helper():
+            paramlist.append(UMLAttributes.UMLParameter(entry4.get(), entry5.get()))
+            paramoutput.configure(text = "Queued param \"" + entry4.get() + "\" to add.")
+            entry4.delete(0, tk.END)
+            entry5.delete(0, tk.END)
+
+        # Button for adding a Param to the list to be added to the current method.
+        new_param_btn = tk.Button(
+            command = paramlist_helper,
+            master = frame,text = "+ Param",font = ('bold'))
+        new_param_btn.grid(row = 13, column = 0, padx = 5, pady = 5)
+
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 14, column = 0, sticky = "ew")
+
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 15, column = 0)
+
+        # Label for output from the section for adding params with methods.
+        paramoutput = tk.Label(frame, text = "")
+        paramoutput.grid(row = 16, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_add_method(
+                classvar.get(), entry1.get(), entry2.get(), paramlist, outputlabel, paramoutput))
     root.mainloop()
 
 
@@ -319,96 +246,66 @@ def delete_method_window() -> None:
     root.title("Delete Method")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root, relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: "Method Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Method Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Label: "Method Type"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "Method Type:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Label: Output Message
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Entry where the user can enter their method name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Method Type.
+        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    # Entry where the user can enter their method type.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_delete_method(
+                classvar.get(), entry1.get(), entry2.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 6, column = 0, padx = 5, pady = 5)
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_delete_method(etr1.get(), etr2.get(), etr3.get(), lbl4),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 3, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 7, column = 0, sticky = "ew")
 
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_delete_method(etr1.get(), etr2.get(), etr3.get(), lbl4))
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 8, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_delete_method(
+                classvar.get(), entry1.get(), entry2.get(), outputlabel))
     root.mainloop()
 
 
@@ -418,115 +315,72 @@ def rename_method_window() -> None:
     root.title("Rename Method")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root, relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: "Old Method Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Old Method Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Label: "New Method Name"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "New Method Name:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Label: "Method Type"
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "Method Type:", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Label: Output Message
-    lbl5 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl5.grid(
-        row = 4, 
-        column = 0, 
-        sticky = "w")
+        # Label/Entry for Old Method Name.
+        label1 = tk.Label(frame, text = "Old Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Method Type.
+        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    # Entry where the user can enter their old method name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for New Method Name.
+        label3 = tk.Label(frame, text = "New Method Name :", font = ('bold'))
+        label3.grid(row = 6, column = 0)
+        entry3 = tk.Entry(frame, width = 50)
+        entry3.grid(row = 7, column = 0)
 
-    # Entry where the user can enter their new method name.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_rename_method(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 8, column = 0, padx = 5, pady = 5)
 
-    # Entry where the user can enter their method type.
-    etr4 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr4.grid(
-        row = 3, 
-        column = 1, 
-        sticky = "w")
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 9, column = 0, sticky = "ew")
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_rename_method(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 4, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 10, column = 0)
 
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_rename_method(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5))
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_rename_method(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), outputlabel))
     root.mainloop()
 
 
@@ -536,96 +390,66 @@ def add_field_window() -> None:
     root.title("Add Field")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root, relief = tk.SUNKEN, borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: "Field Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Field Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Label: "Field Type"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "Field Type:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Label: Output Message
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Field Name.
+        label1 = tk.Label(frame, text = "Field Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Entry where the user can enter their field name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
-    
-    # Entry where the user can enter their field type.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Field Type.
+        label2 = tk.Label(frame, text = "Field Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_add_field(etr1.get(), etr2.get(), etr3.get(), lbl4),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 3, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_add_field(
+                classvar.get(), entry1.get(), entry2.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 6, column = 0, padx = 5, pady = 5)
 
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_add_field(etr1.get(), etr2.get(), etr3.get(), lbl4))
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 7, column = 0, sticky = "ew")
+
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 8, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_add_field(
+                classvar.get(), entry1.get(), entry2.get(), outputlabel))
     root.mainloop()
 
 
@@ -635,77 +459,66 @@ def delete_field_window() -> None:
     root.title("Delete Field")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root, relief = tk.SUNKEN, borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: "Field Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Field Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Label: Output Message
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Entry where the user can enter their field name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Field Name.
+        label1 = tk.Label(frame, text = "Field Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_delete_field(etr1.get(), etr2.get(), lbl3),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        # Label/Entry for Field Type.
+        label2 = tk.Label(frame, text = "Field Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_delete_field(etr1.get(), etr2.get(), lbl3))
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_delete_field(
+                classvar.get(), entry1.get(), entry2.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 6, column = 0, padx = 5, pady = 5)
+
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 7, column = 0, sticky = "ew")
+
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 8, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_delete_field(
+                classvar.get(), entry1.get(), entry2.get(), outputlabel))
     root.mainloop()
 
 
@@ -715,96 +528,72 @@ def rename_field_window() -> None:
     root.title("Rename Field")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root, relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: "Old Field Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Old Field Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Label: "New Field Name"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "New Field Name:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Label: Output Message
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Old Field Name.
+        label1 = tk.Label(frame, text = "Old Field Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Entry where the user can enter their old field name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Old Field Type.
+        label2 = tk.Label(frame, text = "Old Field Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    # Entry where the user can enter their new field name.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for New Field Name.
+        label3 = tk.Label(frame, text = "New Field Name :", font = ('bold'))
+        label3.grid(row = 6, column = 0)
+        entry3 = tk.Entry(frame, width = 50)
+        entry3.grid(row = 7, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_rename_field(etr1.get(), etr2.get(), etr3.get(), lbl4),
-        master = frame,
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 3, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_rename_field(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 8, column = 0, padx = 5, pady = 5)
 
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_rename_field(etr1.get(), etr2.get(), etr3.get(), lbl4))
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 9, column = 0, sticky = "ew")
+
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 10, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_rename_field(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), outputlabel))
     root.mainloop()
 
 
@@ -814,102 +603,49 @@ def add_relation_window() -> None:
     root.title("Add Relation")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class 1 Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class 1 Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
-    
-    # Label: "Class 2 Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Class 2 Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1,  
-        column = 0,  
-        sticky = "w")
+    # Label/Entry for Class 1 Name.
+    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
 
-    # Label: Output Message
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+    # Label/Entry for Class 2 Name.
+    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
+    label2.grid(row = 2, column = 0)
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 3, column = 0)
 
-    # Label: Option Select
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "Select 1 Type:", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3,  
-        column = 0,  
-        sticky = "w")
-
-    # Creating the togglable buttons for the 4 types of Relationships
+    # Creating the togglable buttons for the 4 types of Relationships.
     type = tk.IntVar()
     types = ["aggregation", "composition", "inheritance", "realization"]
     for index in range(len(types)):
         rdo = tk.Radiobutton(
-            master = frame, 
-            text = types[index], 
-            value = index, 
-            variable = type, 
-            font = ('bold'))
-        rdo.grid(
-            row = 4 + index, 
-            column = 0, 
-            sticky = "w")
-
-    # Entry where the user can enter their 1st class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their 2nd class name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+            master = frame, text = types[index], value = index, variable = type, font = ('bold'))
+        rdo.grid(row = 4 + index, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_add_relation(etr1.get(), etr2.get(), types[type.get()], lbl4),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 7, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_add_relation(
+            entry1.get(), entry2.get(), types[type.get()], outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 8, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 9, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 10, column = 0)
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_add_relation(etr1.get(), etr2.get(), types[type.get()], lbl4))
+        lambda event: gf.b_add_relation(
+            entry1.get(), entry2.get(), types[type.get()], outputlabel))
     root.mainloop()
 
 
@@ -919,77 +655,41 @@ def delete_relation_window() -> None:
     root.title("Delete Relation")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class 1 Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class 1 Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
-    
-    # Label: "Class 2 Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Class 2 Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1,  
-        column = 0,  
-        sticky = "w")
+    # Label/Entry for Class 1 Name.
+    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
 
-    # Label: Output Message
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their 1st class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
-
-    # Entry where the user can enter their 2nd class name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+    # Label/Entry for Class 2 Name.
+    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
+    label2.grid(row = 2, column = 0)
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 3, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_delete_relation(etr1.get(), etr2.get(), lbl3),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_delete_relation(
+            entry1.get(), entry2.get(), outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 4, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 5, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 6, column = 0)
 
     # Generate the window.
     root.bind('<Return>', 
-        lambda event: gf.b_delete_relation(etr1.get(), etr2.get(), lbl3))
+        lambda event: gf.b_delete_relation(
+            entry1.get(), entry2.get(), outputlabel))
     root.mainloop()
 
 
@@ -999,63 +699,79 @@ def add_param_window() -> None:
     root.title("Add Parameter")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # List of classes in the current system.
-    classes = []
-    for class_name in UMLClass.class_dict:
-        classes.append(class_name)
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: Select a Class.
-    classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
-    classlabel.grid(row = 0, column = 0, sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Creating the classes dropdown.
-    classvar = tk.StringVar(frame)
-    classvar.set("Click to Select") # Default value
-    class_dropdown = tk.OptionMenu(frame, classvar, *classes)
-    class_dropdown.config(width = 20) # Set the width of the dropdown
-    class_dropdown.grid(row = 0, column = 1, sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # List of methods
-    methods = []
-    classname = classvar.get()
-    selected_class = UMLClass.class_dict[classname]
-    for method in selected_class.methods:
-        methods.append(method)
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Label: Select a Method.
-    methodlabel = tk.Label(frame, text = "Select a Method: ", font = ('bold'))
-    methodlabel.grid(row = 1, column = 0, sticky = "w")
-    
-    # Creating the methods dropdown.
-    methodvar = tk.StringVar(master = frame)
-    methodvar.set("Click to Select") # Default value
-    method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
-    method_dropdown.config(width = 50) # Set the width of the dropdown
-    method_dropdown.grid(row = 1, column = 1, sticky = "w")
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 5, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
-    
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_add_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6))
+        # Label/Entry for Method Type.
+        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
+
+        # Label/Entry for Param Name.
+        label3 = tk.Label(frame, text = "Param Name :", font = ('bold'))
+        label3.grid(row = 6, column = 0)
+        entry3 = tk.Entry(frame, width = 50)
+        entry3.grid(row = 7, column = 0)
+
+        # Label/Entry for Param Type.
+        label4 = tk.Label(frame, text = "Param Type :", font = ('bold'))
+        label4.grid(row = 8, column = 0)
+        entry4 = tk.Entry(frame, width = 50)
+        entry4.grid(row = 9, column = 0)
+
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_add_param(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 10, column = 0, padx = 5, pady = 5)
+
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 11, column = 0, sticky = "ew")
+
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 12, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_add_param(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel))
+
     root.mainloop()
 
 
@@ -1065,115 +781,79 @@ def delete_param_window() -> None:
     root.title("Delete Parameter")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: "Method Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Method Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Label: "Method Type"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "Method Type:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Label: "Param Name"
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "Param Name:", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Label: Output Message
-    lbl5 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl5.grid(
-        row = 4, 
-        column = 0, 
-        sticky = "w")
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Method Type.
+        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    # Entry where the user can enter their method name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Param Name.
+        label3 = tk.Label(frame, text = "Param Name :", font = ('bold'))
+        label3.grid(row = 6, column = 0)
+        entry3 = tk.Entry(frame, width = 50)
+        entry3.grid(row = 7, column = 0)
 
-    # Entry where the user can enter their method type.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Param Type.
+        label4 = tk.Label(frame, text = "Param Type :", font = ('bold'))
+        label4.grid(row = 8, column = 0)
+        entry4 = tk.Entry(frame, width = 50)
+        entry4.grid(row = 9, column = 0)
 
-    # Entry where the user can enter their param name.
-    etr4 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr4.grid(
-        row = 3, 
-        column = 1, 
-        sticky = "w")
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_delete_param(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 10, column = 0, padx = 5, pady = 5)
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_delete_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 4, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
-    
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_delete_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), lbl5))
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 11, column = 0, sticky = "ew")
+
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 12, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_delete_param(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel))
+
     root.mainloop()
 
 
@@ -1183,134 +863,85 @@ def rename_param_window() -> None:
     root.title("Rename Parameter")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "Class Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Class Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Check to see if there are any classes.
+    #   Does not allow the user to continue if no classes exist yet.
+    if len(UMLClass.class_dict) == 0:
+        label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
+        label1.grid(row = 0, column = 0)
+        label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
+        label2.grid(row = 1, column = 0)
 
-    # Label: "Method Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "Method Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    else:
+        # List of classes in the current system.
+        classes = []
+        for class_name in UMLClass.class_dict:
+            classes.append(class_name)
 
-    # Label: "Method Type"
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "Method Type:", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
+        # Label: Select a Class.
+        classlabel = tk.Label(frame, text = "Select a Class: ", font = ('bold'))
+        classlabel.grid(row = 0, column = 0)
 
-    # Label: "Old Param Name"
-    lbl4 = tk.Label(
-        master = frame,  
-        text = "Old Param Name:", 
-        font = ('bold'))
-    lbl4.grid(
-        row = 3, 
-        column = 0, 
-        sticky = "w")
+        # Creating the classes dropdown.
+        classvar = tk.StringVar(frame)
+        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        class_dropdown = tk.OptionMenu(frame, classvar, *classes)
+        class_dropdown.config(width = 20) # Set the width of the dropdown.
+        class_dropdown.grid(row = 1, column = 0)
 
-    # Label: "New Param Name"
-    lbl5 = tk.Label(
-        master = frame,  
-        text = "New Param Name:", 
-        font = ('bold'))
-    lbl5.grid(
-        row = 4, 
-        column = 0, 
-        sticky = "w")
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        entry1 = tk.Entry(frame, width = 50)
+        entry1.grid(row = 3, column = 0)
 
-    # Label: Output Message
-    lbl6 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl6.grid(
-        row = 5, 
-        column = 0, 
-        sticky = "w")
+        # Label/Entry for Method Type.
+        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
+        label2.grid(row = 4, column = 0)
+        entry2 = tk.Entry(frame, width = 50)
+        entry2.grid(row = 5, column = 0)
 
-    # Entry where the user can enter their class name.
-    etr1 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr1.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Old Param Name.
+        label3 = tk.Label(frame, text = "Old Param Name :", font = ('bold'))
+        label3.grid(row = 6, column = 0)
+        entry3 = tk.Entry(frame, width = 50)
+        entry3.grid(row = 7, column = 0)
 
-    # Entry where the user can enter their method name.
-    etr2 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr2.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for Param Type.
+        label4 = tk.Label(frame, text = "Param Type :", font = ('bold'))
+        label4.grid(row = 8, column = 0)
+        entry4 = tk.Entry(frame, width = 50)
+        entry4.grid(row = 9, column = 0)
 
-    # Entry where the user can enter their method type.
-    etr3 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr3.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "w")
+        # Label/Entry for New Param Name.
+        label5 = tk.Label(frame, text = "New Param Name :", font = ('bold'))
+        label5.grid(row = 10, column = 0)
+        entry5 = tk.Entry(frame, width = 50)
+        entry5.grid(row = 11, column = 0)
 
-    # Entry where the user can enter their old param name.
-    etr4 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr4.grid(
-        row = 3, 
-        column = 1, 
-        sticky = "w")
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_rename_param(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), entry5.get(), outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 12, column = 0, padx = 5, pady = 5)
 
-    # Entry where the user can enter their new param name.
-    etr5 = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr5.grid(
-        row = 4, 
-        column = 1, 
-        sticky = "w")
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 13, column = 0, sticky = "ew")
 
-    # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_rename_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 5, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
-    
-    # Generate the window.
-    root.bind('<Return>', 
-        lambda event: gf.b_rename_param(etr1.get(), etr2.get(), etr3.get(), etr4.get(), etr5.get(), lbl6))
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 14, column = 0)
+
+        # Generate the window.
+        root.bind('<Return>', 
+            lambda event: gf.b_rename_param(
+                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), entry5.get(), outputlabel))
+
     root.mainloop()
 
 
@@ -1320,56 +951,33 @@ def save_window() -> None:
     root.title("Save Data")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: "File Name"
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "File Name:", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: Output Message
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their file name.
-    etr = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr.grid(
-        row = 0, 
-        column = 1, 
-        sticky = "w")
+    # Label/Entry for File Name.
+    label = tk.Label(frame, text = "File Name :", font = ('bold'))
+    label.grid(row = 0, column = 0)
+    entry = tk.Entry(frame, width = 50)
+    entry.grid(row = 1, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_save_file(etr.get(), lbl2),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_save_file(entry.get(), label),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 2, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 3, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 4, column = 0)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_save_file(entry.get(), label))
     root.mainloop()
 
 
@@ -1379,130 +987,81 @@ def load_window() -> None:
     root.title("Load Data")
 
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: Warning Message
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Warning: Loading will overwrite any unsaved changes.", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
+    # Label/Entry for warning about overwriting unsaved data.
+    label = tk.Label(
+        frame, text = "Warning: Loading will overwrite\nany unsaved changes.", font = ('bold'))
+    label.grid(row = 0, column = 0)
 
-    # Label: "File Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "File Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
-
-    # Label: Output Message
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their file name.
-    etr = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+    # Label/Entry for File Name.
+    label1 = tk.Label(frame, text = "File Name :", font = ('bold'))
+    label1.grid(row = 1, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 2, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_load_file(etr.get(), lbl3),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_load_file(entry1.get(), label),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 3, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 4, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 5, column = 0)
+
+    # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_load_file(entry1.get(), label))
+    root.mainloop()
+
 
 def export_window() -> None:
     # Window for Loading data from an existing file.
     root = tk.Toplevel(name = 'dn')
     root.title("Export Image")
+
     # Frame containing the elements.
-    frame = tk.Frame(
-        master = root,  
-        relief = tk.SUNKEN,  
-        borderwidth = 3)
-    frame.pack(ipadx = 10)
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
 
-    # Label: Warning Message
-    lbl1 = tk.Label(
-        master = frame,  
-        text = "Warning: Saving duplicate file names will override previous ones.", 
-        font = ('bold'))
-    lbl1.grid(
-        row = 0, 
-        column = 0, 
-        sticky = "w")
-    # Label: "File Name"
-    lbl2 = tk.Label(
-        master = frame,  
-        text = "File Name:", 
-        font = ('bold'))
-    lbl2.grid(
-        row = 1, 
-        column = 0, 
-        sticky = "w")
+    # Label/Entry for warning about overwriting unsaved data.
+    label = tk.Label(
+        frame, text = "Warning: Saving duplicate file names will\noverride previous ones.", font = ('bold'))
+    label.grid(row = 0, column = 0)
 
-    # Label: Output Message
-    lbl3 = tk.Label(
-        master = frame,  
-        text = "", 
-        font = ('bold'))
-    lbl3.grid(
-        row = 2, 
-        column = 0, 
-        sticky = "w")
-
-    # Entry where the user can enter their file name.
-    etr = tk.Entry(
-        master = frame, 
-        width = 50)
-    etr.grid(
-        row = 1, 
-        column = 1, 
-        sticky = "w")
+    # Label/Entry for File Name.
+    label1 = tk.Label(frame, text = "File Name :", font = ('bold'))
+    label1.grid(row = 1, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 2, column = 0)
 
     # Confirm Button, command is the helper checking the user input
-    #     and executing the appropriate function.
+    #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_export(etr.get(), lbl3),
-        master = frame, 
-        text = "Confirm", 
-        font = ('bold'))
-    btn.grid(
-        row = 2, 
-        column = 1, 
-        sticky = "e", 
-        padx = 5, 
-        pady = 5)
+        command = lambda: gf.b_export(entry1.get(), label),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 3, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 4, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 5, column = 0)
 
     # Generate the window.
+    root.bind('<Return>', 
+        lambda event: gf.b_export(entry1.get(), label))
     root.mainloop()
+
 
 ###################################################################################################
 '''

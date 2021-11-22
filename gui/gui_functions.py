@@ -6,10 +6,13 @@ import tkinter as tk
 import queue
 
 # Internal Imports
+from uml_components import UMLAttributes as ua
+
 from uml_components.interfaces import (
     attr_interface as ai, 
     class_interface as ci, 
     rel_interface as ri)
+
 from . import UMLBox
 from . import UMLField
 from . import UMLLine
@@ -73,14 +76,17 @@ def b_add_method(
         class_name: str, 
         method_name : str, 
         method_type : str, 
-        label : tk.Label) -> None:
+        param_list : list,
+        label : tk.Label, 
+        otherlabel : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.add_method(class_name, method_name, method_type)
+    output = ai.add_method(class_name, method_name, method_type, param_list)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
         UMLSavepoint.clear_stack()
     label.configure(text = output[1])
+    otherlabel.configure(text = "")
     UMLMethod.update_methods(class_name)
     UMLField.fix_pos(class_name)
 
@@ -91,7 +97,8 @@ def b_delete_method(
         method_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.delete_method(class_name, method_name, method_type)
+    method = UMLMethod(method_name, method_type)
+    output = ai.delete_method(class_name, method)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
@@ -104,11 +111,12 @@ def b_delete_method(
 def b_rename_method(
         class_name : str, 
         old_name : str, 
-        new_name : str, 
         method_type : str, 
+        new_name : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.rename_method(class_name, old_name, method_type, new_name)
+    method = UMLMethod(old_name, method_type)
+    output = ai.rename_method(class_name, method, new_name)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
@@ -136,10 +144,12 @@ def b_add_field(
 
 def b_delete_field(
         class_name : str, 
-        field_name : str, 
+        field_name : str,
+        field_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.delete_field(class_name, field_name)
+    field = UMLField(field_name, field_type)
+    output = ai.delete_field(class_name, field)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
@@ -151,11 +161,13 @@ def b_delete_field(
 
 def b_rename_field(
         class_name : str, 
-        old_name : str, 
+        old_name : str,
+        field_type : str, 
         new_name :str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.rename_field(class_name, old_name, new_name)
+    field = UMLField(old_name, field_type)
+    output = ai.rename_field(class_name, field, new_name)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
@@ -204,7 +216,8 @@ def b_add_param(
         param_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.add_param(class_name, method_name, method_type, param_name, param_type)
+    method = UMLMethod(method_name, method_type)
+    output = ai.add_param(class_name, method, param_name, param_type)
     if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
@@ -219,9 +232,12 @@ def b_delete_param(
         method_name : str, 
         method_type : str, 
         param_name : str, 
+        param_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.delete_param(class_name, method_name, method_type, param_name)
+    method = UMLMethod(method_name, method_type)
+    param = ua.UMLParameter(param_name, param_type)
+    output = ai.delete_param(class_name, method, param)
     if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
@@ -236,10 +252,13 @@ def b_rename_param(
         method_name : str, 
         method_type : str, 
         old_name : str, 
+        param_type : str,
         new_name : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    output = ai.rename_param(class_name, method_name, method_type, old_name, new_name)
+    method = UMLMethod(method_name, method_type)
+    param = ua.UMLParameter(old_name, param_type)
+    output = ai.rename_param(class_name, method, param, new_name)
     if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):
