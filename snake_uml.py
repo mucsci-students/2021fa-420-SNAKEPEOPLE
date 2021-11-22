@@ -82,7 +82,8 @@ def save_by_name(filename : str) -> str:
         msg = f"Saved {filename}.json successfully"
     return msg
 
-def save_by_path(filename, path) -> str:
+def save_by_path(filename: str, 
+                 path: str) -> str:
     classes = []
     relationship = []
     msg = ""

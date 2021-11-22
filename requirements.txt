@@ -1,1 +1,3 @@
 pytest==6.2.5
+pyreadline==2.1
+Pillow==8.4.0

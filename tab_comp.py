@@ -327,7 +327,7 @@ class TabComp(cmd.Cmd):
             param_list: List = []
             output = "default"
             
-            if len(lst) >= 4:
+            if len(lst) >= 4: 
                 if lst[3] in flags:
                     params_raw = lst[4:]
 
@@ -793,7 +793,6 @@ class TabComp(cmd.Cmd):
                     
                     output = snake_uml.save_by_path(filename, path)
                     
-            
             else:
                 check_args(1, len(lst))
             
