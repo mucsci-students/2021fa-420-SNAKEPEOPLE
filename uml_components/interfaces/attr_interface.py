@@ -253,7 +253,7 @@ def add_param(class_name : str,
 
 def rename_field(class_name : str,
                  field : UMLField,
-                 new_name :str) -> tuple:
+                 new_name :str) -> Tuple[Union[UMLField, None], str]:
     """
     Renames a field of a given class.
     
@@ -300,7 +300,7 @@ def rename_field(class_name : str,
                   
 def rename_method(class_name : str, 
                   method : UMLMethod, 
-                  new_name : str) -> tuple:
+                  new_name : str) -> Tuple[Union[UMLMethod, None], str]:
     """
     Renames a method of the given class.
     
@@ -347,7 +347,7 @@ def rename_method(class_name : str,
 def rename_param(class_name : str,
                  method : UMLMethod,
                  param : UMLParameter,
-                 new_name : str) -> tuple:
+                 new_name : str) -> Tuple[Union[UMLParameter, None], str]:
     """
     Renames a parameter of a given method of a given class.
     
@@ -395,7 +395,7 @@ def rename_param(class_name : str,
 # Attr Delete Methods ========================================================
                 
 def delete_field(class_name : str,
-                 field : UMLField) -> tuple:
+                 field : UMLField) -> Tuple[Union[UMLField, None], str]:
     """
     Deletes a field from a given class.
     
