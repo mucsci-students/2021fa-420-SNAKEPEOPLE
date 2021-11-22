@@ -216,7 +216,7 @@ def b_add_param(
         param_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    method = UMLMethod(method_name, method_type)
+    method = ua.UMLMethod(method_name, method_type)
     output = ai.add_param(class_name, method, param_name, param_type)
     if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
@@ -235,7 +235,7 @@ def b_delete_param(
         param_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    method = UMLMethod(method_name, method_type)
+    method = ua.UMLMethod(method_name, method_type)
     param = ua.UMLParameter(param_name, param_type)
     output = ai.delete_param(class_name, method, param)
     if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
@@ -256,7 +256,7 @@ def b_rename_param(
         new_name : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    method = UMLMethod(method_name, method_type)
+    method = ua.UMLMethod(method_name, method_type)
     param = ua.UMLParameter(old_name, param_type)
     output = ai.rename_param(class_name, method, param, new_name)
     if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
