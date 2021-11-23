@@ -274,11 +274,23 @@ def delete_method_window() -> None:
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
 
+        methods = []
+        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        string = ""
+        for method in uml.methods:
+            string = ""
+            string += method.name + " " + method.return_type + "("
+            for param in method.params:
+                string += param.type + " " + param.name + ", "
+        methods.append(string)
+        methodvar = tk.StringVar()
+        methodvar.set("Select a method")
+        
+        method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
         # Label/Entry for Method Name.
         label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
         label1.grid(row = 2, column = 0)
-        entry1 = tk.Entry(frame, width = 50)
-        entry1.grid(row = 3, column = 0)
+        method_dropdown.grid(row = 3, column = 0)
 
         # Label/Entry for Method Type.
         label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
@@ -288,11 +300,11 @@ def delete_method_window() -> None:
 
         # Confirm Button, command is the helper checking the user input
         #   and executing the appropriate function.
-        btn = tk.Button(
-            command = lambda: gf.b_delete_method(
-                classvar.get(), entry1.get(), entry2.get(), outputlabel),
-            master = frame, text = "Confirm", font = ('bold'))
-        btn.grid(row = 6, column = 0, padx = 5, pady = 5)
+        # btn = tk.Button(
+        #     command = lambda: gf.b_delete_method(
+        #         classvar.get(), entry1.get(), entry2.get(), outputlabel),
+        #     master = frame, text = "Confirm", font = ('bold'))
+        # btn.grid(row = 6, column = 0, padx = 5, pady = 5)
 
         # Thin Line Separator.
         separator = ttk.Separator(frame, orient = "horizontal")
@@ -303,11 +315,21 @@ def delete_method_window() -> None:
         outputlabel.grid(row = 8, column = 0)
 
         # Generate the window.
-        root.bind('<Return>', 
-            lambda event: gf.b_delete_method(
-                classvar.get(), entry1.get(), entry2.get(), outputlabel))
+        # root.bind('<Return>', 
+        #     lambda event: gf.b_delete_method(
+        #         classvar.get(), entry1.get(), entry2.get(), outputlabel))
     root.mainloop()
 
+def update_methods(classvar):
+    methods = []
+    uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+    string = ""
+    for method in uml.methods:
+        string = ""
+        string += method.name + " " + method.return_type + "("
+        for param in method.params:
+            string += param.type + " " + param.name + ", "
+    print(classvar.get())
 
 def rename_method_window() -> None:
     # Window for renaming a Method in an existing Class in the system.

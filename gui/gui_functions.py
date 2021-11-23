@@ -6,7 +6,7 @@ import tkinter as tk
 import queue
 
 # Internal Imports
-from uml_components import UMLAttributes as ua
+from uml_components import UMLAttributes as ua, UMLClass
 
 from uml_components.interfaces import (
     attr_interface as ai, 
@@ -148,7 +148,7 @@ def b_delete_field(
         field_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    field = UMLField(field_name, field_type)
+    field = ua.UMLField(field_name, field_type)
     output = ai.delete_field(class_name, field)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
@@ -166,7 +166,11 @@ def b_rename_field(
         new_name :str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    field = UMLField(old_name, field_type)
+    uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+    field : ua.UMLField
+    for f in uml.fields:
+        if f.name == old_name:
+            field = f
     output = ai.rename_field(class_name, field, new_name)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
@@ -218,6 +222,7 @@ def b_add_param(
     UMLSavepoint.save_point()
     method = ua.UMLMethod(method_name, method_type)
     output = ai.add_param(class_name, method, param_name, param_type)
+    print(UMLClass.class_dict)
     if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
     if(output[1].split(' ')[0] == "Successfully"):

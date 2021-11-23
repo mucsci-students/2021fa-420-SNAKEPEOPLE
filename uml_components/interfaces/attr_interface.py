@@ -122,7 +122,6 @@ def add_field(class_name : str,
             # Creates a new Field object and stores it in the list of fields for 
             # 'uml'.    
             ret = uml.add_field(field_name, field_type)
-            
     return ret, msg
         
 def add_method(class_name : str,
