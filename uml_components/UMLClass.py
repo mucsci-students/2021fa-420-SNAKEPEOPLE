@@ -4,9 +4,7 @@
 from uml_components.UMLAttributes import (UMLField,
                                           UMLMethod,
                                           UMLParameter)
-from typing import Union
-
-class_dict = dict()
+from typing import Dict, List, Union
 
 class UMLClass():
     """
@@ -20,8 +18,8 @@ class UMLClass():
     
     def __init__(self, 
                  name : str,
-                 fields : list = None,
-                 methods : list = None,
+                 fields : List[UMLField] = None,
+                 methods : List[UMLMethod] = None,
                  position_x : int = None,
                  position_y : int = None,
                  **kwargs):
@@ -79,14 +77,14 @@ class UMLClass():
     def add_method(self,
                    name : str,
                    return_type : str,
-                   parameters : Union[list, None] = None) -> UMLMethod:
+                   parameters : Union[List[UMLParameter], None] = None
+                   ) -> UMLMethod:
         
         param_list = parameters if parameters else list()
         new_method = UMLMethod(name, return_type, param_list)
         
         self.methods.append(new_method)
-        print(f"<Added Method ({self.name})>: {return_type} " +
-              f"{name}({param_list})")
+        print(f"<Added Method ({self.name})>: {new_method}")
         
         return new_method
     
@@ -98,16 +96,19 @@ class UMLClass():
         
         param = method.add_param(param_name, param_type)
         
-        print(f"<Added Method Parameter ({self.name}.{method.name}())>: " +
-              f"{param_type} {param_name}")
+        print(f"<Added Method Parameter ({self.name}.{method})>: {param}")
         
         return param
         
         
     def delete_field(self,
-                     field : UMLField) -> None:
+                     field : UMLField) -> UMLField:
         idx = self.fields.index(field)
         self.fields.pop(idx)
+        
+        print(f"<Deleted Field ({self.name})>: {field}")
+        
+        return field
         
         
     def delete_method(self,
@@ -122,7 +123,18 @@ class UMLClass():
                      param : UMLParameter) -> None:
         idx = method.params.index(param)
         method.params.pop(idx)
+        
+    def get_field(self,
+                  field_name : str) -> Union[UMLField, None]:
+        field : UMLField
+        for field in self.fields:
+            if field_name == field.name:
+                return field
+        
+        return None
             
     
     def toJson(self) -> dict:
         return self.__dict__
+
+class_dict: Dict[str, UMLClass] = dict()

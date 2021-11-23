@@ -2,23 +2,14 @@
 # File Name:     snake_uml.py
 
 # External Imports
-import JSON
-from ntpath import realpath
-
 import sys
-import os.path
-import tab_comp
-#from typing import _Alias
+import os
 
 # Internal Imports
-from uml_components import (UMLClass, 
-                            UMLRelationship,
-                            UMLAttributes)
-from uml_components.interfaces import (class_interface,
-                                       rel_interface,
-                                       attr_interface)
+import JSON
 from gui import gui_main
-from gui import ImageAdapter
+import tab_comp
+from uml_components import UMLClass, UMLRelationship
 
 def main(args : list) -> None:
     '''
@@ -38,201 +29,6 @@ def main(args : list) -> None:
     # If the user does not pick either GUI or CLI, default to GUI.
     else:
         gui_main.run()
-
-def cli_loop() -> None:
-    '''
-    Processes an infinite loop waiting for a command from the user. Once input
-    is given, executes a command, if valid.
-    '''
-
-    print("===============================================\n" +
-          "|           Snake People UML Editor           |\n" +
-          "===============================================\n" +
-          "      Type 'help' for a list of commands.      \n" +
-          "       Type 'exit' to close the program.       \n")
-    
-    aliases = {
-        'exit' : ['exit', 'e',
-                  'quit', 'q'],
-        
-        'addclass' : ['addclass'],
-        
-        'delclass' : ['delclass'],
-        
-        'renclass' : ['renclass'],
-        
-        'addrel' : ['addrel'],
-        
-        'delrel' : ['delrel'],
-        
-        'addattr' : ['addattr'],
-        
-        'delattr' : ['delattr'],
-        
-        'renattr' : ['renattr'],
-        
-        'listclass' : ['listclass'],
-        
-        'listrel' : ['listrel'],
-        
-        'save' : ['save'],
-        
-        'load' : ['load'],
-        
-        'help' : ['help'],
-    }
-    
-    while True:
-        
-        cmd = input(">> ").split()
-        
-        if len(cmd) == 0:
-            continue
-        
-        elif cmd[0] in aliases['exit']:
-            break
-        
-        elif cmd[0] == 'addclass':
-            if check_inputs(cmd, 2):
-                class_interface.add_class(cmd[1])
-            
-        elif cmd[0] == 'delclass':
-            if check_inputs(cmd, 2):
-                class_interface.delete_class(cmd[1])
-            
-        elif cmd[0] == 'renclass':
-            if check_inputs(cmd, 3):
-                class_interface.rename_class(cmd[1], 
-                                             cmd[2])
-                
-        elif cmd[0] == 'addrel':
-            if check_inputs(cmd, 4):
-                rel_interface.add_relationship(cmd[1], 
-                                               cmd[2], 
-                                               cmd[3])
-                
-        elif cmd[0] == 'delrel':
-            if check_inputs(cmd, 3):
-                rel_interface.delete_relationship(cmd[1], 
-                                                  cmd[2])
-                
-        elif cmd[0] == 'addfield':
-            if check_inputs(cmd, 4):
-                attr_interface.add_field(cmd[1], 
-                                         cmd[2], 
-                                         cmd[3])
-                
-        elif cmd[0] == 'addmethod':
-            if check_inputs(cmd, 4):
-                attr_interface.add_method(cmd[1], 
-                                          cmd[2], 
-                                          cmd[3])
-                
-        elif cmd[0] == 'addparam':
-            if check_inputs(cmd, 6):
-                attr_interface.add_param(cmd[1], 
-                                         cmd[2], 
-                                         cmd[3], 
-                                         cmd[4], 
-                                         cmd[5])
-                
-        elif cmd[0] == 'delfield':
-            if check_inputs(cmd, 3):
-                attr_interface.delete_field(cmd[1], 
-                                            cmd[2])
-                
-        elif cmd[0] == 'delmethod':
-            if check_inputs(cmd, 4):
-                attr_interface.delete_method(cmd[1], 
-                                             cmd[2], 
-                                             cmd[3])
-                
-        elif cmd[0] == 'renfield':
-            if check_inputs(cmd, 4):
-                attr_interface.rename_field(cmd[1], 
-                                            cmd[2], 
-                                            cmd[3])
-                
-        elif cmd[0] == 'renmethod':
-            if check_inputs(cmd, 5):
-                attr_interface.rename_method(cmd[1], 
-                                             cmd[2], 
-                                             cmd[3], 
-                                             cmd[4])
-                
-        elif cmd[0] == 'renparam':
-            if check_inputs(cmd, 4):
-                attr_interface.rename_param(cmd[1], # Class Name
-                                            cmd[2], # Method Name
-                                            cmd[3], # Method Type
-                                            cmd[4], # Old Param Name
-                                            cmd[5]) # New Param Name
-                
-        elif cmd[0] == 'listclass':
-            if check_inputs(cmd, 2):
-                if cmd[1] == 'all':
-                    list_all_classes()
-                else:
-                    list_a_class(cmd[1])
-
-        elif cmd[0] == 'listrel':
-            rel_interface.list_relationships()
-        
-        elif cmd[0] == 'save':
-            if check_inputs(cmd, 2):
-                save(cmd[1])
-        
-        elif cmd[0] == 'load':
-            if check_inputs(cmd, 2):
-                load(cmd[1])
-
-        elif cmd[0] == 'export':
-            if check_inputs(cmd, 2):
-                adapter = ImageAdapter.ImageAdapter()
-                adapter.export(cmd[1])
-        
-        elif cmd[0] == 'help':
-            help()
-        
-        else:
-            print("<Invalid Command Error>: " +
-                  f"'{cmd[0]}' is not a valid command.\n" +
-                  "Type 'help' for a list of valid commands.")
-    
-
-def check_inputs(cmd : list, num : int) -> bool:
-    '''
-    Checks if the number of arguments given matches the number of expected
-    arguments for a given command.
-    
-    Parameters:\n
-    - cmd : list -> a list of commands/arguments parsed from user input.
-    - num : int -> the number of expected arguments
-    
-    return -> bool
-    '''
-    
-    if len(cmd) != num:
-        # If the number of given arguments does not match the number of expected
-        # arguments, print an error and return False.
-        print("<Invalid Arguments Error>\n" +
-              f"{num - 1} arguments expected. {len(cmd) - 1} arguments " + 
-              "received.")
-        return False
-    else:
-        # Otherwise return True.
-        return True
-
-
-def help() -> None:
-    '''
-    Reads help information from a separate text file and prints it to the
-    terminal window.
-    '''
-    
-    with open("help.txt") as help:
-        content = help.read()
-        print(content)
 
 def list_a_class(input : str) -> None:
     '''
@@ -263,11 +59,14 @@ def list_all_classes() -> None:
         for key in UMLClass.class_dict:
             print(UMLClass.class_dict[key])
         print()
- 
-def save(filename : str) -> str:
+
+def save(filename) -> str:
+    return save_by_name(filename)
+def save_by_name(filename : str) -> str:
     classes = []
     relationship = []
     msg = ""
+    
     c : UMLClass.UMLClass
     for c in list(UMLClass.class_dict.values()):
         classes.append(c.toJson())
@@ -280,21 +79,72 @@ def save(filename : str) -> str:
     
     with open(f"save_files/{filename}.json", "w") as file:
         file.write(json_text)
-        msg = "Saved Successfully"
+        msg = f"Saved {filename}.json successfully"
     return msg
+
+def save_by_path(filename: str, 
+                 path: str) -> str:
+    classes = []
+    relationship = []
+    msg = ""
+    
+    c : UMLClass.UMLClass
+    for c in list(UMLClass.class_dict.values()):
+        classes.append(c.toJson())
+
+    r : UMLRelationship.UMLRelationship
+    for r in UMLRelationship.relationship_list:
+        relationship.append(r.toJson())
         
-def load(filename : str) -> str:
+    json_text = JSON.encode(classes, relationship)
+    
+    if not os.path.isdir(path):
+        os.mkdir(path)
+    
+    fullpath = f"{path}/{filename}.json"
+    with open(fullpath, "w") as file:
+        file.write(json_text)
+        msg = f"Saved {filename}.json successfully to {path}"
+    return msg
+
+def load_ex(path: str) -> str:
+    msg: str = ""
+    json_text: str = ""
+    
+    try:
+        with open(path, "r") as file:
+            file.seek(0)
+            json_text = file.read()
+            p_split = path.split("/")
+            
+            if p_split[-1].split(".")[-1].lower() != "json":
+                return "<UML Load Error>: Unsupported file selected."
+            
+            msg = f"Loaded {p_split[-1]} Successfully.\n"
+        (UMLClass.class_dict, 
+         UMLRelationship.relationship_list) = JSON.decode(json_text)
+    except FileNotFoundError:
+        msg = f"<UML Load Error>: Unable to access file at {path}"
+    return msg
+
+def load(filename) -> str:
+    return load_in(filename)
+def load_in(filename: str) -> str:
+    """
+    Given a filename, loads a .json file from the programs internal save_files
+    folder.
+    """
     msg = ""
     json_text : str = ""
     try:
         with open(f"save_files/{filename}.json", "r") as file:
             file.seek(0)
             json_text = file.read()
-            msg = "Loaded Successfully."
+            msg = f"Loaded {filename}.json Successfully.\n"
+        (UMLClass.class_dict, 
+         UMLRelationship.relationship_list) = JSON.decode(json_text)
     except FileNotFoundError:
         msg = f"File {filename}.json does not exist."
-    (UMLClass.class_dict, 
-        UMLRelationship.relationship_list) = JSON.decode(json_text)
     return msg
 
 # Entry Point
