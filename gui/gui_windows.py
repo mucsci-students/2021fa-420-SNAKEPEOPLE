@@ -3,7 +3,7 @@
 
 # External Imports
 import tkinter as tk
-from tkinter import ttk
+from tkinter import OptionMenu, ttk
 
 # Internal Imports
 from . import gui_functions as gf
@@ -239,7 +239,6 @@ def add_method_window() -> None:
                 classvar.get(), entry1.get(), entry2.get(), paramlist, outputlabel, paramoutput))
     root.mainloop()
 
-
 def delete_method_window() -> None:
     # Window for deleting a Method from an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -268,12 +267,14 @@ def delete_method_window() -> None:
         classlabel.grid(row = 0, column = 0)
 
         # Creating the classes dropdown.
+        global classvar
         classvar = tk.StringVar(frame)
         classvar.set(list(UMLClass.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
 
+        
         methods = []
         uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
         string = ""
@@ -281,30 +282,42 @@ def delete_method_window() -> None:
             string = ""
             string += method.name + " " + method.return_type + "("
             for param in method.params:
-                string += param.type + " " + param.name + ", "
+                if string[-1] != "(":
+                    string = string + ","
+                string += param.type + " " + param.name
+            string += ")"
         methods.append(string)
+        global methodvar
         methodvar = tk.StringVar()
-        methodvar.set("Select a method")
-        
+        if len(methods) == 0:
+            methodvar.set("No methods available")
+        else:
+            methodvar.set("Select a method")
+        global method_dropdown
         method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
+        
+        update_methods()
+        classvar.trace_add('write', lambda *args: update_methods())
+
         # Label/Entry for Method Name.
         label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
         label1.grid(row = 2, column = 0)
         method_dropdown.grid(row = 3, column = 0)
 
-        # Label/Entry for Method Type.
-        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
-        label2.grid(row = 4, column = 0)
-        entry2 = tk.Entry(frame, width = 50)
-        entry2.grid(row = 5, column = 0)
-
         # Confirm Button, command is the helper checking the user input
         #   and executing the appropriate function.
-        # btn = tk.Button(
-        #     command = lambda: gf.b_delete_method(
-        #         classvar.get(), entry1.get(), entry2.get(), outputlabel),
-        #     master = frame, text = "Confirm", font = ('bold'))
-        # btn.grid(row = 6, column = 0, padx = 5, pady = 5)
+        global method_name
+        method_name = methodvar.get().split(" ")[0]
+        global method_type
+        method_type = methodvar.get().split(" ")[1].split("(")[0]
+
+        methodvar.trace_add("write", lambda *args: update_params())
+
+        btn = tk.Button(
+            command = lambda: gf.b_delete_method(
+                classvar.get(), method_name, method_type, outputlabel),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 6, column = 0, padx = 5, pady = 5)
 
         # Thin Line Separator.
         separator = ttk.Separator(frame, orient = "horizontal")
@@ -315,21 +328,39 @@ def delete_method_window() -> None:
         outputlabel.grid(row = 8, column = 0)
 
         # Generate the window.
-        # root.bind('<Return>', 
-        #     lambda event: gf.b_delete_method(
-        #         classvar.get(), entry1.get(), entry2.get(), outputlabel))
+        root.bind('<Return>', 
+            lambda event: gf.b_delete_method(
+                classvar.get(), method_name, method_type, outputlabel))
     root.mainloop()
 
-def update_methods(classvar):
-    methods = []
+def update_params():
+    global method_name
+    method_name = methodvar.get().split(" ")[0]
+    global method_type
+    method_type = methodvar.get().split(" ")[1].split("(")[0]
+
+def update_methods():
+    menu = method_dropdown["menu"]
+    menu.delete(0, "end")
+    method_list = []
     uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
     string = ""
     for method in uml.methods:
         string = ""
         string += method.name + " " + method.return_type + "("
         for param in method.params:
-            string += param.type + " " + param.name + ", "
-    print(classvar.get())
+            if string[-1] != "(":
+                string = string + ","
+            string += param.type + " " + param.name
+        string += ")"
+        method_list.append(string)
+    for strings in method_list:
+            menu.add_command(label=strings, command=tk._setit(methodvar, strings))
+    if len(method_list) == 0:
+        methodvar.set("No methods available")
+    else:
+        methodvar.set("Select a method")
+    
 
 def rename_method_window() -> None:
     # Window for renaming a Method in an existing Class in the system.
@@ -359,23 +390,42 @@ def rename_method_window() -> None:
         classlabel.grid(row = 0, column = 0)
 
         # Creating the classes dropdown.
+        global classvar
         classvar = tk.StringVar(frame)
         classvar.set(list(UMLClass.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
 
+        methods = []
+        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        string = ""
+        for method in uml.methods:
+            string = ""
+            string += method.name + " " + method.return_type + "("
+            for param in method.params:
+                if string[-1] != "(":
+                    string = string + ","
+                string += param.type + " " + param.name
+            string += ")"
+        methods.append(string)
+        global methodvar
+        methodvar = tk.StringVar()
+        if len(methods) == 0:
+            methodvar.set("No methods available")
+        else:
+            methodvar.set("Select a method")
+        global method_dropdown
+        method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
+        
+        update_methods()
+        classvar.trace_add('write', lambda *args: update_methods())
+
+
         # Label/Entry for Old Method Name.
         label1 = tk.Label(frame, text = "Old Method Name :", font = ('bold'))
         label1.grid(row = 2, column = 0)
-        entry1 = tk.Entry(frame, width = 50)
-        entry1.grid(row = 3, column = 0)
-
-        # Label/Entry for Method Type.
-        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
-        label2.grid(row = 4, column = 0)
-        entry2 = tk.Entry(frame, width = 50)
-        entry2.grid(row = 5, column = 0)
+        method_dropdown.grid(row = 3, column = 0)
 
         # Label/Entry for New Method Name.
         label3 = tk.Label(frame, text = "New Method Name :", font = ('bold'))
@@ -383,11 +433,18 @@ def rename_method_window() -> None:
         entry3 = tk.Entry(frame, width = 50)
         entry3.grid(row = 7, column = 0)
 
+        global method_name
+        method_name = methodvar.get().split(" ")[0]
+        global method_type
+        method_type = methodvar.get().split(" ")[1].split("(")[0]
+
+        methodvar.trace_add("write", lambda *args: update_params())
+
         # Confirm Button, command is the helper checking the user input
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_rename_method(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), outputlabel),
+                classvar.get(), method_name, method_type, entry3.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 8, column = 0, padx = 5, pady = 5)
 
@@ -402,7 +459,7 @@ def rename_method_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_rename_method(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), outputlabel))
+                classvar.get(), method_name, method_type, entry3.get(), outputlabel))
     root.mainloop()
 
 
@@ -743,23 +800,41 @@ def add_param_window() -> None:
         classlabel.grid(row = 0, column = 0)
 
         # Creating the classes dropdown.
+        global classvar
         classvar = tk.StringVar(frame)
         classvar.set(list(UMLClass.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
 
-        # Label/Entry for Method Name.
-        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
-        label1.grid(row = 2, column = 0)
-        entry1 = tk.Entry(frame, width = 50)
-        entry1.grid(row = 3, column = 0)
+        methods = []
+        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        string = ""
+        for method in uml.methods:
+            string = ""
+            string += method.name + " " + method.return_type + "("
+            for param in method.params:
+                if string[-1] != "(":
+                    string = string + ","
+                string += param.type + " " + param.name
+            string += ")"
+        methods.append(string)
+        global methodvar
+        methodvar = tk.StringVar()
+        if len(methods) == 0:
+            methodvar.set("No methods available")
+        else:
+            methodvar.set("Select a method")
+        global method_dropdown
+        method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
+        
+        update_methods()
+        classvar.trace_add('write', lambda *args: update_methods())
 
-        # Label/Entry for Method Type.
-        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
-        label2.grid(row = 4, column = 0)
-        entry2 = tk.Entry(frame, width = 50)
-        entry2.grid(row = 5, column = 0)
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Old Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        method_dropdown.grid(row = 3, column = 0)
 
         # Label/Entry for Param Name.
         label3 = tk.Label(frame, text = "Param Name :", font = ('bold'))
@@ -773,11 +848,18 @@ def add_param_window() -> None:
         entry4 = tk.Entry(frame, width = 50)
         entry4.grid(row = 9, column = 0)
 
+        global method_name
+        method_name = methodvar.get().split(" ")[0]
+        global method_type
+        method_type = methodvar.get().split(" ")[1].split("(")[0]
+
+        methodvar.trace_add("write", lambda *args: update_params())
+
         # Confirm Button, command is the helper checking the user input
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_add_param(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel),
+                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 10, column = 0, padx = 5, pady = 5)
 
@@ -792,7 +874,7 @@ def add_param_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_add_param(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel))
+                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel))
 
     root.mainloop()
 
@@ -825,23 +907,41 @@ def delete_param_window() -> None:
         classlabel.grid(row = 0, column = 0)
 
         # Creating the classes dropdown.
+        global classvar
         classvar = tk.StringVar(frame)
         classvar.set(list(UMLClass.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
 
-        # Label/Entry for Method Name.
-        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
-        label1.grid(row = 2, column = 0)
-        entry1 = tk.Entry(frame, width = 50)
-        entry1.grid(row = 3, column = 0)
+        methods = []
+        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        string = ""
+        for method in uml.methods:
+            string = ""
+            string += method.name + " " + method.return_type + "("
+            for param in method.params:
+                if string[-1] != "(":
+                    string = string + ","
+                string += param.type + " " + param.name
+            string += ")"
+        methods.append(string)
+        global methodvar
+        methodvar = tk.StringVar()
+        if len(methods) == 0:
+            methodvar.set("No methods available")
+        else:
+            methodvar.set("Select a method")
+        global method_dropdown
+        method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
+        
+        update_methods()
+        classvar.trace_add('write', lambda *args: update_methods())
 
-        # Label/Entry for Method Type.
-        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
-        label2.grid(row = 4, column = 0)
-        entry2 = tk.Entry(frame, width = 50)
-        entry2.grid(row = 5, column = 0)
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Old Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        method_dropdown.grid(row = 3, column = 0)
 
         # Label/Entry for Param Name.
         label3 = tk.Label(frame, text = "Param Name :", font = ('bold'))
@@ -855,11 +955,18 @@ def delete_param_window() -> None:
         entry4 = tk.Entry(frame, width = 50)
         entry4.grid(row = 9, column = 0)
 
+        global method_name
+        method_name = methodvar.get().split(" ")[0]
+        global method_type
+        method_type = methodvar.get().split(" ")[1].split("(")[0]
+
+        methodvar.trace_add("write", lambda *args: update_params())
+
         # Confirm Button, command is the helper checking the user input
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_delete_param(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel),
+                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 10, column = 0, padx = 5, pady = 5)
 
@@ -874,7 +981,7 @@ def delete_param_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_delete_param(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), outputlabel))
+                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel))
 
     root.mainloop()
 
@@ -907,23 +1014,41 @@ def rename_param_window() -> None:
         classlabel.grid(row = 0, column = 0)
 
         # Creating the classes dropdown.
+        global classvar
         classvar = tk.StringVar(frame)
         classvar.set(list(UMLClass.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
 
-        # Label/Entry for Method Name.
-        label1 = tk.Label(frame, text = "Method Name :", font = ('bold'))
-        label1.grid(row = 2, column = 0)
-        entry1 = tk.Entry(frame, width = 50)
-        entry1.grid(row = 3, column = 0)
+        methods = []
+        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        string = ""
+        for method in uml.methods:
+            string = ""
+            string += method.name + " " + method.return_type + "("
+            for param in method.params:
+                if string[-1] != "(":
+                    string = string + ","
+                string += param.type + " " + param.name
+            string += ")"
+        methods.append(string)
+        global methodvar
+        methodvar = tk.StringVar()
+        if len(methods) == 0:
+            methodvar.set("No methods available")
+        else:
+            methodvar.set("Select a method")
+        global method_dropdown
+        method_dropdown = tk.OptionMenu(frame, methodvar, *methods)
+        
+        update_methods()
+        classvar.trace_add('write', lambda *args: update_methods())
 
-        # Label/Entry for Method Type.
-        label2 = tk.Label(frame, text = "Method Type :", font = ('bold'))
-        label2.grid(row = 4, column = 0)
-        entry2 = tk.Entry(frame, width = 50)
-        entry2.grid(row = 5, column = 0)
+        # Label/Entry for Method Name.
+        label1 = tk.Label(frame, text = "Old Method Name :", font = ('bold'))
+        label1.grid(row = 2, column = 0)
+        method_dropdown.grid(row = 3, column = 0)
 
         # Label/Entry for Old Param Name.
         label3 = tk.Label(frame, text = "Old Param Name :", font = ('bold'))
@@ -943,11 +1068,18 @@ def rename_param_window() -> None:
         entry5 = tk.Entry(frame, width = 50)
         entry5.grid(row = 11, column = 0)
 
+        global method_name
+        method_name = methodvar.get().split(" ")[0]
+        global method_type
+        method_type = methodvar.get().split(" ")[1].split("(")[0]
+
+        methodvar.trace_add("write", lambda *args: update_params())
+
         # Confirm Button, command is the helper checking the user input
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_rename_param(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), entry5.get(), outputlabel),
+                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), entry5.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 12, column = 0, padx = 5, pady = 5)
 
@@ -962,7 +1094,7 @@ def rename_param_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_rename_param(
-                classvar.get(), entry1.get(), entry2.get(), entry3.get(), entry4.get(), entry5.get(), outputlabel))
+                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), entry5.get(), outputlabel))
 
     root.mainloop()
 
