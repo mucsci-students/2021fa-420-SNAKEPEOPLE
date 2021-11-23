@@ -33,7 +33,7 @@ class UMLClass():
         self.position_y = position_y if position_y else -1
         
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         
         name = f"\nClass Name: {self.name}"
         fields = "\n    Fields: (none)"
