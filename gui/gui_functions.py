@@ -98,7 +98,7 @@ def b_add_method(
 
 def b_delete_method(
         class_name : str, 
-        current_method : UMLMethod, 
+        current_method : ua.UMLMethod, 
         label : tk.Label) -> None:
         UMLSavepoint.save_point()
         output = ai.delete_method(class_name, current_method)
@@ -114,7 +114,7 @@ def b_delete_method(
 
 def b_rename_method(
         class_name : str, 
-        current_method : UMLMethod, 
+        current_method : ua.UMLMethod, 
         new_name : str, 
         label : tk.Label) -> None:
         UMLSavepoint.save_point()
@@ -217,7 +217,7 @@ def b_delete_relation(
 
 def b_add_param(
         class_name : str, 
-        current_method : UMLMethod,
+        current_method : ua.UMLMethod,
         param_name : str, 
         param_type : str, 
         label : tk.Label) -> None:
@@ -234,7 +234,7 @@ def b_add_param(
 
 def b_delete_param(
         class_name : str, 
-        current_method : UMLMethod,
+        current_method : ua.UMLMethod,
         param_name : str, 
         param_type : str, 
         label : tk.Label) -> None:
@@ -257,7 +257,7 @@ def b_delete_param(
 
 def b_rename_param(
         class_name : str, 
-        current_method: UMLMethod, 
+        current_method: ua.UMLMethod, 
         old_name : str, 
         param_type : str,
         new_name : str, 
