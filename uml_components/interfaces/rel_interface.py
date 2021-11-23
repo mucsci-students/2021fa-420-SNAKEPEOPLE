@@ -217,5 +217,5 @@ def change_type(source : str, dest : str, new_type : str):
               f"{new_type} is not a valid relationship type.")
     else:
         #Update the relationship type
-        relationship : UMLRelationship.UMLRelationship =  UMLRelationship.relationship_list[index]
+        relationship = UMLRelationship.relationship_list[index]
         relationship.change_type(new_type)

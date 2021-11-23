@@ -13,77 +13,78 @@ def test_add_method () :
     
 def test_add_param () :
     class_interface.add_class ("class12")
-    uml : UMLClass.UMLClass = UMLClass.class_dict['class12']
-    umlM = attr_interface.add_method ("class12", "method12", "int")
-    attr_interface.add_param ("class12", "method12", "int", "param12", "int")
-    assert attr_interface.find_param (umlM[0], "param12")
+    yikes = UMLClass.class_dict['class12']
+    attr_interface.add_method ("class12", "method12", "int")
+    benji = attr_interface.add_param ("class12", yikes.methods[0], "param12", "int")[0]
+    assert attr_interface.find_param (yikes.methods[0], benji) == True
 
 def test_rename_field () :
     class_interface.add_class ("class4")
-    attr_interface.add_field ("class4", "field4", "type4")
-    assert isinstance (attr_interface.rename_field ("class4", "field4", "newfield"), tuple)
+    keem = attr_interface.add_field ("class4", "field4", "type4")[0]
+    assert isinstance (attr_interface.rename_field ("class4", keem, "newfield"), tuple)
 
 def test_rename_method () :
     class_interface.add_class ("class5")
     attr_interface.add_method ("class5", "method5", "type5")
-    assert isinstance (attr_interface.rename_method ("class5", "method5", "type5", "newmethod"), tuple)
+    messy = UMLClass.class_dict["class5"]
+    assert isinstance (attr_interface.rename_method ("class5", messy.methods[0], "newmethod"), tuple)
 
 def test_rename_param () :
     class_interface.add_class ("tanner")
     tanner = UMLClass.class_dict["tanner"]
     tanner.add_method ("doHW", "bool")
-    tanner.add_method_param (tanner.methods[0], "pp", "int")
-    assert attr_interface.rename_param ("tanner", "doHW", "bool", "pp", "ppp")
+    tannerP = tanner.add_method_param (tanner.methods[0], "pp", "int")
+    assert attr_interface.rename_param ("tanner", tanner.methods[0], tannerP, "ppp")
 
 def test_delete_field () :
     class_interface.add_class ("class7")
-    attr_interface.add_field ("class7", "field7", "type7")
-    assert attr_interface.delete_field ("class7", "field7")
+    maxy = attr_interface.add_field ("class7", "field7", "type7")[0]
+    assert attr_interface.delete_field ("class7", maxy)
 
 def test_delete_method () :
     class_interface.add_class ("class8")
-    attr_interface.add_method ("class8", "method8", "type8")
-    assert attr_interface.delete_method ("class8", "method8", "type8")
+    cultist = attr_interface.add_method ("class8", "method8", "type8")[0]
+    assert attr_interface.delete_method ("class8", cultist)
 
 def test_delete_param () :
     class_interface.add_class("beenis")
     beenis : UMLClass.UMLClass = UMLClass.class_dict["beenis"]
     beenis.add_method ("quicksort", "int")
     me : UMLMethod = beenis.methods[0]
-    beenis.add_method_param (me, "p", "double")
-    assert attr_interface.delete_param ("beenis", "quicksort", "int", "p")
+    beenisP = beenis.add_method_param (me, "p", "double")
+    assert attr_interface.delete_param ("beenis", me, beenisP)
 
 def test_find_field () :
     testF = UMLField ("fieldtest", "typetest")
     class_interface.add_class ("class10")
     assert attr_interface.add_field ("class10", "field10", "type10")
     umlT = UMLClass.class_dict["class10"]
-    assert attr_interface.find_field (umlT, "field10") 
+    assert attr_interface.find_field (umlT, umlT.fields[0]) == True
 
 def test_find_method () :
     assert class_interface.add_class ("class11")
     assert attr_interface.add_method ("class11", "method11", "int")
     umlT2 = UMLClass.class_dict["class11"]
-    assert attr_interface.find_method (umlT2, "method11", "int")
+    assert attr_interface.find_method (umlT2, umlT2.methods[0]) == True
 
 def test_find_param () :
     class_interface.add_class ("sadge")
     sad = UMLClass.class_dict["sadge"]
     sad.add_method ("crying", "int")
     sad.add_method_param (sad.methods[0], "p", "double")
-    assert attr_interface.find_param (sad.methods[0], "p")
+    assert attr_interface.find_param (sad.methods[0], sad.methods[0].params[0]) == True
 
 def test_find_field_two () :
     class_interface.add_class ("Super")
     assert isinstance (attr_interface.add_field ("Super", "static", "auto"), tuple)
     umlF2 = UMLClass.class_dict["Super"]
-    assert attr_interface.find_field (umlF2, "static")
+    assert attr_interface.find_field (umlF2, umlF2.fields[0]) == True
 
 def test_find_method_two () :
     assert class_interface.add_class ("ClassM")
     assert attr_interface.add_method ("ClassM", "BubbleSort", "void")
     umlM2 = UMLClass.class_dict["ClassM"]
-    assert attr_interface.find_method (umlM2, "BubbleSort", "void")
+    assert attr_interface.find_method (umlM2, umlM2.methods[0]) == True
 
 # Add some tests that fail on invalid input, output
 # Have pytest list each test in the terminal

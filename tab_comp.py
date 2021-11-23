@@ -3,254 +3,60 @@
 
 # External Imports
 import cmd
+from os.path import isdir, isfile
+import queue
+from sys import exit
+from typing import List
 
 # Internal Imports
-from uml_components.interfaces import (
-    class_interface as ci,
-    rel_interface as ri,
-    attr_interface as ai)
-
-from gui import UMLSavepoint
-
-from gui import ImageAdapter as ia
-
-import queue
-
+from uml_components.UMLAttributes import (UMLField, UMLMethod, 
+                                          UMLParameter)
+from uml_components import UMLClass, UMLRelationship
+from uml_components.interfaces import (class_interface as ci,
+                                       rel_interface as ri,
+                                       attr_interface as ai)
+from gui import (UMLSavepoint,
+                 ImageAdapter as ia,)
 import snake_uml
 
-#################################################################################
+################################################################################
 
 # List of commands that can be tab completed.
-valids = [
-    'addclass', 
-    'delclass', 
-    'renclass', 
+valids = ['addclass', 'delclass', 'renclass', 
+          'addrel', 'delrel',
+          'addfield', 'delfield', 'renfield',
+          'addmethod', 'delmethod', 'renmethod',
+          'addparam', 'delparam', 'renparam',
+          'listclass', 'listrel',
+          'undo', 'redo',
+          'save', 'load', 'export',
+          'help',
+          'exit',]
 
-    'addrel', 
-    'delrel',
-
-    'addfield',
-    'delfield',
-    'renfield',
-
-    'addmethod',
-    'delmethod',
-    'renmethod',
-
-    'addparam',
-    'delparam',
-    'renparam',
-
-    'listclass',
-    'listrel',
-
-    'export',
-    'undo',
-    'redo',
-    'save',
-    'load',
-    'help',
-    'exit'
-]
-
-#################################################################################
-'''
-Tesing stuff, dont pay attention, will delete later when not needed.
-
-def when_tab(command : list[str]):
-    # If the user hasn't typed in anything, pressing tab should put in the 
-    #   help command.
-    if len(command) == 0:
-        keyboard.write('\b\b\b\b\b\bhelp ')
-        return
-
-    # If the user has one word typed, aka the command, then we should try to
-    #   tab complete the command if we can.
-    elif len(command) == 1:
-        word = command[0]
-        
-        # Conditionals checking for 'exit' command.
-        if word[0] == 'e':
-            if word in 'exit':
-                keyboard.write('\b\b\b\b\bexit ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'quit' command (same as exit command).
-        if word[0] == 'q':
-            if word in 'quit':
-                keyboard.write('\b\b\b\b\bquit ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'save' command.
-        elif word[0] == 's':
-            if word in 'save':
-                keyboard.write('\b\b\b\b\bsave ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'undo' command.
-        elif word[0] == 'u':
-            if word in 'undo':
-                keyboard.write('\b\b\b\b\bundo ')
-                return
-            else:
-                return
-
-        # Conditionals checking for 'help' command.
-        elif word[0] == 'h':
-            if word in 'help':
-                keyboard.write('\b\b\b\b\bhelp ')
-                return
-            else:
-                return
-
-        # Conditionals checking for commands that start with 'l'.
-        #   Defaults to 'listclass'.
-        elif word[0] == 'l':
-            if len(word) == 1:
-                keyboard.write('\b\blistclass ')
-                return
-            else:
-                if word in 'load':
-                    keyboard.write('\b\b\b\b\bload ')
-                else:
-                    if len(word) <= 4 and word in 'list':
-                        keyboard.write('\b\b\b\b\blistclass ')
-                        return
-                    elif word in 'listclass':
-                        keyboard.write('\b\b\b\b\b\b\b\b\b\blistclass ')
-                        return
-                    elif word in 'listrel':
-                        keyboard.write('\b\b\b\b\b\b\b\blistrel ')
-                        return
-                    else:
-                        return
-
-        # Conditionals checking for commands that start with 'a'.
-        #   Defaults to 'addclass'.
-        elif word[0] == 'a':
-            if len(word) <= 3:
-                keyboard.write('\b\b\b\baddclass ')
-                return
-            else:
-                if word in 'addclass':
-                    keyboard.write('\b\b\b\b\b\b\b\b\baddclass ')
-                    return
-                elif word in 'addrel':
-                    keyboard.write('\b\b\b\b\b\b\baddrel ')
-                    return
-                elif word in 'addfield':
-                    keyboard.write('\b\b\b\b\b\b\b\b\baddfield ')
-                    return
-                elif word in 'addmethod':
-                    keyboard.write('\b\b\b\b\b\b\b\b\b\baddmethod ')
-                    return
-                elif word in 'addparam':
-                    keyboard.write('\b\b\b\b\b\b\b\b\baddparam ')
-                    return
-                else:
-                    return
-
-        # Conditionals checking for commands that start with 'd'.
-        #   Defaults to 'delclass'.
-        elif word[0] == 'd':
-            if len(word) <= 3:
-                keyboard.write('\b\b\b\bdelclass ')
-                return
-            else:
-                if word in 'delclass':
-                    keyboard.write('\b\b\b\b\b\b\b\b\bdelclass ')
-                    return
-                elif word in 'delrel':
-                    keyboard.write('\b\b\b\b\b\b\bdelrel ')
-                    return
-                elif word in 'delfield':
-                    keyboard.write('\b\b\b\b\b\b\b\b\bdelfield ')
-                    return
-                elif word in 'delmethod':
-                    keyboard.write('\b\b\b\b\b\b\b\b\b\bdelmethod ')
-                    return
-                elif word in 'delparam':
-                    keyboard.write('\b\b\b\b\b\b\b\b\bdelparam ')
-                    return
-                else:
-                    return
-
-        # Conditionals checking for commands that start with 'r'.
-        #   Defaults to 'renclass'.
-        elif word[0] == 'r':
-            if len(word) <= 3:
-                keyboard.write('\b\b\b\brenclass ')
-                return
-            else:
-                if word in 'redo':
-                    keyboard.write('\b\b\b\b\bredo ')
-                    return
-                elif word in 'renclass':
-                    keyboard.write('\b\b\b\b\b\b\b\b\brenclass ')
-                    return
-                elif word in 'renfield':
-                    keyboard.write('\b\b\b\b\b\b\b\b\brenfield ')
-                    return
-                elif word in 'renmethod':
-                    keyboard.write('\b\b\b\b\b\b\b\b\b\brenmethod ')
-                    return
-                elif word in 'renparam':
-                    keyboard.write('\b\b\b\b\b\b\b\b\brenparam ')
-                    return
-                else:
-                    return
-
-    # If the user typed in a command and then an argument(s) for the command.
-    #   If we wanted to implement tab completion for argument names, that would go here.
-    else:
-        return
-
-def test():
-    print("===============================================\n" +
-          "|           Snake People UML Editor           |\n" +
-          "===============================================\n" +
-          "      Type 'help' for a list of commands.      \n" +
-          "       Type 'exit' to close the program.       \n")
-    keyboard.add_hotkey('tab', keyboard.write, args = ["\b\b\b\b\bnuts"])
-    while True:
-        cmd = input(">> ").split()
-        
-        if len(cmd) == 0:
-            continue
-
-        elif cmd[0] == 'exit':
-            break
-
-        else:
-            continue
-
-    keyboard.unhook_all_hotkeys()
-'''
-
-#################################################################################
+################################################################################
 
 def main():
     TabComp().cmdloop()
+    
+def check_args(expected: int, received: int) -> None:
+    if not expected == received:
+        print("Invalid Arguments Error: " + 
+              f"Expected {expected}, Received {received}")
 
 class TabComp(cmd.Cmd):
     
-    intro = ("===============================================\n" +
-             "|           Snake People UML Editor           |\n" +
-             "===============================================\n" +
-             "      Type 'help' for a list of commands.      \n" +
-             "       Type 'exit' to close the program.       \n")
-    prompt = (">> ")
+    intro = ("===========================================================\n" +
+             "|                                                         |\n" +
+             "|                 Snake People UML Editor                 |\n" +
+             "|                                                         |\n" +
+             "===========================================================\n" +
+             "            Type 'help' for a list of commands.            \n" +
+             "             Type 'exit' to close the program.             \n")
+    prompt = ("SP.UML>> ")
 
     #############################################################################
 
     # Doers => Do the action based on text entered.
-#
     def do_addclass(
             self, 
             arg : str) -> None:
@@ -264,16 +70,19 @@ class TabComp(cmd.Cmd):
             already exist in the system.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ci.add_class(lst[0])
-        if(output[1].split(' ')[0] != "<Added" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.undo_stack.get()
-        if(output[1].split(' ')[0] == "<Added"):
-            UMLSavepoint.clear_stack()
-#
-    def do_delclass(
-            self, 
-            arg : str) -> None:
+        if len(lst) == 1:
+            UMLSavepoint.save_point("cli")
+            output = ci.add_class(lst[0])
+            if (output[1].split(' ')[0] != "<Added" and 
+                UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.undo_stack.get()
+            if (output[1].split(' ')[0] == "<Added"):
+                UMLSavepoint.clear_stack()
+        else:
+            check_args(1, len(lst))
+
+    def do_delclass(self, 
+                    arg : str) -> None:
         '''
         NAME
             delclass
@@ -286,16 +95,20 @@ class TabComp(cmd.Cmd):
             with the class are also deleted.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ci.delete_class(lst[0])
-        if(output[1].split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "<Deleted"):
-            UMLSavepoint.clear_stack()
-#
-    def do_renclass(
-            self,
-            arg : str) -> None:
+        if len(lst) == 1:
+            UMLSavepoint.save_point("cli")
+            output = ci.delete_class(lst[0])
+            
+            if (output[1].split(' ')[0] != "<Deleted" and 
+                UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+            if (output[1].split(' ')[0] == "<Deleted"):
+                UMLSavepoint.clear_stack()
+        else:
+            check_args(1, len(lst))
+
+    def do_renclass(self,
+                    arg : str) -> None:
         '''
         NAME
             renclass
@@ -307,16 +120,24 @@ class TabComp(cmd.Cmd):
             are also updated upon the renaming of the class.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ci.rename_class(lst[0], lst[1])
-        if(output[1].split(' ')[0] != "<Renamed" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "<Renamed"):
-            UMLSavepoint.clear_stack()
-#
-    def do_addrel(
-            self, 
-            arg : str) -> None:
+        if len(lst) == 2:
+            # Assigns the arguments to variables with more readable names.
+            class_name: str = lst[0]
+            new_name: str = lst[1]
+            
+            UMLSavepoint.save_point("cli")
+            output = ci.rename_class(class_name, new_name)
+            
+            if(output[1].split(' ')[0] != "<Renamed" and 
+               UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+            if(output[1].split(' ')[0] == "<Renamed"):
+                UMLSavepoint.clear_stack()
+        else:
+            check_args(2, len(lst))
+
+    def do_addrel(self, 
+                  arg : str) -> None:
         '''
         NAME
             addrel
@@ -329,37 +150,54 @@ class TabComp(cmd.Cmd):
             "aggregation", "composition", "inheritance", "realization".
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ri.add_relationship(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] == "<Added"):
-            UMLSavepoint.clear_stack()
-        if(output[1].split(' ')[0] != "<Added" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
+        if len(lst) == 3:
+            # Assigns the arguments to variables with more readable names.
+            source: str = lst[0]
+            dest: str = lst[1]
+            rel_type: str = lst[2]
+            
+            UMLSavepoint.save_point("cli")
+            output = ri.add_relationship(source, dest, rel_type)
+            
+            if(output[1].split(' ')[0] == "<Added"):
+                UMLSavepoint.clear_stack()
+            if(output[1].split(' ')[0] != "<Added" and 
+               UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+        else:
+            check_args(3, len(lst))
 
-    def do_delrel(
-            self,
-            arg : str) -> None:
+    def do_delrel(self,
+                  arg : str) -> None:
         '''
         NAME
             delrel
         SYNTAX
-            delrel <source> <destination> <type>
+            delrel <source> <destination>
         DESCRIPTION
             Delete a relationship between two classes in the system. Both
             user-specified class names must exist and must already have an
             existing relationship. 
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ri.delete_relationship(lst[0], lst[1])
-        if(output[1].split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "<Deleted"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 2:
+            # Assigns the arguments to variables with more readable names.
+            source: str = lst[0]
+            dest: str = lst[1]
+            
+            UMLSavepoint.save_point("cli")
+            output = ri.delete_relationship(source, dest)
+            
+            if(output[1].split(' ')[0] != "<Deleted" and 
+               UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+            if(output[1].split(' ')[0] == "<Deleted"):
+                UMLSavepoint.clear_stack()
+        else:
+            check_args(2, len(lst))
 #
-    def do_addfield(
-            self,
-            arg : str) -> None:
+    def do_addfield(self,
+                    arg : str) -> None:
         '''
         NAME
             addfield
@@ -371,16 +209,25 @@ class TabComp(cmd.Cmd):
             name with another field in the class.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.add_field(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 3:
+            # Assigns the arguments to variables with more readable names.
+            class_name = lst[0]
+            field_name = lst[1]
+            field_type = lst[2]
+            
+            UMLSavepoint.save_point("cli")
+            output = ai.add_field(class_name, field_name, field_type)
+            
+            if(output[1].split(' ')[0] != "Successfully" and 
+               UMLSavepoint.redo_stack.empty() == False):
+                UMLSavepoint.redo_stack.get()
+            if(output[1].split(' ')[0] == "Successfully"):
+                UMLSavepoint.clear_stack()
+        else:
+            check_args(3, len(lst))
 #
-    def do_delfield(
-            self,
-            arg : str) -> None:
+    def do_delfield(self,
+                    arg : str) -> None:
         '''
         NAME
             delfield
@@ -392,16 +239,28 @@ class TabComp(cmd.Cmd):
             in the specified class.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.delete_field(lst[0], lst[1])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 2:
+            # Assigns the arguments to variables with more readable names.
+            class_name: str = lst[0]
+            field_name: str = lst[1]
+            
+            uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+            field = uml.get_field(field_name)
+            
+            if field:
+                UMLSavepoint.save_point("cli")
+                output = ai.delete_field(class_name, field)
+                
+                if (output[1].split(' ')[0] != "Successfully" and 
+                    UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if(output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+        else:
+            check_args(2, len(lst))
 #
-    def do_renfield(
-            self,
-            arg : str) -> None:
+    def do_renfield(self,
+                    arg : str) -> None:
         '''
         NAME
             renfield
@@ -414,13 +273,28 @@ class TabComp(cmd.Cmd):
             already exists in that class.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.rename_field(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
-#
+        if len(lst) == 3:
+            # Assigns the arguments to variables with more readable names.
+            class_name: str = lst[0]
+            field_name: str = lst[1]
+            new_name: str = lst[2]
+            
+            uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+            field = uml.get_field(field_name)
+            
+            if field:
+                UMLSavepoint.save_point("cli")
+                output = ai.rename_field(class_name, field, new_name)
+                print(output[1])
+                
+                if (output[1].split(' ')[0] != "Successfully" and 
+                    UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if (output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+        else:
+            check_args(3, len(lst))
+
     def do_addmethod(
             self,
             arg : str) -> None:
@@ -428,24 +302,97 @@ class TabComp(cmd.Cmd):
         NAME
             addmethod
         SYNTAX
-            addmethod <class name> <method name> <method return type>
+            addmethod <class name> <method name> <method return type> 
         DESCRIPTION
             Adds a new method to a given class in the system. The class name must
             be one that exists in the system. The method must also not share a
             combination of the same name and return type as another method in the
             class. 
+            
+            FLAGS
+            -p, --params
+                Arguments following this flag pre-add parameters to the method.
+                SYNTAX
+                    <param name> <param_type> ...
+
         '''
+        flags = {"-p", "--params"}
+        
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.add_method(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
-#
-    def do_delmethod(
-            self,
-            arg : str) -> None:
+        if len(lst) >= 3:
+            # Assigns the arguments to variables with more readable names.
+            class_name: str = lst[0]
+            method_name: str = lst[1]
+            return_type: str = lst[2]
+            param_list: List = []
+            output = "default"
+            
+            if len(lst) >= 4: 
+                if lst[3] in flags:
+                    params_raw = lst[4:]
+
+                    # Checks if the number of arguments after the flag is evenly
+                    # divisible by 2. 
+                    if len(params_raw) >= 2 and len(params_raw) % 2 == 0:
+                        # Loops through the last n arguments, initializing
+                        # UMLParameter objects and adding them to a list to be
+                        # passed to the 'add_method' function.
+                        while params_raw != []:
+                            # Isolate the first two arguments in the list of
+                            # remaining arguments.
+                            p_name = params_raw[0]
+                            p_type = params_raw[1]
+                            # Initialize a UMLParameter object.
+                            param = UMLParameter(p_name, p_type)
+                            # Adds the UMLParameter to the list being passed to
+                            # the 
+                            param_list.append(param)
+                            del params_raw[:2]
+                            
+                        UMLSavepoint.save_point("cli")
+                        output = ai.add_method(class_name, method_name,
+                                               return_type, param_list)
+                        if (output[1].split(' ')[0] != "Successfully" and
+                            UMLSavepoint.redo_stack.empty() == False):
+                            UMLSavepoint.redo_stack.get()
+                        if (output[1].split(' ')[0] == "Successfully"):
+                            UMLSavepoint.clear_stack()
+                    else:
+                        check_args(len(lst) - 1, len(lst))
+                else:
+                    check_args(3, len(lst))
+            else:
+                UMLSavepoint.save_point("cli")
+                output = ai.add_method(class_name, method_name, return_type, 
+                                       param_list)
+                if (output[1].split(' ')[0] != "Successfully" and
+                    UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if (output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+            
+        else:
+            check_args(3, len(lst))
+    
+    @staticmethod  
+    def select_method(method_name: str,
+                      method_type: str,
+                      method_list: List, 
+                      op: str) -> int:
+        print(f"Multiple methods with name {method_name} and type " +
+              f"{method_type}.\n")
+        counter = 1
+        for method in method_list:
+            print("   " + str(counter) + ":   " + str(method))
+            counter += 1
+        sel = int(input(f"\nPlease select a method to {op}: "))
+        if sel <= 0 or sel > len(method_list):
+            print("Invalid Selection: Operation Aborted.")
+            return -1
+        return sel
+
+    def do_delmethod(self,
+                     arg : str) -> None:
         '''
         NAME
             delmethod
@@ -457,12 +404,44 @@ class TabComp(cmd.Cmd):
             in the specified class, with the specified method type.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.delete_method(lst[0], lst[1], lst[2])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 3:
+            # Assigns the arguments to variables with more readable names.
+            class_name: str = lst[0]
+            method_name: str = lst[1]
+            method_type: str = lst[2]
+            
+            uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+            method_list: List[UMLMethod] = [
+                m for m in uml.methods if (m.name == method_name and
+                                           m.return_type == method_type)
+                ]
+            
+            if len(method_list) == 1:
+                UMLSavepoint.save_point("cli")
+                output = ai.delete_method(class_name, method_list[0])
+                
+                if(output[1].split(' ')[0] != "Successfully" and 
+                   UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if(output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+                    
+            elif len(method_list) > 1:
+                sel = self.select_method(method_name, method_type, method_list, 
+                                         "delete") - 1
+                if sel >= 0:
+                    UMLSavepoint.save_point("cli")
+                    output = ai.delete_method(class_name, method_list[sel])
+                    
+                    if(output[1].split(' ')[0] != "Successfully" and 
+                       UMLSavepoint.redo_stack.empty() == False):
+                        UMLSavepoint.redo_stack.get()
+                    if(output[1].split(' ')[0] == "Successfully"):
+                        UMLSavepoint.clear_stack()
+        
+        else:
+            check_args(3, len(lst))
+                
 #
     def do_renmethod(
             self,
@@ -479,12 +458,45 @@ class TabComp(cmd.Cmd):
             method name must not be one that exists in that class already.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.rename_method(lst[0], lst[1], lst[2], lst[3])
-        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 4:
+            # Assigns the arguments to variables with more readable names.
+            class_name: str = lst[0]
+            method_name: str = lst[1]
+            method_type: str = lst[2]
+            new_name: str = lst[3]
+            
+            uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+            method_list: List[UMLMethod] = [
+                m for m in uml.methods if (m.name == method_name and
+                                           m.return_type == method_type)
+                ]
+            
+            if len(method_list) == 1:
+                UMLSavepoint.save_point("cli")
+                output = ai.rename_method(class_name, method_list[0], new_name)
+                
+                if(output[1].split(' ')[0] != "Successfully" and 
+                   UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if(output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+                    
+            else:
+                sel = self.select_method(method_name, method_type, method_list, 
+                                         "rename") - 1
+                if sel >= 0:
+                    UMLSavepoint.save_point("cli")
+                    output = ai.rename_method(class_name, method_list[sel], 
+                                              new_name)
+                    
+                    if(output[1].split(' ')[0] != "Successfully" and 
+                    UMLSavepoint.redo_stack.empty() == False):
+                        UMLSavepoint.redo_stack.get()
+                    if(output[1].split(' ')[0] == "Successfully"):
+                        UMLSavepoint.clear_stack()
+            
+        else:
+            check_args(4, len(lst))
 
     def do_addparam(
             self,
@@ -500,16 +512,49 @@ class TabComp(cmd.Cmd):
             specified type must not already exist in that method.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.add_param(lst[0], lst[1], lst[2], lst[3], lst[4])
-        if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 5:
+            # Assigns the arguments to variables with more readable names.
+            class_name: str = lst[0]
+            method_name: str = lst[1]
+            method_type: str = lst[2]
+            param_name: str = lst[3]
+            param_type: str = lst[4]
+            
+            uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+            method_list: List[UMLMethod] = [
+                m for m in uml.methods if (m.name == method_name and
+                                           m.return_type == method_type)
+                ]
+            
+            if len(method_list) == 1:
+                UMLSavepoint.save_point("cli")
+                output = ai.add_param(class_name, method_list[0], param_name, 
+                                      param_type)
+                if(output[1].split(' ')[0] != "Successfuly" and 
+                   UMLSavepoint.redo_stack.empty() == False):
+                    UMLSavepoint.redo_stack.get()
+                if(output[1].split(' ')[0] == "Successfully"):
+                    UMLSavepoint.clear_stack()
+                    
+            elif len(method_list) > 1:
+                sel = self.select_method(method_name, method_type, method_list, 
+                                         "add parameter") - 1
+                
+                if sel >= 0:
+                    UMLSavepoint.save_point("cli")
+                    output = ai.add_param(class_name, method_list[sel], 
+                                          param_name, param_type)
+                    if(output[1].split(' ')[0] != "Successfuly" and 
+                       UMLSavepoint.redo_stack.empty() == False):
+                        UMLSavepoint.redo_stack.get()
+                    if(output[1].split(' ')[0] == "Successfully"):
+                        UMLSavepoint.clear_stack()
+        else:
+            check_args(5, len(lst))
+        
 #
-    def do_delparam(
-            self,
-            arg : str) -> None:
+    def do_delparam(self,
+                    arg : str) -> None:
         '''
         NAME
             delparam
@@ -521,16 +566,66 @@ class TabComp(cmd.Cmd):
             method.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.delete_param(lst[0], lst[1], lst[2], lst[3])
-        if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 4:
+            # Assigns the arguments to variables with more readable names.
+            class_name = lst[0]
+            method_name = lst[1]
+            method_type = lst[2]
+            param_name = lst[3]
+            
+            uml: UMLClass.UMLClass = UMLClass.class_dict[class_name]
+            
+            # Generates a list of methods in 'uml' where the following 
+            # conditions apply:
+            #   1. The method's name matches the variable 'method_name'.
+            #   2. The method's type matches the variable 'method_type'.
+            #   3. There exists a UMLParameter object in the method whose name
+            #          matches the variable 'param_name'.
+            method_list: List[UMLMethod] = [
+                m for m in uml.methods if (
+                    m.name == method_name and
+                    m.return_type == method_type and
+                    param_name in [p.name for p in m.params])
+                ]
+            
+            if len(method_list) == 1:
+                param = method_list[0].get_param(param_name)
+                if param:
+                    UMLSavepoint.save_point("cli")
+                    output = ai.delete_param(class_name, method_list[0], param)
+                    if(output[1].split(' ')[0] != "Successfuly" and 
+                    UMLSavepoint.redo_stack.empty() == False):
+                        UMLSavepoint.redo_stack.get()
+                    if(output[1].split(' ')[0] == "Successfully"):
+                        UMLSavepoint.clear_stack()
+            elif len(method_list) > 1:
+                # Prompts user to select method from a list if multiple methods
+                # have the same name and type.
+                sel = self.select_method(method_name, method_type, method_list, 
+                                         "delete parameter") - 1
+                
+                if sel >= 0:
+                    param = method_list[sel].get_param(param_name)
+                    
+                    if param:
+                        UMLSavepoint.save_point("cli")
+                        output = ai.delete_param(class_name, method_list[sel], 
+                                                 param)
+                        if(output[1].split(' ')[0] != "Successfuly" and 
+                        UMLSavepoint.redo_stack.empty() == False):
+                            UMLSavepoint.redo_stack.get()
+                        if(output[1].split(' ')[0] == "Successfully"):
+                            UMLSavepoint.clear_stack()
+            else:
+                # Dummy call to ai.delete_param to invoke an error.
+                ai.delete_param(class_name, 
+                                UMLMethod(method_name, method_type), 
+                                UMLParameter(param_name, ""))
+        else:
+            check_args(4, len(lst))
 #
-    def do_renparam(
-            self,
-            arg : str) -> None:
+    def do_renparam(self,
+                    arg : str) -> None:
         '''
         NAME
             renparam
@@ -542,16 +637,45 @@ class TabComp(cmd.Cmd):
             name must not be one that exists in the method already.
         '''
         lst = arg.split()
-        UMLSavepoint.save_point("cli")
-        output = ai.rename_param(lst[0], lst[1], lst[2], lst[3], lst[4])
-        if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
-            UMLSavepoint.redo_stack.get()
-        if(output[1].split(' ')[0] == "Successfully"):
-            UMLSavepoint.clear_stack()
+        if len(lst) == 5:
+            # Assigns the arguments to variables with more readable names.
+            class_name = lst[0]
+            method_name = lst[1]
+            method_type = lst[2]
+            param_name = lst[3]
+            new_name = lst[4]
+            
+            uml: UMLClass.UMLClass = UMLClass.class_dict[class_name]
+            
+            # Generates a list of methods in 'uml' where the following 
+            # conditions apply:
+            #   1. The method's name matches the variable 'method_name'.
+            #   2. The method's type matches the variable 'method_type'.
+            #   3. There exists a UMLParameter object in the method whose name
+            #          matches the variable 'param_name'.
+            method_list: List[UMLMethod] = [
+                m for m in uml.methods if (
+                    m.name == method_name and
+                    m.return_type == method_type and
+                    param_name in [p.name for p in m.params])
+                ]
+            
+            if len(method_list) == 1:
+                param = method_list[0].get_param(param_name)
+                if param:
+                    UMLSavepoint.save_point("cli")
+                    output = ai.rename_param(class_name, method_list[0], param, 
+                                            new_name)
+                    if(output[1].split(' ')[0] != "Successfuly" and 
+                    UMLSavepoint.redo_stack.empty() == False):
+                        UMLSavepoint.redo_stack.get()
+                    if(output[1].split(' ')[0] == "Successfully"):
+                        UMLSavepoint.clear_stack()
+            
+        
 #
-    def do_listclass(
-            self,
-            arg : str) -> None:
+    def do_listclass(self,
+                     arg : str) -> None:
         '''
         NAME
             listclass
@@ -563,13 +687,15 @@ class TabComp(cmd.Cmd):
             in the system, lists the contents of the specified class.
         '''
         lst = arg.split()
-        if input == 'all':
-            snake_uml.list_all_classes()
+        if len(lst) == 1:
+            if lst[0] == 'all':
+                snake_uml.list_all_classes()
+            else:
+                snake_uml.list_a_class(lst[0])
         else:
-            snake_uml.list_a_class(lst[0])
+            check_args(1, len(lst))
 #
-    def do_listrel(
-            self) -> None:
+    def do_listrel(self) -> None:
         '''
         NAME
             listrel
@@ -581,9 +707,8 @@ class TabComp(cmd.Cmd):
         '''
         ri.list_relationships()
 #
-    def do_export(
-            self,
-            arg : str) -> None:
+    def do_export(self,
+                  arg : str) -> None:
         '''
         NAME
             export
@@ -594,10 +719,12 @@ class TabComp(cmd.Cmd):
             name of the new image file to the user-inputted name.
         '''
         lst = arg.split()
-        ia.save_as_png(lst[0])
+        if len(lst) == 1:
+            ia.save_as_png(lst[0])
+        else:
+            check_args(1, len(lst))
 #
-    def do_undo(
-            self) -> None:
+    def do_undo(self, arg = "") -> None:
         '''
         NAME
             undo
@@ -610,8 +737,7 @@ class TabComp(cmd.Cmd):
         if UMLSavepoint.undo_stack.empty() == False:
             UMLSavepoint.undo("cli")
 #
-    def do_redo(
-            self) -> None:
+    def do_redo(self, arg = "") -> None:
         '''
         NAME
             redo
@@ -623,39 +749,126 @@ class TabComp(cmd.Cmd):
         if UMLSavepoint.redo_stack.empty() == False:
             UMLSavepoint.redo("cli")
 #
-    def do_save(
-            self,
-            arg : str) -> None:
+    def do_save(self,
+                arg : str) -> None:
         '''
         NAME
             save
         SYNTAX
-            save <filename>
+            save filename [<flag> <path>]
         DESCRIPTION
             Saves the current work to a JSONfile, with a user-specified name.
         '''
+        flags = ["-p", "--path"]
+        output = ""
         lst = arg.split()
-        snake_uml.save(lst[0])
-#
-    def do_load(
-            self,
-            arg : str) -> None:
+        if len(lst) >= 1 and len(lst) <= 3:
+            filename = lst[0]
+            
+            if len(lst) == 1:
+                if isfile(f"save_files/{filename}.json"):
+                    print(f"\n*** WARNING: {filename} already exists in "+
+                        "internal save folder. ***")
+                    ans = input(f"Would you like to overwrite {filename}? " + 
+                                "([y]/n): ")
+                    if ans.lower() == "n":
+                        print("Save aborted.")
+                        return
+                    
+                    output = snake_uml.save_by_name(filename)
+            
+            elif len(lst) == 3:
+                flag = lst[1]
+                if flag in flags:
+                    path = lst[2]
+                    
+                    if isdir(path) and isfile(path + f"/{filename}.json"):
+                        print(f"*** WARNING: {filename} already exists at " +
+                              f"'{path}'")
+                        ans = input("Would you like to overwrite " + 
+                                    f"'{path}/{filename}.json'? ([y]/n): ")
+                        if ans.lower() == "n":
+                            print("Save aborted.")
+                            return
+                    
+                    output = snake_uml.save_by_path(filename, path)
+                    
+            else:
+                check_args(1, len(lst))
+            
+            print(f"{output}\n")
+            
+        else:
+            check_args(1, len(lst))
+
+    def do_load(self,
+                arg : str) -> None:
         '''
         NAME
             load
         SYNTAX
-            load <filename>
+            load <flag> [<file name> | <path to file>]
         DESCRIPTION
-            Load a JSONfile, providing a name of an existing file.
+            Load a JSON file, providing the name or path of an existing file.
+            
+        FLAGS
+            -e, --external
+                SYNTAX
+                    load [-e | --external] <path to file>
+                DESCRIPTION
+                    Indicates that a file is to be loaded from an external 
+                    directory. A complete path to the file must be provided
+                    after the flag.
+                    
+            -i, --internal
+                SYNTAX
+                    load [-i | --internal] <file name>
         '''
+        lw: str = input("\n*** WARNING: Loading will overwrite any unsaved " +
+                        "work. ***\n" +
+                        "Continue? ([y]/n): ")
+        if lw.lower() == "n":
+            print("\nLoading aborted.\n")
+            return
+        
+        flags = {"ext_load" : ['-e', '--external'],
+                 "int_load" : ['-i', '--internal'],}
+        
         lst = arg.split()
-        output = snake_uml.load(lst[0])
-        if UMLSavepoint.undo_stack.empty() == False:
-            UMLSavepoint.undo_stack = queue.LifoQueue()
-        if UMLSavepoint.redo_stack.empty() == False:
-            UMLSavepoint.clear_stack()
+        output = ""
+        if len(lst) == 2:
+            flag = lst[0]
+            if flag in flags["ext_load"]:
+                path = lst[1]
+                
+                output = snake_uml.load_ex(path)
+                if UMLSavepoint.undo_stack.empty() == False:
+                    UMLSavepoint.undo_stack = queue.LifoQueue()
+                if UMLSavepoint.redo_stack.empty() == False:
+                    UMLSavepoint.clear_stack()
+                
+            elif flag in flags["int_load"]:
+                filename = lst[1]
+                
+                output = snake_uml.load_in(filename)
+                if UMLSavepoint.undo_stack.empty() == False:
+                    UMLSavepoint.undo_stack = queue.LifoQueue()
+                if UMLSavepoint.redo_stack.empty() == False:
+                    UMLSavepoint.clear_stack()
+                
+        elif len(lst) == 1:
+            filename = lst[0]
+                
+            output = snake_uml.load_in(filename)
+            if UMLSavepoint.undo_stack.empty() == False:
+                UMLSavepoint.undo_stack = queue.LifoQueue()
+            if UMLSavepoint.redo_stack.empty() == False:
+                UMLSavepoint.clear_stack()
+        else:
+            check_args(1, len(lst))
+        print(output)
 #
-    def do_exit(self, s) -> bool:
+    def do_exit(self, s) -> None:
         '''
         NAME
             exit
@@ -664,7 +877,14 @@ class TabComp(cmd.Cmd):
         DESCRIPTION
             Quit the program.
         '''
-        return True
+        lw: str = input("\n*** WARNING: Exiting will overwrite any "
+                        "unsaved work. ***\n" +
+                        "Continue? (y/[n]): ")
+        if lw.lower() == "y":
+            print("Exiting...")
+            exit()
+        else:
+            return
 
 
     #############################################################################
@@ -870,9 +1090,5 @@ class TabComp(cmd.Cmd):
 
 #################################################################################
 
-
-
 if __name__ == '__main__':
     main()
-    #test()
-    #TabComp().cmdloop()
