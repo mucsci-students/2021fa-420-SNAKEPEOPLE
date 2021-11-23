@@ -24,7 +24,6 @@ class UMLSavepoint():
     def __init__(self, mode):
         stopPrint()
         dup_dict = dict()
-        coord_list = []
         dup_fields = []
         dup_methods = []
         dup_rel = []
@@ -62,7 +61,6 @@ class UMLSavepoint():
             dup_methods = []
             dup_fields = []
 
-        self.coords_list = coord_list
         self.class_dict = dup_dict
 
         #Duplicate the relationship list

@@ -56,7 +56,7 @@ class UMLMethod (UMLAttribute):
     params : List[UMLParameter] = field(default_factory=list)
             
     def __eq__(self, 
-               other):
+               other) -> bool:
         if isinstance(other, UMLMethod):
             return (self.name == other.name and
                     self.return_type == other.return_type and
