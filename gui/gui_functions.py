@@ -29,6 +29,9 @@ Functions that are assigned to each button's respective popup window.
 
 Each function executes the back-end commands to fulfill the user's requested action,
 and give them feedback on whether it was successful or not.
+
+Also keeps track of save points in order to correctly stash each performed action
+for the purposes of undo/redo.
 '''
 
 def b_add_class(
@@ -236,6 +239,7 @@ def b_add_param(
         UMLField.fix_pos(class_name)
         gui_windows.update_methods()
 
+
 def b_delete_param(
         class_name : str, 
         current_method : ua.UMLMethod,
@@ -259,6 +263,7 @@ def b_delete_param(
         UMLMethod.update_methods(class_name)
         UMLField.fix_pos(class_name)
         gui_windows.update_methods()
+
 
 def b_rename_param(
         class_name : str, 
@@ -323,5 +328,6 @@ def b_undo() -> None:
 def b_redo() -> None:
     if UMLSavepoint.redo_stack.empty() == False:
         UMLSavepoint.redo()
+
 
 ###################################################################################################
