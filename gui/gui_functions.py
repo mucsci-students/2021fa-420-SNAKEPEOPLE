@@ -80,16 +80,19 @@ def b_add_method(
         param_list : list,
         label : tk.Label, 
         otherlabel : tk.Label) -> None:
-    UMLSavepoint.save_point()
-    output = ai.add_method(class_name, method_name, method_type, param_list)
-    if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
-        UMLSavepoint.redo_stack.get()
-    if(output[1].split(' ')[0] == "Successfully"):
-        UMLSavepoint.clear_stack()
-    label.configure(text = output[1])
-    otherlabel.configure(text = "")
-    UMLMethod.update_methods(class_name)
-    UMLField.fix_pos(class_name)
+    if method_name == "" or str.isspace(method_name) == True:
+        label.configure(text = "Method name cannot be empty")
+    else:
+        UMLSavepoint.save_point()
+        output = ai.add_method(class_name, method_name, method_type, param_list)
+        if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
+            UMLSavepoint.redo_stack.get()
+        if(output[1].split(' ')[0] == "Successfully"):
+            UMLSavepoint.clear_stack()
+        label.configure(text = output[1])
+        otherlabel.configure(text = "")
+        UMLMethod.update_methods(class_name)
+        UMLField.fix_pos(class_name)
 
 
 def b_delete_method(
@@ -136,7 +139,9 @@ def b_rename_method(
         method_type : str, 
         new_name : str, 
         label : tk.Label) -> None:
-    if (method_name + method_type) == "Nomethods":
+    if str.isspace(new_name) == True or new_name == None:
+        label.configure(text = "Method name cannot be empty")
+    elif (method_name + method_type) == "Nomethods":
         label.configure(text = "No method available")
     elif (method_name + method_type) != "Selecta":
         UMLSavepoint.save_point()
@@ -263,7 +268,9 @@ def b_add_param(
         param_name : str, 
         param_type : str, 
         label : tk.Label) -> None:
-    if (method_name + method_type) == "Nomethods":
+    if str.isspace(param_name) == True or str.isspace(param_type) == True or param_name == "" or param_type == "":
+        label.configure(text = "Name and type cannot be empty")
+    elif (method_name + method_type) == "Nomethods":
         label.configure(text = "No method available")
     elif (method_name + method_type) != "Selecta":
         UMLSavepoint.save_point()
@@ -351,7 +358,9 @@ def b_rename_param(
         param_type : str,
         new_name : str, 
         label : tk.Label) -> None:
-    if (method_name + method_type) == "Nomethods":
+    if str.isspace(new_name) == True or new_name == "":
+        label.configure(text = "New name cannot be empty")
+    elif (method_name + method_type) == "Nomethods":
         label.configure(text = "No method available")
     elif (method_name + method_type) != "Selecta":
         UMLSavepoint.save_point()

@@ -210,10 +210,13 @@ def add_method_window() -> None:
         paramlist = []
 
         def paramlist_helper():
-            paramlist.append(UMLAttributes.UMLParameter(entry4.get(), entry5.get()))
-            paramoutput.configure(text = "Queued param \"" + entry4.get() + "\" to add.")
-            entry4.delete(0, tk.END)
-            entry5.delete(0, tk.END)
+            if entry4.get() == "" or entry5.get() == "" or str.isspace(entry4.get()) == True or str.isspace(entry5.get()) == True:
+                paramoutput.configure(text = "Parameter names and types cannot be empty")
+            else:
+                paramlist.append(UMLAttributes.UMLParameter(entry4.get(), entry5.get()))
+                paramoutput.configure(text = "Queued param \"" + entry4.get() + "\" to add.")
+                entry4.delete(0, tk.END)
+                entry5.delete(0, tk.END)
 
         # Button for adding a Param to the list to be added to the current method.
         new_param_btn = tk.Button(
