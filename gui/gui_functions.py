@@ -243,6 +243,7 @@ def b_delete_param(
         param_type : str, 
         label : tk.Label) -> None:
         UMLSavepoint.save_point()
+        param : ua.UMLParameter
         for i in current_method.params:
             if i.name == param_name and i.type == param_type:
                 param = i
