@@ -474,10 +474,6 @@
             "name": "UMLSavepoint",
             "fields": [
                 {
-                    "name": "coords_list",
-                    "type": "list"
-                },
-                {
                     "name": "class_dict",
                     "type": "dict"
                 },
