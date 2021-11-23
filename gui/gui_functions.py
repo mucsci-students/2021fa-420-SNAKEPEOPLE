@@ -93,34 +93,15 @@ def b_add_method(
         otherlabel.configure(text = "")
         UMLMethod.update_methods(class_name)
         UMLField.fix_pos(class_name)
+        gui_windows.paramlist = []
 
 
 def b_delete_method(
         class_name : str, 
-        method_name : str, 
-        method_type : str, 
+        current_method : UMLMethod, 
         label : tk.Label) -> None:
-    if (method_name + method_type) == "Nomethods":
-        label.configure(text = "No method available")
-    elif (method_name + method_type) != "Selecta":
         UMLSavepoint.save_point()
-        methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
-        string = ""
-        for method in uml.methods:
-            string = ""
-            string += method.name + " " + method.return_type
-            methods.append(string)
-        method_index = methods.index(method_name + " " + method_type)
-        method : ua.UMLMethod
-        index = 0
-        while index < len(uml.methods):
-            if index == method_index:
-                method = uml.methods[index]
-                break
-            else:
-                index = index + 1
-        output = ai.delete_method(class_name, method)
+        output = ai.delete_method(class_name, current_method)
         if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
             UMLSavepoint.redo_stack.get()
         if(output[1].split(' ')[0] == "Successfully"):
@@ -129,40 +110,15 @@ def b_delete_method(
         UMLMethod.update_methods(class_name)
         UMLField.fix_pos(class_name)
         gui_windows.update_methods()
-    else:
-        label.configure(text = "No method selected")
 
 
 def b_rename_method(
         class_name : str, 
-        method_name : str,
-        method_type : str, 
+        current_method : UMLMethod, 
         new_name : str, 
         label : tk.Label) -> None:
-    if str.isspace(new_name) == True or new_name == None:
-        label.configure(text = "Method name cannot be empty")
-    elif (method_name + method_type) == "Nomethods":
-        label.configure(text = "No method available")
-    elif (method_name + method_type) != "Selecta":
         UMLSavepoint.save_point()
-        methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
-        string = ""
-        for method in uml.methods:
-            string = ""
-            string += method.name + " " + method.return_type
-            methods.append(string)
-        method_index = methods.index(method_name + " " + method_type)
-        method : ua.UMLMethod
-        index = 0
-        while index < len(uml.methods):
-            if index == method_index:
-                method = uml.methods[index]
-                break
-            else:
-                index = index + 1
-        UMLSavepoint.save_point()
-        output = ai.rename_method(class_name, method, new_name)
+        output = ai.rename_method(class_name, current_method, new_name)
         if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
             UMLSavepoint.redo_stack.get()
         if(output[1].split(' ')[0] == "Successfully"):
@@ -171,8 +127,6 @@ def b_rename_method(
         UMLMethod.update_methods(class_name)
         UMLField.fix_pos(class_name)
         gui_windows.update_methods()
-    else:
-        label.configure(text = "No method selected")
 
 
 def b_add_field(
@@ -263,35 +217,12 @@ def b_delete_relation(
 
 def b_add_param(
         class_name : str, 
-        method_name : str, 
-        method_type : str, 
+        current_method : UMLMethod,
         param_name : str, 
         param_type : str, 
         label : tk.Label) -> None:
-    if str.isspace(param_name) == True or str.isspace(param_type) == True or param_name == "" or param_type == "":
-        label.configure(text = "Name and type cannot be empty")
-    elif (method_name + method_type) == "Nomethods":
-        label.configure(text = "No method available")
-    elif (method_name + method_type) != "Selecta":
         UMLSavepoint.save_point()
-        methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
-        string = ""
-        for method in uml.methods:
-            string = ""
-            string += method.name + " " + method.return_type
-            methods.append(string)
-        method_index = methods.index(method_name + " " + method_type)
-        method : ua.UMLMethod
-        index = 0
-        while index < len(uml.methods):
-            if index == method_index:
-                method = uml.methods[index]
-                break
-            else:
-                index = index + 1
-        UMLSavepoint.save_point()
-        output = ai.add_param(class_name, method, param_name, param_type)
+        output = ai.add_param(class_name, current_method, param_name, param_type)
         if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
             UMLSavepoint.redo_stack.get()
         if(output[1].split(' ')[0] == "Successfully"):
@@ -300,43 +231,19 @@ def b_add_param(
         UMLMethod.update_methods(class_name)
         UMLField.fix_pos(class_name)
         gui_windows.update_methods()
-    else:
-        label.configure(text = "No method selected")
 
 def b_delete_param(
         class_name : str, 
-        method_name : str, 
-        method_type : str, 
+        current_method : UMLMethod,
         param_name : str, 
         param_type : str, 
         label : tk.Label) -> None:
-    if (method_name + method_type) == "Nomethods":
-        label.configure(text = "No method available")
-    elif (method_name + method_type) != "Selecta":
         UMLSavepoint.save_point()
-        methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
-        string = ""
-        for method in uml.methods:
-            string = ""
-            string += method.name + " " + method.return_type
-            methods.append(string)
-        method_index = methods.index(method_name + " " + method_type)
-        method : ua.UMLMethod
-        index = 0
-        while index < len(uml.methods):
-            if index == method_index:
-                method = uml.methods[index]
-                break
-            else:
-                index = index + 1
-        UMLSavepoint.save_point()
-        param : ua.UMLParameter
-        for i in method.params:
+        for i in current_method.params:
             if i.name == param_name and i.type == param_type:
                 param = i
-        if len(method.params) != 0:
-            output = ai.delete_param(class_name, method, param)
+        if len(current_method.params) != 0:
+            output = ai.delete_param(class_name, current_method, param)
         else:
             output = ("junk","No param avaiable")
         if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
@@ -347,48 +254,23 @@ def b_delete_param(
         UMLMethod.update_methods(class_name)
         UMLField.fix_pos(class_name)
         gui_windows.update_methods()
-    else:
-        label.configure(text = "No method selected")
 
 def b_rename_param(
         class_name : str, 
-        method_name : str, 
-        method_type : str, 
+        current_method: UMLMethod, 
         old_name : str, 
         param_type : str,
         new_name : str, 
         label : tk.Label) -> None:
-    if str.isspace(new_name) == True or new_name == "":
-        label.configure(text = "New name cannot be empty")
-    elif (method_name + method_type) == "Nomethods":
-        label.configure(text = "No method available")
-    elif (method_name + method_type) != "Selecta":
-        UMLSavepoint.save_point()
-        methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
-        string = ""
-        for method in uml.methods:
-            string = ""
-            string += method.name + " " + method.return_type
-            methods.append(string)
-        method_index = methods.index(method_name + " " + method_type)
-        method : ua.UMLMethod
-        index = 0
-        while index < len(uml.methods):
-            if index == method_index:
-                method = uml.methods[index]
-                break
-            else:
-                index = index + 1
         UMLSavepoint.save_point()
         param : ua.UMLParameter
-        for i in method.params:
+        for i in current_method.params:
             if i.name == old_name and i.type == param_type:
                 param = i
-        if len(method.params) != 0:
-            output = ai.rename_param(class_name, method, param, new_name)
-        else:
-            output = ("junk","No param avaiable")
+        #if len(current_method.params) != 0:
+        output = ai.rename_param(class_name, current_method, param, new_name)
+        #else:
+            #output = ("junk","No param avaiable")
         if(output[1].split(' ')[0] != "Successfuly" and UMLSavepoint.redo_stack.empty() == False):
             UMLSavepoint.redo_stack.get()
         if(output[1].split(' ')[0] == "Successfully"):
@@ -397,22 +279,20 @@ def b_rename_param(
         UMLMethod.update_methods(class_name)
         UMLField.fix_pos(class_name)
         gui_windows.update_methods()
-    else:
-        label.configure(text = "No method selected")
 
 
 def b_save_file(
         file_name : str, 
         label : tk.Label) -> None:
     output = snake_uml.save(file_name)
-    label.configure(text = output[1])
+    label.configure(text = output)
 
 
 def b_load_file(
         file_name : str, 
         label : tk.Label) -> None:
     output = snake_uml.load(file_name)
-    label.configure(text = output[1])
+    label.configure(text = output)
     UMLBox.test_canvas.delete("all")
     UMLBox.class_list = []
     UMLBox.class_mediator()

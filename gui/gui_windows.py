@@ -207,6 +207,7 @@ def add_method_window() -> None:
         entry5 = tk.Entry(frame, width = 50)
         entry5.grid(row = 12, column = 0)
 
+        global paramlist
         paramlist = []
 
         def paramlist_helper():
@@ -318,7 +319,7 @@ def delete_method_window() -> None:
 
         btn = tk.Button(
             command = lambda: gf.b_delete_method(
-                classvar.get(), method_name, method_type, outputlabel),
+                classvar.get(), current_method, outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 6, column = 0, padx = 5, pady = 5)
 
@@ -333,7 +334,7 @@ def delete_method_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_delete_method(
-                classvar.get(), method_name, method_type, outputlabel))
+                classvar.get(), current_method, outputlabel))
     root.mainloop()
 
 def update_params():
@@ -341,6 +342,20 @@ def update_params():
     method_name = methodvar.get().split(" ")[0]
     global method_type
     method_type = methodvar.get().split(" ")[1].split("(")[0]
+    uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+    for method in uml.methods:
+            string = ""
+            string += method.name + " " + method.return_type + "("
+            for param in method.params:
+                if string[-1] != "(":
+                    string = string + ","
+                string += param.type + " " + param.name
+            string += ")"
+            if string == methodvar.get():
+                global current_method
+                current_method = method
+
+
 
 def update_methods():
     menu = method_dropdown["menu"]
@@ -447,7 +462,7 @@ def rename_method_window() -> None:
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_rename_method(
-                classvar.get(), method_name, method_type, entry3.get(), outputlabel),
+                classvar.get(), current_method, entry3.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 8, column = 0, padx = 5, pady = 5)
 
@@ -462,7 +477,7 @@ def rename_method_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_rename_method(
-                classvar.get(), method_name, method_type, entry3.get(), outputlabel))
+                classvar.get(), current_method, entry3.get(), outputlabel))
     root.mainloop()
 
 
@@ -862,7 +877,7 @@ def add_param_window() -> None:
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_add_param(
-                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel),
+                classvar.get(), current_method, entry3.get(), entry4.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 10, column = 0, padx = 5, pady = 5)
 
@@ -877,7 +892,7 @@ def add_param_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_add_param(
-                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel))
+                classvar.get(), current_method, entry3.get(), entry4.get(), outputlabel))
 
     root.mainloop()
 
@@ -969,7 +984,7 @@ def delete_param_window() -> None:
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_delete_param(
-                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel),
+                classvar.get(), current_method, entry3.get(), entry4.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 10, column = 0, padx = 5, pady = 5)
 
@@ -984,7 +999,7 @@ def delete_param_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_delete_param(
-                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), outputlabel))
+                classvar.get(), current_method, entry3.get(), entry4.get(), outputlabel))
 
     root.mainloop()
 
@@ -1082,7 +1097,7 @@ def rename_param_window() -> None:
         #   and executing the appropriate function.
         btn = tk.Button(
             command = lambda: gf.b_rename_param(
-                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), entry5.get(), outputlabel),
+                classvar.get(), current_method, entry3.get(), entry4.get(), entry5.get(), outputlabel),
             master = frame, text = "Confirm", font = ('bold'))
         btn.grid(row = 12, column = 0, padx = 5, pady = 5)
 
@@ -1097,7 +1112,7 @@ def rename_param_window() -> None:
         # Generate the window.
         root.bind('<Return>', 
             lambda event: gf.b_rename_param(
-                classvar.get(), method_name, method_type, entry3.get(), entry4.get(), entry5.get(), outputlabel))
+                classvar.get(), current_method, entry3.get(), entry4.get(), entry5.get(), outputlabel))
 
     root.mainloop()
 
