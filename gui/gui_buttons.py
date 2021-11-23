@@ -56,7 +56,7 @@ def set_method_buttons(frame : tk.Frame) -> None:
     add_button = tk.Button(
         master = frame,
         command = gw.add_method_window,
-        text = "Add", 
+        text = "Add Method", 
         width = 20)
     add_button.grid(
         row = 0,
@@ -67,7 +67,7 @@ def set_method_buttons(frame : tk.Frame) -> None:
     delete_button = tk.Button(
         master = frame,
         command = gw.delete_method_window,
-        text = "Delete", 
+        text = "Delete Method", 
         width = 20)
     delete_button.grid(
         row = 0,
@@ -78,7 +78,7 @@ def set_method_buttons(frame : tk.Frame) -> None:
     rename_button = tk.Button(
         master = frame,
         command = gw.rename_method_window,
-        text = "Rename", 
+        text = "Rename Method", 
         width = 20)
     rename_button.grid(
         row = 0,
@@ -91,7 +91,7 @@ def set_field_buttons(frame : tk.Frame) -> None:
     add_button = tk.Button(
         master = frame,
         command = gw.add_field_window,
-        text = "Add", 
+        text = "Add Field", 
         width = 20)
     add_button.grid(
         row = 0,
@@ -102,7 +102,7 @@ def set_field_buttons(frame : tk.Frame) -> None:
     delete_button = tk.Button(
         master = frame,
         command = gw.delete_field_window,
-        text = "Delete", 
+        text = "Delete Field", 
         width = 20)
     delete_button.grid(
         row = 0,
@@ -113,7 +113,7 @@ def set_field_buttons(frame : tk.Frame) -> None:
     rename_button = tk.Button(
         master = frame,
         command = gw.rename_field_window,
-        text = "Rename", 
+        text = "Rename Field", 
         width = 20)
     rename_button.grid(
         row = 0,
@@ -126,7 +126,7 @@ def set_param_buttons(frame : tk.Frame) -> None:
     add_button = tk.Button(
         master = frame,
         command = gw.add_param_window,
-        text = "Add", 
+        text = "Add Param", 
         width = 20)
     add_button.grid(
         row = 0,
@@ -137,7 +137,7 @@ def set_param_buttons(frame : tk.Frame) -> None:
     delete_button = tk.Button(
         master = frame,
         command = gw.delete_param_window,
-        text = "Delete", 
+        text = "Delete Param", 
         width = 20)
     delete_button.grid(
         row = 0,
@@ -148,7 +148,7 @@ def set_param_buttons(frame : tk.Frame) -> None:
     rename_button = tk.Button(
         master = frame,
         command = gw.rename_param_window,
-        text = "Rename", 
+        text = "Rename Param", 
         width = 20)
     rename_button.grid(
         row = 0,
@@ -161,7 +161,7 @@ def set_rel_buttons(frame : tk.Frame) -> None:
     add_button = tk.Button(
         master = frame,
         command = gw.add_relation_window,
-        text = "Add", 
+        text = "Add Relation", 
         width = 20)
     add_button.grid(
         row = 0,
@@ -172,7 +172,7 @@ def set_rel_buttons(frame : tk.Frame) -> None:
     delete_button = tk.Button(
         master = frame,
         command = gw.delete_relation_window,
-        text = "Delete", 
+        text = "Delete Relation", 
         width = 20)
     delete_button.grid(
         row = 0,
