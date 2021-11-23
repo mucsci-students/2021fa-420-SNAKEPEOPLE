@@ -1,0 +1,507 @@
+{
+    "classes": [
+        {
+            "name": "UMLClass",
+            "fields": [
+                {
+                    "name": "name",
+                    "type": "str"
+                },
+                {
+                    "name": "fields",
+                    "type": "List[UMLField]"
+                },
+                {
+                    "name": "methods",
+                    "type": "List[UMLMethod]"
+                },
+                {
+                    "name": "position_x",
+                    "type": "int"
+                },
+                {
+                    "name": "position_y",
+                    "type": "int"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "__repr__",
+                    "return_type": "str",
+                    "params": []
+                },
+                {
+                    "name": "rename",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "new_name",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "add_field",
+                    "return_type": "UMLField",
+                    "params": [
+                        {
+                            "name": "name",
+                            "type": "str"
+                        },
+                        {
+                            "name": "type",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "add_method",
+                    "return_type": "UMLMethod",
+                    "params": [
+                        {
+                            "name": "name",
+                            "type": "str"
+                        },
+                        {
+                            "name": "return_type",
+                            "type": "str"
+                        },
+                        {
+                            "name": "parameters",
+                            "type": "Union[List[UMLParameter], None]"
+                        }
+                    ]
+                },
+                {
+                    "name": "add_method_param",
+                    "return_type": "UMLParameter",
+                    "params": [
+                        {
+                            "name": "method",
+                            "type": "UMLMethod"
+                        },
+                        {
+                            "name": "param_name",
+                            "type": "str"
+                        },
+                        {
+                            "name": "param_type",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "delete_field",
+                    "return_type": "UMLField",
+                    "params": [
+                        {
+                            "name": "field",
+                            "type": "UMLField"
+                        }
+                    ]
+                },
+                {
+                    "name": "delete_method",
+                    "return_type": "UMLMethod",
+                    "params": [
+                        {
+                            "name": "method",
+                            "type": "UMLMethod"
+                        }
+                    ]
+                },
+                {
+                    "name": "delete_param",
+                    "return_type": "UMLParameter",
+                    "params": [
+                        {
+                            "name": "method",
+                            "type": "UMLMethod"
+                        },
+                        {
+                            "name": "param",
+                            "type": "UMLParameter"
+                        }
+                    ]
+                },
+                {
+                    "name": "get_field",
+                    "return_type": "Union[UMLField, None]",
+                    "params": [
+                        {
+                            "name": "field_name",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "toJson",
+                    "return_type": "dict",
+                    "params": []
+                }
+            ],
+            "position_x": 250.0,
+            "position_y": 37.0
+        },
+        {
+            "name": "UMLAttribute",
+            "fields": [
+                {
+                    "name": "name",
+                    "type": "str"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "toJson",
+                    "return_type": "dict",
+                    "params": []
+                }
+            ],
+            "position_x": 917.0,
+            "position_y": 46.0
+        },
+        {
+            "name": "UMLMethod",
+            "fields": [
+                {
+                    "name": "return_type",
+                    "type": "str"
+                },
+                {
+                    "name": "params",
+                    "type": "List[UMLParameter]"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "__eq__",
+                    "return_type": "bool",
+                    "params": [
+                        {
+                            "name": "other",
+                            "type": "UMLMethod"
+                        }
+                    ]
+                },
+                {
+                    "name": "__hash__",
+                    "return_type": "int",
+                    "params": []
+                },
+                {
+                    "name": "__repr__",
+                    "return_type": "str",
+                    "params": []
+                },
+                {
+                    "name": "rename",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "new_name",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "add_param",
+                    "return_type": "UMLParameter",
+                    "params": [
+                        {
+                            "name": "param_name",
+                            "type": "str"
+                        },
+                        {
+                            "name": "param_type",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "get_param",
+                    "return_type": "Union[UMLParameter, None]",
+                    "params": [
+                        {
+                            "name": "param_name",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "clear",
+                    "return_type": "None",
+                    "params": []
+                }
+            ],
+            "position_x": 637.0,
+            "position_y": 204.0
+        },
+        {
+            "name": "UMLField",
+            "fields": [
+                {
+                    "name": "type",
+                    "type": "str"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "__eq__",
+                    "return_type": "bool",
+                    "params": [
+                        {
+                            "name": "other",
+                            "type": "UMLField"
+                        }
+                    ]
+                },
+                {
+                    "name": "__hash__",
+                    "return_type": "int",
+                    "params": []
+                },
+                {
+                    "name": "__repr__",
+                    "return_type": "str",
+                    "params": []
+                },
+                {
+                    "name": "rename",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "new_name",
+                            "type": "str"
+                        }
+                    ]
+                }
+            ],
+            "position_x": 917.0,
+            "position_y": 353.0
+        },
+        {
+            "name": "UMLParameter",
+            "fields": [
+                {
+                    "name": "type",
+                    "type": "str"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "rename",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "new_name",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "__eq__",
+                    "return_type": "bool",
+                    "params": [
+                        {
+                            "name": "other",
+                            "type": "UMLParameter"
+                        }
+                    ]
+                },
+                {
+                    "name": "__hash__",
+                    "return_type": "int",
+                    "params": []
+                },
+                {
+                    "name": "__repr__",
+                    "return_type": "str",
+                    "params": []
+                }
+            ],
+            "position_x": 1145.0,
+            "position_y": 225.0
+        },
+        {
+            "name": "ImageAdapter",
+            "fields": [
+                {
+                    "name": "window",
+                    "type": "Tk"
+                },
+                {
+                    "name": "main_frame",
+                    "type": "tk.Frame"
+                },
+                {
+                    "name": "main_panel",
+                    "type": "tk.Canvas"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "export",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "file_name",
+                            "type": "str"
+                        }
+                    ]
+                }
+            ],
+            "position_x": 443.0,
+            "position_y": 703.0
+        },
+        {
+            "name": "UMLRelationship",
+            "fields": [
+                {
+                    "name": "source",
+                    "type": "str"
+                },
+                {
+                    "name": "destination",
+                    "type": "str"
+                },
+                {
+                    "name": "type",
+                    "type": "str"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "__repr__",
+                    "return_type": "str",
+                    "params": []
+                },
+                {
+                    "name": "change_source",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "new_source",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "change_destination",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "new_destination",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "change_type",
+                    "return_type": "None",
+                    "params": [
+                        {
+                            "name": "new_type",
+                            "type": "str"
+                        }
+                    ]
+                },
+                {
+                    "name": "toJson",
+                    "return_type": "None",
+                    "params": []
+                }
+            ],
+            "position_x": 180.0,
+            "position_y": 704.0
+        },
+        {
+            "name": "UMLsquare",
+            "fields": [
+                {
+                    "name": "name",
+                    "type": "str"
+                },
+                {
+                    "name": "rec",
+                    "type": "_CanvasItemId"
+                },
+                {
+                    "name": "label",
+                    "type": "_CanvasItemId"
+                },
+                {
+                    "name": "textspace",
+                    "type": "float"
+                },
+                {
+                    "name": "rels",
+                    "type": "list"
+                },
+                {
+                    "name": "fieldtext",
+                    "type": "_CanvasItemId"
+                },
+                {
+                    "name": "yinc",
+                    "type": "int"
+                },
+                {
+                    "name": "fieldlabel",
+                    "type": "_CanvasItemId"
+                },
+                {
+                    "name": "methodlabel",
+                    "type": "_CanvasItemId"
+                },
+                {
+                    "name": "methodtext",
+                    "type": "_CanvasItemId"
+                }
+            ],
+            "methods": [],
+            "position_x": 709.0,
+            "position_y": 702.0
+        },
+        {
+            "name": "UMLLine",
+            "fields": [],
+            "methods": [],
+            "position_x": 400.0,
+            "position_y": 876.0
+        },
+        {
+            "name": "UMLSavepoint",
+            "fields": [
+                {
+                    "name": "class_dict",
+                    "type": "dict"
+                },
+                {
+                    "name": "relationship_list",
+                    "type": "list"
+                }
+            ],
+            "methods": [],
+            "position_x": 708.0,
+            "position_y": 923.0
+        }
+    ],
+    "relationships": [
+        {
+            "source": "UMLAttribute",
+            "destination": "UMLMethod",
+            "type": "inheritance"
+        },
+        {
+            "source": "UMLAttribute",
+            "destination": "UMLField",
+            "type": "inheritance"
+        },
+        {
+            "source": "UMLAttribute",
+            "destination": "UMLParameter",
+            "type": "inheritance"
+        }
+    ]
+}

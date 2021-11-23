@@ -96,7 +96,7 @@ def save_as_png(file_name):
                             else:
                                 draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
                                     y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), outline=color, fill="#D0D0D0")
-                                x1 = b1x2 - 20
+                                x1 = b1x1 - 20
                     #Add a filled diamond for the relationship type aggregation
                     elif(k[4] == "composition"):
                         color = 'green'
@@ -132,7 +132,7 @@ def save_as_png(file_name):
                             else:
                                 draw.polygon(xy=([(b1x1, y1), (b1x1 - 10, 
                                     y1 - 10), (b1x1 - 20, y1), (b1x1 - 10, y1 + 10)]), fill="black", outline=color)
-                                x1 = b1x2 - 20
+                                x1 = b1x1 - 20
                     #Add a hollow triangle for the relationship type aggregation
                     elif(k[4] == "inheritance"):
                         color = 'red'
@@ -284,6 +284,13 @@ def save_as_png(file_name):
                                         y1 = y1 - 3
                                         temp_x2 = (y1 - b) / slope
                                         x1 = temp_x2
+        for i in UMLBox.class_list:
+            uml : UMLClass = UMLClass.class_dict[i.name]
+            if len(uml.fields) == 0:
+                spacer = 7
+            else:
+                spacer = 0
+            coords = UMLBox.get_coords(i.name)
             #Draw the box
             draw.rectangle(xy=(coords), fill="#D1FF65", outline="black")
             center = (coords[2]-coords[0])/2 + coords[0]
