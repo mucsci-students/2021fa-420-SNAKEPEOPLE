@@ -61,7 +61,7 @@ class UMLLine():
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
                         y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, outline=color, fill="#D0D0D0", width=2)
-                    x1 = b1x2 - 20
+                    x1 = b1x1 - 20
         #Create a relationship identifier for composition (filled diamond)
         #and place it along the border of the box
         elif(line_type == "composition"):
@@ -98,7 +98,7 @@ class UMLLine():
                 else:
                     shape= UMLBox.test_canvas.create_polygon(b1x1, y1, b1x1 - 10, 
                         y1 - 10, b1x1 - 20, y1, b1x1 - 10, y1 + 10, fill="black", outline=color)
-                    x1 = b1x2 - 20
+                    x1 = b1x1 - 20
         #Create a relationship identifier for inheritance (empty triangle)
         #and place it along the border of the box
         elif(line_type == "inheritance"):
