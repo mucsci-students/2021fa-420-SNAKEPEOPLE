@@ -17,6 +17,9 @@ Each new window takes some user input for a thing(s) they would like to change, 
 does the action when they press another button to confirm their action.
 '''
 
+global current_method
+current_method = None
+
 def add_class_window() -> None:
     # Window for adding a new Class to the system.
     root = tk.Toplevel(name = 'dn')
