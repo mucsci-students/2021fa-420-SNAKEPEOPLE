@@ -151,7 +151,11 @@ def b_delete_field(
         field_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    field = ua.UMLField(field_name, field_type)
+    uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+    field : ua.UMLField
+    for f in uml.fields:
+        if f.name == field_name and f.type == field_type:
+            field = f
     output = ai.delete_field(class_name, field)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
         UMLSavepoint.redo_stack.get()
@@ -172,7 +176,7 @@ def b_rename_field(
     uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
     field : ua.UMLField
     for f in uml.fields:
-        if f.name == old_name:
+        if f.name == old_name and f.type == field_type:
             field = f
     output = ai.rename_field(class_name, field, new_name)
     if(output[1].split(' ')[0] != "Successfully" and UMLSavepoint.redo_stack.empty() == False):
