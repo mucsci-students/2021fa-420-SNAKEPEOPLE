@@ -695,7 +695,7 @@ class TabComp(cmd.Cmd):
         else:
             check_args(1, len(lst))
 #
-    def do_listrel(self) -> None:
+    def do_listrel(self, arg = "") -> None:
         '''
         NAME
             listrel

@@ -4,32 +4,33 @@ This program uses a command line or graphical user interface to represent data i
 
 ## Prerequisites
 1. To run the program, you must install Python (3.9.6 at the time). (https://www.python.org/downloads/)
-    * During installation of python, a box can be checked to "Add Python 3.9 to PATH". Check this box. 
-2. Next make sure these libraries are installed so the program functions. They can be installed via the command line by typing in what is below.
-    * `pip install pillow`
-    * `pip install pyreadline`
-    * `pip install pytest`
+    * During installation of python, a box can be checked to "Add Python 3.9.x to PATH". Check this box. 
+2. Next make sure all necessary libraries are installed so the program functions. They can be installed via the command line by typing in what is below once the repo is      downloaded.
+    * `pip install -r requirements.txt`
 
 ## How to run:
 1. Download the latest version from the [repo] (https://github.com/mucsci-students/2021fa-420-SNAKEPEOPLE).
 2. Ensure python version 3.9 or greater is installed on your system.
 3. In your terminal, enter the directory where the repo was downloaded to. Navigate to `/2021fa-420-SNAKEPEOPLE/`
+4. See the user guide for more details about the program and examples.
+
   ### To Run in GUI mode
     - Execute the command `python snake_uml.py` with no flags.
     
    #### GUI
-   ![GUI](Images/gui.png)
+   ![GUI](gui.jpg)
 
   ### To Run in CLI mode
     - Execute the command `python snake_uml.py` with the flag`--cli`
     
    #### CLI
-   ![CLI](Images/cli.png)
+   ![CLI](cli.jpg)
+
 
 ## Authors
-[Nick Bellman](https://github.com/nrbellman)
-[Max Harris](https://github.com/Mharr1)
-[Curtis Kane](https://github.com/curtisjk717)
-[Evan Hanzelman](https://github.com/EHanz)
-[Tanner Michael](https://github.com/TannerMichael)
+[Nick Bellman](https://github.com/nrbellman)<br />
+[Max Harris](https://github.com/Mharr1)<br />
+[Curtis Kane](https://github.com/curtisjk717)<br />
+[Evan Hanzelman](https://github.com/EHanz)<br />
+[Tanner Michael](https://github.com/TannerMichael)<br />
 
