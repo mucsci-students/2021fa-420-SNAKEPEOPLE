@@ -159,6 +159,8 @@ def delete_box(name : str):
         ViewChange.del_item(class_list[pos].fieldlabel)
         ViewChange.del_item(class_list[pos].methodlabel)
         ViewChange.del_item(class_list[pos].methodtext)
+        ViewChange.del_item(class_list[pos].ftop)
+        ViewChange.del_item(class_list[pos].mtop)
         class_list.pop(pos)
 
 #rename a box with the name = oldname#

@@ -292,7 +292,7 @@ def save_as_png(file_name):
                 spacer = 0
             coords = UMLBox.get_coords(i.name)
             #Draw the box
-            draw.rectangle(xy=(coords), fill="#D1FF65", outline="black")
+            draw.rectangle(xy=(coords[0], coords[1], coords[2], coords[3] + 2), fill="#D1FF65", outline="black", width=2)
             center = (coords[2]-coords[0])/2 + coords[0]
             #Draw the name
             draw.text(xy=(center, coords[1] + 12), text=i.name, fill="black", font=font, anchor="mm")
@@ -300,17 +300,21 @@ def save_as_png(file_name):
             draw.text(xy=(coords[0] + 5, coords[1] + 25), text="Field(s):", fill="black", font=font)
             fx,fy = UMLBox.test_canvas.coords(i.fieldlabel)
             #Draw the field text
-            draw.text(xy=(center, fy + 10), text=UMLField.new_fieldText(i.name), fill="black", font=font, anchor="ma")
+            draw.text(xy=(fx, fy + 20 + (15*len(uml.fields)/2)), text=UMLField.new_fieldText(i.name), fill="black", font=font, anchor="lm")
             #Draw the method label
-            draw.text(xy=(coords[0] + 5, fy + spacer + 8 + 15*len(uml.fields)), text="Method(s):", fill="black", font=font)
+            draw.text(xy=(coords[0] + 5, fy + spacer + 18 + 15*len(uml.fields)), text="Method(s):", fill="black", font=font)
             mx,my = UMLBox.test_canvas.coords(i.methodlabel)
             #Draw the method/parameter text
-            draw.text(xy=(center, my + 12), text=UMLMethod.block_text(i.name), fill="black", font=font, anchor="ma")
+            draw.text(xy=(coords[0] + 20, my + 24), text=UMLMethod.block_text(i.name), fill="black", font=font, anchor="ls")
+            lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(i.ftop)
+            draw.line(xy=((lx1, ly1), (lx2, ly2)), fill="black", width=2)
+            lx1, ly1, lx2, ly2 = UMLBox.test_canvas.coords(i.mtop)
+            draw.line(xy=((lx1, ly1), (lx2, ly2)), fill="black", width=2)
         #crop the image
         cropped_image = image.crop((bounds[0] - 10, bounds[1] - 10, bounds[2] + 10, bounds[3] + 10))
         #Save the file as a png
         cropped_image.save(file_name + '.png')
         return "Exported png successfully."
     except:
-        return "Failed to export."
+        return 
 
