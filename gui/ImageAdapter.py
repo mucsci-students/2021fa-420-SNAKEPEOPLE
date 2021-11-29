@@ -300,7 +300,7 @@ def save_as_png(file_name):
             draw.text(xy=(coords[0] + 5, coords[1] + 25), text="Field(s):", fill="black", font=font)
             fx,fy = UMLBox.test_canvas.coords(i.fieldlabel)
             #Draw the field text
-            draw.text(xy=(fx, fy + 20 + (15*len(uml.fields)/2)), text=UMLField.new_fieldText(i.name), fill="black", font=font, anchor="lm")
+            draw.text(xy=(fx - 4, fy + 20 + (15*len(uml.fields)/2)), text=UMLField.new_fieldText(i.name), fill="black", font=font, anchor="lm")
             #Draw the method label
             draw.text(xy=(coords[0] + 5, fy + spacer + 18 + 15*len(uml.fields)), text="Method(s):", fill="black", font=font)
             mx,my = UMLBox.test_canvas.coords(i.methodlabel)

@@ -167,7 +167,7 @@ def can_dragMotion(event):
     ViewChange.set_text(UMLBox.class_list[pos].methodlabel, x1 + 35, fy + 10 + spacer + 15 * len(uml.fields))
     mx,my = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
     ViewChange.set_line(UMLBox.class_list[pos].mtop, new_x1, my - 8, new_x2, my - 8)
-    ViewChange.set_text(UMLBox.class_list[pos].methodtext, new_x1 + 22, my + 10)
+    ViewChange.set_text(UMLBox.class_list[pos].methodtext, new_x1 + 20, my + 10)
 
     #Move any lines connected to the box#
     if(len(UMLBox.class_list[pos].rels) > 0):

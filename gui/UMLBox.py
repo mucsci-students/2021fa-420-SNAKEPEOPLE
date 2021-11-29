@@ -232,7 +232,7 @@ def update_size(pos : int):
     ViewChange.set_line(class_list[pos].mtop, x1, y - 8, x2, y - 8)
     ViewChange.set_text(class_list[pos].methodlabel, x1 + 35, y)
     x,y = test_canvas.coords(class_list[pos].methodtext)
-    ViewChange.set_text(class_list[pos].methodtext, x1 + 22, y)
+    ViewChange.set_text(class_list[pos].methodtext, x1 + 20, y)
     return center
 
 def get_coords(name : str):
