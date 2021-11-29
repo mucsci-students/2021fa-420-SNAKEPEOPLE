@@ -57,12 +57,14 @@ class UMLsquare():
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
         label = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 12, text = name, state=tk.DISABLED, tags=name)
         textspace =3.5 * len(name)
-        rec = test_canvas.create_rectangle(x1, y1, x2, y2 + 40, fill="#D1FF65", tags=name)
+        rec = test_canvas.create_rectangle(x1, y1, x2, y2 + 35, fill="#D1FF65", tags=name, width=2)
         fieldlabel = test_canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
-        fieldtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 35, text = "", state=tk.HIDDEN, anchor=tk.N)
-        yincrement = 30
-        methodlabel = test_canvas.create_text(x1, y1 + 50, text = "Method(s):", state=tk.DISABLED)
-        methodtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
+        fieldtext = test_canvas.create_text(x1 + 7, y1 + 40, text = "", state=tk.HIDDEN, anchor=tk.N)
+        ftop = test_canvas.create_line(x1, y1 + 22, x2, y1 + 22, fill="black", width=2)
+        yincrement = 40
+        mtop = test_canvas.create_line(x1, y1 + 57, x2, y1 + 57, fill="black", width=2)
+        methodlabel = test_canvas.create_text(x1, y1 + 60, text = "Method(s):", state=tk.DISABLED)
+        methodtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 70, text = "", state=tk.HIDDEN, anchor=tk.N)
         ViewChange.push_back(rec)
         self.name = name
         self.rec = rec
@@ -74,6 +76,8 @@ class UMLsquare():
         self.fieldlabel = fieldlabel
         self.methodlabel = methodlabel
         self.methodtext = methodtext
+        self.ftop = ftop
+        self.mtop = mtop
         EventHandler.can_drag(rec)
     
 #add a box to the canvas#      
@@ -217,10 +221,16 @@ def update_size(pos : int):
     #update the box size, and shift label text elements#
     ViewChange.set_rec(class_list[pos].rec, x1, y1, x2, y2)
     ViewChange.set_text(class_list[pos].label, center, y1 + 12)
+    ViewChange.set_line(class_list[pos].ftop, x1, y1 + 22, x2, y1 + 22)
     x,y = test_canvas.coords(class_list[pos].fieldlabel)
     ViewChange.set_text(class_list[pos].fieldlabel, x1 + 25, y)
+    x,y = test_canvas.coords(class_list[pos].fieldtext)
+    ViewChange.set_text(class_list[pos].fieldtext, x1 + 22, y)
     x,y = test_canvas.coords(class_list[pos].methodlabel)
+    ViewChange.set_line(class_list[pos].mtop, x1, y - 8, x2, y - 8)
     ViewChange.set_text(class_list[pos].methodlabel, x1 + 35, y)
+    x,y = test_canvas.coords(class_list[pos].methodtext)
+    ViewChange.set_text(class_list[pos].methodtext, x1 + 22, y)
     return center
 
 def get_coords(name : str):
