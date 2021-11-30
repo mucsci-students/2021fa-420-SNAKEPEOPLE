@@ -30,7 +30,7 @@ class ImageAdapter():
         self.window.destroy()
 
 def save_as_png(file_name):
-    try:
+    # try:
         UMLBox.test_canvas.update()
         bounds = UMLBox.test_canvas.bbox('all')
         #Create a new image to draw on
@@ -38,7 +38,7 @@ def save_as_png(file_name):
                             color="#D0D0D0")
         draw = ImageDraw.Draw(image)
         #Set the font of the pillow image
-        font = ImageFont.truetype(font="Font/arial.ttf", size=12)
+        font = ImageFont.truetype(font="Font/Arial Narrow.ttf", size=12)
         for i in UMLBox.class_list:
             uml : UMLClass = UMLClass.class_dict[i.name]
             if len(uml.fields) == 0:
@@ -295,22 +295,22 @@ def save_as_png(file_name):
             draw.rectangle(xy=(coords), fill="#D1FF65", outline="black")
             center = (coords[2]-coords[0])/2 + coords[0]
             #Draw the name
-            draw.text(xy=(center, coords[1] + 12), text=i.name, fill="black", font=font, anchor="mm")
+            draw.text(xy=(center, coords[1] + 12), text=i.name, fill="black", anchor="mm", font=font)
             #Draw the field label
             draw.text(xy=(coords[0] + 5, coords[1] + 25), text="Field(s):", fill="black", font=font)
             fx,fy = UMLBox.test_canvas.coords(i.fieldlabel)
             #Draw the field text
-            draw.text(xy=(center, fy + 10), text=UMLField.new_fieldText(i.name), fill="black", font=font, anchor="ma")
+            draw.text(xy=(center, fy + 10), text=UMLField.new_fieldText(i.name), fill="black", anchor="ma", font=font)
             #Draw the method label
             draw.text(xy=(coords[0] + 5, fy + spacer + 8 + 15*len(uml.fields)), text="Method(s):", fill="black", font=font)
             mx,my = UMLBox.test_canvas.coords(i.methodlabel)
             #Draw the method/parameter text
-            draw.text(xy=(center, my + 12), text=UMLMethod.block_text(i.name), fill="black", font=font, anchor="ma")
+            draw.text(xy=(center, my + 12), text=UMLMethod.block_text(i.name), fill="black", anchor="ma", font=font)
         #crop the image
         cropped_image = image.crop((bounds[0] - 10, bounds[1] - 10, bounds[2] + 10, bounds[3] + 10))
         #Save the file as a png
         cropped_image.save(file_name + '.png')
-        return "Exported png successfully."
-    except:
-        return "Failed to export."
+        # return "Exported png successfully."
+    # except:
+    #     return "Failed to export."
 
