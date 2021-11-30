@@ -38,7 +38,7 @@ def save_as_png(file_name):
                             color="#D0D0D0")
         draw = ImageDraw.Draw(image)
         #Set the font of the pillow image
-        font = ImageFont.truetype(font="Font/Arial Narrow.ttf", size=12)
+        font = ImageFont.truetype(font="Font/Arial.ttf", size=12)
         for i in UMLBox.class_list:
             uml : UMLClass = UMLClass.class_dict[i.name]
             if len(uml.fields) == 0:
