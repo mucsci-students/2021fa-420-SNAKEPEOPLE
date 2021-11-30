@@ -38,7 +38,7 @@ def save_as_png(file_name):
                             color="#D0D0D0")
         draw = ImageDraw.Draw(image)
         #Set the font of the pillow image
-        font = ImageFont.truetype(font="Font/arial.ttf", size=12)
+        font = ImageFont.truetype(font="Font/Arial Narrow.ttf", size=12)
         for i in UMLBox.class_list:
             uml : UMLClass = UMLClass.class_dict[i.name]
             if len(uml.fields) == 0:
@@ -295,7 +295,7 @@ def save_as_png(file_name):
             draw.rectangle(xy=(coords[0], coords[1], coords[2], coords[3] + 2), fill="#D1FF65", outline="black", width=2)
             center = (coords[2]-coords[0])/2 + coords[0]
             #Draw the name
-            draw.text(xy=(center, coords[1] + 12), text=i.name, fill="black", font=font, anchor="mm")
+            draw.text(xy=(center, coords[1] + 12), text=i.name, fill="black", anchor="mm", font=font)
             #Draw the field label
             draw.text(xy=(coords[0] + 5, coords[1] + 25), text="Field(s):", fill="black", font=font)
             fx,fy = UMLBox.test_canvas.coords(i.fieldlabel)
