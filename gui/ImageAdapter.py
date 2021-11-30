@@ -1,6 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageDraw, ImageFont
-import math
+import os
+import platform
+
 from gui import UMLMethod
 from uml_components import UMLClass
 from . import UMLBox
@@ -30,7 +32,7 @@ class ImageAdapter():
         self.window.destroy()
 
 def save_as_png(file_name):
-    try:
+    # try:
         UMLBox.test_canvas.update()
         bounds = UMLBox.test_canvas.bbox('all')
         #Create a new image to draw on
@@ -38,7 +40,10 @@ def save_as_png(file_name):
                             color="#D0D0D0")
         draw = ImageDraw.Draw(image)
         #Set the font of the pillow image
-        font = ImageFont.truetype(font="Font/Arial.ttf", size=12)
+        if platform.system() == "Darwin":
+            font = ImageFont.truetype(font="Font/Arial.ttf", size=12)
+        else:
+            font = ImageFont.truetype(font="Font/arial.ttf", size=12)
         for i in UMLBox.class_list:
             uml : UMLClass = UMLClass.class_dict[i.name]
             if len(uml.fields) == 0:
@@ -314,7 +319,7 @@ def save_as_png(file_name):
         cropped_image = image.crop((bounds[0] - 10, bounds[1] - 10, bounds[2] + 10, bounds[3] + 10))
         #Save the file as a png
         cropped_image.save(file_name + '.png')
-        return "Exported png successfully."
-    except:
-        return 
-
+    #     return "Exported png successfully."
+    # except:
+    #     return "Failed to export"
+ 
