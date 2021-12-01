@@ -45,7 +45,7 @@ def save_as_png(file_name):
         elif platform.system() == "Windows":
             font = ImageFont.truetype(font="C:\WINDOWS\FONTS\ARIAL.TTF", size=12)
         elif platform.system() == "Linux":
-            font = ImageFont.trutype(font="/usr/share/fonts/liberation/LiberationSans-Regular.ttf", size=12)
+            font = ImageFont.truetype(font="/usr/share/fonts/liberation/LiberationSans-Regular.ttf", size=12)
         else:
             font = ImageFont.load_default()
         for i in UMLBox.class_list:
