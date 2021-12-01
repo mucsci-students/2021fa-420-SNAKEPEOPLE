@@ -40,10 +40,13 @@ def save_as_png(file_name):
                             color="#D0D0D0")
         draw = ImageDraw.Draw(image)
         #Set the font of the pillow image
-        if platform.system() == "Darwin":
-            font = ImageFont.truetype(font="Font/Arial.ttf", size=12)
-        else:
-            font = ImageFont.truetype(font="Font/arial.ttf", size=12)
+        font = ImageFont.truetype(font="arial.ttf", size=12)
+        # if platform.system() == "Darwin":
+        #     font = ImageFont.truetype(font="/Library/Fonts/Arial.ttf", size=12)
+        # elif platform.system() == "Windows":
+        #     font = ImageFont.truetype(font="C:\WINDOWS\FONTS\ARIAL.TTF", size=12)
+        # elif platform.system() == "Linux":
+        #     font = ImageFont.
         for i in UMLBox.class_list:
             uml : UMLClass = UMLClass.class_dict[i.name]
             if len(uml.fields) == 0:
