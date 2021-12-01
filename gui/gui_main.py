@@ -24,7 +24,7 @@ def run():
     
     window = tk.Tk()
     window.title("Snake People UML Editor")
-    window.state('zoomed')
+    window.state('normal')
     
     window.grid_rowconfigure(0, weight=1)
     window.grid_rowconfigure(1,weight=1)

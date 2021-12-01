@@ -22,11 +22,11 @@ def set_text(item, x, y):
 def set_line(item, x1, y1, x2, y2):
     UMLBox.test_canvas.coords(item, x1, y1, x2, y2)
 
-def item_config(item, text, justify, state):
-    if(justify == None and state == None):
+def item_config(item, text, anchor, justify, state):
+    if(anchor == None and state == None):
         UMLBox.test_canvas.itemconfigure(item, text = text)
     else:
-        UMLBox.test_canvas.itemconfigure(item, text = text, justify = justify, state = state)
+        UMLBox.test_canvas.itemconfigure(item, text = text, anchor = anchor, state = state, justify=justify)
 
 def bring_all_front(obj):
     bring_front(obj.rec)
@@ -34,4 +34,6 @@ def bring_all_front(obj):
     bring_front(obj.methodtext)
     bring_front(obj.fieldlabel)
     bring_front(obj.fieldtext)
-    bring_front(obj.label)    
+    bring_front(obj.label)
+    bring_front(obj.ftop)
+    bring_front(obj.mtop)
