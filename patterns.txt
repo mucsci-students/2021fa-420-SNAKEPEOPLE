@@ -11,20 +11,6 @@ Design Pattern: Memento
     Description: I created a wrapper object that saves the current state
                  of the model for the canvas, so that later
                  I can repopulate the canvas with the previous state.
-Design Pattern: Facade
-    Location: File: ViewChange line: 28-34
-    Description: I created a function called bring_all_front which can be
-                 called with a UMLSquare object so that everything within
-                 the square is brought to the front of the canvas. This hides
-                 all the calls necessary to bring each individual canvas element
-                 within the square to the front.
-Design Pattern: Facade
-    Location: File: ViewChange line: 28-34
-    Description: I created a function called bring_all_front which can be
-                 called with a UMLSquare object so that everything within
-                 the square is brought to the front of the canvas. This hides
-                 all the calls necessary to bring each individual canvas element
-                 within the square to the front.
 Design Pattern: Observer
     Location: File: UMLBox line: 51
     Description: I create a list of all lines that would need to be updated.
@@ -39,30 +25,6 @@ Design Pattern: State
     Location: File: UMLMethod line: 14
     Description: I change the state of the methods textbox to disabled so that
                  now it gets displayed instead of being hidden
-Design Pattern: Mediator
-    Location: File: UMLField line: 10-18
-    Description: The update_fields function works as a mediator in that
-                 whenever the gui tells the model to change fields, it 
-                 signals one command (update_fields) to ensure that the gui
-                 will be presenting all fields. This also does all the 
-                 calculations for updating the size of the box
-Design Pattern: Mediator
-    Location: File: UMLMethod line: 10-18
-    Description: The update_methods function works as a mediator in that
-                 whenever the gui tells the model to change methods or prameters,
-                 it signals one command (update_methods) to ensure that the gui
-                 will be presenting all parameters and methods. This also does all the 
-                 calculations for updating the size of the box
-Design Pattern: Mediator
-    Location: File: UMLBox line: 211
-    Description: The class_adapter works as an inbetween piece that reads the
-                 information within the class_dict and converts it to objects
-                 usable to create a canvas element.
-Design Pattern: Mediator
-    Location: File: UMLLine line: 81
-    Description: The line_adapter works to convert the relationship list to
-                 usuable chunks of information that can display a line on the
-                 canvas and relate it to the boxes
 Design Pattern: MVC
     Location: Model: UMLClass, UMLRelationships
               View: UMLBox
@@ -80,6 +42,12 @@ Design Pattern: Bridge
     Description: Each class is composed of lists of UMLFields and UMLMethods.
                  The UMLClass object refers to previously created UMLField
                  objects and UMLMethod objects.
+Design Pattern: Bridge
+    Location: UMLMethod/UMLParameter objects located in UMLAttributes
+    Description: Each method has a list of parameters which are represented
+                 as a list of UMLParameter objects. Each UMLMethod is linked to
+                 UMLParameter objects without the UMLParameter object being created
+                 within the UMLMethod instantiation.
 Design Pattern: Adapter
     Location: ImageAdapter
     Description: The ImageAdapter is an object that sets up a canvas and window which
@@ -94,3 +62,13 @@ Design Pattern: Decorator
                  Decorator because it packs multiple bits of information on top of the
                  tkinter line object so that later it can be manipulated easily along
                  with the tkinter rectangle object it is connected to.
+Design Pattern: Mediator
+    Location: File: UMLBox line: 211
+    Description: The class_adapter works as an inbetween piece that reads the
+                 information within the class_dict and converts it to objects
+                 usable to create a canvas element.
+Design Pattern: Mediator
+    Location: File: UMLLine line: 81
+    Description: The line_adapter works to convert the relationship list to
+                 usuable chunks of information that can display a line on the
+                 canvas and relate it to the boxes
