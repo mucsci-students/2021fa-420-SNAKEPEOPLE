@@ -1154,7 +1154,7 @@ def save_window() -> None:
     frame.pack()
 
     #Get the save directory
-    root.filename = filedialog.askdirectory(initialdir="/save_files", title="Choose a file")
+    root.filename = filedialog.askdirectory(initialdir="/save_files", title="Choose a folder")
     
     root.lift()
 
@@ -1208,7 +1208,7 @@ def load_window() -> None:
     label.grid(row = 0, column = 0)
 
     #Get the load path
-    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a folder", filetype=(('Json files', '*.json'),('Json files', '*.json')))
+    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetype=(('Json files', '*.json'),('Json files', '*.json')))
 
     root.lift()
 
