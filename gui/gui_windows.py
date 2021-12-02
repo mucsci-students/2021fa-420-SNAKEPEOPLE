@@ -1266,10 +1266,6 @@ def export_window() -> None:
             frame, text = "Warning: Saving duplicate file names will\noverride previous ones.", font = ('bold'))
         label.grid(row = 0, column = 0)
 
-        # Label/Entry for File Name.
-        label1 = tk.Label(frame, text = "File Name :", font = ('bold'))
-        label1.grid(row = 1, column = 0)
-
         # Confirm Button, command is the helper checking the user input
         #   and executing the appropriate function.
         btn = tk.Button(
