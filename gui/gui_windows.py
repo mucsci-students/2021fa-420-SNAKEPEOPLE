@@ -7,18 +7,26 @@ from tkinter import ttk
 
 # Internal Imports
 from . import gui_functions as gf
-from uml_components import (UMLClass, UMLAttributes)
+from uml_components import (
+    UMLClass as uc, 
+    UMLAttributes as ua)
 
 ###################################################################################################
 '''
 Functions that are used to bring up new windows when each respective button is pressed.
 
 Each new window takes some user input for a thing(s) they would like to change, and
-does the action when they press another button to confirm their action.
+    does the action when they press another button to confirm their action.
+
+All new windows bind the 'enter' key on the keyboard to the same thing that each
+    respective confirm button does. In other words, to confirm an action in one of the windows,
+    the user can simply press enter instead of clicking the confirm button, if they wish.
 '''
 
+# Declaring variables to use with some of the windows, to keep track of the
+#   method object to pass into the backend.
 global current_method
-current_method = None
+current_method : ua.UMLMethod
 
 def add_class_window() -> None:
     # Window for adding a new Class to the system.
@@ -160,7 +168,7 @@ def add_method_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, 
             text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
@@ -171,7 +179,7 @@ def add_method_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -180,7 +188,7 @@ def add_method_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -232,7 +240,7 @@ def add_method_window() -> None:
             if entry4.get() == "" or entry5.get() == "" or str.isspace(entry4.get()) == True or str.isspace(entry5.get()) == True:
                 paramoutput.configure(text = "Parameter names and types cannot be empty")
             else:
-                paramlist.append(UMLAttributes.UMLParameter(entry4.get(), entry5.get()))
+                paramlist.append(ua.UMLParameter(entry4.get(), entry5.get()))
                 paramoutput.configure(text = "Queued param \"" + entry4.get() + "\" to add.")
                 entry4.delete(0, tk.END)
                 entry5.delete(0, tk.END)
@@ -277,7 +285,7 @@ def delete_method_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -286,7 +294,7 @@ def delete_method_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -296,7 +304,7 @@ def delete_method_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -307,7 +315,7 @@ def delete_method_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -378,7 +386,7 @@ def rename_method_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -387,7 +395,7 @@ def rename_method_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -397,7 +405,7 @@ def rename_method_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -408,7 +416,7 @@ def rename_method_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -485,7 +493,7 @@ def add_field_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -494,7 +502,7 @@ def add_field_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -503,7 +511,7 @@ def add_field_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -557,7 +565,7 @@ def delete_field_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -566,7 +574,7 @@ def delete_field_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -575,7 +583,7 @@ def delete_field_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -629,7 +637,7 @@ def rename_field_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -638,7 +646,7 @@ def rename_field_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -647,7 +655,7 @@ def rename_field_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -809,7 +817,7 @@ def add_param_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -818,7 +826,7 @@ def add_param_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -828,7 +836,7 @@ def add_param_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -839,7 +847,7 @@ def add_param_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -922,7 +930,7 @@ def delete_param_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -931,7 +939,7 @@ def delete_param_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -941,7 +949,7 @@ def delete_param_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -952,7 +960,7 @@ def delete_param_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -1035,7 +1043,7 @@ def rename_param_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -1044,7 +1052,7 @@ def rename_param_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -1054,7 +1062,7 @@ def rename_param_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -1065,7 +1073,7 @@ def rename_param_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -1284,7 +1292,7 @@ def update_params():
     method_name = methodvar.get().split(" ")[0]
     global method_type
     method_type = methodvar.get().split(" ")[1].split("(")[0]
-    uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+    uml : uc.UMLClass = uc.class_dict[classvar.get()]
     for method in uml.methods:
             string = ""
             string += method.name + " " + method.return_type + "("
@@ -1302,7 +1310,7 @@ def update_methods():
     menu = method_dropdown["menu"]
     menu.delete(0, "end")
     method_list = []
-    uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+    uml : uc.UMLClass = uc.class_dict[classvar.get()]
     string = ""
     for method in uml.methods:
         string = ""

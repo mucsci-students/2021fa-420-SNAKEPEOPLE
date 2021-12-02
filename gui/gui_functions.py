@@ -57,7 +57,6 @@ def b_delete_class(
     if(output[1].split(' ')[0] == "<Deleted"):
         UMLSavepoint.clear_stack()
         UMLBox.class_mediator()
-        UMLField.fix_pos(name)
     label.configure(text = output[1])
 
 

@@ -11,6 +11,8 @@ from gui import gui_main
 import tab_comp
 from uml_components import UMLClass, UMLRelationship
 
+###################################################################################################
+
 def main(args : list) -> None:
     '''
     Main function for the program.
@@ -18,7 +20,6 @@ def main(args : list) -> None:
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
-
     if len(args) == 2:
         # Enters CLI mode if the user selects CLI.
         if args[1] == "--cli":
@@ -29,6 +30,8 @@ def main(args : list) -> None:
     # If the user does not pick either GUI or CLI, default to GUI.
     else:
         gui_main.run()
+
+###################################################################################################
 
 def list_a_class(input : str) -> None:
     '''
@@ -60,8 +63,11 @@ def list_all_classes() -> None:
             print(UMLClass.class_dict[key])
         print()
 
+###################################################################################################
+
 def save(filename) -> str:
     return save_by_name(filename)
+
 def save_by_name(filename : str) -> str:
     classes = []
     relationship = []
@@ -107,6 +113,8 @@ def save_by_path(filename: str,
         msg = f"Saved {filename}.json successfully to {path}"
     return msg
 
+###################################################################################################
+
 def load_ex(path: str) -> str:
     msg: str = ""
     json_text: str = ""
@@ -129,6 +137,7 @@ def load_ex(path: str) -> str:
 
 def load(filename) -> str:
     return load_in(filename)
+
 def load_in(filename: str) -> str:
     """
     Given a filename, loads a .json file from the programs internal save_files
@@ -146,6 +155,8 @@ def load_in(filename: str) -> str:
     except FileNotFoundError:
         msg = f"File {filename}.json does not exist."
     return msg
+
+###################################################################################################
 
 # Entry Point
 if __name__ == '__main__':
