@@ -1154,7 +1154,7 @@ def save_window() -> None:
     frame.pack()
 
     #Get the save directory
-    root.filename = filedialog.asksaveasfilename(defaultextension=".json", initialdir="/save_files", title="Choose a folder", filetype=(('Json', '*.json'),('Json', '*.json')))
+    root.filename = filedialog.asksaveasfilename(defaultextension=".json", initialdir="/save_files", title="Choose a folder", filetypes=(('Json', '*.json'),('Json', '*.json')))
 
     if root.filename == "":
         root.destroy()
@@ -1209,7 +1209,7 @@ def load_window() -> None:
     label.grid(row = 0, column = 0)
 
     #Get the load path
-    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetype=(('Json', '*.json'),('Json', '*.json')))
+    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetypes=(('Json', '*.json'),('Json', '*.json')))
 
     if root.filename == "":
         root.destroy()
@@ -1254,7 +1254,7 @@ def export_window() -> None:
     frame.pack()
 
     #Get the folder to save the export in
-    root.filename = filedialog.asksaveasfilename(defaultextension=".png", initialdir="/saved_images", title="Choose a folder", filetype=(('PNG', '*.png'),('JPG', '*.jpg')))
+    root.filename = filedialog.asksaveasfilename(defaultextension=".png", initialdir="/saved_images", title="Choose a folder", filetypes=(('PNG', '*.png'),('JPG', '*.jpg')))
 
     if root.filename == "":
         root.destroy()
