@@ -2,6 +2,7 @@
 # File Name:     UMLMethod.py
 
 import tkinter as tk
+
 from gui import UMLBox
 from gui import ViewChange
 from gui import UMLField
@@ -14,7 +15,7 @@ def update_methods(classname : str):
     pos = UMLBox.find_pos_from_name(classname)
     newtext = block_text(classname)
     #Update the method/parameter text
-    ViewChange.item_config(UMLBox.class_list[pos].methodtext, text = newtext, justify = tk.LEFT, state=tk.DISABLED)
+    ViewChange.item_config(UMLBox.class_list[pos].methodtext, text = newtext, anchor= 'nw', justify=tk.LEFT, state=tk.DISABLED)
     #Update horizontal size of box
     UMLBox.update_size(pos)
     #Update vertical size of box
@@ -31,8 +32,13 @@ def block_text(classname : str):
     #     -{param_type} {param_name}
     # )
     for method in uml.methods:
-        newtext = newtext + method.name + " " + method.return_type + " (\n"
+        newtext = newtext + "+ " + method.name + " ("
+        first_param = True
         for param in method.params:
-            newtext = newtext + "    -" + param.type + " " + param.name + "\n"
-        newtext = newtext + ")\n"
+            if first_param:
+                newtext = newtext + param.name + " : " + param.type
+                first_param = False
+            else:
+                newtext = newtext + ", " + param.name + " : " + param.type
+        newtext = newtext + ") : " + method.return_type + "\n"
     return newtext

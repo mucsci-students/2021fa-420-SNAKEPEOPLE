@@ -56,13 +56,15 @@ class UMLsquare():
     xspace = 0
     def __init__(self, x1 : int, y1 : int, x2 : int, y2 : int, name : str):
         label = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 12, text = name, state=tk.DISABLED, tags=name)
-        textspace =3.5 * len(name)
-        rec = test_canvas.create_rectangle(x1, y1, x2, y2 + 40, fill="#D1FF65", tags=name)
+        textspace =3.1 * len(name)
+        rec = test_canvas.create_rectangle(x1, y1, x2, y2 + 35, fill="#D1FF65", tags=name, width=2)
         fieldlabel = test_canvas.create_text(x1 + 10, y1 + 30, text = "Field(s):", state=tk.DISABLED)
-        fieldtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 35, text = "", state=tk.HIDDEN, anchor=tk.N)
-        yincrement = 30
-        methodlabel = test_canvas.create_text(x1, y1 + 50, text = "Method(s):", state=tk.DISABLED)
-        methodtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 60, text = "", state=tk.HIDDEN, anchor=tk.N)
+        fieldtext = test_canvas.create_text(x1 + 7, y1 + 40, text = "", state=tk.HIDDEN, anchor=tk.N)
+        ftop = test_canvas.create_line(x1, y1 + 22, x2, y1 + 22, fill="black", width=2)
+        yincrement = 40
+        mtop = test_canvas.create_line(x1, y1 + 57, x2, y1 + 57, fill="black", width=2)
+        methodlabel = test_canvas.create_text(x1, y1 + 60, text = "Method(s):", state=tk.DISABLED)
+        methodtext = test_canvas.create_text((x1 + (x2 - x1) / 2), y1 + 70, text = "", state=tk.HIDDEN, anchor=tk.N)
         ViewChange.push_back(rec)
         self.name = name
         self.rec = rec
@@ -74,6 +76,8 @@ class UMLsquare():
         self.fieldlabel = fieldlabel
         self.methodlabel = methodlabel
         self.methodtext = methodtext
+        self.ftop = ftop
+        self.mtop = mtop
         EventHandler.can_drag(rec)
     
 #add a box to the canvas#      
@@ -95,7 +99,7 @@ def create_box(name : str):
     if(len(name) > 8):
         current_textspace = len(name) * 10
     else:
-        current_textspace = len("methods:") * 3.5
+        current_textspace = len("methods:") * 3.1
 
     #Find a big enough gap to place the newest class
     while not placed:
@@ -155,6 +159,8 @@ def delete_box(name : str):
         ViewChange.del_item(class_list[pos].fieldlabel)
         ViewChange.del_item(class_list[pos].methodlabel)
         ViewChange.del_item(class_list[pos].methodtext)
+        ViewChange.del_item(class_list[pos].ftop)
+        ViewChange.del_item(class_list[pos].mtop)
         class_list.pop(pos)
 
 #rename a box with the name = oldname#
@@ -171,7 +177,7 @@ def rename_box(oldname : str, newname : str):
             else:
                 pos += 1
         #Change the text of the box to the updated name#
-        ViewChange.item_config(class_list[pos].label, newname, None, None)
+        ViewChange.item_config(class_list[pos].label, newname, None, None, None)
         #update the width of the box#
         update_size(pos)
 
@@ -179,31 +185,37 @@ def rename_box(oldname : str, newname : str):
 #update the width of the box according to the length of the contained text#
 def update_size(pos : int):
     classname = class_list[pos].name
-    longest_name = 3.5 * len(class_list[pos].name)
+    longest_name = 3.1 * len(class_list[pos].name)
     i = 0
     #Check class name against field and method labels
-    if(len("Fields:") * 3.5 > longest_name):
-        longest_name = len("Fields:") * 3.5
-    if(len("Methods:") * 3.5 > longest_name):
-        longest_name = len("Methods:") * 3.5
+    if(len("Fields:") * 3.1 > longest_name):
+        longest_name = len("Fields:") * 3.1
+    if(len("Methods:") * 3.1 > longest_name):
+        longest_name = len("Methods:") * 3.1
     uml : UMLClass = UMLClass.class_dict[classname]
     #Check all names in the list of fields
     for fields in uml.fields:
         name = "-" + fields.type + " " + fields.name
-        if len(name) * 3.5 > longest_name:
-            longest_name = len(name) * 3.5
+        if len(name) * 3.1 > longest_name:
+            longest_name = len(name) * 3.1
     uml : UMLClass = UMLClass.class_dict[classname]
     method : ai.UMLMethod
     param : ai.UMLParameter
+    newtext = ""
     #Check all info in the list of methods and parameters
     for method in uml.methods:
-        name = method.name + " " + method.return_type + "("
-        if len(name) * 3.5 > longest_name:
-            longest_name = len(name) * 3.5
+        newtext = newtext + "+ " + method.name + " ("
+        first_param = True
         for param in method.params:
-            name = "  -" + param.type + " " + method.name
-            if len(name) * 3.5 > longest_name:
-                longest_name = len(name) * 3.5
+            if first_param:
+                newtext = newtext + param.name + " : " + param.type
+                first_param = False
+            else:
+                newtext = newtext + ", " + param.name + " : " + param.type
+        newtext = newtext + ") : " + method.return_type
+        if len(newtext) * 2.8 > longest_name:
+            longest_name = len(newtext) * 2.8
+        newtext = ""
     class_list[pos].textspace = longest_name
     #find the center and build off of it left and right using the
     #length of the longest text entry
@@ -217,10 +229,16 @@ def update_size(pos : int):
     #update the box size, and shift label text elements#
     ViewChange.set_rec(class_list[pos].rec, x1, y1, x2, y2)
     ViewChange.set_text(class_list[pos].label, center, y1 + 12)
+    ViewChange.set_line(class_list[pos].ftop, x1, y1 + 22, x2, y1 + 22)
     x,y = test_canvas.coords(class_list[pos].fieldlabel)
     ViewChange.set_text(class_list[pos].fieldlabel, x1 + 25, y)
+    x,y = test_canvas.coords(class_list[pos].fieldtext)
+    ViewChange.set_text(class_list[pos].fieldtext, x1 + 22, y)
     x,y = test_canvas.coords(class_list[pos].methodlabel)
+    ViewChange.set_line(class_list[pos].mtop, x1, y - 8, x2, y - 8)
     ViewChange.set_text(class_list[pos].methodlabel, x1 + 35, y)
+    x,y = test_canvas.coords(class_list[pos].methodtext)
+    ViewChange.set_text(class_list[pos].methodtext, x1 + 20, y)
     return center
 
 def get_coords(name : str):

@@ -6,7 +6,9 @@ This program uses a command line or graphical user interface to represent data i
 1. To run the program, you must install Python (3.9.6 at the time). (https://www.python.org/downloads/)
     * During installation of python, a box can be checked to "Add Python 3.9.x to PATH". Check this box. 
 2. Next make sure all necessary libraries are installed so the program functions. They can be installed via the command line by typing in what is below once the repo is      downloaded.
-    * `pip install -r requirements.txt`
+    * `python3 pip install -r requirements.txt`
+    * `python3 -m pip install --upgrade pip`
+    * `python3 -m pip install --upgrade pillow`
 
 ## How to run:
 1. Download the latest version from the [repo] (https://github.com/mucsci-students/2021fa-420-SNAKEPEOPLE).

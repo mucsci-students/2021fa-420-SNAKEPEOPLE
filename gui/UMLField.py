@@ -15,7 +15,7 @@ def update_fields(classname : str):
     pos = UMLBox.find_pos_from_name(classname)
     newtext = new_fieldText(classname)
     #Change the text
-    ViewChange.item_config(UMLBox.class_list[pos].fieldtext, text = newtext, justify = tk.LEFT, state=tk.DISABLED)
+    ViewChange.item_config(UMLBox.class_list[pos].fieldtext, text = newtext, anchor = 'nw', justify=tk.LEFT, state=tk.DISABLED)
     #Update horizontal size of box
     UMLBox.update_size(pos)
     #Update vertical size of box
@@ -28,11 +28,11 @@ def new_fieldText(classname : str):
     #format every field in the form "{type} {name}"
     #and display each field on a new line
     for field in uml.fields:
-        newtext = newtext + "-" + field.type + " " + field.name + "\n"
+        newtext = newtext + "- " + field.name + ": " + field.type + "\n"
     return newtext
 
 def update_vertical(pos : int):
-    UMLBox.class_list[pos].yinc = 30
+    UMLBox.class_list[pos].yinc = 40
     classname = UMLBox.class_list[pos].name
     spacer = 0
     #Find an appropriate vertical spacing to contain the field
@@ -44,9 +44,7 @@ def update_vertical(pos : int):
     param : ai.UMLParameter
     #Find an appropriate vertical spacing to contain the methods and parameters
     for method in uml.methods:
-        UMLBox.class_list[pos].yinc += 30
-        for param in method.params:
-            UMLBox.class_list[pos].yinc += 15
+        UMLBox.class_list[pos].yinc += 15
     if(len(uml.fields) == 0):
         spacer = 10
     else:
@@ -61,15 +59,17 @@ def update_vertical(pos : int):
     xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
     
     #Move the methodlabel according to the number of the fields
-    ViewChange.set_text(UMLBox.class_list[pos].methodlabel, xm, y + 10 + 15 * len(uml.fields) + spacer)
+    ViewChange.set_text(UMLBox.class_list[pos].methodlabel, xm, y + 20 + 15 * len(uml.fields) + spacer)
 
     #method label coords
     xm,ym = UMLBox.test_canvas.coords(UMLBox.class_list[pos].methodlabel)
 
+    ViewChange.set_line(UMLBox.class_list[pos].mtop, x1, ym - 8, x2, ym - 8)
+
     #Move the method text according to the method label
     ViewChange.set_text(UMLBox.class_list[pos].methodtext, xl, ym + 10)
     #Move the box
-    ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 25 + spacer)
+    ViewChange.set_rec(UMLBox.class_list[pos].rec, x1, y1, x2, y1 + UMLBox.class_list[pos].yinc + 20 + spacer)
     #fix any missing lines
     UMLLine.line_mediator()
     ViewChange.bring_all_front(UMLBox.class_list[pos])

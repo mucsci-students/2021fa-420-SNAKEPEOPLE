@@ -98,19 +98,26 @@ def add_relationship(source : str, destination : str, rel_type : str) -> tuple:
         
         if check_class(source) and check_class(destination):
             # If both source and destination are valid, checks if the 
-            # relationship already exists.
-            for relationship in  UMLRelationship.relationship_list:
-                if (source == relationship.source and 
-                    destination == relationship.destination):
-                    err = f"Relationship {source} - {destination} already " + "exists"
-                    print("<Relationship Add Error>: " +
-                          f"Relationship {source} - {destination} already " +
-                          "exists")
+            # relationship is a self loop.
+            if source == destination:
+                err = f"Souce cannot be the same as destination."
+                print("<Relationship Add Error>: " +
+                    f"Souce cannot be the same as destination.")
+            else:
+                # If both source and destination are valid, checks if the 
+                # relationship already exists.
+                for relationship in  UMLRelationship.relationship_list:
+                    if (source == relationship.source and 
+                        destination == relationship.destination):
+                        err = f"Relationship {source} - {destination} already " + "exists"
+                        print("<Relationship Add Error>: " +
+                            f"Relationship {source} - {destination} already " +
+                            "exists")
             
-            # If the relationship does not already exist, creates a new 
-            # UMLRelationship object and adds it to the relationship list.
-            rel = UMLRelationship.UMLRelationship(source, destination, rel_type)
-            UMLRelationship.relationship_list.append(rel)
+                # If the relationship does not already exist, creates a new 
+                # UMLRelationship object and adds it to the relationship list.
+                rel = UMLRelationship.UMLRelationship(source, destination, rel_type)
+                UMLRelationship.relationship_list.append(rel)
 
     return ret, err
 
