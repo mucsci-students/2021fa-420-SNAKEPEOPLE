@@ -177,7 +177,7 @@ def rename_box(oldname : str, newname : str):
             else:
                 pos += 1
         #Change the text of the box to the updated name#
-        ViewChange.item_config(class_list[pos].label, newname, None, None)
+        ViewChange.item_config(class_list[pos].label, newname, None, None, None)
         #update the width of the box#
         update_size(pos)
 
