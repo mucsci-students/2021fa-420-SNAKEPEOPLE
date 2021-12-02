@@ -19,7 +19,7 @@ class_list = []
 def init_canvas(frame : tk.Frame) -> tk.Canvas:
     size_x = 0
     size_y = 0
-    for name, value in UMLClass.class_dict:
+    for name, value in UMLClass.class_dict.items():
         if value.position_x > size_x:
             size_x = value.position_x + 1000
         if value.position_y > size_y:

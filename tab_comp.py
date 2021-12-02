@@ -713,16 +713,23 @@ class TabComp(cmd.Cmd):
         NAME
             export
         SYNTAX
-            export <filename>
+            export <filename> <path>
         DESCRIPTION
             Export a picture of the current UML to the user's PC, setting the
             name of the new image file to the user-inputted name.
         '''
         lst = arg.split()
-        if len(lst) == 1:
-            ia.save_as_png(lst[0])
+        if len(lst) == 2:
+            if len(lst[0].split(".")) != 2:
+                output = "<Export err> Syntax: export <filename.ext> <path>"
+            elif lst[0].split(".")[1] not in {"png", "jpg"}:
+                output = "<Export err> Syntax: export <filename.ext> <path>"
+            else:
+                adapter = ia.ImageAdapter()
+                output = adapter.export(lst[0], lst[1])
+            print(output)
         else:
-            check_args(1, len(lst))
+            check_args(2, len(lst))
 #
     def do_undo(self, arg = "") -> None:
         '''
