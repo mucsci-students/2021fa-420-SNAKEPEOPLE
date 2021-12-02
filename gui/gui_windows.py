@@ -1154,40 +1154,41 @@ def save_window() -> None:
     frame.pack()
 
     #Get the save directory
-    root.filename = filedialog.askdirectory(initialdir="/save_files", title="Choose a folder")
-    
-    root.lift()
+    root.filename = filedialog.asksaveasfilename(defaultextension=".json", initialdir="/save_files", title="Choose a folder", filetype=(('Json', '*.json'),('Json', '*.json')))
 
-    #Save warning label
-    wlabel = tk.Label(
-        frame, text = "Warning: Saving will overwrite\nany duplicate files.", font = ('bold'))
-    wlabel.grid(row = 0, column = 0)
+    if root.filename == "":
+        root.destroy()
+    else:
+        root.lift()
 
-    # Label/Entry for File Name.
-    label = tk.Label(frame, text = "File Name :", font = ('bold'))
-    label.grid(row = 1, column = 0)
-    entry = tk.Entry(frame, width = 50)
-    entry.grid(row = 2, column = 0)
+        #Save warning label
+        wlabel = tk.Label(
+            frame, text = "Warning: Saving will overwrite\nany duplicate files.", font = ('bold'))
+        wlabel.grid(row = 0, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #   and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_save_file(entry.get(), root.filename, label),
-        master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 3, column = 0, padx = 5, pady = 5)
+        # Label/Entry for File Name.
+        label = tk.Label(frame, text = "File Name :", font = ('bold'))
+        label.grid(row = 1, column = 0)
 
-    # Thin Line Separator.
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 4, column = 0, sticky = "ew")
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_save_file(root.filename, label),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 3, column = 0, padx = 5, pady = 5)
 
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 5, column = 0)
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 4, column = 0, sticky = "ew")
 
-    # Bind the enter key to confirming the user's action, same as if they
-    #   were to press the Confirm button.
-    root.bind('<Return>', 
-        lambda event: gf.b_save_file(entry.get(), root.filename, label))
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 5, column = 0)
+
+        # Bind the enter key to confirming the user's action, same as if they
+        #   were to press the Confirm button.
+        root.bind('<Return>', 
+            lambda event: gf.b_save_file(root.filename, label))
 
     # Generate the window.
     root.mainloop()
@@ -1208,7 +1209,7 @@ def load_window() -> None:
     label.grid(row = 0, column = 0)
 
     #Get the load path
-    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetype=(('Json files', '*.json'),('Json files', '*.json')))
+    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetype=(('Json', '*.json'),('Json', '*.json')))
 
     if root.filename == "":
         root.destroy()
@@ -1253,40 +1254,41 @@ def export_window() -> None:
     frame.pack()
 
     #Get the folder to save the export in
-    root.filename = filedialog.askdirectory(initialdir="/saved_images", title="Choose a folder")
+    root.filename = filedialog.asksaveasfilename(defaultextension=".png", initialdir="/saved_images", title="Choose a folder", filetype=(('PNG', '*.png'),('JPG', '*.jpg')))
 
-    root.lift()
+    if root.filename == "":
+        root.destroy()
+    else:
+        root.lift()
 
-    # Label/Entry for warning about overwriting unsaved data.
-    label = tk.Label(
-        frame, text = "Warning: Saving duplicate file names will\noverride previous ones.", font = ('bold'))
-    label.grid(row = 0, column = 0)
+        # Label/Entry for warning about overwriting unsaved data.
+        label = tk.Label(
+            frame, text = "Warning: Saving duplicate file names will\noverride previous ones.", font = ('bold'))
+        label.grid(row = 0, column = 0)
 
-    # Label/Entry for File Name.
-    label1 = tk.Label(frame, text = "File Name :", font = ('bold'))
-    label1.grid(row = 1, column = 0)
-    entry1 = tk.Entry(frame, width = 50)
-    entry1.grid(row = 2, column = 0)
+        # Label/Entry for File Name.
+        label1 = tk.Label(frame, text = "File Name :", font = ('bold'))
+        label1.grid(row = 1, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #   and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_export(entry1.get(), root.filename, label),
-        master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 3, column = 0, padx = 5, pady = 5)
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_export(root.filename, label),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 3, column = 0, padx = 5, pady = 5)
 
-    # Thin Line Separator.
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 4, column = 0, sticky = "ew")
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 4, column = 0, sticky = "ew")
 
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 5, column = 0)
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 5, column = 0)
 
-    # Bind the enter key to confirming the user's action, same as if they
-    #   were to press the Confirm button.
-    root.bind('<Return>', 
-        lambda event: gf.b_export(entry1.get(), root.filename, label))
+        # Bind the enter key to confirming the user's action, same as if they
+        #   were to press the Confirm button.
+        root.bind('<Return>', 
+            lambda event: gf.b_export(root.filename, label))
 
     # Generate the window.
     root.mainloop()

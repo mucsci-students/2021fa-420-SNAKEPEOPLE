@@ -306,9 +306,11 @@ def b_rename_param(
 
 
 def b_save_file(
-        file_name : str, 
         file_path: str,
         label : tk.Label) -> None:
+    file_name = file_path.split("/")[len(file_path.split("/")) - 1]
+    file_path = file_path[:(len(file_path) - len(file_name))]
+    file_name = file_name.split(".")[0]
     output = snake_uml.save_by_path(file_name, file_path)
     label.configure(text = output)
 
@@ -329,10 +331,9 @@ def b_load_file(
 
 
 def b_export(
-        file_name : str,
         file_path : str,
         label : tk.Label) -> None:
-    output = ImageAdapter.save_as_png(file_path, file_name)
+    output = ImageAdapter.save_as_png(file_path)
     label.configure(text = output)
 
 
