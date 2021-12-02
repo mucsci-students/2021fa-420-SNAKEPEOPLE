@@ -7,7 +7,7 @@ from copy import deepcopy
 
 # Helper Methods =============================================================
 
-def find_class(class_name : str) -> tuple:
+def find_class(class_name : str) -> bool:
     """
     Checks whether a given class name is the name of a class in the class
     dictionary.
@@ -15,10 +15,7 @@ def find_class(class_name : str) -> tuple:
     Parameters:
     - class_name : str -> the class name to be checked.
     """
-    if class_name in UMLClass.class_dict:
-        return True, UMLClass.class_dict[class_name]
-    
-    return False, None
+    return class_name in UMLClass.class_dict
     
 def find_method(uml : UMLClass.UMLClass,
                 method: UMLMethod) -> bool:

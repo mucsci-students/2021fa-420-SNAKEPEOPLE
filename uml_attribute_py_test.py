@@ -5,12 +5,43 @@ from uml_components.interfaces import class_interface, attr_interface, rel_inter
 
 def test_add_field () :
     class_interface.add_class ("class1")
-    assert attr_interface.add_field ("class1", "attr1", "type1")[0]
+    valid_field = attr_interface.add_field ("class1", "attr1", "type1")[0]
+    assert isinstance(valid_field, UMLField)
+    
+def test_add_field_duplicate() :
+    class_interface.add_class ("class1")
+    valid_field = attr_interface.add_field ("class1", "attr1", "type1")[0]
+    duplicate = attr_interface.add_field ("class1", "attr1", "type1")[0]
+    assert not isinstance(duplicate, UMLField)
+    
+def test_add_field_empty_field_name():
+    empty_field_name = attr_interface.add_field("class1", "", "type")
+    assert empty_field_name[1] == "Field name must not be empty."
+    
+def test_add_field_invalid_class():
+    empty_field_name = attr_interface.add_field("class2", "attr", "type")[0]
+    assert not isinstance(empty_field_name, UMLField)
 
 def test_add_method () :
     class_interface.add_class ("class2")
     assert attr_interface.add_method ("class2", "method2", "type2")[0]
     
+def test_add_method_duplicate() :
+    class_interface.add_class ("class1")
+    attr_interface.add_method ("class1", "attr1", "type1")[0]
+    duplicate = attr_interface.add_method ("class1", "attr1", "type1")[0]
+    assert not isinstance(duplicate, UMLMethod)
+    
+def test_add_field_empty_method_name():
+    class_interface.add_class ("class1")
+    empty_field_name = attr_interface.add_method("class1", "", "type")
+    assert empty_field_name[1] == "Method name must not be empty."
+    
+def test_add_method_invalid_class():
+    class_interface.add_class ("class1")
+    empty_field_name = attr_interface.add_method("classf", "attr", "type")[0]
+    assert not isinstance(empty_field_name, UMLMethod)
+
 def test_add_param () :
     class_interface.add_class ("class12")
     yikes = UMLClass.class_dict['class12']
@@ -88,3 +119,5 @@ def test_find_method_two () :
 
 # Add some tests that fail on invalid input, output
 # Have pytest list each test in the terminal
+if __name__ == "__main__":
+    test_add_field_empty_field_name()
