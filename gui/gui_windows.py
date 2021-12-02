@@ -1210,31 +1210,34 @@ def load_window() -> None:
     #Get the load path
     root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetype=(('Json files', '*.json'),('Json files', '*.json')))
 
-    root.lift()
+    if root.filename == "":
+        root.destroy()
+    else:
+        root.lift()
 
-    # Label/Entry for File Name.
-    label1 = tk.Label(frame, text = "Open File: " + root.filename + "?", font = ('bold'))
-    label1.grid(row = 1, column = 0)
+        # Label/Entry for File Name.
+        label1 = tk.Label(frame, text = "Open File: " + root.filename + "?", font = ('bold'))
+        label1.grid(row = 1, column = 0)
 
-    # Confirm Button, command is the helper checking the user input
-    #   and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_load_file(root.filename, label),
-        master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 3, column = 0, padx = 5, pady = 5)
+        # Confirm Button, command is the helper checking the user input
+        #   and executing the appropriate function.
+        btn = tk.Button(
+            command = lambda: gf.b_load_file(root.filename, label),
+            master = frame, text = "Confirm", font = ('bold'))
+        btn.grid(row = 3, column = 0, padx = 5, pady = 5)
 
-    # Thin Line Separator.
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 4, column = 0, sticky = "ew")
+        # Thin Line Separator.
+        separator = ttk.Separator(frame, orient = "horizontal")
+        separator.grid(row = 4, column = 0, sticky = "ew")
 
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 5, column = 0)
+        # Label for Program Output.
+        outputlabel = tk.Label(frame, text = "")
+        outputlabel.grid(row = 5, column = 0)
 
-    # Bind the enter key to confirming the user's action, same as if they
-    #   were to press the Confirm button.
-    root.bind('<Return>', 
-        lambda event: gf.b_load_file(root.filename, label))
+        # Bind the enter key to confirming the user's action, same as if they
+        #   were to press the Confirm button.
+        root.bind('<Return>', 
+            lambda event: gf.b_load_file(root.filename, label))
 
     # Generate the window.
     root.mainloop()
