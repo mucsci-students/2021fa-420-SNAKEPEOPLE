@@ -307,15 +307,16 @@ def b_rename_param(
 
 def b_save_file(
         file_name : str, 
+        file_path: str,
         label : tk.Label) -> None:
-    output = snake_uml.save(file_name)
+    output = snake_uml.save_by_path(file_name, file_path)
     label.configure(text = output)
 
 
 def b_load_file(
-        file_name : str, 
+        file_path : str, 
         label : tk.Label) -> None:
-    output = snake_uml.load(file_name)
+    output = snake_uml.load_ex(file_path)
     label.configure(text = output)
     UMLBox.test_canvas.delete("all")
     UMLBox.class_list = []
@@ -329,8 +330,9 @@ def b_load_file(
 
 def b_export(
         file_name : str,
+        file_path : str,
         label : tk.Label) -> None:
-    output = ImageAdapter.save_as_png(file_name)
+    output = ImageAdapter.save_as_png(file_path, file_name)
     label.configure(text = output)
 
 

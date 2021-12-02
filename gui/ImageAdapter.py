@@ -31,7 +31,7 @@ class ImageAdapter():
         UMLBox.class_list = []
         self.window.destroy()
 
-def save_as_png(file_name):
+def save_as_png(file_path, file_name):
     if file_name == '' or str.isspace(file_name):
         return "Export file name cannot be empty."
     try:
@@ -324,7 +324,7 @@ def save_as_png(file_name):
         #crop the image
         cropped_image = image.crop((bounds[0] - 10, bounds[1] - 10, bounds[2] + 10, bounds[3] + 10))
         #Save the file as a png
-        cropped_image.save("./saved_images/" + file_name + '.png')
+        cropped_image.save(file_path + "/" + file_name + '.png')
         return "Exported png successfully."
     except:
         return "Failed to export"

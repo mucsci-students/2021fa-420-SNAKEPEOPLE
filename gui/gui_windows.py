@@ -4,6 +4,7 @@
 # External Imports
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 
 # Internal Imports
 from . import gui_functions as gf
@@ -1152,31 +1153,41 @@ def save_window() -> None:
     frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
     frame.pack()
 
+    #Get the save directory
+    root.filename = filedialog.askdirectory(initialdir="/save_files", title="Choose a file")
+    
+    root.lift()
+
+    #Save warning label
+    wlabel = tk.Label(
+        frame, text = "Warning: Saving will overwrite\nany duplicate files.", font = ('bold'))
+    wlabel.grid(row = 0, column = 0)
+
     # Label/Entry for File Name.
     label = tk.Label(frame, text = "File Name :", font = ('bold'))
-    label.grid(row = 0, column = 0)
+    label.grid(row = 1, column = 0)
     entry = tk.Entry(frame, width = 50)
-    entry.grid(row = 1, column = 0)
+    entry.grid(row = 2, column = 0)
 
     # Confirm Button, command is the helper checking the user input
     #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_save_file(entry.get(), label),
+        command = lambda: gf.b_save_file(entry.get(), root.filename, label),
         master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 2, column = 0, padx = 5, pady = 5)
+    btn.grid(row = 3, column = 0, padx = 5, pady = 5)
 
     # Thin Line Separator.
     separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 3, column = 0, sticky = "ew")
+    separator.grid(row = 4, column = 0, sticky = "ew")
 
     # Label for Program Output.
     outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 4, column = 0)
+    outputlabel.grid(row = 5, column = 0)
 
     # Bind the enter key to confirming the user's action, same as if they
     #   were to press the Confirm button.
     root.bind('<Return>', 
-        lambda event: gf.b_save_file(entry.get(), label))
+        lambda event: gf.b_save_file(entry.get(), root.filename, label))
 
     # Generate the window.
     root.mainloop()
@@ -1196,16 +1207,19 @@ def load_window() -> None:
         frame, text = "Warning: Loading will overwrite\nany unsaved changes.", font = ('bold'))
     label.grid(row = 0, column = 0)
 
+    #Get the load path
+    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a folder", filetype=(('Json files', '*.json'),('Json files', '*.json')))
+
+    root.lift()
+
     # Label/Entry for File Name.
-    label1 = tk.Label(frame, text = "File Name :", font = ('bold'))
+    label1 = tk.Label(frame, text = "Open File: " + root.filename + "?", font = ('bold'))
     label1.grid(row = 1, column = 0)
-    entry1 = tk.Entry(frame, width = 50)
-    entry1.grid(row = 2, column = 0)
 
     # Confirm Button, command is the helper checking the user input
     #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_load_file(entry1.get(), label),
+        command = lambda: gf.b_load_file(root.filename, label),
         master = frame, text = "Confirm", font = ('bold'))
     btn.grid(row = 3, column = 0, padx = 5, pady = 5)
 
@@ -1220,7 +1234,7 @@ def load_window() -> None:
     # Bind the enter key to confirming the user's action, same as if they
     #   were to press the Confirm button.
     root.bind('<Return>', 
-        lambda event: gf.b_load_file(entry1.get(), label))
+        lambda event: gf.b_load_file(root.filename, label))
 
     # Generate the window.
     root.mainloop()
@@ -1234,6 +1248,11 @@ def export_window() -> None:
     # Frame containing the elements.
     frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
     frame.pack()
+
+    #Get the folder to save the export in
+    root.filename = filedialog.askdirectory(initialdir="/saved_images", title="Choose a folder")
+
+    root.lift()
 
     # Label/Entry for warning about overwriting unsaved data.
     label = tk.Label(
@@ -1249,7 +1268,7 @@ def export_window() -> None:
     # Confirm Button, command is the helper checking the user input
     #   and executing the appropriate function.
     btn = tk.Button(
-        command = lambda: gf.b_export(entry1.get(), label),
+        command = lambda: gf.b_export(entry1.get(), root.filename, label),
         master = frame, text = "Confirm", font = ('bold'))
     btn.grid(row = 3, column = 0, padx = 5, pady = 5)
 
@@ -1264,7 +1283,7 @@ def export_window() -> None:
     # Bind the enter key to confirming the user's action, same as if they
     #   were to press the Confirm button.
     root.bind('<Return>', 
-        lambda event: gf.b_export(entry1.get(), label))
+        lambda event: gf.b_export(entry1.get(), root.filename, label))
 
     # Generate the window.
     root.mainloop()
