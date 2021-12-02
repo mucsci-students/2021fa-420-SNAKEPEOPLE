@@ -44,9 +44,7 @@ def update_vertical(pos : int):
     param : ai.UMLParameter
     #Find an appropriate vertical spacing to contain the methods and parameters
     for method in uml.methods:
-        UMLBox.class_list[pos].yinc += 30
-        for param in method.params:
-            UMLBox.class_list[pos].yinc += 15
+        UMLBox.class_list[pos].yinc += 15
     if(len(uml.fields) == 0):
         spacer = 10
     else:
