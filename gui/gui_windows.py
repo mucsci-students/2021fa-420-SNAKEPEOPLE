@@ -1310,8 +1310,8 @@ def update_params():
             string += method.name + " " + method.return_type + "("
             for param in method.params:
                 if string[-1] != "(":
-                    string = string + ","
-                string += param.type + " " + param.name
+                    string = string + ", "
+                string += param.name + " : " + param.type
             string += ")"
             if string == methodvar.get():
                 global current_method
@@ -1329,8 +1329,8 @@ def update_methods():
         string += method.name + " " + method.return_type + "("
         for param in method.params:
             if string[-1] != "(":
-                string = string + ","
-            string += param.type + " " + param.name
+                string = string + ", "
+            string += param.name + " : " + param.type
         string += ")"
         method_list.append(string)
     for strings in method_list:
