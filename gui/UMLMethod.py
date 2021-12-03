@@ -2,6 +2,7 @@
 # File Name:     UMLMethod.py
 
 import tkinter as tk
+
 from gui import UMLBox
 from gui import ViewChange
 from gui import UMLField
@@ -31,8 +32,13 @@ def block_text(classname : str):
     #     -{param_type} {param_name}
     # )
     for method in uml.methods:
-        newtext = newtext + "+ " + method.name + " " + method.return_type + " (\n"
+        newtext = newtext + "+ " + method.name + " ("
+        first_param = True
         for param in method.params:
-            newtext = newtext + "    -" + param.type + " " + param.name + "\n"
-        newtext = newtext + ")\n"
+            if first_param:
+                newtext = newtext + param.name + " : " + param.type
+                first_param = False
+            else:
+                newtext = newtext + ", " + param.name + " : " + param.type
+        newtext = newtext + ") : " + method.return_type + "\n"
     return newtext
