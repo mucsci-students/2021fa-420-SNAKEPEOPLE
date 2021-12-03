@@ -159,31 +159,37 @@ def clear_stack():
 
 def make_coords(class_name : str, x : int, y : int):
     """Get horizontal size of box"""
-    longest_name = 3.5 * len(class_name)
+    longest_name = 2.8 * len(class_name)
     i = 0
     #Check class name against field and method labels
-    if(len("Fields:") * 3.5 > longest_name):
-        longest_name = len("Fields:") * 3.5
-    if(len("Methods:") * 3.5 > longest_name):
-        longest_name = len("Methods:") * 3.5
+    if(len("Fields:") * 2.8 > longest_name):
+        longest_name = len("Fields:") * 2.8
+    if(len("Methods:") * 2.8 > longest_name):
+        longest_name = len("Methods:") * 2.8
     uml : UMLClass = UMLClass.class_dict[class_name]
     #Check to see if the longest name is in fields
     for fields in uml.fields:
         name = "-" + fields.type + " " + fields.name
-        if len(name) * 3.5 > longest_name:
-            longest_name = len(name) * 3.5
+        if len(name) * 2.8 > longest_name:
+            longest_name = len(name) * 2.8
     uml : UMLClass = UMLClass.class_dict[class_name]
     method : ai.UMLMethod
     param : ai.UMLParameter
-    #find if the longest name is within methods
+    newtext = ""
+    #Check all info in the list of methods and parameters
     for method in uml.methods:
-        name = method.name + " " + method.return_type + "("
-        if len(name) * 3.5 > longest_name:
-            longest_name = len(name) * 3.5
+        newtext = newtext + "+ " + method.name + " ("
+        first_param = True
         for param in method.params:
-            name = "  -" + param.type + " " + method.name
-            if len(name) * 3.5 > longest_name:
-                longest_name = len(name) * 3.5
+            if first_param:
+                newtext = newtext + param.name + " : " + param.type
+                first_param = False
+            else:
+                newtext = newtext + ", " + param.name + " : " + param.type
+        newtext = newtext + ") : " + method.return_type
+        if len(newtext) * 2.8 > longest_name:
+            longest_name = len(newtext) * 2.8
+        newtext = ""
     x1 = x - 40 - longest_name
     x2 = x + 40 + longest_name
     """Get Vertical size of box"""
