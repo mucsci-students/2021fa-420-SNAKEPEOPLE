@@ -2,7 +2,7 @@
 # File Name:     UMLBox.py
 
 import tkinter as tk
-from gui.UMLLine import deleteline, findpos
+from gui.UMLLine import deleteline, findpos, line_mediator
 from . import UMLSavepoint
 from . import EventHandler
 from . import ViewChange
@@ -141,27 +141,17 @@ def create_box_with_coords(name : str, x1 : int, y1 : int, x2 : int, y2 : int):
 #Remove the box with the text = name#
 def delete_box(name : str):
     pos = find_pos_from_name(name)
-    if pos != None:
-        subpos = 0
-        #remove any lines connecting the box to any other boxes#
-        while subpos < len(class_list[pos].rels):
-            if(class_list[pos].rels[subpos][0] == "source"):
-                deleteline(class_list[pos].rec, class_list[pos].rels[subpos][2])
-                subpos -= 1
-            else:
-                deleteline(class_list[pos].rels[subpos][2], class_list[pos].rec)
-                subpos -= 1
-            subpos += 1
-        #delete everything associated with the box
-        ViewChange.del_item(class_list[pos].rec)
-        ViewChange.del_item(class_list[pos].label)
-        ViewChange.del_item(class_list[pos].fieldtext)
-        ViewChange.del_item(class_list[pos].fieldlabel)
-        ViewChange.del_item(class_list[pos].methodlabel)
-        ViewChange.del_item(class_list[pos].methodtext)
-        ViewChange.del_item(class_list[pos].ftop)
-        ViewChange.del_item(class_list[pos].mtop)
-        class_list.pop(pos)
+    #delete everything associated with the box
+    ViewChange.del_item(class_list[pos].rec)
+    ViewChange.del_item(class_list[pos].label)
+    ViewChange.del_item(class_list[pos].fieldtext)
+    ViewChange.del_item(class_list[pos].fieldlabel)
+    ViewChange.del_item(class_list[pos].methodlabel)
+    ViewChange.del_item(class_list[pos].methodtext)
+    ViewChange.del_item(class_list[pos].ftop)
+    ViewChange.del_item(class_list[pos].mtop)
+    class_list.pop(pos)
+    line_mediator()
 
 #rename a box with the name = oldname#
 def rename_box(oldname : str, newname : str):
