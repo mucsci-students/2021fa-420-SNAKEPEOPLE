@@ -84,6 +84,10 @@ def undo(mode = "gui"):
     last_state : UMLSavepoint
     last_state = undo_stack.get()
 
+    #Roll back the class dictionary to the previous state
+    UMLClass.class_dict.clear()
+    UMLClass.class_dict.update(last_state.class_dict)
+
     #Clear the relationship list
     while len(UMLRelationship.relationship_list) > 0:
         ri.delete_relationship(UMLRelationship.relationship_list[0].source, 
@@ -91,10 +95,6 @@ def undo(mode = "gui"):
     #Recreate the previous state's relationship list
     for i in last_state.relationship_list:
         ri.add_relationship(i.source, i.destination, i.type)
-
-    #Roll back the class dictionary to the previous state
-    UMLClass.class_dict.clear()
-    UMLClass.class_dict.update(last_state.class_dict)
 
     if mode == "gui": 
         #clear the canvas
@@ -112,17 +112,18 @@ def redo(mode = "gui"):
     last_state : UMLSavepoint
     last_state = redo_stack.get()
 
+    #Roll back the class dictionary to the previous state (forward state)
+    UMLClass.class_dict.clear()
+    UMLClass.class_dict.update(last_state.class_dict)
+
     #Clear the relationhsip list
     while len(UMLRelationship.relationship_list) > 0:
         ri.delete_relationship(UMLRelationship.relationship_list[0].source,
          UMLRelationship.relationship_list[0].destination)
+    print(UMLClass.class_dict)
     #Recreate the previous state of the relationship list
     for i in last_state.relationship_list:
         ri.add_relationship(i.source, i.destination, i.type)
-
-    #Roll back the class dictionary to the previous state (forward state)
-    UMLClass.class_dict.clear()
-    UMLClass.class_dict.update(last_state.class_dict)
 
     if mode == "gui": 
         #clear the canvas
