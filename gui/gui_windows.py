@@ -22,6 +22,10 @@ Each new window takes some user input for a thing(s) they would like to change, 
 All new windows bind the 'enter' key on the keyboard to the same thing that each
     respective confirm button does. In other words, to confirm an action in one of the windows,
     the user can simply press enter instead of clicking the confirm button, if they wish.
+
+The red squiggle errors are due to trying to access the filename of a tkinter TopLevel object,
+    in the functions dealing with save, load, and export. Python doesn't like seeing this, but 
+    these functions still work how we want them to.
 '''
 
 # Declaring variables to use with some of the windows, to keep track of the
@@ -69,7 +73,6 @@ def add_class_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_class_window() -> None:
     # Window for deleting an existing Class from the system.
     root = tk.Toplevel(name = 'dn')
@@ -109,7 +112,6 @@ def delete_class_window() -> None:
     
     # Generate the window.
     root.mainloop()
-
 
 def rename_class_window() -> None:
     # Window for renaming an existing Class in the system.
@@ -156,7 +158,6 @@ def rename_class_window() -> None:
 
     # Generate the window.
     root.mainloop()
-
 
 def add_method_window() -> None:
     # Window for adding a Method to an existing Class in the system.
@@ -274,7 +275,6 @@ def add_method_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_method_window() -> None:
     # Window for deleting a Method from an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -374,7 +374,6 @@ def delete_method_window() -> None:
     
     # Generate the window.
     root.mainloop()
-    
 
 def rename_method_window() -> None:
     # Window for renaming a Method in an existing Class in the system.
@@ -482,7 +481,6 @@ def rename_method_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def add_field_window() -> None:
     # Window for adding a Field to an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -554,7 +552,6 @@ def add_field_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_field_window() -> None:
     # Window for deleting a Field from an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -625,7 +622,6 @@ def delete_field_window() -> None:
     
     # Generate the window.
     root.mainloop()
-
 
 def rename_field_window() -> None:
     # Window for renaming a Field in an existing Class in the system.
@@ -703,109 +699,6 @@ def rename_field_window() -> None:
     
     # Generate the window.
     root.mainloop()
-
-
-def add_relation_window() -> None:
-    # Window for adding a Relationship between 2 Classes.
-    root = tk.Toplevel(name = 'dn')
-    root.title("Add Relation")
-
-    # Frame containing the elements.
-    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
-    frame.pack()
-
-    # Label/Entry for Class 1 Name.
-    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
-    label1.grid(row = 0, column = 0)
-    entry1 = tk.Entry(frame, width = 50)
-    entry1.grid(row = 1, column = 0)
-
-    # Label/Entry for Class 2 Name.
-    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
-    label2.grid(row = 2, column = 0)
-    entry2 = tk.Entry(frame, width = 50)
-    entry2.grid(row = 3, column = 0)
-
-    # Creating the togglable buttons for the 4 types of Relationships.
-    type = tk.IntVar()
-    types = ["aggregation", "composition", "inheritance", "realization"]
-    for index in range(len(types)):
-        rdo = tk.Radiobutton(
-            master = frame, text = types[index], value = index, variable = type, font = ('bold'))
-        rdo.grid(row = 4 + index, column = 0)
-
-    # Confirm Button, command is the helper checking the user input
-    #   and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_add_relation(
-            entry1.get(), entry2.get(), types[type.get()], outputlabel),
-        master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 8, column = 0, padx = 5, pady = 5)
-
-    # Thin Line Separator.
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 9, column = 0, sticky = "ew")
-
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 10, column = 0)
-
-    # Bind the enter key to confirming the user's action, same as if they
-    #   were to press the Confirm button.
-    root.bind('<Return>', 
-        lambda event: gf.b_add_relation(
-            entry1.get(), entry2.get(), types[type.get()], outputlabel))
-    
-    # Generate the window.
-    root.mainloop()
-
-
-def delete_relation_window() -> None:
-    # Window for deleting a Relationship between 2 Classes.
-    root = tk.Toplevel(name = 'dn')
-    root.title("Delete Relation")
-
-    # Frame containing the elements.
-    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
-    frame.pack()
-
-    # Label/Entry for Class 1 Name.
-    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
-    label1.grid(row = 0, column = 0)
-    entry1 = tk.Entry(frame, width = 50)
-    entry1.grid(row = 1, column = 0)
-
-    # Label/Entry for Class 2 Name.
-    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
-    label2.grid(row = 2, column = 0)
-    entry2 = tk.Entry(frame, width = 50)
-    entry2.grid(row = 3, column = 0)
-
-    # Confirm Button, command is the helper checking the user input
-    #   and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_delete_relation(
-            entry1.get(), entry2.get(), outputlabel),
-        master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 4, column = 0, padx = 5, pady = 5)
-
-    # Thin Line Separator.
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 5, column = 0, sticky = "ew")
-
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 6, column = 0)
-
-    # Bind the enter key to confirming the user's action, same as if they
-    #   were to press the Confirm button.
-    root.bind('<Return>', 
-        lambda event: gf.b_delete_relation(
-            entry1.get(), entry2.get(), outputlabel))
-    
-    # Generate the window.
-    root.mainloop()
-
 
 def add_param_window() -> None:
     # Window for Adding a Parameter to a Method in a Class.
@@ -919,7 +812,6 @@ def add_param_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_param_window() -> None:
    # Window for Deleting a Parameter from a Method in a Class.
     root = tk.Toplevel(name = 'dn')
@@ -1031,7 +923,6 @@ def delete_param_window() -> None:
 
     # Generate the window.
     root.mainloop()
-
 
 def rename_param_window() -> None:
    # Window for Renaming a Parameter in a Method in a Class.
@@ -1151,6 +1042,105 @@ def rename_param_window() -> None:
     # Generate the window.
     root.mainloop()
 
+def add_relation_window() -> None:
+    # Window for adding a Relationship between 2 Classes.
+    root = tk.Toplevel(name = 'dn')
+    root.title("Add Relation")
+
+    # Frame containing the elements.
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
+
+    # Label/Entry for Class 1 Name.
+    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
+
+    # Label/Entry for Class 2 Name.
+    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
+    label2.grid(row = 2, column = 0)
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 3, column = 0)
+
+    # Creating the togglable buttons for the 4 types of Relationships.
+    type = tk.IntVar()
+    types = ["aggregation", "composition", "inheritance", "realization"]
+    for index in range(len(types)):
+        rdo = tk.Radiobutton(
+            master = frame, text = types[index], value = index, variable = type, font = ('bold'))
+        rdo.grid(row = 4 + index, column = 0)
+
+    # Confirm Button, command is the helper checking the user input
+    #   and executing the appropriate function.
+    btn = tk.Button(
+        command = lambda: gf.b_add_relation(
+            entry1.get(), entry2.get(), types[type.get()], outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 8, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 9, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 10, column = 0)
+
+    # Bind the enter key to confirming the user's action, same as if they
+    #   were to press the Confirm button.
+    root.bind('<Return>', 
+        lambda event: gf.b_add_relation(
+            entry1.get(), entry2.get(), types[type.get()], outputlabel))
+    
+    # Generate the window.
+    root.mainloop()
+
+def delete_relation_window() -> None:
+    # Window for deleting a Relationship between 2 Classes.
+    root = tk.Toplevel(name = 'dn')
+    root.title("Delete Relation")
+
+    # Frame containing the elements.
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
+
+    # Label/Entry for Class 1 Name.
+    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
+
+    # Label/Entry for Class 2 Name.
+    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
+    label2.grid(row = 2, column = 0)
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 3, column = 0)
+
+    # Confirm Button, command is the helper checking the user input
+    #   and executing the appropriate function.
+    btn = tk.Button(
+        command = lambda: gf.b_delete_relation(
+            entry1.get(), entry2.get(), outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 4, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 5, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 6, column = 0)
+
+    # Bind the enter key to confirming the user's action, same as if they
+    #   were to press the Confirm button.
+    root.bind('<Return>', 
+        lambda event: gf.b_delete_relation(
+            entry1.get(), entry2.get(), outputlabel))
+    
+    # Generate the window.
+    root.mainloop()
 
 def save_window() -> None:
     # Window for Saving all the current data to a file.
@@ -1161,15 +1151,20 @@ def save_window() -> None:
     frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
     frame.pack()
 
-    #Get the save directory
-    root.filename = filedialog.asksaveasfilename(defaultextension=".json", initialdir="/save_files", title="Choose a folder", filetypes=(('Json', '*.json'),('Json', '*.json')))
+    # Get the save directory.
+    root.filename = filedialog.asksaveasfilename(
+        defaultextension=".json", initialdir="/save_files", title="Choose a folder", 
+        filetypes=(('Json', '*.json'),('Json', '*.json')))
 
+    # Destroys the popup window if there is no save directory.
     if root.filename == "":
         root.destroy()
+
     else:
+        # Bring the window to the front.
         root.lift()
 
-        #Save warning label
+        # Save warning label.
         wlabel = tk.Label(
             frame, text = "Warning: Saving will overwrite\nany duplicate files.", font = ('bold'))
         wlabel.grid(row = 0, column = 0)
@@ -1201,7 +1196,6 @@ def save_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def load_window() -> None:
     # Window for Loading data from an existing file.
     root = tk.Toplevel(name = 'dn')
@@ -1216,12 +1210,17 @@ def load_window() -> None:
         frame, text = "Warning: Loading will overwrite\nany unsaved changes.", font = ('bold'))
     label.grid(row = 0, column = 0)
 
-    #Get the load path
-    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetypes=(('Json', '*.json'),('Json', '*.json')))
+    # Get the load path.
+    root.filename = filedialog.askopenfilename(
+        initialdir="/save_files", title="Choose a file", 
+        filetypes=(('Json', '*.json'),('Json', '*.json')))
 
+    # Destroys the popup window if there is no save directory.
     if root.filename == "":
         root.destroy()
+
     else:
+        # Bring the window to the front.
         root.lift()
 
         # Label/Entry for File Name.
@@ -1251,7 +1250,6 @@ def load_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def export_window() -> None:
     # Window for Loading data from an existing file.
     root = tk.Toplevel(name = 'dn')
@@ -1261,12 +1259,17 @@ def export_window() -> None:
     frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
     frame.pack()
 
-    #Get the folder to save the export in
-    root.filename = filedialog.asksaveasfilename(defaultextension=".png", initialdir="/saved_images", title="Choose a folder", filetypes=(('PNG', '*.png'),('JPG', '*.jpg')))
+    # Get the folder to save the export in.
+    root.filename = filedialog.asksaveasfilename(
+        defaultextension=".png", initialdir="/saved_images", title="Choose a folder", 
+        filetypes=(('PNG', '*.png'),('JPG', '*.jpg')))
 
+    # Destroys the popup window if there is no save directory.
     if root.filename == "":
         root.destroy()
+
     else:
+        # Bring the window to the front.
         root.lift()
 
         # Label/Entry for warning about overwriting unsaved data.
@@ -1297,7 +1300,6 @@ def export_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 ###################################################################################################
 '''
 Helper functions for the secondary dropdowns in a few windows.
@@ -1325,7 +1327,6 @@ def update_params():
                 global current_method
                 current_method = method
 
-
 def update_methods():
     menu = method_dropdown["menu"]
     menu.delete(0, "end")
@@ -1347,7 +1348,6 @@ def update_methods():
         methodvar.set("No methods available")
     else:
         methodvar.set("Select a method")
-
 
 ###################################################################################################
 '''

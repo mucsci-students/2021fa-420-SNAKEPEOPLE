@@ -2,7 +2,11 @@
 # File Name:     ViewChange.py
 
 """THIS FILE ACTS AS THE VIEW CHANGER ALL OTHER METHODS USE THIS FILE TO UPDATE THE CANVAS"""
+
+# Internal Import
 from gui import UMLBox
+
+###################################################################################################
 
 def del_item(name):
     UMLBox.test_canvas.delete(name)
@@ -26,7 +30,7 @@ def item_config(item, text, anchor, justify, state):
     if(anchor == None and state == None):
         UMLBox.test_canvas.itemconfigure(item, text = text)
     else:
-        UMLBox.test_canvas.itemconfigure(item, text = text, anchor = anchor, state = state, justify=justify)
+        UMLBox.test_canvas.itemconfigure(item, text = text, anchor = anchor, state = state, justify = justify)
 
 def bring_all_front(obj):
     bring_front(obj.rec)
@@ -37,3 +41,5 @@ def bring_all_front(obj):
     bring_front(obj.label)
     bring_front(obj.ftop)
     bring_front(obj.mtop)
+
+###################################################################################################

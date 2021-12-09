@@ -2,21 +2,26 @@
 # File Name:     tab_comp.py
 
 # External Imports
-import cmd
-from os.path import isdir, isfile
 import queue
-from sys import exit
+import cmd
 from typing import List
+from os.path import (
+    isdir, 
+    isfile)
+from sys import exit
 
 # Internal Imports
-from uml_components.UMLAttributes import (UMLField, UMLMethod, 
-                                          UMLParameter)
-from uml_components import UMLClass, UMLRelationship
-from uml_components.interfaces import (class_interface as ci,
-                                       rel_interface as ri,
-                                       attr_interface as ai)
-from gui import (UMLSavepoint,
-                 ImageAdapter as ia,)
+from uml_components.UMLAttributes import (
+    UMLMethod, 
+    UMLParameter)
+from uml_components import UMLClass
+from uml_components.interfaces import (
+    class_interface as ci,
+    rel_interface as ri,
+    attr_interface as ai)
+from gui import (
+    UMLSavepoint,
+    ImageAdapter as ia,)
 import snake_uml
 
 ################################################################################
@@ -41,7 +46,7 @@ def main():
 def check_args(expected: int, received: int) -> None:
     if not expected == received:
         print("Invalid Arguments Error: " + 
-              f"Expected {expected}, Received {received}")
+              f"Expected {expected}, Received {received}.")
 
 class TabComp(cmd.Cmd):
     
@@ -55,7 +60,6 @@ class TabComp(cmd.Cmd):
     prompt = ("SP.UML>> ")
 
     #############################################################################
-
     # Doers => Do the action based on text entered.
     def do_addclass(
             self, 
@@ -195,7 +199,7 @@ class TabComp(cmd.Cmd):
                 UMLSavepoint.clear_stack()
         else:
             check_args(2, len(lst))
-#
+
     def do_addfield(self,
                     arg : str) -> None:
         '''
@@ -225,7 +229,7 @@ class TabComp(cmd.Cmd):
                 UMLSavepoint.clear_stack()
         else:
             check_args(3, len(lst))
-#
+
     def do_delfield(self,
                     arg : str) -> None:
         '''
@@ -258,7 +262,7 @@ class TabComp(cmd.Cmd):
                     UMLSavepoint.clear_stack()
         else:
             check_args(2, len(lst))
-#
+
     def do_renfield(self,
                     arg : str) -> None:
         '''
@@ -373,7 +377,7 @@ class TabComp(cmd.Cmd):
             
         else:
             check_args(3, len(lst))
-    
+
     @staticmethod  
     def select_method(method_name: str,
                       method_type: str,
@@ -441,8 +445,7 @@ class TabComp(cmd.Cmd):
         
         else:
             check_args(3, len(lst))
-                
-#
+
     def do_renmethod(
             self,
             arg : str) -> None:
@@ -551,8 +554,7 @@ class TabComp(cmd.Cmd):
                         UMLSavepoint.clear_stack()
         else:
             check_args(5, len(lst))
-        
-#
+
     def do_delparam(self,
                     arg : str) -> None:
         '''
@@ -623,7 +625,7 @@ class TabComp(cmd.Cmd):
                                 UMLParameter(param_name, ""))
         else:
             check_args(4, len(lst))
-#
+
     def do_renparam(self,
                     arg : str) -> None:
         '''
@@ -671,9 +673,7 @@ class TabComp(cmd.Cmd):
                         UMLSavepoint.redo_stack.get()
                     if(output[1].split(' ')[0] == "Successfully"):
                         UMLSavepoint.clear_stack()
-            
-        
-#
+
     def do_listclass(self,
                      arg : str) -> None:
         '''
@@ -694,7 +694,7 @@ class TabComp(cmd.Cmd):
                 snake_uml.list_a_class(lst[0])
         else:
             check_args(1, len(lst))
-#
+
     def do_listrel(self, arg = "") -> None:
         '''
         NAME
@@ -706,7 +706,7 @@ class TabComp(cmd.Cmd):
             current system.
         '''
         ri.list_relationships()
-#
+
     def do_export(self,
                   arg : str) -> None:
         '''
@@ -730,7 +730,7 @@ class TabComp(cmd.Cmd):
             print(output)
         else:
             check_args(2, len(lst))
-#
+
     def do_undo(self, arg = "") -> None:
         '''
         NAME
@@ -743,7 +743,7 @@ class TabComp(cmd.Cmd):
         '''
         if UMLSavepoint.undo_stack.empty() == False:
             UMLSavepoint.undo("cli")
-#
+
     def do_redo(self, arg = "") -> None:
         '''
         NAME
@@ -755,7 +755,7 @@ class TabComp(cmd.Cmd):
         '''
         if UMLSavepoint.redo_stack.empty() == False:
             UMLSavepoint.redo("cli")
-#
+
     def do_save(self,
                 arg : str) -> None:
         '''
@@ -874,7 +874,7 @@ class TabComp(cmd.Cmd):
         else:
             check_args(1, len(lst))
         print(output)
-#
+
     def do_exit(self, s) -> None:
         '''
         NAME
@@ -893,9 +893,7 @@ class TabComp(cmd.Cmd):
         else:
             return
 
-
     #############################################################################
-
     # Completers => Check for terminal text for tab completion
     def complete_addclass(self, text):
         if text:
@@ -950,7 +948,7 @@ class TabComp(cmd.Cmd):
             ]
         else:
             return valids
-        
+
     def complete_delfield(self, text):
         if text:
             return [
@@ -1022,7 +1020,7 @@ class TabComp(cmd.Cmd):
             ]
         else:
             return valids
-    
+
     def complete_listclass(self, text):
         if text:
             return [ 
@@ -1040,7 +1038,7 @@ class TabComp(cmd.Cmd):
             ]
         else:
             return valids
-        
+
     def complete_export(self, text):
         if text:
             return [ 
@@ -1058,7 +1056,7 @@ class TabComp(cmd.Cmd):
             ]
         else:
             return valids
-        
+
     def complete_redo(self, text):
         if text:
             return [ 
@@ -1067,7 +1065,7 @@ class TabComp(cmd.Cmd):
             ]
         else:
             return valids
-    
+
     def complete_save(self, text):
         if text:
             return [ 
@@ -1076,7 +1074,7 @@ class TabComp(cmd.Cmd):
             ]
         else:
             return valids
-    
+
     def complete_load(self, text):
         if text:
             return [ 
@@ -1096,6 +1094,6 @@ class TabComp(cmd.Cmd):
             return valids
 
 #################################################################################
-
+# Entry Point
 if __name__ == '__main__':
     main()
