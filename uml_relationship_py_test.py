@@ -1,9 +1,16 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     uml_class_py_test.py
+
+# External Imports
+import pytest
+
+# Internal Imports
 from uml_components import UMLRelationship
 from uml_components import UMLClass
 from uml_components.interfaces import rel_interface, class_interface
-import pytest
 
-# check a relationship can be added
+###################################################################################################
+
 def test_add_rel () :
     index = 0
     class_interface.add_class ("source1")
@@ -34,6 +41,8 @@ def test_rel_del_two () :
     rel_interface.delete_relationship ("Rocky", "Adrian")
     assert rel_interface.find_rel ("Rocky", "Balboa") == (True, index)
 
+###################################################################################################
+
 def test_check_type () :
     class_interface.add_class ("source3")
     class_interface.add_class ("destination3")
@@ -51,6 +60,8 @@ def test_find_rel () :
 def test_find_rel_two () :
     index = 0
     assert rel_interface.find_rel ("source4", "DESTFAIL") == (False, index)
+
+###################################################################################################
 
 def test_rel_cleanup () :
     index = 4
@@ -71,6 +82,8 @@ def test_change_type_two () :
     rel_interface.add_relationship ("STypeFail", "DTypeFail", "aggregation")
     assert rel_interface.check_type ("TYPEFAIL") == False
 
+###################################################################################################
+
 def test_check_class () :
     class_interface.add_class ("classChk")
     assert rel_interface.check_class ("classChk") == True
@@ -78,3 +91,5 @@ def test_check_class () :
 def test_check_class_two () :
     class_interface.add_class ("classFail")
     assert rel_interface.check_class ("FAIL") == False
+
+###################################################################################################
