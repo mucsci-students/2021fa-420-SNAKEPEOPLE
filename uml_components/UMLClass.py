@@ -105,7 +105,6 @@ class UMLClass():
                      field : UMLField) -> UMLField:
         idx = self.fields.index(field)
         self.fields.pop(idx)
-        
         print(f"<Deleted Field ({self.name})>: {field}")
         
         return field
@@ -115,13 +114,15 @@ class UMLClass():
         method.clear()
         idx = self.methods.index(method)
         self.methods.pop(idx)
-
+        print(f"<Added Method ({self.name})>: {method}")
+        
     def delete_param(self,
                      method : UMLMethod,
                      param : UMLParameter) -> None:
         idx = method.params.index(param)
         method.params.pop(idx)
-
+        print(f"<Deleted Method Parameter ({self.name}.{method})>: {param}")
+        
     def get_field(self,
                   field_name : str) -> Union[UMLField, None]:
         field : UMLField

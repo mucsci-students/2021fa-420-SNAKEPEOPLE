@@ -383,6 +383,7 @@ def rename_param(class_name : str,
             if find_param(method, param):
                 param.rename(new_name)
                 ret = param
+                print(msg)
             else:
                 msg = (f"'{param.name}' does not exist as the name of a parameter " +
                        f"in '{class_name}.{method.name}'.")
