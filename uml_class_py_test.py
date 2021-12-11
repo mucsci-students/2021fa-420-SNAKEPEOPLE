@@ -1,5 +1,13 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     uml_class_py_test.py
+
+# External Imports
 import pytest
+
+# Import Imports
 from uml_components.interfaces import class_interface
+
+###################################################################################################
 
 def test_add_class () :
     assert class_interface.add_class ("class09")
@@ -31,3 +39,5 @@ def test_delete_empty_class () :
 def test_delete_ne_class () :
     assert class_interface.delete_class ("class11")
     assert isinstance (class_interface.delete_class ("class15"), tuple)
+
+###################################################################################################

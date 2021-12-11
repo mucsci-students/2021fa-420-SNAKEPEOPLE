@@ -1,16 +1,26 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     JSON.py
+
+# External Imports
 import json
 from typing import Union
 
-from uml_components.UMLAttributes import UMLField, UMLMethod, UMLParameter
+# Internal Imports
+from uml_components.UMLAttributes import (
+    UMLField, 
+    UMLMethod, 
+    UMLParameter)
 from uml_components.UMLRelationship import UMLRelationship
 from uml_components.UMLClass import UMLClass
+
+###################################################################################################
 
 class ComplexEncoder(json.JSONEncoder):
     """
     A complex json encoder for encoding nested objects.
     """
     
-    # Overwrites json.JSONEncoder.default() to account for custom python
+    # Overwrites json.JSONEncoder.default() to account for custom python.
     def default(self, 
                 obj: Union[UMLClass, UMLRelationship]) -> dict:
         
@@ -18,7 +28,9 @@ class ComplexEncoder(json.JSONEncoder):
             return obj.toJson()
         else:
             return json.JSONEncoder.default(self, obj)
-        
+
+###################################################################################################
+
 def encode(classes : list, 
            relationships : list) -> str:
     """
@@ -38,7 +50,6 @@ def encode(classes : list,
     
     # Returns the result of the json.dumps() method, which is a string.
     return json.dumps(objects, indent= 4, cls= ComplexEncoder)
-
 
 def decode_classes(classes : list) -> dict:
     """
@@ -60,28 +71,27 @@ def decode_classes(classes : list) -> dict:
     # Loops through the list of classes.
     for cls in classes:
         
-        # Lists of UMLAttribute Field and Method objects that exist in the 
-        # class.
+        # Lists of UMLAttribute Field and Method objects that exist in 
+        #   the class.
         fields = []
         methods = []
     
         # Loops through the list of JSON representaions of fields and creating
-        # UMLAttribute Field objects.
+        #   UMLAttribute Field objects.
         for field in cls['fields']:
             fields.append(UMLField(**field))
         
         # Loops through the list of JSON representations of methods and creating
-        # UMLAttribute Method objects and their parameters (if they exist). Then
-        # appends the Method objects to the list 'methods'.
+        #   UMLAttribute Method objects and their parameters (if they exist). 
+        #   Then appends the Method objects to the list 'methods'.
         for method in cls['methods']:
-            
-            # List of UMLAttribute Parameter objects
+            # List of UMLAttribute Parameter objects.
             params = []
             m_obj = UMLMethod(**method)
             
             # Loops through the list of JSON representations of parameters
-            # creating UMLAttribute Parameter objects and appending them to
-            # 'params'.
+            #   creating UMLAttribute Parameter objects and appending them 
+            #   to 'params'.
             for param in method['params']:
                 p_obj = UMLParameter(**param)
                 params.append(p_obj)
@@ -89,10 +99,11 @@ def decode_classes(classes : list) -> dict:
             m_obj.params = params    
             methods.append(m_obj)
             
-        # Constructs a new UMLClass object with paramters derived from 'cls'
+        # Constructs a new UMLClass object with paramters derived from 'cls'.
         obj : UMLClass = UMLClass(**cls)
+
         # Assigns the list of fields and methods to the UMLClass objects fields
-        # of the same name.
+        #   of the same name.
         obj.fields = fields
         obj.methods = methods
         
@@ -100,7 +111,6 @@ def decode_classes(classes : list) -> dict:
         cls_dict.update({obj.name : obj})
         
     return cls_dict
-
 
 def decode_relationships(relationships : list) -> list:
     """
@@ -118,14 +128,13 @@ def decode_relationships(relationships : list) -> list:
     rel_list = []
     
     # Loops through the list of JSON representations of relationships, creating
-    # UMLRelationship objects and appending those objects to the function's
-    # internal relationship list.
+    #   UMLRelationship objects and appending those objects to the 
+    #   function's internal relationship list.
     for rel in relationships:
         obj : UMLRelationship = UMLRelationship(**rel)
         rel_list.append(obj)
     
     return rel_list
-
 
 def decode(json_str : str) -> tuple:
     """
@@ -138,7 +147,6 @@ def decode(json_str : str) -> tuple:
     'decode_classes' and the relationship list returned by 
     'decode_relationships'.
     """
-    
 
     json_dict = json.loads(json_str)
     
@@ -148,3 +156,4 @@ def decode(json_str : str) -> tuple:
     
     return (decode_classes(classes), decode_relationships(relationships))
         
+###################################################################################################

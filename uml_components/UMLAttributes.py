@@ -1,5 +1,11 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLAttributes.py
+
+# External Imports
 from dataclasses import dataclass, field
 from typing import List, Union
+
+###################################################################################################
 
 @dataclass
 class UMLAttribute:
@@ -7,6 +13,8 @@ class UMLAttribute:
     
     def toJson(self) -> dict:
         return self.__dict__
+
+###################################################################################################
 
 @dataclass
 class UMLParameter (UMLAttribute):
@@ -29,6 +37,8 @@ class UMLParameter (UMLAttribute):
                new_name : str) -> None:
         self.name = new_name
 
+###################################################################################################
+
 @dataclass
 class UMLField (UMLAttribute):
     type : str
@@ -49,6 +59,8 @@ class UMLField (UMLAttribute):
     def rename(self, 
                new_name : str) -> None:
         self.name = new_name
+
+###################################################################################################
 
 @dataclass
 class UMLMethod (UMLAttribute):
@@ -93,4 +105,4 @@ class UMLMethod (UMLAttribute):
     def clear(self) -> None:
         self.params = []
         
-    
+###################################################################################################
