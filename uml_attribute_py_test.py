@@ -1,7 +1,15 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     uml_attribute_py_test.py
+
+# External Imports
 import pytest
+
+# Internal Imports
 from uml_components.UMLAttributes import UMLField, UMLMethod, UMLParameter
 from uml_components import UMLClass
 from uml_components.interfaces import class_interface, attr_interface, rel_interface
+
+###################################################################################################
 
 def test_add_field () :
     class_interface.add_class ("class1")
@@ -123,6 +131,8 @@ def test_rename_param () :
     tannerP = tanner.add_method_param (tanner.methods[0], "pp", "int")
     assert attr_interface.rename_param ("tanner", tanner.methods[0], tannerP, "ppp")
 
+###################################################################################################
+
 def test_delete_field () :
     class_interface.add_class ("class7")
     maxy = attr_interface.add_field ("class7", "field7", "type7")[0]
@@ -140,6 +150,8 @@ def test_delete_param () :
     me : UMLMethod = beenis.methods[0]
     beenisP = beenis.add_method_param (me, "p", "double")
     assert attr_interface.delete_param ("beenis", me, beenisP)
+
+###################################################################################################
 
 def test_find_field () :
     testF = UMLField ("fieldtest", "typetest")
@@ -173,7 +185,9 @@ def test_find_method_two () :
     umlM2 = UMLClass.class_dict["ClassM"]
     assert attr_interface.find_method (umlM2, umlM2.methods[0]) == True
 
+###################################################################################################
+
 # Add some tests that fail on invalid input, output
 # Have pytest list each test in the terminal
-if __name__ == "__main__":
-    test_add_field_empty_field_name()
+
+###################################################################################################

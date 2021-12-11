@@ -1,5 +1,12 @@
-from uml_components import UMLClass
-from uml_components import UMLRelationship
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     rel_interface.py
+
+# Internal Imports
+from uml_components import (
+    UMLClass,
+    UMLRelationship)
+
+###################################################################################################
 
 def check_class(cls : str) -> bool:
     """
@@ -15,13 +22,12 @@ def check_class(cls : str) -> bool:
     found : bool = False
     
     # Loops through the class dictionary and sets found to True if 'cls' is in
-    # the class dictionary.
+    #   the class dictionary.
     for key in  UMLClass.class_dict:
         if cls == key:
             found = True
             
     return found
-
 
 def check_type(rel_type : str) -> bool:
 
@@ -50,17 +56,19 @@ def find_rel(source : str, dest : str) -> tuple:
         relationship : UMLRelationship.UMLRelationship
         for relationship in  UMLRelationship.relationship_list:
             # If source and destination are both valid, iterates through the
-            # relationship list until it finds a matching relationship.
+            #   relationship list until it finds a matching relationship.
             if (source == relationship.source and 
                 dest == relationship.destination):
                 # If the source and destination match the source and destination
-                # of the current iteration, returns True.
+                #   of the current iteration, returns True.
                 return (True, index)
             else:
                 # Increments the index by 1 and checks again.
                 index += 1
                 
     return (False, index)
+
+###################################################################################################
 
 def add_relationship(source : str, destination : str, rel_type : str) -> tuple:
 
@@ -84,8 +92,8 @@ def add_relationship(source : str, destination : str, rel_type : str) -> tuple:
         print("<Relationship Add Error>: " +
               f"{rel_type} is not a valid relationship type.")
     else:
-        # If the type is valid, checks if both source and destination are valid
-        # classes.
+        # If the type is valid, checks if both source and destination are 
+        #   valid classes.
         if not check_class(source):
             err = f"{source} does not exist as the name of a class."
             print("<Relationship Add Error>: " +
@@ -95,17 +103,16 @@ def add_relationship(source : str, destination : str, rel_type : str) -> tuple:
             print("<Relationship Add Error>: " +
                   f"{destination} does not exist as the name of a class.")
         
-        
         if check_class(source) and check_class(destination):
             # If both source and destination are valid, checks if the 
-            # relationship is a self loop.
+            #   relationship is a self loop.
             if source == destination:
                 err = f"Souce cannot be the same as destination."
                 print("<Relationship Add Error>: " +
                     f"Souce cannot be the same as destination.")
             else:
                 # If both source and destination are valid, checks if the 
-                # relationship already exists.
+                #   relationship already exists.
                 for relationship in  UMLRelationship.relationship_list:
                     if (source == relationship.source and 
                         destination == relationship.destination):
@@ -115,7 +122,7 @@ def add_relationship(source : str, destination : str, rel_type : str) -> tuple:
                             "exists")
             
                 # If the relationship does not already exist, creates a new 
-                # UMLRelationship object and adds it to the relationship list.
+                #   UMLRelationship object and adds it to the relationship list.
                 rel = UMLRelationship.UMLRelationship(source, destination, rel_type)
                 UMLRelationship.relationship_list.append(rel)
 
@@ -149,8 +156,8 @@ def delete_relationship(source : str, dest : str) -> tuple:
     # Checks whether a valid relationship was found.
     found, index = find_rel(source, dest)
     if found:
-        # If matching relationship found, deletes the relationship from the
-        # list.
+        # If matching relationship found, deletes the relationship from 
+        #   the list.
         ret =  UMLRelationship.relationship_list.pop(index)
         err = f"<Deleted Relationship>: {source} - {dest} ({ret.type})"
         print(f"<Deleted Relationship>: {source} - {dest} ({ret.type})")
@@ -162,6 +169,7 @@ def delete_relationship(source : str, dest : str) -> tuple:
 
     return ret, err
 
+###################################################################################################
 
 def rel_cleanup(cls : str) -> None:
     """
@@ -174,7 +182,7 @@ def rel_cleanup(cls : str) -> None:
     # Checks if the class exists in the class dictionary.
     if cls in  UMLClass.class_dict:
         # If cls is the name of the class, iterates through the relationship
-        # list and deletes all relationships where cls is source or destination.
+        #   list and deletes all relationships where cls is source or destination.
         relationship : UMLRelationship.UMLRelationship
         for relationship in  UMLRelationship.relationship_list:
             # Deletes if cls is source.
@@ -186,6 +194,7 @@ def rel_cleanup(cls : str) -> None:
                 delete_relationship(relationship.source, cls)
                 rel_cleanup(cls)
 
+###################################################################################################
 
 def list_relationships() -> None:
     """
@@ -200,29 +209,32 @@ def list_relationships() -> None:
         for relationship in  UMLRelationship.relationship_list:
             print(relationship)
 
+###################################################################################################
 
 def change_type(source : str, dest : str, new_type : str):
 
-    #Checks to ensure that the new relationship type is one of Aggregation,
-    #Composition, Inheritance, or Realization and then replaces the old 
-    #relationship type of the named relationship with the new relationship type.
+    # Checks to ensure that the new relationship type is one of Aggregation,
+    #   Composition, Inheritance, or Realization and then replaces the old 
+    #   relationship type of the named relationship with the new relationship type.
     
-    #parameters:
-    #source- String that is set as the name of a UMLClass object
-    #destination- String that is set as the name of a UMLClass object
-    #new_type- String of the new relationship type
+    # Parameters:
+    #   source- String that is set as the name of a UMLClass object
+    #   destination- String that is set as the name of a UMLClass object
+    #   new_type- String of the new relationship type
 
 
-    #Check to make sure the relationship exists
+    # Check to make sure the relationship exists.
     found, index = find_rel(source, dest)
     if found == False:
         print("<Relationship Type Error>: " +
               f"{source}-{dest} is not a valid relationship.")
-    #Check to make sure the new relationship type exists
+    # Check to make sure the new relationship type exists.
     elif check_type(new_type) == False:
         print("<Relationship Type Error>: " +
               f"{new_type} is not a valid relationship type.")
     else:
-        #Update the relationship type
+        # Update the relationship type.
         relationship = UMLRelationship.relationship_list[index]
         relationship.change_type(new_type)
+
+###################################################################################################

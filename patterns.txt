@@ -72,3 +72,9 @@ Design Pattern: Mediator
     Description: The line_adapter works to convert the relationship list to
                  usuable chunks of information that can display a line on the
                  canvas and relate it to the boxes
+Design Pattern: Singleton
+    Location: File: UMLBox line: 19
+    Description: We have a specific call that creates a single Tkinter canvas
+                 object which is the basis for all the tkinter canvas drawings.
+                 This gets initialized on startup of the gui and is the only
+                 canvas object modified when the gui opens.
