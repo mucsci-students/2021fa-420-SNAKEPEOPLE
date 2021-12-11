@@ -137,6 +137,21 @@ def test_rename_method () :
     attr_interface.add_method ("class5", "method5", "type5")
     messy = UMLClass.class_dict["class5"]
     assert isinstance (attr_interface.rename_method ("class5", messy.methods[0], "newmethod"), tuple)
+    UMLClass.class_dict = dict()
+    
+def test_rename_method_invcls():
+    class_interface.add_class("class1")
+    m = attr_interface.add_method("class1", "m", "t")[0]
+    r = attr_interface.rename_method("class2", m, "n")[0]
+    assert not isinstance (r, UMLMethod)
+    UMLClass.class_dict = dict()
+    
+def test_rename_method_invnm():
+    class_interface.add_class("class1")
+    m = attr_interface.add_method("class1", "m", "t")[0]
+    r = attr_interface.rename_method("class1", m, "")[0]
+    assert not isinstance (r, UMLMethod)
+    UMLClass.class_dict = dict()
 
 def test_rename_param () :
     class_interface.add_class ("tanner")
