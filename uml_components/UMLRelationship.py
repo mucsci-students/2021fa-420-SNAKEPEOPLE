@@ -1,4 +1,10 @@
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLRelationship.py
+
+# External Imports
 from typing import List
+
+###################################################################################################
 
 class UMLRelationship():
     
@@ -41,4 +47,8 @@ class UMLRelationship():
     def toJson(self):
         return self.__dict__
 
+###################################################################################################
+
 relationship_list : List[UMLRelationship] = []
+
+###################################################################################################

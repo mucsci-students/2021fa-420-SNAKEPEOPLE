@@ -6,7 +6,9 @@ import tkinter as tk
 import queue
 
 # Internal Imports
-from uml_components import UMLAttributes as ua, UMLClass
+from uml_components import (
+    UMLAttributes as ua, 
+    UMLClass as uc)
 
 from uml_components.interfaces import (
     attr_interface as ai, 
@@ -32,6 +34,11 @@ and give them feedback on whether it was successful or not.
 
 Also keeps track of save points in order to correctly stash each performed action
 for the purposes of undo/redo.
+
+The red squiggle errors are due to Python thinking that certain Field or Param objects are
+    unbound. However, this will never be a problem for us, because we are only ever calling
+    the functions in this file when we can successfully execute the functions without the
+    program crashing on the user. Therefor, the errors for unbound objects should never matter.
 '''
 
 def b_add_class(
@@ -46,7 +53,6 @@ def b_add_class(
         UMLBox.class_mediator()
     label.configure(text = output[1])
 
-
 def b_delete_class(
         name: str, 
         label : tk.Label) -> None:
@@ -58,7 +64,6 @@ def b_delete_class(
         UMLSavepoint.clear_stack()
         UMLBox.class_mediator()
     label.configure(text = output[1])
-
 
 def b_rename_class(
         old_name: str, 
@@ -73,7 +78,6 @@ def b_rename_class(
         UMLBox.rename_box(old_name, new_name)
         UMLField.fix_pos(new_name)
     label.configure(text = output[1])
-
 
 def b_add_method(
         class_name: str, 
@@ -97,7 +101,6 @@ def b_add_method(
         UMLField.fix_pos(class_name)
         gui_windows.paramlist = []
 
-
 def b_delete_method(
         class_name : str, 
         current_method : ua.UMLMethod, 
@@ -115,7 +118,6 @@ def b_delete_method(
             UMLMethod.update_methods(class_name)
             UMLField.fix_pos(class_name)
             gui_windows.update_methods()
-
 
 def b_rename_method(
         class_name : str, 
@@ -136,7 +138,6 @@ def b_rename_method(
             UMLField.fix_pos(class_name)
             gui_windows.update_methods()
 
-
 def b_add_field(
         class_name : str, 
         field_name : str, 
@@ -152,14 +153,13 @@ def b_add_field(
     UMLField.update_fields(class_name)
     UMLField.fix_pos(class_name)
 
-
 def b_delete_field(
         class_name : str, 
         field_name : str,
         field_type : str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+    uml : uc.UMLClass = uc.class_dict[class_name]
     field : ua.UMLField
     for f in uml.fields:
         if f.name == field_name and f.type == field_type:
@@ -173,7 +173,6 @@ def b_delete_field(
     UMLField.update_fields(class_name)
     UMLField.fix_pos(class_name)
 
-
 def b_rename_field(
         class_name : str, 
         old_name : str,
@@ -181,7 +180,7 @@ def b_rename_field(
         new_name :str, 
         label : tk.Label) -> None:
     UMLSavepoint.save_point()
-    uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
+    uml : uc.UMLClass = uc.class_dict[class_name]
     field : ua.UMLField
     for f in uml.fields:
         if f.name == old_name and f.type == field_type:
@@ -194,38 +193,6 @@ def b_rename_field(
     label.configure(text = output[1])
     UMLField.update_fields(class_name)
     UMLField.fix_pos(class_name)
-
-
-def b_add_relation(
-        class1 : str, 
-        class2 : str, 
-        type : str, 
-        label : tk.Label) -> None:
-    UMLSavepoint.save_point()
-    output = ri.add_relationship(class1, class2, type)
-    if(output[1].split(' ')[0] == "<Added"):
-        UMLLine.line_mediator()
-        UMLSavepoint.clear_stack()
-    if(output[1].split(' ')[0] != "<Added" and UMLSavepoint.redo_stack.empty() == False):
-        UMLSavepoint.redo_stack.get()
-    label.configure(text = output[1])
-
-
-def b_delete_relation(
-        class1 : str, 
-        class2 : str, 
-        label : tk.Label) -> None:
-    exists = ri.find_rel(class1, class2)[0]
-    if exists:
-        UMLSavepoint.save_point()
-    output = ri.delete_relationship(class1, class2)
-    if(output[1].split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
-        UMLSavepoint.redo_stack.get()
-    if(output[1].split(' ')[0] == "<Deleted"):
-        UMLLine.line_mediator()
-        UMLSavepoint.clear_stack()
-    label.configure(text = output[1])
-
 
 def b_add_param(
         class_name : str, 
@@ -246,7 +213,6 @@ def b_add_param(
             UMLMethod.update_methods(class_name)
             UMLField.fix_pos(class_name)
             gui_windows.update_methods()
-
 
 def b_delete_param(
         class_name : str, 
@@ -274,7 +240,6 @@ def b_delete_param(
             UMLMethod.update_methods(class_name)
             UMLField.fix_pos(class_name)
             gui_windows.update_methods()
-
 
 def b_rename_param(
         class_name : str, 
@@ -304,6 +269,34 @@ def b_rename_param(
             UMLField.fix_pos(class_name)
             gui_windows.update_methods()
 
+def b_add_relation(
+        class1 : str, 
+        class2 : str, 
+        type : str, 
+        label : tk.Label) -> None:
+    UMLSavepoint.save_point()
+    output = ri.add_relationship(class1, class2, type)
+    if(output[1].split(' ')[0] == "<Added"):
+        UMLLine.line_mediator()
+        UMLSavepoint.clear_stack()
+    if(output[1].split(' ')[0] != "<Added" and UMLSavepoint.redo_stack.empty() == False):
+        UMLSavepoint.redo_stack.get()
+    label.configure(text = output[1])
+
+def b_delete_relation(
+        class1 : str, 
+        class2 : str, 
+        label : tk.Label) -> None:
+    exists = ri.find_rel(class1, class2)[0]
+    if exists:
+        UMLSavepoint.save_point()
+    output = ri.delete_relationship(class1, class2)
+    if(output[1].split(' ')[0] != "<Deleted" and UMLSavepoint.redo_stack.empty() == False):
+        UMLSavepoint.redo_stack.get()
+    if(output[1].split(' ')[0] == "<Deleted"):
+        UMLLine.line_mediator()
+        UMLSavepoint.clear_stack()
+    label.configure(text = output[1])
 
 def b_save_file(
         file_path: str,
@@ -313,7 +306,6 @@ def b_save_file(
     file_name = file_name.split(".")[0]
     output = snake_uml.save_by_path(file_name, file_path)
     label.configure(text = output)
-
 
 def b_load_file(
         file_path : str, 
@@ -329,22 +321,18 @@ def b_load_file(
     if UMLSavepoint.redo_stack.empty() == False:
         UMLSavepoint.clear_stack()
 
-
 def b_export(
         file_path : str,
         label : tk.Label) -> None:
     output = ImageAdapter.save_as_png(file_path)
     label.configure(text = output)
 
-
 def b_undo() -> None:
     if UMLSavepoint.undo_stack.empty() == False:
         UMLSavepoint.undo()
 
-
 def b_redo() -> None:
     if UMLSavepoint.redo_stack.empty() == False:
         UMLSavepoint.redo()
-
 
 ###################################################################################################

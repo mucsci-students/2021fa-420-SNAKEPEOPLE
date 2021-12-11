@@ -1,19 +1,25 @@
-# Project Name: SNAKE PEOPLE UML Editor
-# File Name:    uml_class.py
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     UMLClass.py
 
-from uml_components.UMLAttributes import (UMLField,
-                                          UMLMethod,
-                                          UMLParameter)
+# External Imports
 from typing import Dict, List, Union
+
+# Internal Imports
+from uml_components.UMLAttributes import (
+    UMLField,
+    UMLMethod,
+    UMLParameter)
+
+###################################################################################################
 
 class UMLClass():
     """
-        A representation of a class for a UML class diagram.
-        
-        Fields:
-        - name : str -> the name of the class. Given during object construction.
-        attributes : list -> a list of attributes of the class. Is intialized
-        as an empty list.
+    A representation of a class for a UML class diagram.
+    
+    Fields:
+    - name : str -> the name of the class. Given during object construction.
+    attributes : list -> a list of attributes of the class. Is intialized
+    as an empty list.
     """
     
     def __init__(self, 
@@ -31,7 +37,6 @@ class UMLClass():
         
         self.position_x = position_x if position_x else -1
         self.position_y = position_y if position_y else -1
-        
 
     def __repr__(self) -> str:
         
@@ -51,7 +56,6 @@ class UMLClass():
             
             
         return name + fields + methods
-    
 
     def rename(self, 
                new_name : str):
@@ -59,8 +63,7 @@ class UMLClass():
         # Sets 'self.name' to be equal to 'new_name'.
         print(f"<Renamed Class>: {self.name} -> {new_name}")
         self.name = new_name
-        
-        
+
     def add_field(self,
                   name : str,
                   type : str) -> UMLField:
@@ -72,8 +75,7 @@ class UMLClass():
         print(f"<Added Field ({self.name})>: {type} {name}")
         
         return new_field
-        
-        
+
     def add_method(self,
                    name : str,
                    return_type : str,
@@ -87,8 +89,7 @@ class UMLClass():
         print(f"<Added Method ({self.name})>: {new_method}")
         
         return new_method
-    
-    
+
     def add_method_param(self,
                          method : UMLMethod,
                          param_name : str,
@@ -99,8 +100,7 @@ class UMLClass():
         print(f"<Added Method Parameter ({self.name}.{method})>: {param}")
         
         return param
-        
-        
+
     def delete_field(self,
                      field : UMLField) -> UMLField:
         idx = self.fields.index(field)
@@ -108,15 +108,13 @@ class UMLClass():
         print(f"<Deleted Field ({self.name})>: {field}")
         
         return field
-        
-        
+
     def delete_method(self,
                       method : UMLMethod) -> None:
         method.clear()
         idx = self.methods.index(method)
         self.methods.pop(idx)
         print(f"<Deleted Method ({self.name})>: {method}")
-        
         
     def delete_param(self,
                      method : UMLMethod,
@@ -133,9 +131,12 @@ class UMLClass():
                 return field
         
         return None
-            
-    
+
     def toJson(self) -> dict:
         return self.__dict__
 
+###################################################################################################
+
 class_dict: Dict[str, UMLClass] = dict()
+
+###################################################################################################

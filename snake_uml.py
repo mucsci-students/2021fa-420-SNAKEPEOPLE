@@ -9,7 +9,11 @@ import os
 import JSON
 from gui import gui_main
 import tab_comp
-from uml_components import UMLClass, UMLRelationship
+from uml_components import (
+    UMLClass, 
+    UMLRelationship)
+
+###################################################################################################
 
 def main(args : list) -> None:
     '''
@@ -18,7 +22,6 @@ def main(args : list) -> None:
     Parameters:\n
     args : list -> A list of command-line arguments provided to the program.
     '''
-
     if len(args) == 2:
         # Enters CLI mode if the user selects CLI.
         if args[1] == "--cli":
@@ -30,6 +33,8 @@ def main(args : list) -> None:
     else:
         gui_main.run()
 
+###################################################################################################
+
 def list_a_class(input : str) -> None:
     '''
     Given a class name, if the class exists in the system, printz the name of 
@@ -40,8 +45,8 @@ def list_a_class(input : str) -> None:
     '''
     
     if input in UMLClass.class_dict:
-        # Accesses a class from the class dictionary, and prints it to the 
-        # terminal.
+        # Accesses a class from the class dictionary, and prints it to 
+        #   the terminal.
         print(UMLClass.class_dict[input])
     else:
         # If the class does not exist in the class dictionary, prints an error.
@@ -60,8 +65,11 @@ def list_all_classes() -> None:
             print(UMLClass.class_dict[key])
         print()
 
+###################################################################################################
+
 def save(filename) -> str:
     return save_by_name(filename)
+
 def save_by_name(filename : str) -> str:
     classes = []
     relationship = []
@@ -105,7 +113,10 @@ def save_by_path(filename: str,
     with open(fullpath, "w") as file:
         file.write(json_text)
         msg = f"Saved {filename}.json successfully to {path}"
+
     return msg
+
+###################################################################################################
 
 def load_ex(path: str) -> str:
     msg: str = ""
@@ -125,17 +136,21 @@ def load_ex(path: str) -> str:
          UMLRelationship.relationship_list) = JSON.decode(json_text)
     except FileNotFoundError:
         msg = f"<UML Load Error>: Unable to access file at {path}"
+
     return msg
 
 def load(filename) -> str:
     return load_in(filename)
+
 def load_in(filename: str) -> str:
     """
     Given a filename, loads a .json file from the programs internal save_files
-    folder.
+        folder.
     """
+
     msg = ""
     json_text : str = ""
+    
     try:
         with open(f"save_files/{filename}.json", "r") as file:
             file.seek(0)
@@ -145,8 +160,10 @@ def load_in(filename: str) -> str:
          UMLRelationship.relationship_list) = JSON.decode(json_text)
     except FileNotFoundError:
         msg = f"File {filename}.json does not exist."
+
     return msg
 
+###################################################################################################
 # Entry Point
 if __name__ == '__main__':
     main(sys.argv)
