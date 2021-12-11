@@ -109,6 +109,20 @@ def test_rename_field_invcls():
     r = attr_interface.rename_field("class2", f, "w")[0]
     assert not isinstance(r, UMLField)
     UMLClass.class_dict = dict()
+    
+def test_rename_field_emptyn():
+    class_interface.add_class("class1")
+    f = attr_interface.add_field("class1", "field_n", "field_t")[0]
+    r = attr_interface.rename_field("class1", f, "")[0]
+    assert not isinstance(r, UMLField)
+    UMLClass.class_dict = dict()
+    
+def test_rename_field_invf():
+    class_interface.add_class("class1")
+    f = attr_interface.add_field("class1", "field_n", "field_t")[0]
+    r = attr_interface.rename_field("class1", UMLField("g", "g"), "w")[0]
+    assert not isinstance(r, UMLField)
+    UMLClass.class_dict = dict()
 
 def test_rename_method () :
     class_interface.add_class ("class5")
