@@ -8,18 +8,30 @@ from tkinter import filedialog
 
 # Internal Imports
 from . import gui_functions as gf
-from uml_components import (UMLClass, UMLAttributes)
+from uml_components import (
+    UMLClass as uc, 
+    UMLAttributes as ua)
 
 ###################################################################################################
 '''
 Functions that are used to bring up new windows when each respective button is pressed.
 
 Each new window takes some user input for a thing(s) they would like to change, and
-does the action when they press another button to confirm their action.
+    does the action when they press another button to confirm their action.
+
+All new windows bind the 'enter' key on the keyboard to the same thing that each
+    respective confirm button does. In other words, to confirm an action in one of the windows,
+    the user can simply press enter instead of clicking the confirm button, if they wish.
+
+The red squiggle errors are due to trying to access the filename of a tkinter TopLevel object,
+    in the functions dealing with save, load, and export. Python doesn't like seeing this, but 
+    these functions still work how we want them to.
 '''
 
+# Declaring variables to use with some of the windows, to keep track of the
+#   method object to pass into the backend.
 global current_method
-current_method = None
+current_method : ua.UMLMethod
 
 def add_class_window() -> None:
     # Window for adding a new Class to the system.
@@ -61,7 +73,6 @@ def add_class_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_class_window() -> None:
     # Window for deleting an existing Class from the system.
     root = tk.Toplevel(name = 'dn')
@@ -101,7 +112,6 @@ def delete_class_window() -> None:
     
     # Generate the window.
     root.mainloop()
-
 
 def rename_class_window() -> None:
     # Window for renaming an existing Class in the system.
@@ -149,7 +159,6 @@ def rename_class_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def add_method_window() -> None:
     # Window for adding a Method to an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -161,7 +170,7 @@ def add_method_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, 
             text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
@@ -172,7 +181,7 @@ def add_method_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -181,7 +190,7 @@ def add_method_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -233,7 +242,7 @@ def add_method_window() -> None:
             if entry4.get() == "" or entry5.get() == "" or str.isspace(entry4.get()) == True or str.isspace(entry5.get()) == True:
                 paramoutput.configure(text = "Parameter names and types cannot be empty")
             else:
-                paramlist.append(UMLAttributes.UMLParameter(entry4.get(), entry5.get()))
+                paramlist.append(ua.UMLParameter(entry4.get(), entry5.get()))
                 paramoutput.configure(text = "Queued param \"" + entry4.get() + "\" to add.")
                 entry4.delete(0, tk.END)
                 entry5.delete(0, tk.END)
@@ -266,7 +275,6 @@ def add_method_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_method_window() -> None:
     # Window for deleting a Method from an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -278,7 +286,7 @@ def delete_method_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -287,7 +295,7 @@ def delete_method_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -297,7 +305,7 @@ def delete_method_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -308,7 +316,7 @@ def delete_method_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -366,7 +374,6 @@ def delete_method_window() -> None:
     
     # Generate the window.
     root.mainloop()
-    
 
 def rename_method_window() -> None:
     # Window for renaming a Method in an existing Class in the system.
@@ -379,7 +386,7 @@ def rename_method_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -388,7 +395,7 @@ def rename_method_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -398,7 +405,7 @@ def rename_method_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -409,7 +416,7 @@ def rename_method_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -474,7 +481,6 @@ def rename_method_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def add_field_window() -> None:
     # Window for adding a Field to an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -486,7 +492,7 @@ def add_field_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -495,7 +501,7 @@ def add_field_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -504,7 +510,7 @@ def add_field_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -546,7 +552,6 @@ def add_field_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_field_window() -> None:
     # Window for deleting a Field from an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -558,7 +563,7 @@ def delete_field_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -567,7 +572,7 @@ def delete_field_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -576,7 +581,7 @@ def delete_field_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -618,7 +623,6 @@ def delete_field_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def rename_field_window() -> None:
     # Window for renaming a Field in an existing Class in the system.
     root = tk.Toplevel(name = 'dn')
@@ -630,7 +634,7 @@ def rename_field_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -639,7 +643,7 @@ def rename_field_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -648,7 +652,7 @@ def rename_field_window() -> None:
 
         # Creating the classes dropdown.
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -696,109 +700,6 @@ def rename_field_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
-def add_relation_window() -> None:
-    # Window for adding a Relationship between 2 Classes.
-    root = tk.Toplevel(name = 'dn')
-    root.title("Add Relation")
-
-    # Frame containing the elements.
-    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
-    frame.pack()
-
-    # Label/Entry for Class 1 Name.
-    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
-    label1.grid(row = 0, column = 0)
-    entry1 = tk.Entry(frame, width = 50)
-    entry1.grid(row = 1, column = 0)
-
-    # Label/Entry for Class 2 Name.
-    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
-    label2.grid(row = 2, column = 0)
-    entry2 = tk.Entry(frame, width = 50)
-    entry2.grid(row = 3, column = 0)
-
-    # Creating the togglable buttons for the 4 types of Relationships.
-    type = tk.IntVar()
-    types = ["aggregation", "composition", "inheritance", "realization"]
-    for index in range(len(types)):
-        rdo = tk.Radiobutton(
-            master = frame, text = types[index], value = index, variable = type, font = ('bold'))
-        rdo.grid(row = 4 + index, column = 0)
-
-    # Confirm Button, command is the helper checking the user input
-    #   and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_add_relation(
-            entry1.get(), entry2.get(), types[type.get()], outputlabel),
-        master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 8, column = 0, padx = 5, pady = 5)
-
-    # Thin Line Separator.
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 9, column = 0, sticky = "ew")
-
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 10, column = 0)
-
-    # Bind the enter key to confirming the user's action, same as if they
-    #   were to press the Confirm button.
-    root.bind('<Return>', 
-        lambda event: gf.b_add_relation(
-            entry1.get(), entry2.get(), types[type.get()], outputlabel))
-    
-    # Generate the window.
-    root.mainloop()
-
-
-def delete_relation_window() -> None:
-    # Window for deleting a Relationship between 2 Classes.
-    root = tk.Toplevel(name = 'dn')
-    root.title("Delete Relation")
-
-    # Frame containing the elements.
-    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
-    frame.pack()
-
-    # Label/Entry for Class 1 Name.
-    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
-    label1.grid(row = 0, column = 0)
-    entry1 = tk.Entry(frame, width = 50)
-    entry1.grid(row = 1, column = 0)
-
-    # Label/Entry for Class 2 Name.
-    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
-    label2.grid(row = 2, column = 0)
-    entry2 = tk.Entry(frame, width = 50)
-    entry2.grid(row = 3, column = 0)
-
-    # Confirm Button, command is the helper checking the user input
-    #   and executing the appropriate function.
-    btn = tk.Button(
-        command = lambda: gf.b_delete_relation(
-            entry1.get(), entry2.get(), outputlabel),
-        master = frame, text = "Confirm", font = ('bold'))
-    btn.grid(row = 4, column = 0, padx = 5, pady = 5)
-
-    # Thin Line Separator.
-    separator = ttk.Separator(frame, orient = "horizontal")
-    separator.grid(row = 5, column = 0, sticky = "ew")
-
-    # Label for Program Output.
-    outputlabel = tk.Label(frame, text = "")
-    outputlabel.grid(row = 6, column = 0)
-
-    # Bind the enter key to confirming the user's action, same as if they
-    #   were to press the Confirm button.
-    root.bind('<Return>', 
-        lambda event: gf.b_delete_relation(
-            entry1.get(), entry2.get(), outputlabel))
-    
-    # Generate the window.
-    root.mainloop()
-
-
 def add_param_window() -> None:
     # Window for Adding a Parameter to a Method in a Class.
     root = tk.Toplevel(name = 'dn')
@@ -810,7 +711,7 @@ def add_param_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -819,7 +720,7 @@ def add_param_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -829,7 +730,7 @@ def add_param_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -840,7 +741,7 @@ def add_param_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -911,7 +812,6 @@ def add_param_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def delete_param_window() -> None:
    # Window for Deleting a Parameter from a Method in a Class.
     root = tk.Toplevel(name = 'dn')
@@ -923,7 +823,7 @@ def delete_param_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -932,7 +832,7 @@ def delete_param_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -942,7 +842,7 @@ def delete_param_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -953,7 +853,7 @@ def delete_param_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -1024,7 +924,6 @@ def delete_param_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def rename_param_window() -> None:
    # Window for Renaming a Parameter in a Method in a Class.
     root = tk.Toplevel(name = 'dn')
@@ -1036,7 +935,7 @@ def rename_param_window() -> None:
 
     # Check to see if there are any classes.
     #   Does not allow the user to continue if no classes exist yet.
-    if len(UMLClass.class_dict) == 0:
+    if len(uc.class_dict) == 0:
         label1 = tk.Label(frame, text = "There are no classes in the system.", font = ('bold'))
         label1.grid(row = 0, column = 0)
         label2 = tk.Label(frame, text = "Please add some classes first.", font = ('bold'))
@@ -1045,7 +944,7 @@ def rename_param_window() -> None:
     else:
         # List of classes in the current system.
         classes = []
-        for class_name in UMLClass.class_dict:
+        for class_name in uc.class_dict:
             classes.append(class_name)
 
         # Label: Select a Class.
@@ -1055,7 +954,7 @@ def rename_param_window() -> None:
         # Creating the classes dropdown.
         global classvar
         classvar = tk.StringVar(frame)
-        classvar.set(list(UMLClass.class_dict)[0]) # Default value.
+        classvar.set(list(uc.class_dict)[0]) # Default value.
         class_dropdown = tk.OptionMenu(frame, classvar, *classes)
         class_dropdown.config(width = 20) # Set the width of the dropdown.
         class_dropdown.grid(row = 1, column = 0)
@@ -1066,7 +965,7 @@ def rename_param_window() -> None:
 
         # Creating the list of methods associated with the currently selected class.
         methods = []
-        uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+        uml : uc.UMLClass = uc.class_dict[classvar.get()]
         string = ""
         for method in uml.methods:
             string = ""
@@ -1143,6 +1042,105 @@ def rename_param_window() -> None:
     # Generate the window.
     root.mainloop()
 
+def add_relation_window() -> None:
+    # Window for adding a Relationship between 2 Classes.
+    root = tk.Toplevel(name = 'dn')
+    root.title("Add Relation")
+
+    # Frame containing the elements.
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
+
+    # Label/Entry for Class 1 Name.
+    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
+
+    # Label/Entry for Class 2 Name.
+    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
+    label2.grid(row = 2, column = 0)
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 3, column = 0)
+
+    # Creating the togglable buttons for the 4 types of Relationships.
+    type = tk.IntVar()
+    types = ["aggregation", "composition", "inheritance", "realization"]
+    for index in range(len(types)):
+        rdo = tk.Radiobutton(
+            master = frame, text = types[index], value = index, variable = type, font = ('bold'))
+        rdo.grid(row = 4 + index, column = 0)
+
+    # Confirm Button, command is the helper checking the user input
+    #   and executing the appropriate function.
+    btn = tk.Button(
+        command = lambda: gf.b_add_relation(
+            entry1.get(), entry2.get(), types[type.get()], outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 8, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 9, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 10, column = 0)
+
+    # Bind the enter key to confirming the user's action, same as if they
+    #   were to press the Confirm button.
+    root.bind('<Return>', 
+        lambda event: gf.b_add_relation(
+            entry1.get(), entry2.get(), types[type.get()], outputlabel))
+    
+    # Generate the window.
+    root.mainloop()
+
+def delete_relation_window() -> None:
+    # Window for deleting a Relationship between 2 Classes.
+    root = tk.Toplevel(name = 'dn')
+    root.title("Delete Relation")
+
+    # Frame containing the elements.
+    frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
+    frame.pack()
+
+    # Label/Entry for Class 1 Name.
+    label1 = tk.Label(frame, text = "Class 1 Name :", font = ('bold'))
+    label1.grid(row = 0, column = 0)
+    entry1 = tk.Entry(frame, width = 50)
+    entry1.grid(row = 1, column = 0)
+
+    # Label/Entry for Class 2 Name.
+    label2 = tk.Label(frame, text = "Class 2 Name :", font = ('bold'))
+    label2.grid(row = 2, column = 0)
+    entry2 = tk.Entry(frame, width = 50)
+    entry2.grid(row = 3, column = 0)
+
+    # Confirm Button, command is the helper checking the user input
+    #   and executing the appropriate function.
+    btn = tk.Button(
+        command = lambda: gf.b_delete_relation(
+            entry1.get(), entry2.get(), outputlabel),
+        master = frame, text = "Confirm", font = ('bold'))
+    btn.grid(row = 4, column = 0, padx = 5, pady = 5)
+
+    # Thin Line Separator.
+    separator = ttk.Separator(frame, orient = "horizontal")
+    separator.grid(row = 5, column = 0, sticky = "ew")
+
+    # Label for Program Output.
+    outputlabel = tk.Label(frame, text = "")
+    outputlabel.grid(row = 6, column = 0)
+
+    # Bind the enter key to confirming the user's action, same as if they
+    #   were to press the Confirm button.
+    root.bind('<Return>', 
+        lambda event: gf.b_delete_relation(
+            entry1.get(), entry2.get(), outputlabel))
+    
+    # Generate the window.
+    root.mainloop()
 
 def save_window() -> None:
     # Window for Saving all the current data to a file.
@@ -1153,15 +1151,20 @@ def save_window() -> None:
     frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
     frame.pack()
 
-    #Get the save directory
-    root.filename = filedialog.asksaveasfilename(defaultextension=".json", initialdir="/save_files", title="Choose a folder", filetypes=(('Json', '*.json'),('Json', '*.json')))
+    # Get the save directory.
+    root.filename = filedialog.asksaveasfilename(
+        defaultextension=".json", initialdir="/save_files", title="Choose a folder", 
+        filetypes=(('Json', '*.json'),('Json', '*.json')))
 
+    # Destroys the popup window if there is no save directory.
     if root.filename == "":
         root.destroy()
+
     else:
+        # Bring the window to the front.
         root.lift()
 
-        #Save warning label
+        # Save warning label.
         wlabel = tk.Label(
             frame, text = "Warning: Saving will overwrite\nany duplicate files.", font = ('bold'))
         wlabel.grid(row = 0, column = 0)
@@ -1193,7 +1196,6 @@ def save_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def load_window() -> None:
     # Window for Loading data from an existing file.
     root = tk.Toplevel(name = 'dn')
@@ -1208,12 +1210,17 @@ def load_window() -> None:
         frame, text = "Warning: Loading will overwrite\nany unsaved changes.", font = ('bold'))
     label.grid(row = 0, column = 0)
 
-    #Get the load path
-    root.filename = filedialog.askopenfilename(initialdir="/save_files", title="Choose a file", filetypes=(('Json', '*.json'),('Json', '*.json')))
+    # Get the load path.
+    root.filename = filedialog.askopenfilename(
+        initialdir="/save_files", title="Choose a file", 
+        filetypes=(('Json', '*.json'),('Json', '*.json')))
 
+    # Destroys the popup window if there is no save directory.
     if root.filename == "":
         root.destroy()
+
     else:
+        # Bring the window to the front.
         root.lift()
 
         # Label/Entry for File Name.
@@ -1243,7 +1250,6 @@ def load_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 def export_window() -> None:
     # Window for Loading data from an existing file.
     root = tk.Toplevel(name = 'dn')
@@ -1253,12 +1259,17 @@ def export_window() -> None:
     frame = tk.Frame(master = root,  relief = tk.SUNKEN,  borderwidth = 3)
     frame.pack()
 
-    #Get the folder to save the export in
-    root.filename = filedialog.asksaveasfilename(defaultextension=".png", initialdir="/saved_images", title="Choose a folder", filetypes=(('PNG', '*.png'),('JPG', '*.jpg')))
+    # Get the folder to save the export in.
+    root.filename = filedialog.asksaveasfilename(
+        defaultextension=".png", initialdir="/saved_images", title="Choose a folder", 
+        filetypes=(('PNG', '*.png'),('JPG', '*.jpg')))
 
+    # Destroys the popup window if there is no save directory.
     if root.filename == "":
         root.destroy()
+
     else:
+        # Bring the window to the front.
         root.lift()
 
         # Label/Entry for warning about overwriting unsaved data.
@@ -1289,7 +1300,6 @@ def export_window() -> None:
     # Generate the window.
     root.mainloop()
 
-
 ###################################################################################################
 '''
 Helper functions for the secondary dropdowns in a few windows.
@@ -1304,33 +1314,32 @@ def update_params():
     method_name = methodvar.get().split(" ")[0]
     global method_type
     method_type = methodvar.get().split(" ")[1].split("(")[0]
-    uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+    uml : uc.UMLClass = uc.class_dict[classvar.get()]
     for method in uml.methods:
             string = ""
             string += method.name + " " + method.return_type + "("
             for param in method.params:
                 if string[-1] != "(":
-                    string = string + ","
-                string += param.type + " " + param.name
+                    string = string + ", "
+                string += param.name + " : " + param.type
             string += ")"
             if string == methodvar.get():
                 global current_method
                 current_method = method
 
-
 def update_methods():
     menu = method_dropdown["menu"]
     menu.delete(0, "end")
     method_list = []
-    uml : UMLClass.UMLClass = UMLClass.class_dict[classvar.get()]
+    uml : uc.UMLClass = uc.class_dict[classvar.get()]
     string = ""
     for method in uml.methods:
         string = ""
         string += method.name + " " + method.return_type + "("
         for param in method.params:
             if string[-1] != "(":
-                string = string + ","
-            string += param.type + " " + param.name
+                string = string + ", "
+            string += param.name + " : " + param.type
         string += ")"
         method_list.append(string)
     for strings in method_list:
@@ -1339,7 +1348,6 @@ def update_methods():
         methodvar.set("No methods available")
     else:
         methodvar.set("Select a method")
-
 
 ###################################################################################################
 '''

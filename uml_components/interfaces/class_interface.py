@@ -1,8 +1,13 @@
-from uml_components import UMLClass
-from uml_components import UMLRelationship
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     class_interface.py
+
+# Internal Imports
+from uml_components import (
+    UMLClass,
+    UMLRelationship)
 from uml_components.interfaces import rel_interface
 
-from typing import Union
+###################################################################################################
 
 def add_class(name : str) -> tuple:
     """
@@ -32,13 +37,12 @@ def add_class(name : str) -> tuple:
     
     else:
         # If all other checks are valid, creates a new UMLCLass object with
-        # name 'name' and adds it to the dict of existing classes.
+        #   name 'name' and adds it to the dict of existing classes.
         new_class = UMLClass.UMLClass(name)
         UMLClass.class_dict.update({name : new_class})
         print(msg)
 
     return ret, msg
-
 
 def delete_class(name : str) -> tuple:
     """
@@ -60,7 +64,7 @@ def delete_class(name : str) -> tuple:
               f"Class named '{name}' does not exist.")
     else:
         # If 'name' is the name of an existing class, deconstructs the object,
-        # and then removes the listing of the class from the class dict.
+        #   and then removes the listing of the class from the class dict.
         rel_interface.rel_cleanup(name)
         del_class = UMLClass.class_dict[name]
         UMLClass.class_dict.pop(name)
@@ -69,7 +73,6 @@ def delete_class(name : str) -> tuple:
         ret = del_class
 
     return ret, msg
-
 
 def rename_class(old_name : str, 
                  new_name : str) -> tuple:
@@ -116,12 +119,11 @@ def rename_class(old_name : str,
                  f"Class name '{new_name}' alread exists.")
         
         # If 'new_name' is valid and unique, removes the listing for 'old_name'
-        # and creates a new listing with the updated UMLClass object.
+        #   and creates a new listing with the updated UMLClass object.
         else:
             # Temporarily stores the UMLClass object stored in the class dict
-            # under 'old_name'.
+            #   under 'old_name'.
             uml : UMLClass.UMLClass = UMLClass.class_dict[old_name]
-            
             
             rel : UMLRelationship.UMLRelationship
             for rel in UMLRelationship.relationship_list:
@@ -135,8 +137,11 @@ def rename_class(old_name : str,
             
             # Removes the listing for 'old_name' from the class dict.
             UMLClass.class_dict.pop(old_name)
+
             # Creates a new listing for 'uml' in the class dict with the
-            # key of 'new_name'.
+            #   key of 'new_name'.
             UMLClass.class_dict.update({new_name : uml})
 
     return ret, msg
+
+###################################################################################################

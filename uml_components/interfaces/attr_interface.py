@@ -1,11 +1,19 @@
-from uml_components import UMLClass
-from uml_components.UMLAttributes import (UMLField,
-                                          UMLMethod,
-                                          UMLParameter)
+# Project Name:  SNAKE PEOPLE UML Editor
+# File Name:     attr_interface.py
+
+# External Imports
 from typing import List, Tuple, Union
 from copy import deepcopy
 
-# Helper Methods =============================================================
+# Internal Imports
+from uml_components import UMLClass
+from uml_components.UMLAttributes import (
+    UMLField,
+    UMLMethod,
+    UMLParameter)
+
+###################################################################################################
+# Helper Methods
 
 def find_class(class_name : str) -> bool:
     """
@@ -66,8 +74,8 @@ def find_param(method : UMLMethod,
     
     return param in method.params
 
-
-# Attr Add Methods ===========================================================
+###################################################################################################
+# Attr Add Methods
 
 def add_field(class_name : str,
               field_name : str,
@@ -155,7 +163,7 @@ def add_method(class_name : str,
             print(f"<Method Add Error>: {msg}")
         
         # Grabs the class with the name 'class_name' that is stored in the class 
-        # dictionary.           
+        #   dictionary.           
         uml : UMLClass.UMLClass = UMLClass.class_dict[class_name]
         method = UMLMethod(method_name, method_type, param_list)
         found = find_method(uml, method)
@@ -195,12 +203,12 @@ def add_param(class_name : str,
         operation fails, returns None and an error message describing the issue.
     """
     
-    msg : str = (f"Successfuly added parameter '{param_name}' to method" + 
+    msg : str = (f"Successfuly added parameter '{param_name}' to method " + 
                  f"'{method.name}' in class '{class_name}'.")
     ret = None
     
     # Checks if 'class_name' exists as the name of a class in the class
-    # dictionary. If it does not, prints an error.
+    #   dictionary. If it does not, prints an error.
     if not find_class(class_name):
         msg = f"{class_name} does not exist as the name of a class."
         print(f"<Parameter Add Error>: {msg}")
@@ -216,7 +224,7 @@ def add_param(class_name : str,
         
         if find_method(uml, method):
             # If a matching method was found, searches the parameter list of 
-            # that method for a parameter with the name 'param_name'.
+            #   that method for a parameter with the name 'param_name'.
             param = UMLParameter(param_name, param_type)
             
             # If a matching parameter was found, prints an error.
@@ -225,7 +233,7 @@ def add_param(class_name : str,
                        f"parameter in {method.name} in {class_name}.")
                 print(f"<Parameter Add Error>: {msg}")
             # Otherwise create a new Parameter object using 'param_name' and
-            # 'param_type' and add it to the method's list of parameters.
+            #   'param_type' and add it to the method's list of parameters.
             else:
                 p_list = deepcopy(method.params)
                 p_list.append(param)
@@ -245,8 +253,8 @@ def add_param(class_name : str,
     
     return ret, msg
    
-  
-# Attr Rename Methods ========================================================
+###################################################################################################
+# Attr Rename Methods
 
 def rename_field(class_name : str,
                  field : UMLField,
@@ -284,7 +292,7 @@ def rename_field(class_name : str,
         found = find_field(uml, field)
         
         # If 'field_name' is not found, prints an error, otherwise renames the
-        # field to 'new_name'.
+        #   field to 'new_name'.
         if not found:
             msg = (f"{field.name} does not exist as the name of a field in " + 
                    f"{class_name}.")
@@ -383,13 +391,11 @@ def rename_param(class_name : str,
             err = (f"'{method.name}' does not exist as the name of a method " +
                    f"in '{class_name}'.")
             print(f"\n<Parameter Rename Error>: {err}\n")
-       
-            
         
     return ret, msg
 
-
-# Attr Delete Methods ========================================================
+###################################################################################################
+# Attr Delete Methods
                 
 def delete_field(class_name : str,
                  field : UMLField) -> Tuple[Union[UMLField, None], str]:
@@ -499,4 +505,5 @@ def delete_param(class_name : str,
                     uml.delete_param(method, param)
     
     return ret, msg
-    
+
+###################################################################################################
