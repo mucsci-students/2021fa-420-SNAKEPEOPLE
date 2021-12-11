@@ -115,7 +115,7 @@ class UMLClass():
         method.clear()
         idx = self.methods.index(method)
         self.methods.pop(idx)
-        print(f"<Added Method ({self.name})>: {method}")
+        print(f"<Deleted Method ({self.name})>: {method}")
         
         
     def delete_param(self,
