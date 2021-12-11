@@ -120,7 +120,6 @@ def redo(mode = "gui"):
     while len(UMLRelationship.relationship_list) > 0:
         ri.delete_relationship(UMLRelationship.relationship_list[0].source,
          UMLRelationship.relationship_list[0].destination)
-    print(UMLClass.class_dict)
     #Recreate the previous state of the relationship list
     for i in last_state.relationship_list:
         ri.add_relationship(i.source, i.destination, i.type)
