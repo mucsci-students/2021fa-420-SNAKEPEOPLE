@@ -1,4 +1,4 @@
 coverage==5.5
 pytest==6.2.5
 pyreadline==2.1
-Pillow==8.4.0
+Pillow==9.3.0
